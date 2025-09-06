@@ -34,8 +34,8 @@ class Installer {
         ? config.directory
         : path.resolve(originalCwd, config.directory);
 
-      if (path.basename(installDir) === '.bmad-core') {
-        // If user points directly to .bmad-core, treat its parent as the project root
+      if (path.basename(installDir) === '.xiaoma-core') {
+        // If user points directly to .xiaoma-core, treat its parent as the project root
         installDir = path.dirname(installDir);
       }
 
@@ -173,8 +173,8 @@ class Installer {
       return state; // clean install
     }
 
-    // Check for V4 installation (has .bmad-core with manifest)
-    const bmadCorePath = path.join(installDir, '.bmad-core');
+    // Check for V4 installation (has .xiaoma-core with manifest)
+    const bmadCorePath = path.join(installDir, '.xiaoma-core');
     const manifestPath = path.join(bmadCorePath, 'install-manifest.yaml');
 
     if (await fileManager.pathExists(manifestPath)) {
@@ -193,7 +193,7 @@ class Installer {
       return state;
     }
 
-    // Check for .bmad-core without manifest (broken V4 or manual copy)
+    // Check for .xiaoma-core without manifest (broken V4 or manual copy)
     if (await fileManager.pathExists(bmadCorePath)) {
       state.type = 'unknown_existing';
       state.hasBmadCore = true;
@@ -227,23 +227,23 @@ class Installer {
 
     switch (config.installType) {
       case 'full': {
-        // Full installation - copy entire .bmad-core folder as a subdirectory
-        spinner.text = 'Copying complete .bmad-core folder...';
+        // Full installation - copy entire .xiaoma-core folder as a subdirectory
+        spinner.text = 'Copying complete .xiaoma-core folder...';
         const sourceDir = resourceLocator.getBmadCorePath();
-        const bmadCoreDestDir = path.join(installDir, '.bmad-core');
+        const bmadCoreDestDir = path.join(installDir, '.xiaoma-core');
         await fileManager.copyDirectoryWithRootReplacement(
           sourceDir,
           bmadCoreDestDir,
-          '.bmad-core',
+          '.xiaoma-core',
         );
 
-        // Copy common/ items to .bmad-core
+        // Copy common/ items to .xiaoma-core
         spinner.text = 'Copying common utilities...';
-        await this.copyCommonItems(installDir, '.bmad-core', spinner);
+        await this.copyCommonItems(installDir, '.xiaoma-core', spinner);
 
-        // Copy documentation files from docs/ to .bmad-core
+        // Copy documentation files from docs/ to .xiaoma-core
         spinner.text = 'Copying documentation files...';
-        await this.copyDocsItems(installDir, '.bmad-core', spinner);
+        await this.copyDocsItems(installDir, '.xiaoma-core', spinner);
 
         // Get list of all files for manifest
         const foundFiles = await resourceLocator.findFiles('**/*', {
@@ -251,7 +251,7 @@ class Installer {
           nodir: true,
           ignore: ['**/.git/**', '**/node_modules/**'],
         });
-        files = foundFiles.map((file) => path.join('.bmad-core', file));
+        files = foundFiles.map((file) => path.join('.xiaoma-core', file));
 
         break;
       }
@@ -263,16 +263,16 @@ class Installer {
         const agentPath = configLoader.getAgentPath(config.agent);
         const destinationAgentPath = path.join(
           installDir,
-          '.bmad-core',
+          '.xiaoma-core',
           'agents',
           `${config.agent}.md`,
         );
         await fileManager.copyFileWithRootReplacement(
           agentPath,
           destinationAgentPath,
-          '.bmad-core',
+          '.xiaoma-core',
         );
-        files.push(`.bmad-core/agents/${config.agent}.md`);
+        files.push(`.xiaoma-core/agents/${config.agent}.md`);
 
         // Copy dependencies
         const { all: dependencies } = await resourceLocator.getAgentDependencies(config.agent);
@@ -284,15 +284,15 @@ class Installer {
           if (dep.includes('*')) {
             // Handle glob patterns with {root} replacement
             const copiedFiles = await fileManager.copyGlobPattern(
-              dep.replace('.bmad-core/', ''),
+              dep.replace('.xiaoma-core/', ''),
               sourceBase,
-              path.join(installDir, '.bmad-core'),
-              '.bmad-core',
+              path.join(installDir, '.xiaoma-core'),
+              '.xiaoma-core',
             );
-            files.push(...copiedFiles.map((f) => `.bmad-core/${f}`));
+            files.push(...copiedFiles.map((f) => `.xiaoma-core/${f}`));
           } else {
             // Handle single files with {root} replacement if needed
-            const sourcePath = path.join(sourceBase, dep.replace('.bmad-core/', ''));
+            const sourcePath = path.join(sourceBase, dep.replace('.xiaoma-core/', ''));
             const destinationPath = path.join(installDir, dep);
 
             const needsRootReplacement =
@@ -300,7 +300,7 @@ class Installer {
             let success = false;
 
             success = await (needsRootReplacement
-              ? fileManager.copyFileWithRootReplacement(sourcePath, destinationPath, '.bmad-core')
+              ? fileManager.copyFileWithRootReplacement(sourcePath, destinationPath, '.xiaoma-core')
               : fileManager.copyFile(sourcePath, destinationPath));
 
             if (success) {
@@ -309,14 +309,14 @@ class Installer {
           }
         }
 
-        // Copy common/ items to .bmad-core
+        // Copy common/ items to .xiaoma-core
         spinner.text = 'Copying common utilities...';
-        const commonFiles = await this.copyCommonItems(installDir, '.bmad-core', spinner);
+        const commonFiles = await this.copyCommonItems(installDir, '.xiaoma-core', spinner);
         files.push(...commonFiles);
 
-        // Copy documentation files from docs/ to .bmad-core
+        // Copy documentation files from docs/ to .xiaoma-core
         spinner.text = 'Copying documentation files...';
-        const documentFiles = await this.copyDocsItems(installDir, '.bmad-core', spinner);
+        const documentFiles = await this.copyDocsItems(installDir, '.xiaoma-core', spinner);
         files.push(...documentFiles);
 
         break;
@@ -336,15 +336,15 @@ class Installer {
           if (dep.includes('*')) {
             // Handle glob patterns with {root} replacement
             const copiedFiles = await fileManager.copyGlobPattern(
-              dep.replace('.bmad-core/', ''),
+              dep.replace('.xiaoma-core/', ''),
               sourceBase,
-              path.join(installDir, '.bmad-core'),
-              '.bmad-core',
+              path.join(installDir, '.xiaoma-core'),
+              '.xiaoma-core',
             );
-            files.push(...copiedFiles.map((f) => `.bmad-core/${f}`));
+            files.push(...copiedFiles.map((f) => `.xiaoma-core/${f}`));
           } else {
             // Handle single files with {root} replacement if needed
-            const sourcePath = path.join(sourceBase, dep.replace('.bmad-core/', ''));
+            const sourcePath = path.join(sourceBase, dep.replace('.xiaoma-core/', ''));
             const destinationPath = path.join(installDir, dep);
 
             const needsRootReplacement =
@@ -352,7 +352,7 @@ class Installer {
             let success = false;
 
             success = await (needsRootReplacement
-              ? fileManager.copyFileWithRootReplacement(sourcePath, destinationPath, '.bmad-core')
+              ? fileManager.copyFileWithRootReplacement(sourcePath, destinationPath, '.xiaoma-core')
               : fileManager.copyFile(sourcePath, destinationPath));
 
             if (success) {
@@ -361,20 +361,20 @@ class Installer {
           }
         }
 
-        // Copy common/ items to .bmad-core
+        // Copy common/ items to .xiaoma-core
         spinner.text = 'Copying common utilities...';
-        const commonFiles = await this.copyCommonItems(installDir, '.bmad-core', spinner);
+        const commonFiles = await this.copyCommonItems(installDir, '.xiaoma-core', spinner);
         files.push(...commonFiles);
 
-        // Copy documentation files from docs/ to .bmad-core
+        // Copy documentation files from docs/ to .xiaoma-core
         spinner.text = 'Copying documentation files...';
-        const documentFiles = await this.copyDocsItems(installDir, '.bmad-core', spinner);
+        const documentFiles = await this.copyDocsItems(installDir, '.xiaoma-core', spinner);
         files.push(...documentFiles);
 
         break;
       }
       case 'expansion-only': {
-        // Expansion-only installation - DO NOT create .bmad-core
+        // Expansion-only installation - DO NOT create .xiaoma-core
         // Only install expansion packs
         spinner.text = 'Installing expansion packs only...';
 
@@ -638,7 +638,7 @@ class Installer {
     console.log(`   Directory: ${installDir}`);
 
     if (state.hasBmadCore) {
-      console.log('   Found: .bmad-core directory (but no manifest)');
+      console.log('   Found: .xiaoma-core directory (but no manifest)');
     }
     if (state.hasOtherFiles) {
       console.log('   Found: Other files in directory');
@@ -776,7 +776,7 @@ class Installer {
         // Skip the manifest file itself
         if (file.endsWith('install-manifest.yaml')) continue;
 
-        const relativePath = file.replace('.bmad-core/', '');
+        const relativePath = file.replace('.xiaoma-core/', '');
         const destinationPath = path.join(installDir, file);
 
         // Check if this is a common/ file that needs special processing
@@ -787,12 +787,12 @@ class Installer {
           // This is a common/ file - needs template processing
           const fs = require('node:fs').promises;
           const content = await fs.readFile(commonSourcePath, 'utf8');
-          const updatedContent = content.replaceAll('{root}', '.bmad-core');
+          const updatedContent = content.replaceAll('{root}', '.xiaoma-core');
           await fileManager.ensureDirectory(path.dirname(destinationPath));
           await fs.writeFile(destinationPath, updatedContent, 'utf8');
           spinner.text = `Restored: ${file}`;
         } else {
-          // Regular file from bmad-core
+          // Regular file from xiaoma-core
           const sourcePath = path.join(sourceBase, relativePath);
           if (await fileManager.pathExists(sourcePath)) {
             await fileManager.copyFile(sourcePath, destinationPath);
@@ -850,8 +850,8 @@ class Installer {
   async performReinstall(config, installDir, spinner) {
     spinner.start('Preparing to reinstall BMad Method...');
 
-    // Remove existing .bmad-core
-    const bmadCorePath = path.join(installDir, '.bmad-core');
+    // Remove existing .xiaoma-core
+    const bmadCorePath = path.join(installDir, '.xiaoma-core');
     if (await fileManager.pathExists(bmadCorePath)) {
       spinner.text = 'Removing existing installation...';
       await fileManager.removeDirectory(bmadCorePath);
@@ -887,7 +887,7 @@ class Installer {
     // Information about installation components
     console.log(chalk.bold('\n🎯 Installation Summary:'));
     if (config.installType !== 'expansion-only') {
-      console.log(chalk.green('✓ .bmad-core framework installed with all agents and workflows'));
+      console.log(chalk.green('✓ .xiaoma-core framework installed with all agents and workflows'));
     }
 
     if (config.expansionPacks && config.expansionPacks.length > 0) {
@@ -946,7 +946,7 @@ class Installer {
     // Important notice to read the user guide
     console.log(
       chalk.red.bold(
-        '\n📖 IMPORTANT: Please read the user guide at docs/user-guide.md (also installed at .bmad-core/user-guide.md)',
+        '\n📖 IMPORTANT: Please read the user guide at docs/user-guide.md (also installed at .xiaoma-core/user-guide.md)',
       ),
     );
     console.log(
@@ -1792,7 +1792,7 @@ class Installer {
     // Find all dot folders that might be expansion packs
     const dotFolders = glob.sync('.*', {
       cwd: installDir,
-      ignore: ['.git', '.git/**', '.bmad-core', '.bmad-core/**'],
+      ignore: ['.git', '.git/**', '.xiaoma-core', '.xiaoma-core/**'],
     });
 
     for (const folder of dotFolders) {
@@ -1949,22 +1949,22 @@ class Installer {
   }
 
   async findInstallation() {
-    // Look for .bmad-core in current directory or parent directories
+    // Look for .xiaoma-core in current directory or parent directories
     let currentDir = process.cwd();
 
     while (currentDir !== path.dirname(currentDir)) {
-      const bmadDir = path.join(currentDir, '.bmad-core');
+      const bmadDir = path.join(currentDir, '.xiaoma-core');
       const manifestPath = path.join(bmadDir, 'install-manifest.yaml');
 
       if (await fileManager.pathExists(manifestPath)) {
-        return currentDir; // Return parent directory, not .bmad-core itself
+        return currentDir; // Return parent directory, not .xiaoma-core itself
       }
 
       currentDir = path.dirname(currentDir);
     }
 
-    // Also check if we're inside a .bmad-core directory
-    if (path.basename(process.cwd()) === '.bmad-core') {
+    // Also check if we're inside a .xiaoma-core directory
+    if (path.basename(process.cwd()) === '.xiaoma-core') {
       const manifestPath = path.join(process.cwd(), 'install-manifest.yaml');
       if (await fileManager.pathExists(manifestPath)) {
         return path.dirname(process.cwd()); // Return parent directory

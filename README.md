@@ -1,11 +1,11 @@
-# BMAD-METHOD™: Universal AI Agent Framework
+# XIAOMA-CLI™: Universal AI Agent Framework
 
-[![Version](https://img.shields.io/npm/v/bmad-method?color=blue&label=version)](https://www.npmjs.com/package/bmad-method)
+[![Version](https://img.shields.io/npm/v/xiaoma-cli?color=blue&label=version)](https://www.npmjs.com/package/xiaoma-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Community-7289da?logo=discord&logoColor=white)](https://discord.gg/gk8jAdXWmj)
 
-Foundations in Agentic Agile Driven Development, known as the Breakthrough Method of Agile AI-Driven Development, yet so much more. Transform any domain with specialized AI expertise: software development, entertainment, creative writing, business strategy to personal wellness just to name a few.
+XiaoMa CLI - Advanced AI Agent Framework for universal domain applications with specialized AI expertise. Transform any domain with specialized AI expertise: software development, entertainment, creative writing, business strategy to personal wellness just to name a few.
 
 **[Subscribe to BMadCode on YouTube](https://www.youtube.com/@BMadCode?sub_confirmation=1)**
 
@@ -15,7 +15,7 @@ Foundations in Agentic Agile Driven Development, known as the Breakthrough Metho
 
 ## Overview
 
-**BMAD-METHOD™'s Two Key Innovations:**
+**XIAOMA-CLI™'s Two Key Innovations:**
 
 **1. Agentic Planning:** Dedicated agents (Analyst, PM, Architect) collaborate with you to create detailed, consistent PRDs and Architecture documents. Through advanced prompt engineering and human-in-the-loop refinement, these planning agents produce comprehensive specifications that go far beyond generic AI task generation.
 
@@ -40,7 +40,7 @@ This two-phase approach eliminates both **planning inconsistency** and **context
 
 - **[Install and Build software with Full Stack Agile AI Team](#quick-start)** → Quick Start Instruction
 - **[Learn how to use BMad](docs/user-guide.md)** → Complete user guide and walkthrough
-- **[See available AI agents](/bmad-core/agents)** → Specialized roles for your team
+- **[See available AI agents](/xiaoma-core/agents)** → Specialized roles for your team
 - **[Explore non-technical uses](#-beyond-software-development---expansion-packs)** → Creative writing, business, wellness, education
 - **[Create my own AI agents](docs/expansion-packs.md)** → Build agents for your domain
 - **[Browse ready-made expansion packs](expansion-packs/)** → Game dev, DevOps, infrastructure and get inspired with ideas and examples
@@ -52,7 +52,7 @@ This two-phase approach eliminates both **planning inconsistency** and **context
 **Stay up-to-date effortlessly!** If you already have BMAD-METHOD™ installed in your project, simply run:
 
 ```bash
-npx bmad-method install
+npx xiaoma-cli install
 # OR
 git pull
 npm run install:bmad
@@ -74,9 +74,9 @@ This makes it easy to benefit from the latest improvements, bug fixes, and new a
 **Just run one of these commands:**
 
 ```bash
-npx bmad-method install
+npx xiaoma-cli install
 # OR explicitly use stable tag:
-npx bmad-method@stable install
+npx xiaoma-cli@stable install
 # OR if you already have BMad installed:
 git pull
 npm run install:bmad
@@ -223,7 +223,7 @@ See our [Fork CI/CD Guide](.github/FORK_GUIDE.md) for instructions on enabling w
 #### Contributing Workflow
 
 1. **Fork the repository** - Click the Fork button on GitHub
-2. **Clone your fork** - `git clone https://github.com/YOUR-USERNAME/BMAD-METHOD.git`
+2. **Clone your fork** - `git clone https://github.com/YOUR-USERNAME/xiaoma-cli-release.git`
 3. **Create a feature branch** - `git checkout -b feature/amazing-feature`
 4. **Make your changes** - Test locally with `npm test`
 5. **Commit your changes** - `git commit -m 'feat: add amazing feature'`

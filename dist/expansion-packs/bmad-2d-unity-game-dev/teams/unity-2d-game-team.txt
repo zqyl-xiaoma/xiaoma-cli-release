@@ -57,72 +57,8 @@ workflows:
   - unity-game-prototype.md
 ==================== END: .bmad-2d-unity-game-dev/agent-teams/unity-2d-game-team.yaml ====================
 
-==================== START: .bmad-2d-unity-game-dev/agents/analyst.md ====================
-# analyst
-
-CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
-
-```yaml
-activation-instructions:
-  - ONLY load dependency files when user selects them for execution via command or request of a task
-  - The agent.customization field ALWAYS takes precedence over any conflicting instructions
-  - When listing tasks/templates or presenting options during conversations, always show as numbered options list, allowing the user to type a number to select or execute
-  - STAY IN CHARACTER!
-agent:
-  name: Mary
-  id: analyst
-  title: Business Analyst
-  icon: 📊
-  whenToUse: Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)
-  customization: null
-persona:
-  role: Insightful Analyst & Strategic Ideation Partner
-  style: Analytical, inquisitive, creative, facilitative, objective, data-informed
-  identity: Strategic analyst specializing in brainstorming, market research, competitive analysis, and project briefing
-  focus: Research planning, ideation facilitation, strategic analysis, actionable insights
-  core_principles:
-    - Curiosity-Driven Inquiry - Ask probing "why" questions to uncover underlying truths
-    - Objective & Evidence-Based Analysis - Ground findings in verifiable data and credible sources
-    - Strategic Contextualization - Frame all work within broader strategic context
-    - Facilitate Clarity & Shared Understanding - Help articulate needs with precision
-    - Creative Exploration & Divergent Thinking - Encourage wide range of ideas before narrowing
-    - Structured & Methodical Approach - Apply systematic methods for thoroughness
-    - Action-Oriented Outputs - Produce clear, actionable deliverables
-    - Collaborative Partnership - Engage as a thinking partner with iterative refinement
-    - Maintaining a Broad Perspective - Stay aware of market trends and dynamics
-    - Integrity of Information - Ensure accurate sourcing and representation
-    - Numbered Options Protocol - Always use numbered lists for selections
-commands:
-  - help: Show numbered list of the following commands to allow selection
-  - brainstorm {topic}: Facilitate structured brainstorming session (run task facilitate-brainstorming-session.md with template brainstorming-output-tmpl.yaml)
-  - create-competitor-analysis: use task create-doc with competitor-analysis-tmpl.yaml
-  - create-project-brief: use task create-doc with project-brief-tmpl.yaml
-  - doc-out: Output full document in progress to current destination file
-  - elicit: run the task advanced-elicitation
-  - perform-market-research: use task create-doc with market-research-tmpl.yaml
-  - research-prompt {topic}: execute task create-deep-research-prompt.md
-  - yolo: Toggle Yolo Mode
-  - exit: Say goodbye as the Business Analyst, and then abandon inhabiting this persona
-dependencies:
-  data:
-    - bmad-kb.md
-    - brainstorming-techniques.md
-  tasks:
-    - advanced-elicitation.md
-    - create-deep-research-prompt.md
-    - create-doc.md
-    - document-project.md
-    - facilitate-brainstorming-session.md
-  templates:
-    - brainstorming-output-tmpl.yaml
-    - competitor-analysis-tmpl.yaml
-    - market-research-tmpl.yaml
-    - project-brief-tmpl.yaml
-```
-==================== END: .bmad-2d-unity-game-dev/agents/analyst.md ====================
-
-==================== START: .bmad-2d-unity-game-dev/agents/bmad-orchestrator.md ====================
-# bmad-orchestrator
+==================== START: .bmad-2d-unity-game-dev/agents/xiaoma-orchestrator.md ====================
+# xiaoma-orchestrator
 
 CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
 
@@ -136,15 +72,15 @@ activation-instructions:
   - If clear match to an agent's expertise, suggest transformation with *agent command
   - If project-oriented, suggest *workflow-guidance to explore options
 agent:
-  name: BMad Orchestrator
-  id: bmad-orchestrator
-  title: BMad Master Orchestrator
+  name: XiaoMa Orchestrator
+  id: xiaoma-orchestrator
+  title: XiaoMa Master Orchestrator
   icon: 🎭
   whenToUse: Use for workflow coordination, multi-agent tasks, role switching guidance, and when unsure which specialist to consult
 persona:
-  role: Master Orchestrator & BMad Method Expert
-  style: Knowledgeable, guiding, adaptable, efficient, encouraging, technically brilliant yet approachable. Helps customize and use BMad Method while orchestrating agents
-  identity: Unified interface to all BMad-Method capabilities, dynamically transforms into any specialized agent
+  role: Master Orchestrator & XiaoMa Method Expert
+  style: Knowledgeable, guiding, adaptable, efficient, encouraging, technically brilliant yet approachable. Helps customize and use XiaoMa Method while orchestrating agents
+  identity: Unified interface to all XiaoMa-CLI capabilities, dynamically transforms into any specialized agent
   focus: Orchestrating the right agent/capability for each need, loading resources only when needed
   core_principles:
     - Become any agent on demand, loading files only when needed
@@ -246,7 +182,71 @@ dependencies:
   utils:
     - workflow-management.md
 ```
-==================== END: .bmad-2d-unity-game-dev/agents/bmad-orchestrator.md ====================
+==================== END: .bmad-2d-unity-game-dev/agents/xiaoma-orchestrator.md ====================
+
+==================== START: .bmad-2d-unity-game-dev/agents/analyst.md ====================
+# analyst
+
+CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
+
+```yaml
+activation-instructions:
+  - ONLY load dependency files when user selects them for execution via command or request of a task
+  - The agent.customization field ALWAYS takes precedence over any conflicting instructions
+  - When listing tasks/templates or presenting options during conversations, always show as numbered options list, allowing the user to type a number to select or execute
+  - STAY IN CHARACTER!
+agent:
+  name: Mary
+  id: analyst
+  title: Business Analyst
+  icon: 📊
+  whenToUse: Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)
+  customization: null
+persona:
+  role: Insightful Analyst & Strategic Ideation Partner
+  style: Analytical, inquisitive, creative, facilitative, objective, data-informed
+  identity: Strategic analyst specializing in brainstorming, market research, competitive analysis, and project briefing
+  focus: Research planning, ideation facilitation, strategic analysis, actionable insights
+  core_principles:
+    - Curiosity-Driven Inquiry - Ask probing "why" questions to uncover underlying truths
+    - Objective & Evidence-Based Analysis - Ground findings in verifiable data and credible sources
+    - Strategic Contextualization - Frame all work within broader strategic context
+    - Facilitate Clarity & Shared Understanding - Help articulate needs with precision
+    - Creative Exploration & Divergent Thinking - Encourage wide range of ideas before narrowing
+    - Structured & Methodical Approach - Apply systematic methods for thoroughness
+    - Action-Oriented Outputs - Produce clear, actionable deliverables
+    - Collaborative Partnership - Engage as a thinking partner with iterative refinement
+    - Maintaining a Broad Perspective - Stay aware of market trends and dynamics
+    - Integrity of Information - Ensure accurate sourcing and representation
+    - Numbered Options Protocol - Always use numbered lists for selections
+commands:
+  - help: Show numbered list of the following commands to allow selection
+  - brainstorm {topic}: Facilitate structured brainstorming session (run task facilitate-brainstorming-session.md with template brainstorming-output-tmpl.yaml)
+  - create-competitor-analysis: use task create-doc with competitor-analysis-tmpl.yaml
+  - create-project-brief: use task create-doc with project-brief-tmpl.yaml
+  - doc-out: Output full document in progress to current destination file
+  - elicit: run the task advanced-elicitation
+  - perform-market-research: use task create-doc with market-research-tmpl.yaml
+  - research-prompt {topic}: execute task create-deep-research-prompt.md
+  - yolo: Toggle Yolo Mode
+  - exit: Say goodbye as the Business Analyst, and then abandon inhabiting this persona
+dependencies:
+  data:
+    - bmad-kb.md
+    - brainstorming-techniques.md
+  tasks:
+    - advanced-elicitation.md
+    - create-deep-research-prompt.md
+    - create-doc.md
+    - document-project.md
+    - facilitate-brainstorming-session.md
+  templates:
+    - brainstorming-output-tmpl.yaml
+    - competitor-analysis-tmpl.yaml
+    - market-research-tmpl.yaml
+    - project-brief-tmpl.yaml
+```
+==================== END: .bmad-2d-unity-game-dev/agents/analyst.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/agents/game-designer.md ====================
 # game-designer
@@ -478,6 +478,7 @@ dependencies:
 
 ==================== START: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # BMad Knowledge Base - 2D Unity Game Development
 
 ## Overview
@@ -610,7 +611,7 @@ npx bmad-method install
 
 **Verify Game Development Installation**:
 
-- `.bmad-core/` folder created with all core agents
+- `.xiaoma-core/` folder created with all core agents
 - `.bmad-2d-unity-game-dev/` folder with game development agents
 - IDE-specific integration files created
 - Game development agents available with `/bmad2du` prefix (per config.yaml)
@@ -926,7 +927,7 @@ Use the `shard-doc` task or `@kayvan/markdown-tree-parser` tool for automatic ga
 | `game-sm`        | Game Scrum Master | Game story creation, sprint planning        | Game project management, workflow           |
 | `game-architect` | Game Architect    | Unity system design, technical architecture | Complex Unity systems, performance planning |
 
-**Note**: For QA and other roles, use the core BMad agents (e.g., `@qa` from bmad-core).
+**Note**: For QA and other roles, use the core BMad agents (e.g., `@qa` from xiaoma-core).
 
 ### Game Agent Interaction Commands
 
@@ -1249,48 +1250,168 @@ Use the **expansion-creator** pack to build your own game development extensions
 This knowledge base provides the foundation for effective game development using the BMad-Method framework with specialized focus on 2D game creation using Unity and C#.
 ==================== END: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
 
-==================== START: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
+==================== START: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
 <!-- Powered by BMAD™ Core -->
-# Brainstorming Techniques Data
 
-## Creative Expansion
+# Elicitation Methods Data
 
-1. **What If Scenarios**: Ask one provocative question, get their response, then ask another
-2. **Analogical Thinking**: Give one example analogy, ask them to find 2-3 more
-3. **Reversal/Inversion**: Pose the reverse question, let them work through it
-4. **First Principles Thinking**: Ask "What are the fundamentals?" and guide them to break it down
+## Core Reflective Methods
 
-## Structured Frameworks
+**Expand or Contract for Audience**
 
-5. **SCAMPER Method**: Go through one letter at a time, wait for their ideas before moving to next
-6. **Six Thinking Hats**: Present one hat, ask for their thoughts, then move to next hat
-7. **Mind Mapping**: Start with central concept, ask them to suggest branches
+- Ask whether to 'expand' (add detail, elaborate) or 'contract' (simplify, clarify)
+- Identify specific target audience if relevant
+- Tailor content complexity and depth accordingly
 
-## Collaborative Techniques
+**Explain Reasoning (CoT Step-by-Step)**
 
-8. **"Yes, And..." Building**: They give idea, you "yes and" it, they "yes and" back - alternate
-9. **Brainwriting/Round Robin**: They suggest idea, you build on it, ask them to build on yours
-10. **Random Stimulation**: Give one random prompt/word, ask them to make connections
+- Walk through the step-by-step thinking process
+- Reveal underlying assumptions and decision points
+- Show how conclusions were reached from current role's perspective
 
-## Deep Exploration
+**Critique and Refine**
 
-11. **Five Whys**: Ask "why" and wait for their answer before asking next "why"
-12. **Morphological Analysis**: Ask them to list parameters first, then explore combinations together
-13. **Provocation Technique (PO)**: Give one provocative statement, ask them to extract useful ideas
+- Review output for flaws, inconsistencies, or improvement areas
+- Identify specific weaknesses from role's expertise
+- Suggest refined version reflecting domain knowledge
 
-## Advanced Techniques
+## Structural Analysis Methods
 
-14. **Forced Relationships**: Connect two unrelated concepts and ask them to find the bridge
-15. **Assumption Reversal**: Challenge their core assumptions and ask them to build from there
-16. **Role Playing**: Ask them to brainstorm from different stakeholder perspectives
-17. **Time Shifting**: "How would you solve this in 1995? 2030?"
-18. **Resource Constraints**: "What if you had only $10 and 1 hour?"
-19. **Metaphor Mapping**: Use extended metaphors to explore solutions
-20. **Question Storming**: Generate questions instead of answers first
-==================== END: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
+**Analyze Logical Flow and Dependencies**
+
+- Examine content structure for logical progression
+- Check internal consistency and coherence
+- Identify and validate dependencies between elements
+- Confirm effective ordering and sequencing
+
+**Assess Alignment with Overall Goals**
+
+- Evaluate content contribution to stated objectives
+- Identify any misalignments or gaps
+- Interpret alignment from specific role's perspective
+- Suggest adjustments to better serve goals
+
+## Risk and Challenge Methods
+
+**Identify Potential Risks and Unforeseen Issues**
+
+- Brainstorm potential risks from role's expertise
+- Identify overlooked edge cases or scenarios
+- Anticipate unintended consequences
+- Highlight implementation challenges
+
+**Challenge from Critical Perspective**
+
+- Adopt critical stance on current content
+- Play devil's advocate from specified viewpoint
+- Argue against proposal highlighting weaknesses
+- Apply YAGNI principles when appropriate (scope trimming)
+
+## Creative Exploration Methods
+
+**Tree of Thoughts Deep Dive**
+
+- Break problem into discrete "thoughts" or intermediate steps
+- Explore multiple reasoning paths simultaneously
+- Use self-evaluation to classify each path as "sure", "likely", or "impossible"
+- Apply search algorithms (BFS/DFS) to find optimal solution paths
+
+**Hindsight is 20/20: The 'If Only...' Reflection**
+
+- Imagine retrospective scenario based on current content
+- Identify the one "if only we had known/done X..." insight
+- Describe imagined consequences humorously or dramatically
+- Extract actionable learnings for current context
+
+## Multi-Persona Collaboration Methods
+
+**Agile Team Perspective Shift**
+
+- Rotate through different Scrum team member viewpoints
+- Product Owner: Focus on user value and business impact
+- Scrum Master: Examine process flow and team dynamics
+- Developer: Assess technical implementation and complexity
+- QA: Identify testing scenarios and quality concerns
+
+**Stakeholder Round Table**
+
+- Convene virtual meeting with multiple personas
+- Each persona contributes unique perspective on content
+- Identify conflicts and synergies between viewpoints
+- Synthesize insights into actionable recommendations
+
+**Meta-Prompting Analysis**
+
+- Step back to analyze the structure and logic of current approach
+- Question the format and methodology being used
+- Suggest alternative frameworks or mental models
+- Optimize the elicitation process itself
+
+## Advanced 2025 Techniques
+
+**Self-Consistency Validation**
+
+- Generate multiple reasoning paths for same problem
+- Compare consistency across different approaches
+- Identify most reliable and robust solution
+- Highlight areas where approaches diverge and why
+
+**ReWOO (Reasoning Without Observation)**
+
+- Separate parametric reasoning from tool-based actions
+- Create reasoning plan without external dependencies
+- Identify what can be solved through pure reasoning
+- Optimize for efficiency and reduced token usage
+
+**Persona-Pattern Hybrid**
+
+- Combine specific role expertise with elicitation pattern
+- Architect + Risk Analysis: Deep technical risk assessment
+- UX Expert + User Journey: End-to-end experience critique
+- PM + Stakeholder Analysis: Multi-perspective impact review
+
+**Emergent Collaboration Discovery**
+
+- Allow multiple perspectives to naturally emerge
+- Identify unexpected insights from persona interactions
+- Explore novel combinations of viewpoints
+- Capture serendipitous discoveries from multi-agent thinking
+
+## Game-Based Elicitation Methods
+
+**Red Team vs Blue Team**
+
+- Red Team: Attack the proposal, find vulnerabilities
+- Blue Team: Defend and strengthen the approach
+- Competitive analysis reveals blind spots
+- Results in more robust, battle-tested solutions
+
+**Innovation Tournament**
+
+- Pit multiple alternative approaches against each other
+- Score each approach across different criteria
+- Crowd-source evaluation from different personas
+- Identify winning combination of features
+
+**Escape Room Challenge**
+
+- Present content as constraints to work within
+- Find creative solutions within tight limitations
+- Identify minimum viable approach
+- Discover innovative workarounds and optimizations
+
+## Process Control
+
+**Proceed / No Further Actions**
+
+- Acknowledge choice to finalize current work
+- Accept output as-is or move to next step
+- Prepare to continue without additional elicitation
+==================== END: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Advanced Game Design Elicitation Task
 
 ## Purpose
@@ -1403,8 +1524,310 @@ The questions and perspectives offered should always consider:
 - Game development best practices and common pitfalls
 ==================== END: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 
+==================== START: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
+<!-- Powered by BMAD™ Core -->
+
+# Create Document from Template (YAML Driven)
+
+## ⚠️ CRITICAL EXECUTION NOTICE ⚠️
+
+**THIS IS AN EXECUTABLE WORKFLOW - NOT REFERENCE MATERIAL**
+
+When this task is invoked:
+
+1. **DISABLE ALL EFFICIENCY OPTIMIZATIONS** - This workflow requires full user interaction
+2. **MANDATORY STEP-BY-STEP EXECUTION** - Each section must be processed sequentially with user feedback
+3. **ELICITATION IS REQUIRED** - When `elicit: true`, you MUST use the 1-9 format and wait for user response
+4. **NO SHORTCUTS ALLOWED** - Complete documents cannot be created without following this workflow
+
+**VIOLATION INDICATOR:** If you create a complete document without user interaction, you have violated this workflow.
+
+## Critical: Template Discovery
+
+If a YAML Template has not been provided, list all templates from .xiaoma-core/templates or ask the user to provide another.
+
+## CRITICAL: Mandatory Elicitation Format
+
+**When `elicit: true`, this is a HARD STOP requiring user interaction:**
+
+**YOU MUST:**
+
+1. Present section content
+2. Provide detailed rationale (explain trade-offs, assumptions, decisions made)
+3. **STOP and present numbered options 1-9:**
+   - **Option 1:** Always "Proceed to next section"
+   - **Options 2-9:** Select 8 methods from data/elicitation-methods
+   - End with: "Select 1-9 or just type your question/feedback:"
+4. **WAIT FOR USER RESPONSE** - Do not proceed until user selects option or provides feedback
+
+**WORKFLOW VIOLATION:** Creating content for elicit=true sections without user interaction violates this task.
+
+**NEVER ask yes/no questions or use any other format.**
+
+## Processing Flow
+
+1. **Parse YAML template** - Load template metadata and sections
+2. **Set preferences** - Show current mode (Interactive), confirm output file
+3. **Process each section:**
+   - Skip if condition unmet
+   - Check agent permissions (owner/editors) - note if section is restricted to specific agents
+   - Draft content using section instruction
+   - Present content + detailed rationale
+   - **IF elicit: true** → MANDATORY 1-9 options format
+   - Save to file if possible
+4. **Continue until complete**
+
+## Detailed Rationale Requirements
+
+When presenting section content, ALWAYS include rationale that explains:
+
+- Trade-offs and choices made (what was chosen over alternatives and why)
+- Key assumptions made during drafting
+- Interesting or questionable decisions that need user attention
+- Areas that might need validation
+
+## Elicitation Results Flow
+
+After user selects elicitation method (2-9):
+
+1. Execute method from data/elicitation-methods
+2. Present results with insights
+3. Offer options:
+   - **1. Apply changes and update section**
+   - **2. Return to elicitation menu**
+   - **3. Ask any questions or engage further with this elicitation**
+
+## Agent Permissions
+
+When processing sections with agent permission fields:
+
+- **owner**: Note which agent role initially creates/populates the section
+- **editors**: List agent roles allowed to modify the section
+- **readonly**: Mark sections that cannot be modified after creation
+
+**For sections with restricted access:**
+
+- Include a note in the generated document indicating the responsible agent
+- Example: "_(This section is owned by dev-agent and can only be modified by dev-agent)_"
+
+## YOLO Mode
+
+User can type `#yolo` to toggle to YOLO mode (process all sections at once).
+
+## CRITICAL REMINDERS
+
+**❌ NEVER:**
+
+- Ask yes/no questions for elicitation
+- Use any format other than 1-9 numbered options
+- Create new elicitation methods
+
+**✅ ALWAYS:**
+
+- Use exact 1-9 format when elicit: true
+- Select options 2-9 from data/elicitation-methods only
+- Provide detailed rationale explaining decisions
+- End with "Select 1-9 or just type your question/feedback:"
+==================== END: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
+
+==================== START: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
+<!-- Powered by BMAD™ Core -->
+
+# KB Mode Interaction Task
+
+## Purpose
+
+Provide a user-friendly interface to the BMad knowledge base without overwhelming users with information upfront.
+
+## Instructions
+
+When entering KB mode (\*kb-mode), follow these steps:
+
+### 1. Welcome and Guide
+
+Announce entering KB mode with a brief, friendly introduction.
+
+### 2. Present Topic Areas
+
+Offer a concise list of main topic areas the user might want to explore:
+
+**What would you like to know more about?**
+
+1. **Setup & Installation** - Getting started with BMad
+2. **Workflows** - Choosing the right workflow for your project
+3. **Web vs IDE** - When to use each environment
+4. **Agents** - Understanding specialized agents and their roles
+5. **Documents** - PRDs, Architecture, Stories, and more
+6. **Agile Process** - How BMad implements Agile methodologies
+7. **Configuration** - Customizing BMad for your needs
+8. **Best Practices** - Tips for effective BMad usage
+
+Or ask me about anything else related to BMad-Method!
+
+### 3. Respond Contextually
+
+- Wait for user's specific question or topic selection
+- Provide focused, relevant information from the knowledge base
+- Offer to dive deeper or explore related topics
+- Keep responses concise unless user asks for detailed explanations
+
+### 4. Interactive Exploration
+
+- After answering, suggest related topics they might find helpful
+- Maintain conversational flow rather than data dumping
+- Use examples when appropriate
+- Reference specific documentation sections when relevant
+
+### 5. Exit Gracefully
+
+When user is done or wants to exit KB mode:
+
+- Summarize key points discussed if helpful
+- Remind them they can return to KB mode anytime with \*kb-mode
+- Suggest next steps based on what was discussed
+
+## Example Interaction
+
+**User**: \*kb-mode
+
+**Assistant**: I've entered KB mode and have access to the full BMad knowledge base. I can help you with detailed information about any aspect of BMad-Method.
+
+**What would you like to know more about?**
+
+1. **Setup & Installation** - Getting started with BMad
+2. **Workflows** - Choosing the right workflow for your project
+3. **Web vs IDE** - When to use each environment
+4. **Agents** - Understanding specialized agents and their roles
+5. **Documents** - PRDs, Architecture, Stories, and more
+6. **Agile Process** - How BMad implements Agile methodologies
+7. **Configuration** - Customizing BMad for your needs
+8. **Best Practices** - Tips for effective BMad usage
+
+Or ask me about anything else related to BMad-Method!
+
+**User**: Tell me about workflows
+
+**Assistant**: [Provides focused information about workflows from the KB, then offers to explore specific workflow types or related topics]
+==================== END: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
+
+==================== START: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
+<!-- Powered by BMAD™ Core -->
+
+# Workflow Management
+
+Enables BMad orchestrator to manage and execute team workflows.
+
+## Dynamic Workflow Loading
+
+Read available workflows from current team configuration's `workflows` field. Each team bundle defines its own supported workflows.
+
+**Key Commands**:
+
+- `/workflows` - List workflows in current bundle or workflows folder
+- `/agent-list` - Show agents in current bundle
+
+## Workflow Commands
+
+### /workflows
+
+Lists available workflows with titles and descriptions.
+
+### /workflow-start {workflow-id}
+
+Starts workflow and transitions to first agent.
+
+### /workflow-status
+
+Shows current progress, completed artifacts, and next steps.
+
+### /workflow-resume
+
+Resumes workflow from last position. User can provide completed artifacts.
+
+### /workflow-next
+
+Shows next recommended agent and action.
+
+## Execution Flow
+
+1. **Starting**: Load definition → Identify first stage → Transition to agent → Guide artifact creation
+
+2. **Stage Transitions**: Mark complete → Check conditions → Load next agent → Pass artifacts
+
+3. **Artifact Tracking**: Track status, creator, timestamps in workflow_state
+
+4. **Interruption Handling**: Analyze provided artifacts → Determine position → Suggest next step
+
+## Context Passing
+
+When transitioning, pass:
+
+- Previous artifacts
+- Current workflow stage
+- Expected outputs
+- Decisions/constraints
+
+## Multi-Path Workflows
+
+Handle conditional paths by asking clarifying questions when needed.
+
+## Best Practices
+
+1. Show progress
+2. Explain transitions
+3. Preserve context
+4. Allow flexibility
+5. Track state
+
+## Agent Integration
+
+Agents should be workflow-aware: know active workflow, their role, access artifacts, understand expected outputs.
+==================== END: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
+
+==================== START: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
+<!-- Powered by BMAD™ Core -->
+
+# Brainstorming Techniques Data
+
+## Creative Expansion
+
+1. **What If Scenarios**: Ask one provocative question, get their response, then ask another
+2. **Analogical Thinking**: Give one example analogy, ask them to find 2-3 more
+3. **Reversal/Inversion**: Pose the reverse question, let them work through it
+4. **First Principles Thinking**: Ask "What are the fundamentals?" and guide them to break it down
+
+## Structured Frameworks
+
+5. **SCAMPER Method**: Go through one letter at a time, wait for their ideas before moving to next
+6. **Six Thinking Hats**: Present one hat, ask for their thoughts, then move to next hat
+7. **Mind Mapping**: Start with central concept, ask them to suggest branches
+
+## Collaborative Techniques
+
+8. **"Yes, And..." Building**: They give idea, you "yes and" it, they "yes and" back - alternate
+9. **Brainwriting/Round Robin**: They suggest idea, you build on it, ask them to build on yours
+10. **Random Stimulation**: Give one random prompt/word, ask them to make connections
+
+## Deep Exploration
+
+11. **Five Whys**: Ask "why" and wait for their answer before asking next "why"
+12. **Morphological Analysis**: Ask them to list parameters first, then explore combinations together
+13. **Provocation Technique (PO)**: Give one provocative statement, ask them to extract useful ideas
+
+## Advanced Techniques
+
+14. **Forced Relationships**: Connect two unrelated concepts and ask them to find the bridge
+15. **Assumption Reversal**: Challenge their core assumptions and ask them to build from there
+16. **Role Playing**: Ask them to brainstorm from different stakeholder perspectives
+17. **Time Shifting**: "How would you solve this in 1995? 2030?"
+18. **Resource Constraints**: "What if you had only $10 and 1 hour?"
+19. **Metaphor Mapping**: Use extended metaphors to explore solutions
+20. **Question Storming**: Generate questions instead of answers first
+==================== END: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
+
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Create Deep Research Prompt Task
 
 This task helps create comprehensive research prompts for various types of deep analysis. It can process inputs from brainstorming sessions, project briefs, market research, or specific research questions to generate targeted prompts for deeper investigation.
@@ -1685,113 +2108,9 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 - Plan for iterative refinement based on initial findings
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
 
-==================== START: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
-# Create Document from Template (YAML Driven)
-
-## ⚠️ CRITICAL EXECUTION NOTICE ⚠️
-
-**THIS IS AN EXECUTABLE WORKFLOW - NOT REFERENCE MATERIAL**
-
-When this task is invoked:
-
-1. **DISABLE ALL EFFICIENCY OPTIMIZATIONS** - This workflow requires full user interaction
-2. **MANDATORY STEP-BY-STEP EXECUTION** - Each section must be processed sequentially with user feedback
-3. **ELICITATION IS REQUIRED** - When `elicit: true`, you MUST use the 1-9 format and wait for user response
-4. **NO SHORTCUTS ALLOWED** - Complete documents cannot be created without following this workflow
-
-**VIOLATION INDICATOR:** If you create a complete document without user interaction, you have violated this workflow.
-
-## Critical: Template Discovery
-
-If a YAML Template has not been provided, list all templates from .bmad-core/templates or ask the user to provide another.
-
-## CRITICAL: Mandatory Elicitation Format
-
-**When `elicit: true`, this is a HARD STOP requiring user interaction:**
-
-**YOU MUST:**
-
-1. Present section content
-2. Provide detailed rationale (explain trade-offs, assumptions, decisions made)
-3. **STOP and present numbered options 1-9:**
-   - **Option 1:** Always "Proceed to next section"
-   - **Options 2-9:** Select 8 methods from data/elicitation-methods
-   - End with: "Select 1-9 or just type your question/feedback:"
-4. **WAIT FOR USER RESPONSE** - Do not proceed until user selects option or provides feedback
-
-**WORKFLOW VIOLATION:** Creating content for elicit=true sections without user interaction violates this task.
-
-**NEVER ask yes/no questions or use any other format.**
-
-## Processing Flow
-
-1. **Parse YAML template** - Load template metadata and sections
-2. **Set preferences** - Show current mode (Interactive), confirm output file
-3. **Process each section:**
-   - Skip if condition unmet
-   - Check agent permissions (owner/editors) - note if section is restricted to specific agents
-   - Draft content using section instruction
-   - Present content + detailed rationale
-   - **IF elicit: true** → MANDATORY 1-9 options format
-   - Save to file if possible
-4. **Continue until complete**
-
-## Detailed Rationale Requirements
-
-When presenting section content, ALWAYS include rationale that explains:
-
-- Trade-offs and choices made (what was chosen over alternatives and why)
-- Key assumptions made during drafting
-- Interesting or questionable decisions that need user attention
-- Areas that might need validation
-
-## Elicitation Results Flow
-
-After user selects elicitation method (2-9):
-
-1. Execute method from data/elicitation-methods
-2. Present results with insights
-3. Offer options:
-   - **1. Apply changes and update section**
-   - **2. Return to elicitation menu**
-   - **3. Ask any questions or engage further with this elicitation**
-
-## Agent Permissions
-
-When processing sections with agent permission fields:
-
-- **owner**: Note which agent role initially creates/populates the section
-- **editors**: List agent roles allowed to modify the section
-- **readonly**: Mark sections that cannot be modified after creation
-
-**For sections with restricted access:**
-
-- Include a note in the generated document indicating the responsible agent
-- Example: "_(This section is owned by dev-agent and can only be modified by dev-agent)_"
-
-## YOLO Mode
-
-User can type `#yolo` to toggle to YOLO mode (process all sections at once).
-
-## CRITICAL REMINDERS
-
-**❌ NEVER:**
-
-- Ask yes/no questions for elicitation
-- Use any format other than 1-9 numbered options
-- Create new elicitation methods
-
-**✅ ALWAYS:**
-
-- Use exact 1-9 format when elicit: true
-- Select options 2-9 from data/elicitation-methods only
-- Provide detailed rationale explaining decisions
-- End with "Select 1-9 or just type your question/feedback:"
-==================== END: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
-
 ==================== START: .bmad-2d-unity-game-dev/tasks/document-project.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Document an Existing Project
 
 ## Purpose
@@ -2138,10 +2457,11 @@ Apply the advanced elicitation task after major sections to refine based on user
 ==================== END: .bmad-2d-unity-game-dev/tasks/document-project.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/facilitate-brainstorming-session.md ====================
-<!-- Powered by BMAD™ Core -->
----
+## <!-- Powered by BMAD™ Core -->
+
 docOutputLocation: docs/brainstorming-session-results.md
 template: '.bmad-2d-unity-game-dev/templates/brainstorming-output-tmpl.yaml'
+
 ---
 
 # Facilitate Brainstorming Session Task
@@ -3227,318 +3547,9 @@ sections:
           This Project Brief provides the full context for {{project_name}}. Please start in 'PRD Generation Mode', review the brief thoroughly to work with the user to create the PRD section by section as the template indicates, asking for any necessary clarification or suggesting improvements.
 ==================== END: .bmad-2d-unity-game-dev/templates/project-brief-tmpl.yaml ====================
 
-==================== START: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
-<!-- Powered by BMAD™ Core -->
-# Elicitation Methods Data
-
-## Core Reflective Methods
-
-**Expand or Contract for Audience**
-
-- Ask whether to 'expand' (add detail, elaborate) or 'contract' (simplify, clarify)
-- Identify specific target audience if relevant
-- Tailor content complexity and depth accordingly
-
-**Explain Reasoning (CoT Step-by-Step)**
-
-- Walk through the step-by-step thinking process
-- Reveal underlying assumptions and decision points
-- Show how conclusions were reached from current role's perspective
-
-**Critique and Refine**
-
-- Review output for flaws, inconsistencies, or improvement areas
-- Identify specific weaknesses from role's expertise
-- Suggest refined version reflecting domain knowledge
-
-## Structural Analysis Methods
-
-**Analyze Logical Flow and Dependencies**
-
-- Examine content structure for logical progression
-- Check internal consistency and coherence
-- Identify and validate dependencies between elements
-- Confirm effective ordering and sequencing
-
-**Assess Alignment with Overall Goals**
-
-- Evaluate content contribution to stated objectives
-- Identify any misalignments or gaps
-- Interpret alignment from specific role's perspective
-- Suggest adjustments to better serve goals
-
-## Risk and Challenge Methods
-
-**Identify Potential Risks and Unforeseen Issues**
-
-- Brainstorm potential risks from role's expertise
-- Identify overlooked edge cases or scenarios
-- Anticipate unintended consequences
-- Highlight implementation challenges
-
-**Challenge from Critical Perspective**
-
-- Adopt critical stance on current content
-- Play devil's advocate from specified viewpoint
-- Argue against proposal highlighting weaknesses
-- Apply YAGNI principles when appropriate (scope trimming)
-
-## Creative Exploration Methods
-
-**Tree of Thoughts Deep Dive**
-
-- Break problem into discrete "thoughts" or intermediate steps
-- Explore multiple reasoning paths simultaneously
-- Use self-evaluation to classify each path as "sure", "likely", or "impossible"
-- Apply search algorithms (BFS/DFS) to find optimal solution paths
-
-**Hindsight is 20/20: The 'If Only...' Reflection**
-
-- Imagine retrospective scenario based on current content
-- Identify the one "if only we had known/done X..." insight
-- Describe imagined consequences humorously or dramatically
-- Extract actionable learnings for current context
-
-## Multi-Persona Collaboration Methods
-
-**Agile Team Perspective Shift**
-
-- Rotate through different Scrum team member viewpoints
-- Product Owner: Focus on user value and business impact
-- Scrum Master: Examine process flow and team dynamics
-- Developer: Assess technical implementation and complexity
-- QA: Identify testing scenarios and quality concerns
-
-**Stakeholder Round Table**
-
-- Convene virtual meeting with multiple personas
-- Each persona contributes unique perspective on content
-- Identify conflicts and synergies between viewpoints
-- Synthesize insights into actionable recommendations
-
-**Meta-Prompting Analysis**
-
-- Step back to analyze the structure and logic of current approach
-- Question the format and methodology being used
-- Suggest alternative frameworks or mental models
-- Optimize the elicitation process itself
-
-## Advanced 2025 Techniques
-
-**Self-Consistency Validation**
-
-- Generate multiple reasoning paths for same problem
-- Compare consistency across different approaches
-- Identify most reliable and robust solution
-- Highlight areas where approaches diverge and why
-
-**ReWOO (Reasoning Without Observation)**
-
-- Separate parametric reasoning from tool-based actions
-- Create reasoning plan without external dependencies
-- Identify what can be solved through pure reasoning
-- Optimize for efficiency and reduced token usage
-
-**Persona-Pattern Hybrid**
-
-- Combine specific role expertise with elicitation pattern
-- Architect + Risk Analysis: Deep technical risk assessment
-- UX Expert + User Journey: End-to-end experience critique
-- PM + Stakeholder Analysis: Multi-perspective impact review
-
-**Emergent Collaboration Discovery**
-
-- Allow multiple perspectives to naturally emerge
-- Identify unexpected insights from persona interactions
-- Explore novel combinations of viewpoints
-- Capture serendipitous discoveries from multi-agent thinking
-
-## Game-Based Elicitation Methods
-
-**Red Team vs Blue Team**
-
-- Red Team: Attack the proposal, find vulnerabilities
-- Blue Team: Defend and strengthen the approach
-- Competitive analysis reveals blind spots
-- Results in more robust, battle-tested solutions
-
-**Innovation Tournament**
-
-- Pit multiple alternative approaches against each other
-- Score each approach across different criteria
-- Crowd-source evaluation from different personas
-- Identify winning combination of features
-
-**Escape Room Challenge**
-
-- Present content as constraints to work within
-- Find creative solutions within tight limitations
-- Identify minimum viable approach
-- Discover innovative workarounds and optimizations
-
-## Process Control
-
-**Proceed / No Further Actions**
-
-- Acknowledge choice to finalize current work
-- Accept output as-is or move to next step
-- Prepare to continue without additional elicitation
-==================== END: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
-
-==================== START: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
-<!-- Powered by BMAD™ Core -->
-# KB Mode Interaction Task
-
-## Purpose
-
-Provide a user-friendly interface to the BMad knowledge base without overwhelming users with information upfront.
-
-## Instructions
-
-When entering KB mode (\*kb-mode), follow these steps:
-
-### 1. Welcome and Guide
-
-Announce entering KB mode with a brief, friendly introduction.
-
-### 2. Present Topic Areas
-
-Offer a concise list of main topic areas the user might want to explore:
-
-**What would you like to know more about?**
-
-1. **Setup & Installation** - Getting started with BMad
-2. **Workflows** - Choosing the right workflow for your project
-3. **Web vs IDE** - When to use each environment
-4. **Agents** - Understanding specialized agents and their roles
-5. **Documents** - PRDs, Architecture, Stories, and more
-6. **Agile Process** - How BMad implements Agile methodologies
-7. **Configuration** - Customizing BMad for your needs
-8. **Best Practices** - Tips for effective BMad usage
-
-Or ask me about anything else related to BMad-Method!
-
-### 3. Respond Contextually
-
-- Wait for user's specific question or topic selection
-- Provide focused, relevant information from the knowledge base
-- Offer to dive deeper or explore related topics
-- Keep responses concise unless user asks for detailed explanations
-
-### 4. Interactive Exploration
-
-- After answering, suggest related topics they might find helpful
-- Maintain conversational flow rather than data dumping
-- Use examples when appropriate
-- Reference specific documentation sections when relevant
-
-### 5. Exit Gracefully
-
-When user is done or wants to exit KB mode:
-
-- Summarize key points discussed if helpful
-- Remind them they can return to KB mode anytime with \*kb-mode
-- Suggest next steps based on what was discussed
-
-## Example Interaction
-
-**User**: \*kb-mode
-
-**Assistant**: I've entered KB mode and have access to the full BMad knowledge base. I can help you with detailed information about any aspect of BMad-Method.
-
-**What would you like to know more about?**
-
-1. **Setup & Installation** - Getting started with BMad
-2. **Workflows** - Choosing the right workflow for your project
-3. **Web vs IDE** - When to use each environment
-4. **Agents** - Understanding specialized agents and their roles
-5. **Documents** - PRDs, Architecture, Stories, and more
-6. **Agile Process** - How BMad implements Agile methodologies
-7. **Configuration** - Customizing BMad for your needs
-8. **Best Practices** - Tips for effective BMad usage
-
-Or ask me about anything else related to BMad-Method!
-
-**User**: Tell me about workflows
-
-**Assistant**: [Provides focused information about workflows from the KB, then offers to explore specific workflow types or related topics]
-==================== END: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
-
-==================== START: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
-# Workflow Management
-
-Enables BMad orchestrator to manage and execute team workflows.
-
-## Dynamic Workflow Loading
-
-Read available workflows from current team configuration's `workflows` field. Each team bundle defines its own supported workflows.
-
-**Key Commands**:
-
-- `/workflows` - List workflows in current bundle or workflows folder
-- `/agent-list` - Show agents in current bundle
-
-## Workflow Commands
-
-### /workflows
-
-Lists available workflows with titles and descriptions.
-
-### /workflow-start {workflow-id}
-
-Starts workflow and transitions to first agent.
-
-### /workflow-status
-
-Shows current progress, completed artifacts, and next steps.
-
-### /workflow-resume
-
-Resumes workflow from last position. User can provide completed artifacts.
-
-### /workflow-next
-
-Shows next recommended agent and action.
-
-## Execution Flow
-
-1. **Starting**: Load definition → Identify first stage → Transition to agent → Guide artifact creation
-
-2. **Stage Transitions**: Mark complete → Check conditions → Load next agent → Pass artifacts
-
-3. **Artifact Tracking**: Track status, creator, timestamps in workflow_state
-
-4. **Interruption Handling**: Analyze provided artifacts → Determine position → Suggest next step
-
-## Context Passing
-
-When transitioning, pass:
-
-- Previous artifacts
-- Current workflow stage
-- Expected outputs
-- Decisions/constraints
-
-## Multi-Path Workflows
-
-Handle conditional paths by asking clarifying questions when needed.
-
-## Best Practices
-
-1. Show progress
-2. Explain transitions
-3. Preserve context
-4. Allow flexibility
-5. Track state
-
-## Agent Integration
-
-Agents should be workflow-aware: know active workflow, their role, access artifacts, understand expected outputs.
-==================== END: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
-
 ==================== START: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Checklist Validation Task
 
 This task provides instructions for validating documentation against checklists. The agent MUST follow these instructions to ensure thorough and systematic validation of documents.
@@ -3629,6 +3640,7 @@ The LLM will:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Document Sharding Task
 
 ## Purpose
@@ -3818,6 +3830,7 @@ Document sharded successfully:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Design Brainstorming Techniques Task
 
 This task provides a comprehensive toolkit of creative brainstorming techniques specifically designed for game design ideation and innovative thinking. The game designer can use these techniques to facilitate productive brainstorming sessions focused on game mechanics, player experience, and creative concepts.
@@ -5669,6 +5682,7 @@ sections:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Design Document Quality Checklist
 
 ## Document Completeness
@@ -6908,6 +6922,7 @@ sections:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Architect Solution Validation Checklist
 
 This checklist serves as a comprehensive framework for the Game Architect to validate the technical design and architecture before game development execution. The Game Architect should systematically work through each item, ensuring the game architecture is robust, scalable, performant, and aligned with the Game Design Document requirements.
@@ -7303,6 +7318,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 
 ==================== START: .bmad-2d-unity-game-dev/data/development-guidelines.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Guidelines (Unity & C#)
 
 ## Overview
@@ -7893,6 +7909,7 @@ These guidelines ensure consistent, high-quality game development that meets per
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/validate-next-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Validate Next Story Task
 
 ## Purpose
@@ -7903,18 +7920,18 @@ To comprehensively validate a story draft before implementation begins, ensuring
 
 ### 0. Load Core Configuration and Inputs
 
-- Load `.bmad-core/core-config.yaml`
+- Load `.xiaoma-core/core-config.yaml`
 - If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story validation."
 - Extract key configurations: `devStoryLocation`, `prd.*`, `architecture.*`
 - Identify and load the following inputs:
   - **Story file**: The drafted story to validate (provided by user or discovered in `devStoryLocation`)
   - **Parent epic**: The epic containing this story's requirements
   - **Architecture documents**: Based on configuration (sharded or monolithic)
-  - **Story template**: `bmad-core/templates/story-tmpl.md` for completeness validation
+  - **Story template**: `xiaoma-core/templates/story-tmpl.md` for completeness validation
 
 ### 1. Template Completeness Validation
 
-- Load `bmad-core/templates/story-tmpl.md` and extract all section headings from the template
+- Load `xiaoma-core/templates/story-tmpl.md` and extract all section headings from the template
 - **Missing sections check**: Compare story sections against template sections to verify all required sections are present
 - **Placeholder validation**: Ensure no template placeholders remain unfilled (e.g., `{{EpicNum}}`, `{{role}}`, `_TBD_`)
 - **Agent section verification**: Confirm all sections from template exist for future agent use
@@ -8031,6 +8048,7 @@ Provide a structured validation report including:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Story Definition of Done (DoD) Checklist
 
 ## Instructions for Developer Agent
@@ -8159,6 +8177,7 @@ Be honest - it's better to flag issues now than have them discovered during play
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Create Game Story Task
 
 ## Purpose
@@ -8170,7 +8189,7 @@ To identify the next logical game story based on project progress and epic defin
 ### 0. Load Core Configuration and Check Workflow
 
 - Load `.bmad-2d-unity-game-dev/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB bmad-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
+- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB xiaoma-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
 - Extract key configurations: `devStoryLocation`, `gdd.*`, `gamearchitecture.*`, `workflow.*`
 
 ### 1. Identify Next Story for Preparation
@@ -8347,6 +8366,7 @@ This task ensures game development stories are immediately actionable and enable
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Correct Course Task - Game Development
 
 ## Purpose
@@ -8752,6 +8772,7 @@ sections:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Change Navigation Checklist
 
 **Purpose:** To systematically guide the Game SM agent and user through analysis and planning when a significant change (performance issue, platform constraint, technical blocker, gameplay feedback) is identified during Unity game development.
@@ -11810,6 +11831,7 @@ sections:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Advanced Game Design Elicitation Task
 
 ## Purpose
@@ -11924,6 +11946,7 @@ The questions and perspectives offered should always consider:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Correct Course Task - Game Development
 
 ## Purpose
@@ -12069,6 +12092,7 @@ Based on the analysis and agreed path forward:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Create Game Story Task
 
 ## Purpose
@@ -12080,7 +12104,7 @@ To identify the next logical game story based on project progress and epic defin
 ### 0. Load Core Configuration and Check Workflow
 
 - Load `.bmad-2d-unity-game-dev/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB bmad-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
+- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB xiaoma-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
 - Extract key configurations: `devStoryLocation`, `gdd.*`, `gamearchitecture.*`, `workflow.*`
 
 ### 1. Identify Next Story for Preparation
@@ -12257,6 +12281,7 @@ This task ensures game development stories are immediately actionable and enable
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Design Brainstorming Techniques Task
 
 This task provides a comprehensive toolkit of creative brainstorming techniques specifically designed for game design ideation and innovative thinking. The game designer can use these techniques to facilitate productive brainstorming sessions focused on game mechanics, player experience, and creative concepts.
@@ -12551,6 +12576,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/validate-game-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Validate Game Story Task
 
 ## Purpose
@@ -12755,6 +12781,7 @@ Based on validation results, provide specific recommendations for:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Architect Solution Validation Checklist
 
 This checklist serves as a comprehensive framework for the Game Architect to validate the technical design and architecture before game development execution. The Game Architect should systematically work through each item, ensuring the game architecture is robust, scalable, performant, and aligned with the Game Design Document requirements.
@@ -13150,6 +13177,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Change Navigation Checklist
 
 **Purpose:** To systematically guide the Game SM agent and user through analysis and planning when a significant change (performance issue, platform constraint, technical blocker, gameplay feedback) is identified during Unity game development.
@@ -13357,6 +13385,7 @@ Keep it technically precise and actionable.]]
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Design Document Quality Checklist
 
 ## Document Completeness
@@ -13562,6 +13591,7 @@ _Outline immediate next actions for the team based on this assessment._
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Story Definition of Done (DoD) Checklist
 
 ## Instructions for Developer Agent
@@ -14056,6 +14086,7 @@ workflow:
 
 ==================== START: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # BMad Knowledge Base - 2D Unity Game Development
 
 ## Overview
@@ -14188,7 +14219,7 @@ npx bmad-method install
 
 **Verify Game Development Installation**:
 
-- `.bmad-core/` folder created with all core agents
+- `.xiaoma-core/` folder created with all core agents
 - `.bmad-2d-unity-game-dev/` folder with game development agents
 - IDE-specific integration files created
 - Game development agents available with `/bmad2du` prefix (per config.yaml)
@@ -14504,7 +14535,7 @@ Use the `shard-doc` task or `@kayvan/markdown-tree-parser` tool for automatic ga
 | `game-sm`        | Game Scrum Master | Game story creation, sprint planning        | Game project management, workflow           |
 | `game-architect` | Game Architect    | Unity system design, technical architecture | Complex Unity systems, performance planning |
 
-**Note**: For QA and other roles, use the core BMad agents (e.g., `@qa` from bmad-core).
+**Note**: For QA and other roles, use the core BMad agents (e.g., `@qa` from xiaoma-core).
 
 ### Game Agent Interaction Commands
 
@@ -14829,6 +14860,7 @@ This knowledge base provides the foundation for effective game development using
 
 ==================== START: .bmad-2d-unity-game-dev/data/development-guidelines.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Guidelines (Unity & C#)
 
 ## Overview

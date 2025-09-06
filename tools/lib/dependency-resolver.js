@@ -6,13 +6,13 @@ const { extractYamlFromAgent } = require('./yaml-utils');
 class DependencyResolver {
   constructor(rootDir) {
     this.rootDir = rootDir;
-    this.bmadCore = path.join(rootDir, 'bmad-core');
+    this.xiaomaCore = path.join(rootDir, 'xiaoma-core');
     this.common = path.join(rootDir, 'common');
     this.cache = new Map();
   }
 
   async resolveAgentDependencies(agentId) {
-    const agentPath = path.join(this.bmadCore, 'agents', `${agentId}.md`);
+    const agentPath = path.join(this.xiaomaCore, 'agents', `${agentId}.md`);
     const agentContent = await fs.readFile(agentPath, 'utf8');
 
     // Extract YAML from markdown content with command cleaning
@@ -49,7 +49,7 @@ class DependencyResolver {
   }
 
   async resolveTeamDependencies(teamId) {
-    const teamPath = path.join(this.bmadCore, 'agent-teams', `${teamId}.yaml`);
+    const teamPath = path.join(this.xiaomaCore, 'agent-teams', `${teamId}.yaml`);
     const teamContent = await fs.readFile(teamPath, 'utf8');
     const teamConfig = yaml.load(teamContent);
 
@@ -64,8 +64,8 @@ class DependencyResolver {
       resources: new Map(), // Use Map to deduplicate resources
     };
 
-    // Always add bmad-orchestrator agent first if it's a team
-    const bmadAgent = await this.resolveAgentDependencies('bmad-orchestrator');
+    // Always add xiaoma-orchestrator agent first if it's a team
+    const bmadAgent = await this.resolveAgentDependencies('xiaoma-orchestrator');
     dependencies.agents.push(bmadAgent.agent);
     for (const res of bmadAgent.resources) {
       dependencies.resources.set(res.path, res);
@@ -74,20 +74,20 @@ class DependencyResolver {
     // Resolve all agents in the team
     let agentsToResolve = teamConfig.agents || [];
 
-    // Handle wildcard "*" - include all agents except bmad-master
+    // Handle wildcard "*" - include all agents except xiaoma-master
     if (agentsToResolve.includes('*')) {
       const allAgents = await this.listAgents();
-      // Remove wildcard and add all agents except those already in the list and bmad-master
+      // Remove wildcard and add all agents except those already in the list and xiaoma-master
       agentsToResolve = agentsToResolve.filter((a) => a !== '*');
       for (const agent of allAgents) {
-        if (!agentsToResolve.includes(agent) && agent !== 'bmad-master') {
+        if (!agentsToResolve.includes(agent) && agent !== 'xiaoma-master') {
           agentsToResolve.push(agent);
         }
       }
     }
 
     for (const agentId of agentsToResolve) {
-      if (agentId === 'bmad-orchestrator' || agentId === 'bmad-master') continue; // Already added or excluded
+      if (agentId === 'xiaoma-orchestrator' || agentId === 'xiaoma-master') continue; // Already added or excluded
       const agentDeps = await this.resolveAgentDependencies(agentId);
       dependencies.agents.push(agentDeps.agent);
 
@@ -119,12 +119,12 @@ class DependencyResolver {
       let content = null;
       let filePath = null;
 
-      // First try bmad-core
+      // First try xiaoma-core
       try {
-        filePath = path.join(this.bmadCore, type, id);
+        filePath = path.join(this.xiaomaCore, type, id);
         content = await fs.readFile(filePath, 'utf8');
       } catch {
-        // If not found in bmad-core, try common folder
+        // If not found in xiaoma-core, try common folder
         try {
           filePath = path.join(this.common, type, id);
           content = await fs.readFile(filePath, 'utf8');
@@ -155,7 +155,7 @@ class DependencyResolver {
 
   async listAgents() {
     try {
-      const files = await fs.readdir(path.join(this.bmadCore, 'agents'));
+      const files = await fs.readdir(path.join(this.xiaomaCore, 'agents'));
       return files.filter((f) => f.endsWith('.md')).map((f) => f.replace('.md', ''));
     } catch {
       return [];
@@ -164,7 +164,7 @@ class DependencyResolver {
 
   async listTeams() {
     try {
-      const files = await fs.readdir(path.join(this.bmadCore, 'agent-teams'));
+      const files = await fs.readdir(path.join(this.xiaomaCore, 'agent-teams'));
       return files.filter((f) => f.endsWith('.yaml')).map((f) => f.replace('.yaml', ''));
     } catch {
       return [];

@@ -89,6 +89,7 @@ dependencies:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Create Game Story Task
 
 ## Purpose
@@ -100,7 +101,7 @@ To identify the next logical game story based on project progress and epic defin
 ### 0. Load Core Configuration and Check Workflow
 
 - Load `.bmad-2d-unity-game-dev/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB bmad-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
+- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy core-config.yaml from GITHUB xiaoma-core/ and configure it for your game project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure before proceeding."
 - Extract key configurations: `devStoryLocation`, `gdd.*`, `gamearchitecture.*`, `workflow.*`
 
 ### 1. Identify Next Story for Preparation
@@ -277,6 +278,7 @@ This task ensures game development stories are immediately actionable and enable
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Checklist Validation Task
 
 This task provides instructions for validating documentation against checklists. The agent MUST follow these instructions to ensure thorough and systematic validation of documents.
@@ -367,6 +369,7 @@ The LLM will:
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Correct Course Task - Game Development
 
 ## Purpose
@@ -772,6 +775,7 @@ sections:
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # Game Development Change Navigation Checklist
 
 **Purpose:** To systematically guide the Game SM agent and user through analysis and planning when a significant change (performance issue, platform constraint, technical blocker, gameplay feedback) is identified during Unity game development.

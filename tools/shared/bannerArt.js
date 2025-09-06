@@ -1,17 +1,17 @@
 // ASCII banner art definitions extracted from banners.js to separate art from logic
 
-const BMAD_TITLE = 'BMAD-METHOD™';
+const BMAD_TITLE = 'XIAOMA-CLI™';
 const FLATTENER_TITLE = 'FLATTENER';
 const INSTALLER_TITLE = 'INSTALLER';
 
 // Large ASCII blocks (block-style fonts)
 const BMAD_LARGE = `
-██████╗ ███╗   ███╗ █████╗ ██████╗       ███╗   ███╗███████╗████████╗██╗  ██╗ ██████╗ ██████╗ 
-██╔══██╗████╗ ████║██╔══██╗██╔══██╗      ████╗ ████║██╔════╝╚══██╔══╝██║  ██║██╔═══██╗██╔══██╗
-██████╔╝██╔████╔██║███████║██║  ██║█████╗██╔████╔██║█████╗     ██║   ███████║██║   ██║██║  ██║
-██╔══██╗██║╚██╔╝██║██╔══██║██║  ██║╚════╝██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██║   ██║██║  ██║
-██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝      ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║╚██████╔╝██████╔╝
-╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝       ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
+██╗  ██╗██╗ █████╗  ██████╗ ███╗   ███╗ █████╗        ██████╗██╗     ██╗
+╚██╗██╔╝██║██╔══██╗██╔═══██╗████╗ ████║██╔══██╗      ██╔════╝██║     ██║
+ ╚███╔╝ ██║███████║██║   ██║██╔████╔██║███████║█████╗██║     ██║     ██║
+ ██╔██╗ ██║██╔══██║██║   ██║██║╚██╔╝██║██╔══██║╚════╝██║     ██║     ██║
+██╔╝ ██╗██║██║  ██║╚██████╔╝██║ ╚═╝ ██║██║  ██║      ╚██████╗███████╗██║
+╚═╝  ╚═╝╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝       ╚═════╝╚══════╝╚═╝
 `;
 
 const FLATTENER_LARGE = `
@@ -65,7 +65,7 @@ const INSTALLER_MEDIUM = `
 // Width: 30 columns total (28 inner)
 const BMAD_SMALL = `
 ╭──────────────────────────╮
-│       BMAD-METHOD™       │
+│       XIAOMA-CLI™        │
 ╰──────────────────────────╯
 `;
 
@@ -82,7 +82,7 @@ const INSTALLER_SMALL = `
  `;
 
 // Tiny (compact brackets)
-const BMAD_TINY = `[ BMAD-METHOD™ ]`;
+const BMAD_TINY = `[ XIAOMA-CLI™ ]`;
 const FLATTENER_TINY = `[ FLATTENER ]`;
 const INSTALLER_TINY = `[ INSTALLER ]`;
 

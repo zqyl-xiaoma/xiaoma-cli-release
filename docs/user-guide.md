@@ -192,9 +192,9 @@ npx bmad-method install
 BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files.
 
 - Two installation modes:
-  - Codex (local only): keeps `.bmad-core/` ignored for local dev.
+  - Codex (local only): keeps `.xiaoma-core/` ignored for local dev.
     - `npx bmad-method install -f -i codex -d .`
-  - Codex Web Enabled: ensures `.bmad-core/` is tracked so you can commit it for Codex Web.
+  - Codex Web Enabled: ensures `.xiaoma-core/` is tracked so you can commit it for Codex Web.
     - `npx bmad-method install -f -i codex-web -d .`
 
 - What gets generated:
@@ -208,7 +208,7 @@ BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files
 
 - Using Codex:
   - CLI: run `codex` in the project root and prompt naturally, e.g., “As dev, implement …”.
-  - Web: commit `.bmad-core/` and `AGENTS.md`, then open the repo in Codex and prompt the same way.
+  - Web: commit `.xiaoma-core/` and `AGENTS.md`, then open the repo in Codex and prompt the same way.
 
 - Refresh after changes:
   - Re-run the appropriate install mode (`codex` or `codex-web`) to update the BMAD block in `AGENTS.md`.
@@ -493,7 +493,7 @@ Quick reference for where Test Architect outputs are stored:
 
 ## Technical Preferences System
 
-BMad includes a personalization system through the `technical-preferences.md` file located in `.bmad-core/data/` - this can help bias the PM and Architect to recommend your preferences for design patterns, technology selection, or anything else you would like to put in here.
+BMad includes a personalization system through the `technical-preferences.md` file located in `.xiaoma-core/data/` - this can help bias the PM and Architect to recommend your preferences for design patterns, technology selection, or anything else you would like to put in here.
 
 ### Using with Web Bundles
 
@@ -501,7 +501,7 @@ When creating custom web bundles or uploading to AI platforms, include your `tec
 
 ## Core Configuration
 
-The `bmad-core/core-config.yaml` file is a critical config that enables BMad to work seamlessly with differing project structures, more options will be made available in the future. Currently the most important is the devLoadAlwaysFiles list section in the yaml.
+The `xiaoma-core/core-config.yaml` file is a critical config that enables BMad to work seamlessly with differing project structures, more options will be made available in the future. Currently the most important is the devLoadAlwaysFiles list section in the yaml.
 
 ### Developer Context Files
 

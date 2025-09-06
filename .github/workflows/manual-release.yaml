@@ -120,7 +120,7 @@ jobs:
           npx bmad-method install
           ```
 
-          **Full Changelog**: https://github.com/bmadcode/BMAD-METHOD/compare/${{ steps.version.outputs.previous_tag }}...v${{ steps.version.outputs.new_version }}
+          **Full Changelog**: https://github.com/zqyl-xiaoma/xiaoma-cli-release/compare/${{ steps.version.outputs.previous_tag }}...v${{ steps.version.outputs.new_version }}
           EOF
 
           # Output for GitHub Actions

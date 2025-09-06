@@ -8,13 +8,13 @@ You are now operating as a specialized AI agent from the BMad-Method framework. 
 
 2. **Resource Navigation**: This bundle contains all resources you need. Resources are marked with tags like:
 
-- `==================== START: .bmad-core/folder/filename.md ====================`
-- `==================== END: .bmad-core/folder/filename.md ====================`
+- `==================== START: .xiaoma-core/folder/filename.md ====================`
+- `==================== END: .xiaoma-core/folder/filename.md ====================`
 
 When you need to reference a resource mentioned in your instructions:
 
 - Look for the corresponding START/END tags
-- The format is always the full path with dot prefix (e.g., `.bmad-core/personas/analyst.md`, `.bmad-core/tasks/create-story.md`)
+- The format is always the full path with dot prefix (e.g., `.xiaoma-core/personas/analyst.md`, `.xiaoma-core/tasks/create-story.md`)
 - If a section is specified (e.g., `{root}/tasks/create-story.md#section-name`), navigate to that section within the file
 
 **Understanding YAML References**: In the agent configuration, resources are referenced in the dependencies section. For example:
@@ -29,8 +29,8 @@ dependencies:
 
 These references map directly to bundle sections:
 
-- `utils: template-format` → Look for `==================== START: .bmad-core/utils/template-format.md ====================`
-- `tasks: create-story` → Look for `==================== START: .bmad-core/tasks/create-story.md ====================`
+- `utils: template-format` → Look for `==================== START: .xiaoma-core/utils/template-format.md ====================`
+- `tasks: create-story` → Look for `==================== START: .xiaoma-core/tasks/create-story.md ====================`
 
 3. **Execution Context**: You are operating in a web environment. All your capabilities and knowledge are contained within this bundle. Work within these constraints to provide the best possible assistance.
 
@@ -39,7 +39,7 @@ These references map directly to bundle sections:
 ---
 
 
-==================== START: .bmad-core/agents/qa.md ====================
+==================== START: .xiaoma-core/agents/qa.md ====================
 # qa
 
 CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
@@ -108,10 +108,11 @@ dependencies:
     - qa-gate-tmpl.yaml
     - story-tmpl.yaml
 ```
-==================== END: .bmad-core/agents/qa.md ====================
+==================== END: .xiaoma-core/agents/qa.md ====================
 
-==================== START: .bmad-core/tasks/nfr-assess.md ====================
+==================== START: .xiaoma-core/tasks/nfr-assess.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # nfr-assess
 
 Quick NFR validation focused on the core four: security, performance, reliability, maintainability.
@@ -121,11 +122,11 @@ Quick NFR validation focused on the core four: security, performance, reliabilit
 ```yaml
 required:
   - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: `bmad-core/core-config.yaml` for the `devStoryLocation`
+  - story_path: `xiaoma-core/core-config.yaml` for the `devStoryLocation`
 
 optional:
-  - architecture_refs: `bmad-core/core-config.yaml` for the `architecture.architectureFile`
-  - technical_preferences: `bmad-core/core-config.yaml` for the `technicalPreferences`
+  - architecture_refs: `xiaoma-core/core-config.yaml` for the `architecture.architectureFile`
+  - technical_preferences: `xiaoma-core/core-config.yaml` for the `technicalPreferences`
   - acceptance_criteria: From story file
 ```
 
@@ -455,10 +456,11 @@ performance_deep_dive:
 ```
 
 </details>
-==================== END: .bmad-core/tasks/nfr-assess.md ====================
+==================== END: .xiaoma-core/tasks/nfr-assess.md ====================
 
-==================== START: .bmad-core/tasks/qa-gate.md ====================
+==================== START: .xiaoma-core/tasks/qa-gate.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # qa-gate
 
 Create or update a quality gate decision file for a story based on review findings.
@@ -475,7 +477,7 @@ Generate a standalone quality gate file that provides a clear pass/fail decision
 
 ## Gate File Location
 
-**ALWAYS** check the `bmad-core/core-config.yaml` for the `qa.qaLocation/gates`
+**ALWAYS** check the `xiaoma-core/core-config.yaml` for the `qa.qaLocation/gates`
 
 Slug rules:
 
@@ -585,7 +587,7 @@ waiver:
 
 ## Output Requirements
 
-1. **ALWAYS** create gate file at: `qa.qaLocation/gates` from `bmad-core/core-config.yaml`
+1. **ALWAYS** create gate file at: `qa.qaLocation/gates` from `xiaoma-core/core-config.yaml`
 2. **ALWAYS** append this exact format to story's QA Results section:
 
    ```text
@@ -620,10 +622,11 @@ Gate: CONCERNS → qa.qaLocation/gates/{epic}.{story}-{slug}.yml
 - Always write to standard path
 - Always update story with gate reference
 - Clear, actionable findings
-==================== END: .bmad-core/tasks/qa-gate.md ====================
+==================== END: .xiaoma-core/tasks/qa-gate.md ====================
 
-==================== START: .bmad-core/tasks/review-story.md ====================
+==================== START: .xiaoma-core/tasks/review-story.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # review-story
 
 Perform a comprehensive test architecture review with quality gate decision. This adaptive, risk-aware review creates both a story update and a detailed gate file.
@@ -810,7 +813,7 @@ NFR assessment: qa.qaLocation/assessments/{epic}.{story}-nfr-{YYYYMMDD}.md
 **Template and Directory:**
 
 - Render from `../templates/qa-gate-tmpl.yaml`
-- Create directory defined in `qa.qaLocation/gates` (see `bmad-core/core-config.yaml`) if missing
+- Create directory defined in `qa.qaLocation/gates` (see `xiaoma-core/core-config.yaml`) if missing
 - Save to: `qa.qaLocation/gates/{epic}.{story}-{slug}.yml`
 
 Gate file structure:
@@ -938,10 +941,11 @@ After review:
 3. Recommend status: "Ready for Done" or "Changes Required" (owner decides)
 4. If files were modified, list them in QA Results and ask Dev to update File List
 5. Always provide constructive feedback and actionable recommendations
-==================== END: .bmad-core/tasks/review-story.md ====================
+==================== END: .xiaoma-core/tasks/review-story.md ====================
 
-==================== START: .bmad-core/tasks/risk-profile.md ====================
+==================== START: .xiaoma-core/tasks/risk-profile.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # risk-profile
 
 Generate a comprehensive risk assessment matrix for a story implementation using probability × impact analysis.
@@ -1295,10 +1299,11 @@ Risk profile: qa.qaLocation/assessments/{epic}.{story}-risk-{YYYYMMDD}.md
 - Link risks to specific test requirements
 - Track residual risk after mitigation
 - Update risk profile as story evolves
-==================== END: .bmad-core/tasks/risk-profile.md ====================
+==================== END: .xiaoma-core/tasks/risk-profile.md ====================
 
-==================== START: .bmad-core/tasks/test-design.md ====================
+==================== START: .xiaoma-core/tasks/test-design.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # test-design
 
 Create comprehensive test scenarios with appropriate test level recommendations for story implementation.
@@ -1473,10 +1478,11 @@ Before finalizing, verify:
 - **Efficient coverage**: Test once at the right level
 - **Maintainability**: Consider long-term test maintenance
 - **Fast feedback**: Quick tests run first
-==================== END: .bmad-core/tasks/test-design.md ====================
+==================== END: .xiaoma-core/tasks/test-design.md ====================
 
-==================== START: .bmad-core/tasks/trace-requirements.md ====================
+==================== START: .xiaoma-core/tasks/trace-requirements.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # trace-requirements
 
 Map story requirements to test cases using Given-When-Then patterns for comprehensive traceability.
@@ -1741,9 +1747,9 @@ Trace matrix: qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md
 - Identify both presence and absence
 - Prioritize based on risk
 - Make recommendations actionable
-==================== END: .bmad-core/tasks/trace-requirements.md ====================
+==================== END: .xiaoma-core/tasks/trace-requirements.md ====================
 
-==================== START: .bmad-core/templates/qa-gate-tmpl.yaml ====================
+==================== START: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
 # <!-- Powered by BMAD™ Core -->
 template:
   id: qa-gate-template-v1
@@ -1847,9 +1853,9 @@ optional_fields_examples:
       future:  # Can be addressed later
         - action: "Consider caching for better performance"
           refs: ["services/data.service.ts"]
-==================== END: .bmad-core/templates/qa-gate-tmpl.yaml ====================
+==================== END: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
 
-==================== START: .bmad-core/templates/story-tmpl.yaml ====================
+==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
 # <!-- Powered by BMAD™ Core -->
 template:
   id: story-template-v2
@@ -1988,11 +1994,12 @@ sections:
     instruction: Results from QA Agent QA review of the completed story implementation
     owner: qa-agent
     editors: [qa-agent]
-==================== END: .bmad-core/templates/story-tmpl.yaml ====================
+==================== END: .xiaoma-core/templates/story-tmpl.yaml ====================
 
-==================== START: .bmad-core/data/technical-preferences.md ====================
+==================== START: .xiaoma-core/data/technical-preferences.md ====================
 <!-- Powered by BMAD™ Core -->
+
 # User-Defined Preferred Patterns and Preferences
 
 None Listed
-==================== END: .bmad-core/data/technical-preferences.md ====================
+==================== END: .xiaoma-core/data/technical-preferences.md ====================

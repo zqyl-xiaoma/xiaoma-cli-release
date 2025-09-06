@@ -71,7 +71,7 @@ npx bmad-method install
 ```
 ````
 
-**Full Changelog**: https://github.com/bmadcode/BMAD-METHOD/compare/v5.1.0...v5.2.0
+**Full Changelog**: https://github.com/zqyl-xiaoma/xiaoma-cli-release/compare/v5.1.0...v5.2.0
 
 ````
 

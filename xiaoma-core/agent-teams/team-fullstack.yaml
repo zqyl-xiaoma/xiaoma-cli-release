@@ -1,10 +1,10 @@
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XiaoMa™ Core -->
 bundle:
   name: Team Fullstack
   icon: 🚀
   description: Team capable of full stack, front end only, or service development.
 agents:
-  - bmad-orchestrator
+  - xiaoma-orchestrator
   - analyst
   - pm
   - ux-expert

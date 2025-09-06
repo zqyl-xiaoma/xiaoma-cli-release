@@ -38,7 +38,7 @@ CLAUDE.md
 .gemini
 
 # Project-specific
-.bmad-core
+.xiaoma-core
 .bmad-creator-tools
 test-project-install/*
 sample-project/*

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const { program } = require('commander');
 const path = require('node:path');
 const fs = require('node:fs').promises;
@@ -39,13 +37,13 @@ try {
 
 program
   .version(version)
-  .description('BMad Method installer - Universal AI agent framework for any domain');
+  .description('XiaoMa CLI installer - Universal AI agent framework for any domain');
 
 program
   .command('install')
-  .description('Install BMad Method agents and tools')
-  .option('-f, --full', 'Install complete BMad Method')
-  .option('-x, --expansion-only', 'Install only expansion packs (no bmad-core)')
+  .description('Install XiaoMa CLI agents and tools')
+  .option('-f, --full', 'Install complete XiaoMa CLI')
+  .option('-x, --expansion-only', 'Install only expansion packs (no xiaoma-core)')
   .option('-d, --directory <path>', 'Installation directory')
   .option(
     '-i, --ide <ide...>',
@@ -86,7 +84,7 @@ program
 
 program
   .command('update')
-  .description('Update existing BMad installation')
+  .description('Update existing XiaoMa installation')
   .option('--force', 'Force update, overwriting modified files')
   .option('--dry-run', 'Show what would be updated without making changes')
   .action(async () => {
@@ -101,7 +99,7 @@ program
 // Command to check if updates are available
 program
   .command('update-check')
-  .description('Check for BMad Update')
+  .description('Check for XiaoMa Update')
   .action(async () => {
     console.log('Checking for updates...');
 
@@ -215,7 +213,7 @@ async function promptInstallation() {
     {
       type: 'input',
       name: 'directory',
-      message: 'Enter the full path to your project directory where BMad should be installed:',
+      message: 'Enter the full path to your project directory where XiaoMa should be installed:',
       default: path.resolve('.'),
       validate: (input) => {
         if (!input.trim()) {
@@ -241,11 +239,11 @@ async function promptInstallation() {
   const choices = [];
 
   // Load core config to get short-title
-  const coreConfigPath = path.join(__dirname, '..', '..', '..', 'bmad-core', 'core-config.yaml');
+  const coreConfigPath = path.join(__dirname, '..', '..', '..', 'xiaoma-core', 'core-config.yaml');
   const coreConfig = yaml.load(await fs.readFile(coreConfigPath, 'utf8'));
-  const coreShortTitle = coreConfig['short-title'] || 'BMad Agile Core System';
+  const coreShortTitle = coreConfig['short-title'] || 'XiaoMa Agile Core System';
 
-  // Add BMad core option
+  // Add XiaoMa core option
   let bmadOptionText;
   if (state.type === 'v4_existing') {
     const currentVersion = state.manifest?.version || 'unknown';
@@ -254,14 +252,14 @@ async function promptInstallation() {
       currentVersion === newVersion
         ? `(v${currentVersion} - reinstall)`
         : `(v${currentVersion} → v${newVersion})`;
-    bmadOptionText = `Update ${coreShortTitle} ${versionInfo} .bmad-core`;
+    bmadOptionText = `Update ${coreShortTitle} ${versionInfo} .xiaoma-core`;
   } else {
-    bmadOptionText = `${coreShortTitle} (v${version}) .bmad-core`;
+    bmadOptionText = `${coreShortTitle} (v${version}) .xiaoma-core`;
   }
 
   choices.push({
     name: bmadOptionText,
-    value: 'bmad-core',
+    value: 'xiaoma-core',
     checked: true,
   });
 
@@ -306,11 +304,11 @@ async function promptInstallation() {
   ]);
 
   // Process selections
-  answers.installType = selectedItems.includes('bmad-core') ? 'full' : 'expansion-only';
-  answers.expansionPacks = selectedItems.filter((item) => item !== 'bmad-core');
+  answers.installType = selectedItems.includes('xiaoma-core') ? 'full' : 'expansion-only';
+  answers.expansionPacks = selectedItems.filter((item) => item !== 'xiaoma-core');
 
-  // Ask sharding questions if installing BMad core
-  if (selectedItems.includes('bmad-core')) {
+  // Ask sharding questions if installing XiaoMa core
+  if (selectedItems.includes('xiaoma-core')) {
     console.log(chalk.cyan('\n📋 Document Organization Settings'));
     console.log(chalk.dim('Configure how your project documentation should be organized.\n'));
 
@@ -448,7 +446,7 @@ async function promptInstallation() {
   if (ides.includes('github-copilot')) {
     console.log(chalk.cyan('\n🔧 GitHub Copilot Configuration'));
     console.log(
-      chalk.dim('BMad works best with specific VS Code settings for optimal agent experience.\n'),
+      chalk.dim('XiaoMa works best with specific VS Code settings for optimal agent experience.\n'),
     );
 
     const { configChoice } = await inquirer.prompt([
@@ -480,7 +478,7 @@ async function promptInstallation() {
   // Configure Auggie CLI (Augment Code) immediately if selected
   if (ides.includes('auggie-cli')) {
     console.log(chalk.cyan('\n📍 Auggie CLI Location Configuration'));
-    console.log(chalk.dim('Choose where to install BMad agents for Auggie CLI access.\n'));
+    console.log(chalk.dim('Choose where to install XiaoMa agents for Auggie CLI access.\n'));
 
     const { selectedLocations } = await inquirer.prompt([
       {
