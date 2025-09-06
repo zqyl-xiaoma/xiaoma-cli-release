@@ -277,7 +277,7 @@ ALWAYS cite source documents: `[Source: architecture/{filename}.md#{section}]`
 ==================== END: .xiaoma-core/tasks/create-next-story.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -368,7 +368,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document

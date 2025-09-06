@@ -1,4 +1,4 @@
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Book Critic Agent Definition
 

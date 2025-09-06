@@ -40,7 +40,7 @@ These references map directly to bundle sections:
 
 
 ==================== START: .bmad-2d-unity-game-dev/agent-teams/unity-2d-game-team.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 bundle:
   name: Unity 2D Game Team
   icon: 🎮
@@ -477,7 +477,7 @@ dependencies:
 ==================== END: .bmad-2d-unity-game-dev/agents/game-sm.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Knowledge Base - 2D Unity Game Development
 
@@ -1410,7 +1410,7 @@ This knowledge base provides the foundation for effective game development using
 ==================== END: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Game Design Elicitation Task
 
@@ -1525,7 +1525,7 @@ The questions and perspectives offered should always consider:
 ==================== END: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -1711,7 +1711,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== END: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workflow Management
 
@@ -2757,7 +2757,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/competitor-analysis-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: competitor-analysis-template-v2
   name: Competitive Analysis Report
@@ -3067,7 +3067,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/competitor-analysis-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/market-research-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: market-research-template-v2
   name: Market Research Report
@@ -3323,7 +3323,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/market-research-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/project-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: project-brief-template-v2
   name: Project Brief
@@ -3548,7 +3548,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/project-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -3829,7 +3829,7 @@ Document sharded successfully:
 ==================== END: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Brainstorming Techniques Task
 
@@ -4124,7 +4124,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 ==================== END: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-design-doc-template-v3
   name: Game Design Document (GDD)
@@ -4833,7 +4833,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: level-design-doc-template-v2
   name: Level Design Document
@@ -5321,7 +5321,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-brief-template-v3
   name: Game Brief
@@ -5681,7 +5681,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Document Quality Checklist
 
@@ -5887,7 +5887,7 @@ _Outline immediate next actions for the team based on this assessment._
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-architecture-template-v3
   name: Game Architecture Document
@@ -6921,7 +6921,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-architecture-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Architect Solution Validation Checklist
 
@@ -7317,7 +7317,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/development-guidelines.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Guidelines (Unity & C#)
 
@@ -8047,7 +8047,7 @@ Provide a structured validation report including:
 ==================== END: .bmad-2d-unity-game-dev/tasks/validate-next-story.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done (DoD) Checklist
 
@@ -8176,7 +8176,7 @@ Be honest - it's better to flag issues now than have them discovered during play
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Game Story Task
 
@@ -8365,7 +8365,7 @@ This task ensures game development stories are immediately actionable and enable
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Correct Course Task - Game Development
 
@@ -8511,7 +8511,7 @@ Based on the analysis and agreed path forward:
 ==================== END: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-story-template-v3
   name: Game Development Story
@@ -8771,7 +8771,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-story-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Change Navigation Checklist
 
@@ -8979,7 +8979,7 @@ Keep it technically precise and actionable.]]
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-architecture-template-v3
   name: Game Architecture Document
@@ -10013,7 +10013,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-architecture-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-brief-template-v3
   name: Game Brief
@@ -10373,7 +10373,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-design-doc-template-v3
   name: Game Design Document (GDD)
@@ -11082,7 +11082,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-story-template-v3
   name: Game Development Story
@@ -11342,7 +11342,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-story-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: level-design-doc-template-v2
   name: Level Design Document
@@ -11830,7 +11830,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Game Design Elicitation Task
 
@@ -11945,7 +11945,7 @@ The questions and perspectives offered should always consider:
 ==================== END: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Correct Course Task - Game Development
 
@@ -12091,7 +12091,7 @@ Based on the analysis and agreed path forward:
 ==================== END: .bmad-2d-unity-game-dev/tasks/correct-course-game.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Game Story Task
 
@@ -12280,7 +12280,7 @@ This task ensures game development stories are immediately actionable and enable
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-game-story.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Brainstorming Techniques Task
 
@@ -12575,7 +12575,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 ==================== END: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/validate-game-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Validate Game Story Task
 
@@ -12780,7 +12780,7 @@ Based on validation results, provide specific recommendations for:
 ==================== END: .bmad-2d-unity-game-dev/tasks/validate-game-story.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Architect Solution Validation Checklist
 
@@ -13176,7 +13176,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-architect-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Change Navigation Checklist
 
@@ -13384,7 +13384,7 @@ Keep it technically precise and actionable.]]
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-change-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Document Quality Checklist
 
@@ -13590,7 +13590,7 @@ _Outline immediate next actions for the team based on this assessment._
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done (DoD) Checklist
 
@@ -13719,7 +13719,7 @@ Be honest - it's better to flag issues now than have them discovered during play
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/workflows/game-dev-greenfield.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: unity-game-dev-greenfield
   name: Game Development - Greenfield Project (Unity)
@@ -13906,7 +13906,7 @@ workflow:
 ==================== END: .bmad-2d-unity-game-dev/workflows/game-dev-greenfield.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/workflows/game-prototype.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: unity-game-prototype
   name: Game Prototype Development (Unity)
@@ -14085,7 +14085,7 @@ workflow:
 ==================== END: .bmad-2d-unity-game-dev/workflows/game-prototype.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Knowledge Base - 2D Unity Game Development
 
@@ -14859,7 +14859,7 @@ This knowledge base provides the foundation for effective game development using
 ==================== END: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/development-guidelines.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Guidelines (Unity & C#)
 

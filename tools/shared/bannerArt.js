@@ -1,11 +1,11 @@
 // ASCII banner art definitions extracted from banners.js to separate art from logic
 
-const BMAD_TITLE = 'XIAOMA-CLI™';
+const XIAOMA_TITLE = 'XIAOMA-CLI™';
 const FLATTENER_TITLE = 'FLATTENER';
 const INSTALLER_TITLE = 'INSTALLER';
 
 // Large ASCII blocks (block-style fonts)
-const BMAD_LARGE = `
+const XIAOMA_LARGE = `
 ██╗  ██╗██╗ █████╗  ██████╗ ███╗   ███╗ █████╗        ██████╗██╗     ██╗
 ╚██╗██╔╝██║██╔══██╗██╔═══██╗████╗ ████║██╔══██╗      ██╔════╝██║     ██║
  ╚███╔╝ ██║███████║██║   ██║██╔████╔██║███████║█████╗██║     ██║     ██║
@@ -34,7 +34,7 @@ const INSTALLER_LARGE = `
 
 // Curated medium/small/tiny variants (fixed art, no runtime scaling)
 // Medium: bold framed title with heavy fill (high contrast, compact)
-const BMAD_MEDIUM = `
+const XIAOMA_MEDIUM = `
 ███╗ █╗    █╗ ██╗ ███╗    █╗    █╗███╗█████╗█╗ █╗ ██╗ ███╗ 
 █╔═█╗██╗  ██║█╔═█╗█╔═█╗   ██╗  ██║█╔═╝╚═█╔═╝█║ █║█╔═█╗█╔═█╗
 ███╔╝█╔███╔█║████║█║ █║██╗█╔███╔█║██╗   █║  ████║█║ █║█║ █║
@@ -63,7 +63,7 @@ const INSTALLER_MEDIUM = `
 
 // Small: rounded box with bold rule
 // Width: 30 columns total (28 inner)
-const BMAD_SMALL = `
+const XIAOMA_SMALL = `
 ╭──────────────────────────╮
 │       XIAOMA-CLI™        │
 ╰──────────────────────────╯
@@ -82,24 +82,24 @@ const INSTALLER_SMALL = `
  `;
 
 // Tiny (compact brackets)
-const BMAD_TINY = `[ XIAOMA-CLI™ ]`;
+const XIAOMA_TINY = `[ XIAOMA-CLI™ ]`;
 const FLATTENER_TINY = `[ FLATTENER ]`;
 const INSTALLER_TINY = `[ INSTALLER ]`;
 
 module.exports = {
-  BMAD_TITLE,
+  XIAOMA_TITLE,
   FLATTENER_TITLE,
   INSTALLER_TITLE,
-  BMAD_LARGE,
+  XIAOMA_LARGE,
   FLATTENER_LARGE,
   INSTALLER_LARGE,
-  BMAD_MEDIUM,
+  XIAOMA_MEDIUM,
   FLATTENER_MEDIUM,
   INSTALLER_MEDIUM,
-  BMAD_SMALL,
+  XIAOMA_SMALL,
   FLATTENER_SMALL,
   INSTALLER_SMALL,
-  BMAD_TINY,
+  XIAOMA_TINY,
   FLATTENER_TINY,
   INSTALLER_TINY,
 };

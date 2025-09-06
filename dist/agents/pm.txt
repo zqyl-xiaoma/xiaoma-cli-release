@@ -779,7 +779,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -885,7 +885,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .xiaoma-core/tasks/create-doc.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -1166,7 +1166,7 @@ Document sharded successfully:
 ==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-prd-template-v2
   name: Brownfield Enhancement PRD
@@ -1450,7 +1450,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: prd-template-v2
   name: Product Requirements Document

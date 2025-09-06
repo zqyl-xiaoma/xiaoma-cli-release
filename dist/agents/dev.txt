@@ -247,7 +247,7 @@ Fix plan:
 ==================== END: .xiaoma-core/tasks/apply-qa-fixes.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 

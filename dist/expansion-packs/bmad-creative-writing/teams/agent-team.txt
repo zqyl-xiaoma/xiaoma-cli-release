@@ -40,7 +40,7 @@ These references map directly to bundle sections:
 
 
 ==================== START: .bmad-creative-writing/agent-teams/agent-team.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 bundle:
   name: Creative Writing Team
   icon: ✍️
@@ -836,7 +836,7 @@ dependencies:
 ==================== END: .bmad-creative-writing/agents/book-critic.md ====================
 
 ==================== START: .bmad-creative-writing/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Creative Writing Knowledge Base
 
@@ -1207,7 +1207,7 @@ Remember: BMad Creative Writing provides structure to liberate creativity, not c
 ==================== END: .bmad-creative-writing/data/elicitation-methods.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Elicitation Task
 
@@ -1329,7 +1329,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -1515,7 +1515,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== END: .bmad-creative-writing/tasks/kb-mode-interaction.md ====================
 
 ==================== START: .bmad-creative-writing/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workflow Management
 
@@ -1589,7 +1589,7 @@ Agents should be workflow-aware: know active workflow, their role, access artifa
 ==================== END: .bmad-creative-writing/utils/workflow-management.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Analyze Story Structure
 
@@ -1659,7 +1659,7 @@ Comprehensive structural analysis with actionable recommendations
 ==================== END: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -1750,7 +1750,7 @@ The LLM will:
 ==================== END: .bmad-creative-writing/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: story-outline
@@ -1849,7 +1849,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: premise-brief-tmpl
@@ -1930,7 +1930,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: scene-list-tmpl
@@ -1988,7 +1988,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: chapter-draft-tmpl
@@ -2073,7 +2073,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Plot Structure Checklist
 
@@ -2135,7 +2135,7 @@ sections:
 ==================== END: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/data/story-structures.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Story Structure Patterns
 
@@ -2205,7 +2205,7 @@ sections:
 ==================== END: .bmad-creative-writing/data/story-structures.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/develop-character.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2232,7 +2232,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/develop-character.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/workshop-dialog.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workshop Dialog
 
@@ -2299,7 +2299,7 @@ Refined dialog with stronger voices and dramatic impact
 ==================== END: .bmad-creative-writing/tasks/workshop-dialog.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/character-depth-pass.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2324,7 +2324,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/character-depth-pass.md ====================
 
 ==================== START: .bmad-creative-writing/templates/character-profile-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: character-profile
@@ -2419,7 +2419,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/character-profile-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/character-consistency-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2445,7 +2445,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/character-consistency-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/build-world.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2472,7 +2472,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/build-world.md ====================
 
 ==================== START: .bmad-creative-writing/templates/world-guide-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: world-guide-tmpl
@@ -2564,7 +2564,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/world-guide-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/world-building-continuity-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2590,7 +2590,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/world-building-continuity-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/fantasy-magic-system-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2616,7 +2616,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/fantasy-magic-system-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/steampunk-gadget-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2642,7 +2642,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/steampunk-gadget-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/final-polish.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2668,7 +2668,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/final-polish.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/incorporate-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2696,7 +2696,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/incorporate-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/line-edit-quality-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2722,7 +2722,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/line-edit-quality-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/publication-readiness-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2748,7 +2748,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/publication-readiness-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/provide-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2775,7 +2775,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/provide-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/quick-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2800,7 +2800,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/quick-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2826,7 +2826,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: beta-feedback-form-tmpl
@@ -2926,7 +2926,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2952,7 +2952,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/comedic-timing-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -2978,7 +2978,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/comedic-timing-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/outline-scenes.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3004,7 +3004,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/outline-scenes.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/generate-scene-list.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3030,7 +3030,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/generate-scene-list.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/genre-tropes-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3055,7 +3055,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/genre-tropes-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/scifi-technology-plausibility-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3080,7 +3080,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/scifi-technology-plausibility-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/romance-emotional-beats-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3106,7 +3106,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/romance-emotional-beats-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: beta-feedback-form-tmpl
@@ -3206,7 +3206,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: chapter-draft-tmpl
@@ -3291,7 +3291,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/character-profile-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: character-profile
@@ -3386,7 +3386,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/character-profile-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/cover-design-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: cover-design-brief-tmpl
@@ -3487,7 +3487,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/cover-design-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: premise-brief-tmpl
@@ -3568,7 +3568,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: scene-list-tmpl
@@ -3626,7 +3626,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: story-outline
@@ -3725,7 +3725,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/world-guide-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: world-guide-tmpl
@@ -3817,7 +3817,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/world-guide-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Elicitation Task
 
@@ -3939,7 +3939,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -3965,7 +3965,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Analyze Story Structure
 
@@ -4035,7 +4035,7 @@ Comprehensive structural analysis with actionable recommendations
 ==================== END: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/assemble-kdp-package.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4067,7 +4067,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/assemble-kdp-package.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/brainstorm-premise.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4093,7 +4093,7 @@ steps:
 ==================== END: .bmad-creative-writing/tasks/brainstorm-premise.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/build-world.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4120,7 +4120,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/build-world.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/character-depth-pass.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4145,7 +4145,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/character-depth-pass.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -4251,7 +4251,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-creative-writing/tasks/create-doc.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/create-draft-section.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4280,7 +4280,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/create-draft-section.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/develop-character.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4307,7 +4307,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/develop-character.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -4398,7 +4398,7 @@ The LLM will:
 ==================== END: .bmad-creative-writing/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/expand-premise.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4424,7 +4424,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/expand-premise.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/expand-synopsis.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4450,7 +4450,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/expand-synopsis.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/final-polish.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4476,7 +4476,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/final-polish.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/generate-cover-brief.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4504,7 +4504,7 @@ steps:
 ==================== END: .bmad-creative-writing/tasks/generate-cover-brief.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/generate-cover-prompts.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4533,7 +4533,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/generate-cover-prompts.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/generate-scene-list.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4559,7 +4559,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/generate-scene-list.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/incorporate-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4587,7 +4587,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/incorporate-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/outline-scenes.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4613,7 +4613,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/outline-scenes.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/provide-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4640,7 +4640,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/provide-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/publish-chapter.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4666,7 +4666,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/publish-chapter.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/quick-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4691,7 +4691,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/quick-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/select-next-arc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4717,7 +4717,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/select-next-arc.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/workshop-dialog.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workshop Dialog
 
@@ -4784,7 +4784,7 @@ Refined dialog with stronger voices and dramatic impact
 ==================== END: .bmad-creative-writing/tasks/workshop-dialog.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4810,7 +4810,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/character-consistency-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4836,7 +4836,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/character-consistency-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/comedic-timing-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4862,7 +4862,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/comedic-timing-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/cyberpunk-aesthetic-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4888,7 +4888,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/cyberpunk-aesthetic-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/ebook-formatting-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4912,7 +4912,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/ebook-formatting-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/epic-poetry-meter-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4938,7 +4938,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/epic-poetry-meter-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/fantasy-magic-system-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4964,7 +4964,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/fantasy-magic-system-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/foreshadowing-payoff-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -4989,7 +4989,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/foreshadowing-payoff-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/historical-accuracy-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5015,7 +5015,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/historical-accuracy-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/horror-suspense-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5041,7 +5041,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/horror-suspense-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/kdp-cover-ready-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5069,7 +5069,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/kdp-cover-ready-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/line-edit-quality-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5095,7 +5095,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/line-edit-quality-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/marketing-copy-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5121,7 +5121,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/marketing-copy-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/mystery-clue-trail-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5147,7 +5147,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/mystery-clue-trail-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/orbital-mechanics-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5173,7 +5173,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/orbital-mechanics-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Plot Structure Checklist
 
@@ -5235,7 +5235,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/publication-readiness-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5261,7 +5261,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/publication-readiness-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/romance-emotional-beats-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5287,7 +5287,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/romance-emotional-beats-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/scene-quality-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5313,7 +5313,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/scene-quality-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/scifi-technology-plausibility-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5338,7 +5338,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/scifi-technology-plausibility-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/sensitivity-representation-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5364,7 +5364,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/sensitivity-representation-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/steampunk-gadget-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5390,7 +5390,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/steampunk-gadget-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/thriller-pacing-stakes-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5416,7 +5416,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/thriller-pacing-stakes-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/timeline-continuity-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5442,7 +5442,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/timeline-continuity-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/world-building-continuity-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5468,7 +5468,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/world-building-continuity-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/checklists/ya-appropriateness-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -5494,7 +5494,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/ya-appropriateness-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/workflows/book-cover-design-workflow.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Book Cover Design Assets
 
@@ -5715,7 +5715,7 @@ items:
 ==================== END: .bmad-creative-writing/workflows/book-cover-design-workflow.md ====================
 
 ==================== START: .bmad-creative-writing/workflows/novel-greenfield-workflow.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: novel-greenfield-workflow
   name: Greenfield Novel Workflow
@@ -5774,7 +5774,7 @@ workflow:
 ==================== END: .bmad-creative-writing/workflows/novel-greenfield-workflow.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/novel-serial-workflow.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 workflow:
   id: novel-serial-workflow
@@ -5827,7 +5827,7 @@ workflow:
 ==================== END: .bmad-creative-writing/workflows/novel-serial-workflow.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/novel-snowflake-workflow.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 workflow:
   id: novel-snowflake-workflow
@@ -5899,13 +5899,13 @@ workflow:
 ==================== END: .bmad-creative-writing/workflows/novel-snowflake-workflow.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/novel-writing.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 # workflows/novel-writing.yaml
 name: novel-writing
 title: Novel Writing Workflow
 description: |
   End‑to‑end pipeline for drafting, revising, and polishing a full‑length novel
-  using the BMAD™ Creative Writing team.
+  using the XIAOMA™ Creative Writing team.
 
 triggers:
   - command: /novel
@@ -5993,7 +5993,7 @@ outputs:
 ==================== END: .bmad-creative-writing/workflows/novel-writing.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/screenplay-development.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 # workflows/screenplay-development.yaml
 name: screenplay-development
 title: Screenplay Development Workflow
@@ -6081,7 +6081,7 @@ outputs:
 ==================== END: .bmad-creative-writing/workflows/screenplay-development.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/series-planning.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 # workflows/series-planning.yaml
 name: series-planning
 title: Series Planning Workflow
@@ -6162,7 +6162,7 @@ outputs:
 ==================== END: .bmad-creative-writing/workflows/series-planning.yaml ====================
 
 ==================== START: .bmad-creative-writing/workflows/short-story-creation.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 # workflows/short-story-creation.yaml
 name: short-story-creation
 title: Short Story Creation Workflow
@@ -6229,7 +6229,7 @@ outputs:
 ==================== END: .bmad-creative-writing/workflows/short-story-creation.yaml ====================
 
 ==================== START: .bmad-creative-writing/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Creative Writing Knowledge Base
 
@@ -6441,7 +6441,7 @@ Remember: BMad Creative Writing provides structure to liberate creativity, not c
 ==================== END: .bmad-creative-writing/data/bmad-kb.md ====================
 
 ==================== START: .bmad-creative-writing/data/story-structures.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Story Structure Patterns
 

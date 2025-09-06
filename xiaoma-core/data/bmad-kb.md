@@ -1,6 +1,6 @@
 <!-- Powered by XiaoMa™ Core -->
 
-# BMAD™ Knowledge Base
+# XIAOMA™ Knowledge Base
 
 ## Overview
 

@@ -105,7 +105,7 @@ ide-configurations:
     format: custom-modes
     file: .kilocodemodes
     instructions: |
-      # To use XIAOMA™ agents in Kilo Code:
+      # To use XIAOMAMA™ agents in Kilo Code:
       # 1. Open the mode selector in VSCode
       # 2. Select a bmad-{agent} mode (e.g. "bmad-dev")
       # 3. The AI adopts that agent's persona and capabilities
@@ -146,8 +146,8 @@ ide-configurations:
     format: project-memory
     file: AGENTS.md
     instructions: |
-      # To use XIAOMA agents with Codex CLI:
-      # 1. The installer updates/creates AGENTS.md at your project root with XIAOMA agents and tasks.
+      # To use XIAOMAMA agents with Codex CLI:
+      # 1. The installer updates/creates AGENTS.md at your project root with XIAOMAMA agents and tasks.
       # 2. Run `codex` in your project. Codex automatically reads AGENTS.md as project memory.
       # 3. Mention agents in your prompt (e.g., "As dev, please implement ...") or reference tasks.
       # 4. You can further customize global Codex behavior via ~/.codex/config.toml.
@@ -157,7 +157,7 @@ ide-configurations:
     format: project-memory
     file: AGENTS.md
     instructions: |
-      # To enable XIAOMA agents for Codex Web (cloud):
+      # To enable XIAOMAMA agents for Codex Web (cloud):
       # 1. The installer updates/creates AGENTS.md and ensures `.xiaoma-core` is NOT ignored by git.
       # 2. Commit `.xiaoma-core/` and `AGENTS.md` to your repository.
       # 3. Open the repo in Codex Web and reference agents naturally (e.g., "As dev, ...").

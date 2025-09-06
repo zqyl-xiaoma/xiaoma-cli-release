@@ -174,7 +174,7 @@ dependencies:
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -594,7 +594,7 @@ Provide a structured validation report including:
 ==================== END: .xiaoma-core/tasks/validate-next-story.md ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document

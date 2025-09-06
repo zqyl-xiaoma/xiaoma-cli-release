@@ -102,7 +102,7 @@ dependencies:
 ==================== END: .bmad-2d-phaser-game-dev/agents/game-developer.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -193,7 +193,7 @@ The LLM will:
 ==================== END: .bmad-2d-phaser-game-dev/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-architecture-template-v2
   name: Game Architecture Document
@@ -810,7 +810,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done Checklist
 
@@ -975,7 +975,7 @@ _Any specific concerns, recommendations, or clarifications needed before develop
 ==================== END: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/data/development-guidelines.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Guidelines
 

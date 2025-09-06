@@ -100,7 +100,7 @@ dependencies:
 ==================== END: .bmad-2d-unity-game-dev/agents/game-designer.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -206,7 +206,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -487,7 +487,7 @@ Document sharded successfully:
 ==================== END: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/game-design-brainstorming.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Brainstorming Techniques Task
 
@@ -1065,7 +1065,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Game Design Elicitation Task
 
@@ -1180,7 +1180,7 @@ The questions and perspectives offered should always consider:
 ==================== END: .bmad-2d-unity-game-dev/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-design-doc-template-v3
   name: Game Design Document (GDD)
@@ -1889,7 +1889,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: level-design-doc-template-v2
   name: Level Design Document
@@ -2377,7 +2377,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/level-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-brief-template-v3
   name: Game Brief
@@ -2737,7 +2737,7 @@ sections:
 ==================== END: .bmad-2d-unity-game-dev/templates/game-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Document Quality Checklist
 
@@ -2943,7 +2943,7 @@ _Outline immediate next actions for the team based on this assessment._
 ==================== END: .bmad-2d-unity-game-dev/checklists/game-design-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Knowledge Base - 2D Unity Game Development
 

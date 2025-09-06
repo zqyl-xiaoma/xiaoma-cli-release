@@ -924,7 +924,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -1495,7 +1495,7 @@ Apply the advanced elicitation task after major sections to refine based on user
 ==================== END: .xiaoma-core/tasks/document-project.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -2151,7 +2151,7 @@ Document sharded successfully:
 ==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/templates/architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: architecture-template-v2
   name: Architecture Document
@@ -2805,7 +2805,7 @@ sections:
 ==================== END: .xiaoma-core/templates/architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-architecture-template-v2
   name: Brownfield Enhancement Architecture
@@ -3285,7 +3285,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-prd-template-v2
   name: Brownfield Enhancement PRD
@@ -3569,7 +3569,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: competitor-analysis-template-v2
   name: Competitive Analysis Report
@@ -3879,7 +3879,7 @@ sections:
 ==================== END: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: frontend-architecture-template-v2
   name: Frontend Architecture Document
@@ -4101,7 +4101,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/front-end-spec-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: frontend-spec-template-v2
   name: UI/UX Specification
@@ -4454,7 +4454,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-spec-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: fullstack-architecture-template-v2
   name: Fullstack Architecture Document
@@ -5281,7 +5281,7 @@ sections:
 ==================== END: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/market-research-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: market-research-template-v2
   name: Market Research Report
@@ -5537,7 +5537,7 @@ sections:
 ==================== END: .xiaoma-core/templates/market-research-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: prd-template-v2
   name: Product Requirements Document
@@ -5743,7 +5743,7 @@ sections:
 ==================== END: .xiaoma-core/templates/prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: project-brief-template-v2
   name: Project Brief
@@ -5968,7 +5968,7 @@ sections:
 ==================== END: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document
@@ -7810,7 +7810,7 @@ Be pragmatic - perfect documentation doesn't exist, but it must be enough to pro
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
 <!-- Powered by XiaoMa™ Core -->
 
-# BMAD™ Knowledge Base
+# XIAOMA™ Knowledge Base
 
 ## Overview
 

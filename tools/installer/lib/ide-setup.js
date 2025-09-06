@@ -93,15 +93,15 @@ class IdeSetup extends BaseIdeSetup {
   async setupCodex(installDir, selectedAgent, options) {
     options = options ?? { webEnabled: false };
     // Codex reads AGENTS.md at the project root as project memory (CLI & Web).
-    // Inject/update a XIAOMA section with guidance, directory, and details.
+    // Inject/update a XIAOMAMA section with guidance, directory, and details.
     const filePath = path.join(installDir, 'AGENTS.md');
-    const startMarker = '<!-- BEGIN: XIAOMA-AGENTS -->';
-    const endMarker = '<!-- END: XIAOMA-AGENTS -->';
+    const startMarker = '<!-- BEGIN: XIAOMAMA-AGENTS -->';
+    const endMarker = '<!-- END: XIAOMAMA-AGENTS -->';
 
     const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
     const tasks = await this.getAllTaskIds(installDir);
 
-    // Build XIAOMA section content
+    // Build XIAOMAMA section content
     let section = '';
     section += `${startMarker}\n`;
     section += `# XIAOMA-CLI Agents and Tasks\n\n`;
@@ -114,7 +114,7 @@ class IdeSetup extends BaseIdeSetup {
 
     section += `### Helpful Commands\n\n`;
     section += `- List agents: \`npx xiaoma-cli list:agents\`\n`;
-    section += `- Reinstall XIAOMA core and regenerate AGENTS.md: \`npx xiaoma-cli install -f -i codex\`\n`;
+    section += `- Reinstall XIAOMAMA core and regenerate AGENTS.md: \`npx xiaoma-cli install -f -i codex\`\n`;
     section += `- Validate configuration: \`npx xiaoma-cli validate\`\n\n`;
 
     // Agents directory table
@@ -172,16 +172,16 @@ class IdeSetup extends BaseIdeSetup {
     if (await fileManager.pathExists(filePath)) {
       const existing = await fileManager.readFile(filePath);
       if (existing.includes(startMarker) && existing.includes(endMarker)) {
-        // Replace existing XIAOMA block
+        // Replace existing XIAOMAMA block
         const pattern = String.raw`${startMarker}[\s\S]*?${endMarker}`;
         const replaced = existing.replace(new RegExp(pattern, 'm'), section);
         finalContent = replaced;
       } else {
-        // Append XIAOMA block to existing file
+        // Append XIAOMAMA block to existing file
         finalContent = existing.trimEnd() + `\n\n` + section;
       }
     } else {
-      // Create fresh AGENTS.md with a small header and XIAOMA block
+      // Create fresh AGENTS.md with a small header and XIAOMAMA block
       finalContent += '# Project Agents\n\n';
       finalContent += 'This file provides guidance and memory for Codex CLI.\n\n';
       finalContent += section;
@@ -191,7 +191,7 @@ class IdeSetup extends BaseIdeSetup {
     console.log(chalk.green('✓ Created/updated AGENTS.md for Codex CLI integration'));
     console.log(
       chalk.dim(
-        'Codex reads AGENTS.md automatically. Run `codex` in this project to use XIAOMA agents.',
+        'Codex reads AGENTS.md automatically. Run `codex` in this project to use XIAOMAMA agents.',
       ),
     );
 
@@ -222,12 +222,12 @@ class IdeSetup extends BaseIdeSetup {
     // Adjust .gitignore behavior depending on Codex mode
     try {
       const gitignorePath = path.join(installDir, '.gitignore');
-      const ignoreLines = ['# XIAOMA (local only)', '.xiaoma-core/', '.bmad-*/'];
+      const ignoreLines = ['# XIAOMAMA (local only)', '.xiaoma-core/', '.bmad-*/'];
       const exists = await fileManager.pathExists(gitignorePath);
       if (options.webEnabled) {
         if (exists) {
           let gi = await fileManager.readFile(gitignorePath);
-          // Remove lines that ignore XIAOMA dot-folders
+          // Remove lines that ignore XIAOMAMA dot-folders
           const updated = gi
             .split(/\r?\n/)
             .filter((l) => !/^\s*\.xiaoma-core\/?\s*$/.test(l) && !/^\s*\.bmad-\*\/?\s*$/.test(l))

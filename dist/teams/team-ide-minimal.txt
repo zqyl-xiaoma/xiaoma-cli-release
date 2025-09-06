@@ -40,7 +40,7 @@ These references map directly to bundle sections:
 
 
 ==================== START: .xiaoma-core/agent-teams/team-ide-minimal.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 bundle:
   name: Team IDE Minimal
   icon: ⚡
@@ -532,7 +532,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .xiaoma-core/tasks/advanced-elicitation.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -720,7 +720,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
 <!-- Powered by XiaoMa™ Core -->
 
-# BMAD™ Knowledge Base
+# XIAOMA™ Knowledge Base
 
 ## Overview
 
@@ -1689,7 +1689,7 @@ Use the **expansion-creator** pack to build your own:
 ==================== END: .xiaoma-core/data/elicitation-methods.md ====================
 
 ==================== START: .xiaoma-core/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workflow Management
 
@@ -1838,7 +1838,7 @@ Agents should be workflow-aware: know active workflow, their role, access artifa
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -2258,7 +2258,7 @@ Provide a structured validation report including:
 ==================== END: .xiaoma-core/tasks/validate-next-story.md ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document
@@ -5189,7 +5189,7 @@ Trace matrix: qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md
 ==================== END: .xiaoma-core/tasks/trace-requirements.md ====================
 
 ==================== START: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: qa-gate-template-v1
   name: Quality Gate Decision

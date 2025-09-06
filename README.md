@@ -110,7 +110,7 @@ npm run install:bmad # build and install all to a destination folder
 
 ## 🌟 Beyond Software Development - Expansion Packs
 
-BMAD™'s natural language framework works in ANY domain. Expansion packs provide specialized AI agents for creative writing, business strategy, health & wellness, education, and more. Also expansion packs can expand the core XIAOMA-CLI™ with specific functionality that is not generic for all cases. [See the Expansion Packs Guide](docs/expansion-packs.md) and learn to create your own!
+XIAOMA™'s natural language framework works in ANY domain. Expansion packs provide specialized AI agents for creative writing, business strategy, health & wellness, education, and more. Also expansion packs can expand the core XIAOMA-CLI™ with specific functionality that is not generic for all cases. [See the Expansion Packs Guide](docs/expansion-packs.md) and learn to create your own!
 
 ## Codebase Flattener Tool
 
@@ -238,7 +238,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Trademark Notice
 
-BMAD™ and XIAOMA-CLI™ are trademarks of BMad Code, LLC. All rights reserved.
+XIAOMA™ and XIAOMA-CLI™ are trademarks of BMad Code, LLC. All rights reserved.
 
 [![Contributors](https://contrib.rocks/image?repo=zqyl-xiaoma/xiaoma-cli-release)](https://github.com/zqyl-xiaoma/xiaoma-cli-release/graphs/contributors)
 

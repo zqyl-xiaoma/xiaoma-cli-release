@@ -97,7 +97,7 @@ dependencies:
 ==================== END: .bmad-2d-unity-game-dev/agents/game-developer.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -327,7 +327,7 @@ Provide a structured validation report including:
 ==================== END: .bmad-2d-unity-game-dev/tasks/validate-next-story.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done (DoD) Checklist
 

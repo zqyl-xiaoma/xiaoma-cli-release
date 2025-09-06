@@ -116,7 +116,7 @@ Remember to present all options as numbered lists for easy selection.
 ==================== END: .bmad-creative-writing/agents/beta-reader.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -222,7 +222,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-creative-writing/tasks/create-doc.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/provide-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -249,7 +249,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/provide-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/quick-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -274,7 +274,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/quick-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -300,7 +300,7 @@ inputs:
 ==================== END: .bmad-creative-writing/tasks/analyze-reader-feedback.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -391,7 +391,7 @@ The LLM will:
 ==================== END: .bmad-creative-writing/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Elicitation Task
 
@@ -513,7 +513,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: beta-feedback-form-tmpl
@@ -613,7 +613,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/beta-feedback-form.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # ------------------------------------------------------------
 
@@ -639,7 +639,7 @@ items:
 ==================== END: .bmad-creative-writing/checklists/beta-feedback-closure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Creative Writing Knowledge Base
 
@@ -851,7 +851,7 @@ Remember: BMad Creative Writing provides structure to liberate creativity, not c
 ==================== END: .bmad-creative-writing/data/bmad-kb.md ====================
 
 ==================== START: .bmad-creative-writing/data/story-structures.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Story Structure Patterns
 

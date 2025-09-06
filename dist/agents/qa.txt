@@ -1750,7 +1750,7 @@ Trace matrix: qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md
 ==================== END: .xiaoma-core/tasks/trace-requirements.md ====================
 
 ==================== START: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: qa-gate-template-v1
   name: Quality Gate Decision
@@ -1856,7 +1856,7 @@ optional_fields_examples:
 ==================== END: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document

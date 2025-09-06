@@ -40,7 +40,7 @@ These references map directly to bundle sections:
 
 
 ==================== START: .bmad-2d-phaser-game-dev/agent-teams/phaser-2d-nodejs-game-team.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 bundle:
   name: Phaser 2D NodeJS Game Team
   icon: 🎮
@@ -413,7 +413,7 @@ dependencies:
 ==================== END: .bmad-2d-phaser-game-dev/agents/game-sm.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development BMad Knowledge Base
 
@@ -827,7 +827,7 @@ This knowledge base provides the foundation for effective game development using
 ==================== END: .bmad-2d-phaser-game-dev/data/elicitation-methods.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Game Design Elicitation Task
 
@@ -942,7 +942,7 @@ The questions and perspectives offered should always consider:
 ==================== END: .bmad-2d-phaser-game-dev/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -1128,7 +1128,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== END: .bmad-2d-phaser-game-dev/tasks/kb-mode-interaction.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workflow Management
 
@@ -2174,7 +2174,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/competitor-analysis-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: competitor-analysis-template-v2
   name: Competitive Analysis Report
@@ -2484,7 +2484,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/competitor-analysis-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/market-research-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: market-research-template-v2
   name: Market Research Report
@@ -2740,7 +2740,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/market-research-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/project-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: project-brief-template-v2
   name: Project Brief
@@ -2965,7 +2965,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/project-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -3056,7 +3056,7 @@ The LLM will:
 ==================== END: .bmad-2d-phaser-game-dev/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/game-design-brainstorming.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Brainstorming Techniques Task
 
@@ -3351,7 +3351,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 ==================== END: .bmad-2d-phaser-game-dev/tasks/game-design-brainstorming.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-design-doc-template-v2
   name: Game Design Document (GDD)
@@ -3698,7 +3698,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/level-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: level-design-doc-template-v2
   name: Level Design Document
@@ -4186,7 +4186,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/level-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-brief-template-v2
   name: Game Brief
@@ -4546,7 +4546,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/checklists/game-design-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Document Quality Checklist
 
@@ -4752,7 +4752,7 @@ _Outline immediate next actions for the team based on this assessment._
 ==================== END: .bmad-2d-phaser-game-dev/checklists/game-design-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-architecture-template-v2
   name: Game Architecture Document
@@ -5369,7 +5369,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done Checklist
 
@@ -5534,7 +5534,7 @@ _Any specific concerns, recommendations, or clarifications needed before develop
 ==================== END: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/data/development-guidelines.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Guidelines
 
@@ -6186,7 +6186,7 @@ These guidelines ensure consistent, high-quality game development that meets per
 ==================== END: .bmad-2d-phaser-game-dev/data/development-guidelines.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/create-game-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Game Development Story Task
 
@@ -6407,7 +6407,7 @@ This task ensures game development stories are immediately actionable and enable
 ==================== END: .bmad-2d-phaser-game-dev/tasks/create-game-story.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-story-template-v2
   name: Game Development Story
@@ -6664,7 +6664,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-story-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-architecture-template-v2
   name: Game Architecture Document
@@ -7281,7 +7281,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-architecture-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-brief-template-v2
   name: Game Brief
@@ -7641,7 +7641,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-design-doc-template-v2
   name: Game Design Document (GDD)
@@ -7988,7 +7988,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/game-story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: game-story-template-v2
   name: Game Development Story
@@ -8245,7 +8245,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/game-story-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/level-design-doc-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: level-design-doc-template-v2
   name: Level Design Document
@@ -8733,7 +8733,7 @@ sections:
 ==================== END: .bmad-2d-phaser-game-dev/templates/level-design-doc-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Game Design Elicitation Task
 
@@ -8848,7 +8848,7 @@ The questions and perspectives offered should always consider:
 ==================== END: .bmad-2d-phaser-game-dev/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/create-game-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Game Development Story Task
 
@@ -9069,7 +9069,7 @@ This task ensures game development stories are immediately actionable and enable
 ==================== END: .bmad-2d-phaser-game-dev/tasks/create-game-story.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/game-design-brainstorming.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Brainstorming Techniques Task
 
@@ -9364,7 +9364,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 ==================== END: .bmad-2d-phaser-game-dev/tasks/game-design-brainstorming.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/checklists/game-design-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Design Document Quality Checklist
 
@@ -9570,7 +9570,7 @@ _Outline immediate next actions for the team based on this assessment._
 ==================== END: .bmad-2d-phaser-game-dev/checklists/game-design-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Story Definition of Done Checklist
 
@@ -9735,7 +9735,7 @@ _Any specific concerns, recommendations, or clarifications needed before develop
 ==================== END: .bmad-2d-phaser-game-dev/checklists/game-story-dod-checklist.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/workflows/game-dev-greenfield.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: game-dev-greenfield
   name: Game Development - Greenfield Project
@@ -9922,7 +9922,7 @@ workflow:
 ==================== END: .bmad-2d-phaser-game-dev/workflows/game-dev-greenfield.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/workflows/game-prototype.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: game-prototype
   name: Game Prototype Development
@@ -10101,7 +10101,7 @@ workflow:
 ==================== END: .bmad-2d-phaser-game-dev/workflows/game-prototype.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development BMad Knowledge Base
 
@@ -10356,7 +10356,7 @@ This knowledge base provides the foundation for effective game development using
 ==================== END: .bmad-2d-phaser-game-dev/data/bmad-kb.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/data/development-guidelines.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Game Development Guidelines
 

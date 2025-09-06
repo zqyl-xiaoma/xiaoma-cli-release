@@ -1,4 +1,4 @@
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: infrastructure-platform-template-v2
   name: Platform Infrastructure Implementation
@@ -22,7 +22,7 @@ workflow:
           - "Platform Integration Validation - Verify foundation supports upper layers"
           - "Developer Experience Analysis - Foundation impact on developer workflows"
           - "Disaster Recovery Testing - Foundation resilience validation"
-          - "BMAD Workflow Integration - Cross-agent support verification"
+          - "XIAOMA Workflow Integration - Cross-agent support verification"
           - "Finalize and Proceed to Container Platform"
 
 sections:
@@ -439,8 +439,8 @@ sections:
           - Recovery playbooks
 
   - id: bmad-workflow-integration
-    title: BMAD Workflow Integration
-    instruction: Validate that the platform supports all BMAD agent workflows and cross-functional requirements.
+    title: XIAOMA Workflow Integration
+    instruction: Validate that the platform supports all XIAOMA agent workflows and cross-functional requirements.
     sections:
       - id: development-agent-support
         title: Development Agent Support
@@ -620,7 +620,7 @@ sections:
         instruction: Document all integration points with external systems and services.
 
   - id: final-review
-    instruction: Final Review - Ensure all platform layers are properly implemented, integrated, and documented. Verify that the implementation fully supports the BMAD methodology and all agent workflows. Confirm successful validation against the infrastructure checklist.
+    instruction: Final Review - Ensure all platform layers are properly implemented, integrated, and documented. Verify that the implementation fully supports the XIAOMA methodology and all agent workflows. Confirm successful validation against the infrastructure checklist.
     content: |
       ---
 

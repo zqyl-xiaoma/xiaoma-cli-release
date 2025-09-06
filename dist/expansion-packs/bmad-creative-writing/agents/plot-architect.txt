@@ -117,7 +117,7 @@ Remember to present all options as numbered lists for easy selection.
 ==================== END: .bmad-creative-writing/agents/plot-architect.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -223,7 +223,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-creative-writing/tasks/create-doc.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Analyze Story Structure
 
@@ -293,7 +293,7 @@ Comprehensive structural analysis with actionable recommendations
 ==================== END: .bmad-creative-writing/tasks/analyze-story-structure.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -384,7 +384,7 @@ The LLM will:
 ==================== END: .bmad-creative-writing/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Advanced Elicitation Task
 
@@ -506,7 +506,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .bmad-creative-writing/tasks/advanced-elicitation.md ====================
 
 ==================== START: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: story-outline
@@ -605,7 +605,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/story-outline-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: premise-brief-tmpl
@@ -686,7 +686,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/premise-brief-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: scene-list-tmpl
@@ -744,7 +744,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/scene-list-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 ---
 template:
   id: chapter-draft-tmpl
@@ -829,7 +829,7 @@ sections:
 ==================== END: .bmad-creative-writing/templates/chapter-draft-tmpl.yaml ====================
 
 ==================== START: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Plot Structure Checklist
 
@@ -891,7 +891,7 @@ sections:
 ==================== END: .bmad-creative-writing/checklists/plot-structure-checklist.md ====================
 
 ==================== START: .bmad-creative-writing/data/story-structures.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Story Structure Patterns
 
@@ -961,7 +961,7 @@ sections:
 ==================== END: .bmad-creative-writing/data/story-structures.md ====================
 
 ==================== START: .bmad-creative-writing/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # BMad Creative Writing Knowledge Base
 

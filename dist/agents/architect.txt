@@ -388,7 +388,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -842,7 +842,7 @@ Apply the advanced elicitation task after major sections to refine based on user
 ==================== END: .xiaoma-core/tasks/document-project.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -933,7 +933,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/templates/architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: architecture-template-v2
   name: Architecture Document
@@ -1587,7 +1587,7 @@ sections:
 ==================== END: .xiaoma-core/templates/architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-architecture-template-v2
   name: Brownfield Enhancement Architecture
@@ -2067,7 +2067,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: frontend-architecture-template-v2
   name: Frontend Architecture Document
@@ -2289,7 +2289,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: fullstack-architecture-template-v2
   name: Fullstack Architecture Document

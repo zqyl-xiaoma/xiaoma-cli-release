@@ -509,7 +509,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -1263,7 +1263,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: competitor-analysis-template-v2
   name: Competitive Analysis Report
@@ -1573,7 +1573,7 @@ sections:
 ==================== END: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/market-research-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: market-research-template-v2
   name: Market Research Report
@@ -1829,7 +1829,7 @@ sections:
 ==================== END: .xiaoma-core/templates/market-research-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: project-brief-template-v2
   name: Project Brief
@@ -2056,7 +2056,7 @@ sections:
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
 <!-- Powered by XiaoMa™ Core -->
 
-# BMAD™ Knowledge Base
+# XIAOMA™ Knowledge Base
 
 ## Overview
 

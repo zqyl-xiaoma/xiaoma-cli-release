@@ -778,7 +778,7 @@ Choose a number (0-8) or 9 to proceed:
 ==================== END: .xiaoma-core/tasks/advanced-elicitation.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Create Document from Template (YAML Driven)
 
@@ -966,7 +966,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
 <!-- Powered by XiaoMa™ Core -->
 
-# BMAD™ Knowledge Base
+# XIAOMA™ Knowledge Base
 
 ## Overview
 
@@ -1935,7 +1935,7 @@ Use the **expansion-creator** pack to build your own:
 ==================== END: .xiaoma-core/data/elicitation-methods.md ====================
 
 ==================== START: .xiaoma-core/utils/workflow-management.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Workflow Management
 
@@ -2940,7 +2940,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: competitor-analysis-template-v2
   name: Competitive Analysis Report
@@ -3250,7 +3250,7 @@ sections:
 ==================== END: .xiaoma-core/templates/competitor-analysis-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/market-research-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: market-research-template-v2
   name: Market Research Report
@@ -3506,7 +3506,7 @@ sections:
 ==================== END: .xiaoma-core/templates/market-research-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: project-brief-template-v2
   name: Project Brief
@@ -3772,7 +3772,7 @@ sections:
 ==================== END: .xiaoma-core/data/brainstorming-techniques.md ====================
 
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XIAOMA™ Core -->
 
 # Checklist Validation Task
 
@@ -3863,7 +3863,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/templates/architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: architecture-template-v2
   name: Architecture Document
@@ -4517,7 +4517,7 @@ sections:
 ==================== END: .xiaoma-core/templates/architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-architecture-template-v2
   name: Brownfield Enhancement Architecture
@@ -4997,7 +4997,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: frontend-architecture-template-v2
   name: Frontend Architecture Document
@@ -5219,7 +5219,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: fullstack-architecture-template-v2
   name: Fullstack Architecture Document
@@ -7470,7 +7470,7 @@ Document sharded successfully:
 ==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: brownfield-prd-template-v2
   name: Brownfield Enhancement PRD
@@ -7754,7 +7754,7 @@ sections:
 ==================== END: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/templates/prd-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: prd-template-v2
   name: Product Requirements Document
@@ -8522,7 +8522,7 @@ After presenting the report, ask if the user wants:
 ==================== END: .xiaoma-core/checklists/pm-checklist.md ====================
 
 ==================== START: .xiaoma-core/templates/story-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: story-template-v2
   name: Story Document
@@ -10739,7 +10739,7 @@ Trace matrix: qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md
 ==================== END: .xiaoma-core/tasks/trace-requirements.md ====================
 
 ==================== START: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: qa-gate-template-v1
   name: Quality Gate Decision
@@ -11176,7 +11176,7 @@ You will now synthesize the inputs and the above principles into a final, compre
 ==================== END: .xiaoma-core/tasks/generate-ai-frontend-prompt.md ====================
 
 ==================== START: .xiaoma-core/templates/front-end-spec-tmpl.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 template:
   id: frontend-spec-template-v2
   name: UI/UX Specification
@@ -11529,7 +11529,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-spec-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/brownfield-fullstack.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: brownfield-fullstack
   name: Brownfield Full-Stack Enhancement
@@ -11830,7 +11830,7 @@ workflow:
 ==================== END: .xiaoma-core/workflows/brownfield-fullstack.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/brownfield-service.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: brownfield-service
   name: Brownfield Service/API Enhancement
@@ -12021,7 +12021,7 @@ workflow:
 ==================== END: .xiaoma-core/workflows/brownfield-service.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/brownfield-ui.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: brownfield-ui
   name: Brownfield UI/Frontend Enhancement
@@ -12222,7 +12222,7 @@ workflow:
 ==================== END: .xiaoma-core/workflows/brownfield-ui.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/greenfield-fullstack.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: greenfield-fullstack
   name: Greenfield Full-Stack Application Development
@@ -12466,7 +12466,7 @@ workflow:
 ==================== END: .xiaoma-core/workflows/greenfield-fullstack.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/greenfield-service.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: greenfield-service
   name: Greenfield Service/API Development
@@ -12676,7 +12676,7 @@ workflow:
 ==================== END: .xiaoma-core/workflows/greenfield-service.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/greenfield-ui.yaml ====================
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XIAOMA™ Core -->
 workflow:
   id: greenfield-ui
   name: Greenfield UI/Frontend Development

@@ -189,7 +189,7 @@ npx xiaoma-cli install
 
 ### Codex (CLI & Web)
 
-BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files.
+XIAOMA integrates with OpenAI Codex via `AGENTS.md` and committed core agent files.
 
 - Two installation modes:
   - Codex (local only): keeps `.xiaoma-core/` ignored for local dev.
@@ -198,7 +198,7 @@ BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files
     - `npx xiaoma-cli install -f -i codex-web -d .`
 
 - What gets generated:
-  - `AGENTS.md` at the project root with a BMAD section containing
+  - `AGENTS.md` at the project root with a XIAOMA section containing
     - How-to-use with Codex (CLI & Web)
     - Agent Directory (Title, ID, When To Use)
     - Detailed per‑agent sections with source path, when-to-use, activation phrasing, and YAML
@@ -211,7 +211,7 @@ BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files
   - Web: commit `.xiaoma-core/` and `AGENTS.md`, then open the repo in Codex and prompt the same way.
 
 - Refresh after changes:
-  - Re-run the appropriate install mode (`codex` or `codex-web`) to update the BMAD block in `AGENTS.md`.
+  - Re-run the appropriate install mode (`codex` or `codex-web`) to update the XIAOMA block in `AGENTS.md`.
 
 ## Special Agents
 
