@@ -2170,7 +2170,7 @@ sections:
     content: |
       ---
 
-      *Session facilitated using the BMAD-METHOD™ brainstorming framework*
+      *Session facilitated using the XIAOMA-CLI™ brainstorming framework*
 ==================== END: .bmad-2d-phaser-game-dev/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/templates/competitor-analysis-tmpl.yaml ====================

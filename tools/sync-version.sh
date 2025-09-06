@@ -6,7 +6,7 @@
 echo "🔄 Syncing local version with npm..."
 
 # Get the latest published version
-VERSION=$(npm view bmad-method@latest version)
+VERSION=$(npm view xiaoma-cli@latest version)
 echo "📦 Latest published version: $VERSION"
 
 # Update package.json

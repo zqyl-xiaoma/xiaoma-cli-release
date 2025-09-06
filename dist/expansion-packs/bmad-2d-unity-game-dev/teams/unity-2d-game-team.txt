@@ -592,7 +592,7 @@ You are developing games as a "Player Experience CEO" - thinking like a game dir
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx xiaoma-cli install
 # Select the bmad-2d-unity-game-dev expansion pack when prompted
 ```
 
@@ -1222,7 +1222,7 @@ This 2D Unity Game Development expansion pack extends BMad-Method beyond traditi
 1. **Install via CLI**:
 
    ```bash
-   npx bmad-method install
+   npx xiaoma-cli install
    # Select "Install game development expansion pack" option
    ```
 
@@ -2753,7 +2753,7 @@ sections:
     content: |
       ---
 
-      *Session facilitated using the BMAD-METHOD™ brainstorming framework*
+      *Session facilitated using the XIAOMA-CLI™ brainstorming framework*
 ==================== END: .bmad-2d-unity-game-dev/templates/brainstorming-output-tmpl.yaml ====================
 
 ==================== START: .bmad-2d-unity-game-dev/templates/competitor-analysis-tmpl.yaml ====================
@@ -14200,7 +14200,7 @@ You are developing games as a "Player Experience CEO" - thinking like a game dir
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx xiaoma-cli install
 # Select the bmad-2d-unity-game-dev expansion pack when prompted
 ```
 
@@ -14830,7 +14830,7 @@ This 2D Unity Game Development expansion pack extends BMad-Method beyond traditi
 1. **Install via CLI**:
 
    ```bash
-   npx bmad-method install
+   npx xiaoma-cli install
    # Select "Install game development expansion pack" option
    ```
 

@@ -117,7 +117,7 @@ jobs:
           ## 📦 Installation
 
           ```bash
-          npx bmad-method install
+          npx xiaoma-cli install
           ```
 
           **Full Changelog**: https://github.com/zqyl-xiaoma/xiaoma-cli-release/compare/${{ steps.version.outputs.previous_tag }}...v${{ steps.version.outputs.new_version }}
@@ -168,7 +168,7 @@ jobs:
           echo "🎉 Successfully released v${{ steps.version.outputs.new_version }}!"
           echo "📦 Published to NPM with @latest tag"
           echo "🏷️ Git tag: v${{ steps.version.outputs.new_version }}"
-          echo "✅ Users running 'npx bmad-method install' will now get version ${{ steps.version.outputs.new_version }}"
+          echo "✅ Users running 'npx xiaoma-cli install' will now get version ${{ steps.version.outputs.new_version }}"
           echo ""
           echo "📝 Release notes preview:"
           cat release_notes.md

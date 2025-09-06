@@ -78,12 +78,12 @@ ide-configurations:
       # 4. Rules are stored in .clinerules/ directory in your project
   gemini:
     name: Gemini CLI
-    rule-dir: .gemini/bmad-method/
+    rule-dir: .gemini/xiaoma-cli/
     format: single-file
     command-suffix: .md
     instructions: |
       # To use BMad agents with the Gemini CLI:
-      # 1. The installer creates a .gemini/bmad-method/ directory in your project.
+      # 1. The installer creates a .gemini/xiaoma-cli/ directory in your project.
       # 2. It concatenates all agent files into a single GEMINI.md file.
       # 3. Simply mention the agent in your prompt (e.g., "As *dev, ...").
       # 4. The Gemini CLI will automatically have the context for that agent.
@@ -112,12 +112,12 @@ ide-configurations:
 
   qwen-code:
     name: Qwen Code
-    rule-dir: .qwen/bmad-method/
+    rule-dir: .qwen/xiaoma-cli/
     format: single-file
     command-suffix: .md
     instructions: |
       # To use BMad agents with Qwen Code:
-      # 1. The installer creates a .qwen/bmad-method/ directory in your project.
+      # 1. The installer creates a .qwen/xiaoma-cli/ directory in your project.
       # 2. It concatenates all agent files into a single QWEN.md file.
       # 3. Simply mention the agent in your prompt (e.g., "As *dev, ...").
       # 4. The Qwen Code CLI will automatically have the context for that agent.

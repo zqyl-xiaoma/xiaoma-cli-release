@@ -37,7 +37,7 @@ The Creative Writing Expansion Pack extends BMad-Method with a comprehensive sui
 ### Via BMad Installer (After PR Acceptance)
 
 ```bash
-npx bmad-method install
+npx xiaoma-cli install
 # Select "Creative Writing Studio" from the expansion packs list
 ```
 
@@ -46,7 +46,7 @@ npx bmad-method install
 1. Clone or download this expansion pack
 2. Copy to your BMad Method installation:
    ```bash
-   cp -r bmad-creative-writing/* ~/bmad-method/expansion-packs/bmad-creative-writing/
+   cp -r bmad-creative-writing/* ~/xiaoma-cli/expansion-packs/bmad-creative-writing/
    ```
 3. Run the BMad installer to register the pack
 

@@ -184,7 +184,7 @@ If you want to do the planning on the web with Claude (Sonnet 4 or Opus), Gemini
 
 ```bash
 # Interactive installation (recommended)
-npx bmad-method install
+npx xiaoma-cli install
 ```
 
 ### Codex (CLI & Web)
@@ -193,9 +193,9 @@ BMAD integrates with OpenAI Codex via `AGENTS.md` and committed core agent files
 
 - Two installation modes:
   - Codex (local only): keeps `.xiaoma-core/` ignored for local dev.
-    - `npx bmad-method install -f -i codex -d .`
+    - `npx xiaoma-cli install -f -i codex -d .`
   - Codex Web Enabled: ensures `.xiaoma-core/` is tracked so you can commit it for Codex Web.
-    - `npx bmad-method install -f -i codex-web -d .`
+    - `npx xiaoma-cli install -f -i codex-web -d .`
 
 - What gets generated:
   - `AGENTS.md` at the project root with a BMAD section containing
@@ -521,8 +521,8 @@ As your project grows and the code starts to build consistent patterns, coding s
 ## Getting Help
 
 - **Discord Community**: [Join Discord](https://discord.gg/gk8jAdXWmj)
-- **GitHub Issues**: [Report bugs](https://github.com/bmadcode/bmad-method/issues)
-- **Documentation**: [Browse docs](https://github.com/bmadcode/bmad-method/docs)
+- **GitHub Issues**: [Report bugs](https://github.com/zqyl-xiaoma/xiaoma-cli-release/issues)
+- **Documentation**: [Browse docs](https://github.com/zqyl-xiaoma/xiaoma-cli-release/docs)
 - **YouTube**: [BMadCode Channel](https://www.youtube.com/@BMadCode)
 
 ## Conclusion

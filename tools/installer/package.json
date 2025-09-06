@@ -1,6 +1,6 @@
 {
-  "name": "bmad-method",
-  "version": "4.42.1",
+  "name": "xiaoma-cli",
+  "version": "1.0.11",
   "description": "BMad Method installer - AI-powered Agile development framework",
   "keywords": [
     "bmad",
@@ -11,20 +11,20 @@
     "installer",
     "agents"
   ],
-  "homepage": "https://github.com/bmad-team/bmad-method#readme",
+  "homepage": "https://github.com/bmad-team/xiaoma-cli#readme",
   "bugs": {
-    "url": "https://github.com/bmad-team/bmad-method/issues"
+    "url": "https://github.com/bmad-team/xiaoma-cli/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bmad-team/bmad-method.git"
+    "url": "https://github.com/bmad-team/xiaoma-cli.git"
   },
   "license": "MIT",
   "author": "BMad Team",
   "main": "lib/installer.js",
   "bin": {
     "bmad": "./bin/bmad.js",
-    "bmad-method": "./bin/bmad.js"
+    "xiaoma-cli": "./bin/bmad.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

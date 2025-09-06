@@ -93,7 +93,7 @@ Use GitHub Codespaces for a full development environment:
 
 ### Q: Why was this implemented?
 
-**A:** With over 1,600 forks of BMAD-METHOD, this saves thousands of GitHub Actions minutes monthly while maintaining code quality standards.
+**A:** With over 1,600 forks of XIAOMA-CLI, this saves thousands of GitHub Actions minutes monthly while maintaining code quality standards.
 
 ## Need Help?
 

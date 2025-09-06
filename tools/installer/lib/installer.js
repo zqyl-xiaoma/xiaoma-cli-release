@@ -929,8 +929,8 @@ class Installer {
     }
 
     if (config.installType === 'single-agent') {
-      console.log(chalk.dim('\nNeed other agents? Run: npx bmad-method install --agent=<name>'));
-      console.log(chalk.dim('Need everything? Run: npx bmad-method install --full'));
+      console.log(chalk.dim('\nNeed other agents? Run: npx xiaoma-cli install --agent=<name>'));
+      console.log(chalk.dim('Need everything? Run: npx xiaoma-cli install --full'));
     }
 
     // Warning for Cursor custom modes if agents were updated
@@ -984,7 +984,7 @@ class Installer {
       console.log(chalk.cyan(`  ${agent.id.padEnd(20)}`), agent.description);
     }
 
-    console.log(chalk.dim('\nInstall with: npx bmad-method install --agent=<id>\n'));
+    console.log(chalk.dim('\nInstall with: npx xiaoma-cli install --agent=<id>\n'));
   }
 
   async listExpansionPacks() {
@@ -1006,7 +1006,7 @@ class Installer {
       console.log();
     }
 
-    console.log(chalk.dim('Install with: npx bmad-method install --full --expansion-packs <id>\n'));
+    console.log(chalk.dim('Install with: npx xiaoma-cli install --full --expansion-packs <id>\n'));
   }
 
   async showStatus() {
