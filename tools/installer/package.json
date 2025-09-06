@@ -1,7 +1,7 @@
 {
   "name": "xiaoma-cli",
-  "version": "1.0.12",
-  "description": "BMad Method installer - AI-powered Agile development framework",
+  "version": "1.0.13",
+  "description": "XiaoMa-Cli installer - AI-powered Agile development framework",
   "keywords": [
     "bmad",
     "agile",
@@ -20,7 +20,7 @@
     "url": "https://github.com/bmad-team/xiaoma-cli.git"
   },
   "license": "MIT",
-  "author": "BMad Team",
+  "author": "XiaoMa Team",
   "main": "lib/installer.js",
   "bin": {
     "bmad": "./bin/bmad.js",

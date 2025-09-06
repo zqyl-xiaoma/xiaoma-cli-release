@@ -93,15 +93,15 @@ class IdeSetup extends BaseIdeSetup {
   async setupCodex(installDir, selectedAgent, options) {
     options = options ?? { webEnabled: false };
     // Codex reads AGENTS.md at the project root as project memory (CLI & Web).
-    // Inject/update a BMAD section with guidance, directory, and details.
+    // Inject/update a XIAOMA section with guidance, directory, and details.
     const filePath = path.join(installDir, 'AGENTS.md');
-    const startMarker = '<!-- BEGIN: BMAD-AGENTS -->';
-    const endMarker = '<!-- END: BMAD-AGENTS -->';
+    const startMarker = '<!-- BEGIN: XIAOMA-AGENTS -->';
+    const endMarker = '<!-- END: XIAOMA-AGENTS -->';
 
     const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
     const tasks = await this.getAllTaskIds(installDir);
 
-    // Build BMAD section content
+    // Build XIAOMA section content
     let section = '';
     section += `${startMarker}\n`;
     section += `# XIAOMA-CLI Agents and Tasks\n\n`;
@@ -114,7 +114,7 @@ class IdeSetup extends BaseIdeSetup {
 
     section += `### Helpful Commands\n\n`;
     section += `- List agents: \`npx xiaoma-cli list:agents\`\n`;
-    section += `- Reinstall BMAD core and regenerate AGENTS.md: \`npx xiaoma-cli install -f -i codex\`\n`;
+    section += `- Reinstall XIAOMA core and regenerate AGENTS.md: \`npx xiaoma-cli install -f -i codex\`\n`;
     section += `- Validate configuration: \`npx xiaoma-cli validate\`\n\n`;
 
     // Agents directory table
@@ -172,16 +172,16 @@ class IdeSetup extends BaseIdeSetup {
     if (await fileManager.pathExists(filePath)) {
       const existing = await fileManager.readFile(filePath);
       if (existing.includes(startMarker) && existing.includes(endMarker)) {
-        // Replace existing BMAD block
+        // Replace existing XIAOMA block
         const pattern = String.raw`${startMarker}[\s\S]*?${endMarker}`;
         const replaced = existing.replace(new RegExp(pattern, 'm'), section);
         finalContent = replaced;
       } else {
-        // Append BMAD block to existing file
+        // Append XIAOMA block to existing file
         finalContent = existing.trimEnd() + `\n\n` + section;
       }
     } else {
-      // Create fresh AGENTS.md with a small header and BMAD block
+      // Create fresh AGENTS.md with a small header and XIAOMA block
       finalContent += '# Project Agents\n\n';
       finalContent += 'This file provides guidance and memory for Codex CLI.\n\n';
       finalContent += section;
@@ -191,7 +191,7 @@ class IdeSetup extends BaseIdeSetup {
     console.log(chalk.green('✓ Created/updated AGENTS.md for Codex CLI integration'));
     console.log(
       chalk.dim(
-        'Codex reads AGENTS.md automatically. Run `codex` in this project to use BMAD agents.',
+        'Codex reads AGENTS.md automatically. Run `codex` in this project to use XIAOMA agents.',
       ),
     );
 
@@ -222,12 +222,12 @@ class IdeSetup extends BaseIdeSetup {
     // Adjust .gitignore behavior depending on Codex mode
     try {
       const gitignorePath = path.join(installDir, '.gitignore');
-      const ignoreLines = ['# BMAD (local only)', '.xiaoma-core/', '.bmad-*/'];
+      const ignoreLines = ['# XIAOMA (local only)', '.xiaoma-core/', '.bmad-*/'];
       const exists = await fileManager.pathExists(gitignorePath);
       if (options.webEnabled) {
         if (exists) {
           let gi = await fileManager.readFile(gitignorePath);
-          // Remove lines that ignore BMAD dot-folders
+          // Remove lines that ignore XIAOMA dot-folders
           const updated = gi
             .split(/\r?\n/)
             .filter((l) => !/^\s*\.xiaoma-core\/?\s*$/.test(l) && !/^\s*\.bmad-\*\/?\s*$/.test(l))
@@ -844,17 +844,17 @@ class IdeSetup extends BaseIdeSetup {
         if (await fileManager.pathExists(altConfigPath)) {
           const configContent = await fileManager.readFile(altConfigPath);
           const config = yaml.load(configContent);
-          return config.slashPrefix || 'BMad';
+          return config.slashPrefix || 'XiaoMa';
         }
-        return 'BMad'; // fallback
+        return 'XiaoMa'; // fallback
       }
 
       const configContent = await fileManager.readFile(coreConfigPath);
       const config = yaml.load(configContent);
-      return config.slashPrefix || 'BMad';
+      return config.slashPrefix || 'XiaoMa';
     } catch (error) {
-      console.warn(`Failed to read core slashPrefix, using default 'BMad': ${error.message}`);
-      return 'BMad';
+      console.warn(`Failed to read core slashPrefix, using default 'XiaoMa': ${error.message}`);
+      return 'XiaoMa';
     }
   }
 
@@ -1446,7 +1446,7 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
     }
 
     console.log(chalk.green(`\n✓ Github Copilot setup complete!`));
-    console.log(chalk.dim(`You can now find the BMad agents in the Chat view's mode selector.`));
+    console.log(chalk.dim(`You can now find the XiaoMa agents in the Chat view's mode selector.`));
 
     return true;
   }
@@ -1463,7 +1463,9 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
       try {
         const existingContent = await fileManager.readFile(settingsPath);
         existingSettings = JSON.parse(existingContent);
-        console.log(chalk.yellow('Found existing .vscode/settings.json. Merging BMad settings...'));
+        console.log(
+          chalk.yellow('Found existing .vscode/settings.json. Merging XiaoMa settings...'),
+        );
       } catch {
         console.warn(chalk.yellow('Could not parse existing settings.json. Creating new one.'));
         existingSettings = {};
@@ -1480,7 +1482,7 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
       console.log('\n'.repeat(2));
       console.log(chalk.blue('🔧 Github Copilot Agent Settings Configuration'));
       console.log(
-        chalk.dim('BMad works best with specific VS Code settings for optimal agent experience.'),
+        chalk.dim('XiaoMa works best with specific VS Code settings for optimal agent experience.'),
       );
       console.log(''); // Add extra spacing
 
@@ -1533,7 +1535,7 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
         'github.copilot.chat.agent.autoFix': true,
         'chat.tools.autoApprove': false,
       };
-      console.log(chalk.green('✓ Using recommended BMad defaults for Github Copilot settings'));
+      console.log(chalk.green('✓ Using recommended XiaoMa defaults for Github Copilot settings'));
     } else {
       // Manual configuration
       console.log(chalk.blue("\n📋 Let's configure each setting for your preferences:"));
@@ -1591,7 +1593,7 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
       }
 
       bmadSettings = {
-        'chat.agent.enabled': true, // Always enabled - required for BMad agents
+        'chat.agent.enabled': true, // Always enabled - required for XiaoMa agents
         'chat.agent.maxRequests': Number.parseInt(manualSettings.maxRequests),
         'github.copilot.chat.agent.runTasks': manualSettings.runTasks,
         'chat.mcp.discovery.enabled': manualSettings.mcpDiscovery,
@@ -1646,7 +1648,7 @@ tools: ['changes', 'codebase', 'fetch', 'findTestFiles', 'githubRepo', 'problems
       // Clear any previous output and add spacing to avoid conflicts with loaders
       console.log('\n'.repeat(2));
       console.log(chalk.blue('📍 Auggie CLI Location Configuration'));
-      console.log(chalk.dim('Choose where to install BMad agents for Auggie CLI access.'));
+      console.log(chalk.dim('Choose where to install XiaoMa agents for Auggie CLI access.'));
       console.log(''); // Add extra spacing
 
       const response = await inquirer.prompt([

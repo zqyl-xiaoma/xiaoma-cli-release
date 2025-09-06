@@ -95,7 +95,7 @@ class ConfigLoader {
               fullDescription:
                 config.description || config['short-title'] || 'No description available',
               version: config.version || '1.0.0',
-              author: config.author || 'BMad Team',
+              author: config.author || 'XiaoMa Team',
               packPath: packPath,
               dependencies: config.dependencies?.agents || [],
             });
@@ -117,7 +117,7 @@ class ConfigLoader {
               description: 'No description available',
               fullDescription: 'No description available',
               version: '1.0.0',
-              author: 'BMad Team',
+              author: 'XiaoMa Team',
               packPath: packPath,
               dependencies: [],
             });

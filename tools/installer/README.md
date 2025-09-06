@@ -1,4 +1,4 @@
-# BMad Method Installer
+# XiaoMa-Cli Installer
 
 ## Usage
 

@@ -221,7 +221,7 @@ class Installer {
   }
 
   async performFreshInstall(config, installDir, spinner, options = {}) {
-    spinner.text = 'Installing BMad Method...';
+    spinner.text = 'Installing XiaoMa-Cli...';
 
     let files = [];
 
@@ -490,9 +490,9 @@ class Installer {
     let choices = [];
 
     if (versionCompare < 0) {
-      console.log(chalk.cyan('\n⬆️  Upgrade available for BMad core'));
+      console.log(chalk.cyan('\n⬆️  Upgrade available for XiaoMa-Cli core'));
       choices.push({
-        name: `Upgrade BMad core (v${currentVersion} → v${newVersion})`,
+        name: `Upgrade XiaoMa-Cli core (v${currentVersion} → v${newVersion})`,
         value: 'upgrade',
       });
     } else if (versionCompare === 0) {
@@ -505,13 +505,13 @@ class Installer {
       }
       console.log(chalk.yellow('\n⚠️  Same version already installed'));
       choices.push({
-        name: `Force reinstall BMad core (v${currentVersion} - reinstall)`,
+        name: `Force reinstall XiaoMa-Cli core (v${currentVersion} - reinstall)`,
         value: 'reinstall',
       });
     } else {
       console.log(chalk.yellow('\n⬇️  Installed version is newer than available'));
       choices.push({
-        name: `Downgrade BMad core (v${currentVersion} → v${newVersion})`,
+        name: `Downgrade XiaoMa-Cli core (v${currentVersion} → v${newVersion})`,
         value: 'reinstall',
       });
     }
@@ -848,7 +848,7 @@ class Installer {
   }
 
   async performReinstall(config, installDir, spinner) {
-    spinner.start('Preparing to reinstall BMad Method...');
+    spinner.start('Preparing to reinstall XiaoMa-Cli...');
 
     // Remove existing .xiaoma-core
     const bmadCorePath = path.join(installDir, '.xiaoma-core');
@@ -868,14 +868,14 @@ class Installer {
   }
 
   showSuccessMessage(config, installDir, options = {}) {
-    console.log(chalk.green('\n✓ BMad Method installed successfully!\n'));
+    console.log(chalk.green('\n✓ XiaoMa-Cli installed successfully!\n'));
 
     const ides = config.ides || (config.ide ? [config.ide] : []);
     if (ides.length > 0) {
       for (const ide of ides) {
         const ideConfig = configLoader.getIdeConfiguration(ide);
         if (ideConfig?.instructions) {
-          console.log(chalk.bold(`To use BMad agents in ${ideConfig.name}:`));
+          console.log(chalk.bold(`To use XiaoMa-Cli agents in ${ideConfig.name}:`));
           console.log(ideConfig.instructions);
         }
       }
@@ -951,7 +951,7 @@ class Installer {
     );
     console.log(
       chalk.red(
-        'This guide contains essential information about the BMad workflow and how to use the agents effectively.',
+        'This guide contains essential information about the XiaoMa-Cli workflow and how to use the agents effectively.',
       ),
     );
   }
@@ -1024,7 +1024,7 @@ class Installer {
       return;
     }
 
-    console.log(chalk.bold('\nBMad Installation Status:\n'));
+    console.log(chalk.bold('\nXiaoMa-Cli Installation Status:\n'));
     console.log(`  Directory:      ${installDir}`);
     console.log(`  Version:        ${manifest.version}`);
     console.log(`  Installed:      ${new Date(manifest.installed_at).toLocaleDateString()}`);

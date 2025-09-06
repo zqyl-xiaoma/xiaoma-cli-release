@@ -1,6 +1,6 @@
 installation-options:
   full:
-    name: Complete BMad Core
+    name: Complete XiaoMa Core
     description: Copy the entire .xiaoma-core folder with all agents, templates, and tools
     action: copy-folder
     source: xiaoma-core
@@ -15,26 +15,26 @@ ide-configurations:
     format: multi-file
     command-suffix: .mdc
     instructions: |
-      # To use BMad agents in Cursor:
+      # To use XiaoMa agents in Cursor:
       # 1. Press Ctrl+L (Cmd+L on Mac) to open the chat
       # 2. Type @agent-name (e.g., "@dev", "@pm", "@architect")
       # 3. The agent will adopt that persona for the conversation
   claude-code:
     name: Claude Code
-    rule-dir: .claude/commands/BMad/
+    rule-dir: .claude/commands/XiaoMa/
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Claude Code:
+      # To use XiaoMa agents in Claude Code:
       # 1. Type /agent-name (e.g., "/dev", "/pm", "/architect")
       # 2. Claude will switch to that agent's persona
   crush:
     name: Crush
-    rule-dir: .crush/commands/BMad/
+    rule-dir: .crush/commands/XiaoMa/
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Crush:
+      # To use XiaoMa agents in Crush:
       # 1. Press CTRL + P and press TAB
       # 2. Select agent or task
       # 3. Crush will switch to that agent's persona / task
@@ -44,7 +44,7 @@ ide-configurations:
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Windsurf:
+      # To use XiaoMa agents in Windsurf:
       # 1. Type /agent-name (e.g., "/dev", "/pm")
       # 2. Windsurf will adopt that agent's persona
   trae:
@@ -53,7 +53,7 @@ ide-configurations:
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Trae:
+      # To use XiaoMa agents in Trae:
       # 1. Type @agent-name (e.g., "@dev", "@pm", "@architect")
       # 2. Trae will adopt that agent's persona
   roo:
@@ -61,7 +61,7 @@ ide-configurations:
     format: custom-modes
     file: .roomodes
     instructions: |
-      # To use BMad agents in Roo Code:
+      # To use XiaoMa agents in Roo Code:
       # 1. Open the mode selector (usually in the status bar)
       # 2. Select any bmad-{agent} mode (e.g., "bmad-dev", "bmad-pm")
       # 3. The AI will adopt that agent's full personality and capabilities
@@ -71,7 +71,7 @@ ide-configurations:
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Cline:
+      # To use XiaoMa agents in Cline:
       # 1. Open the Cline chat panel in VS Code
       # 2. Type @agent-name (e.g., "@dev", "@pm", "@architect")
       # 3. The agent will adopt that persona for the conversation
@@ -82,7 +82,7 @@ ide-configurations:
     format: single-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents with the Gemini CLI:
+      # To use XiaoMa agents with the Gemini CLI:
       # 1. The installer creates a .gemini/xiaoma-cli/ directory in your project.
       # 2. It concatenates all agent files into a single GEMINI.md file.
       # 3. Simply mention the agent in your prompt (e.g., "As *dev, ...").
@@ -93,7 +93,7 @@ ide-configurations:
     format: multi-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents with Github Copilot:
+      # To use XiaoMa agents with Github Copilot:
       # 1. The installer creates a .github/chatmodes/ directory in your project
       # 2. Open the Chat view (`⌃⌘I` on Mac, `Ctrl+Alt+I` on Windows/Linux) and select **Agent** from the chat mode selector.
       # 3. The agent will adopt that persona for the conversation
@@ -105,7 +105,7 @@ ide-configurations:
     format: custom-modes
     file: .kilocodemodes
     instructions: |
-      # To use BMAD™ agents in Kilo Code:
+      # To use XIAOMA™ agents in Kilo Code:
       # 1. Open the mode selector in VSCode
       # 2. Select a bmad-{agent} mode (e.g. "bmad-dev")
       # 3. The AI adopts that agent's persona and capabilities
@@ -116,7 +116,7 @@ ide-configurations:
     format: single-file
     command-suffix: .md
     instructions: |
-      # To use BMad agents with Qwen Code:
+      # To use XiaoMa agents with Qwen Code:
       # 1. The installer creates a .qwen/xiaoma-cli/ directory in your project.
       # 2. It concatenates all agent files into a single QWEN.md file.
       # 3. Simply mention the agent in your prompt (e.g., "As *dev, ...").
@@ -136,7 +136,7 @@ ide-configurations:
         description: Stored in your repository and shared with your team
     command-suffix: .md
     instructions: |
-      # To use BMad agents in Auggie CLI (Augment Code):
+      # To use XiaoMa agents in Auggie CLI (Augment Code):
       # 1. Type /bmad:agent-name (e.g., "/bmad:dev", "/bmad:pm", "/bmad:architect")
       # 2. The agent will adopt that persona for the conversation
       # 3. Commands are available based on your selected location(s)
@@ -146,8 +146,8 @@ ide-configurations:
     format: project-memory
     file: AGENTS.md
     instructions: |
-      # To use BMAD agents with Codex CLI:
-      # 1. The installer updates/creates AGENTS.md at your project root with BMAD agents and tasks.
+      # To use XIAOMA agents with Codex CLI:
+      # 1. The installer updates/creates AGENTS.md at your project root with XIAOMA agents and tasks.
       # 2. Run `codex` in your project. Codex automatically reads AGENTS.md as project memory.
       # 3. Mention agents in your prompt (e.g., "As dev, please implement ...") or reference tasks.
       # 4. You can further customize global Codex behavior via ~/.codex/config.toml.
@@ -157,7 +157,7 @@ ide-configurations:
     format: project-memory
     file: AGENTS.md
     instructions: |
-      # To enable BMAD agents for Codex Web (cloud):
+      # To enable XIAOMA agents for Codex Web (cloud):
       # 1. The installer updates/creates AGENTS.md and ensures `.xiaoma-core` is NOT ignored by git.
       # 2. Commit `.xiaoma-core/` and `AGENTS.md` to your repository.
       # 3. Open the repo in Codex Web and reference agents naturally (e.g., "As dev, ...").
