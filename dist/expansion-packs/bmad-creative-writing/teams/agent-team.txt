@@ -1048,7 +1048,7 @@ Remember: BMad Creative Writing provides structure to liberate creativity, not c
 ==================== END: .bmad-creative-writing/data/bmad-kb.md ====================
 
 ==================== START: .bmad-creative-writing/data/elicitation-methods.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Elicitation Methods Data
 
@@ -1435,7 +1435,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-creative-writing/tasks/create-doc.md ====================
 
 ==================== START: .bmad-creative-writing/tasks/kb-mode-interaction.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # KB Mode Interaction Task
 

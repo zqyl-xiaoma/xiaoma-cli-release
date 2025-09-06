@@ -104,7 +104,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/pm.md ====================
 
 ==================== START: .xiaoma-core/tasks/brownfield-create-epic.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Brownfield Epic Task
 
@@ -269,7 +269,7 @@ The epic creation is successful when:
 ==================== END: .xiaoma-core/tasks/brownfield-create-epic.md ====================
 
 ==================== START: .xiaoma-core/tasks/brownfield-create-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Brownfield Story Task
 
@@ -421,7 +421,7 @@ The story creation is successful when:
 ==================== END: .xiaoma-core/tasks/brownfield-create-story.md ====================
 
 ==================== START: .xiaoma-core/tasks/correct-course.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Correct Course Task
 
@@ -496,7 +496,7 @@ The story creation is successful when:
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 
@@ -976,7 +976,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/shard-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document Sharding Task
 
@@ -1656,7 +1656,7 @@ sections:
 ==================== END: .xiaoma-core/templates/prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/change-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Change Navigation Checklist
 
@@ -1843,7 +1843,7 @@ Keep it action-oriented and forward-looking.]]
 ==================== END: .xiaoma-core/checklists/change-checklist.md ====================
 
 ==================== START: .xiaoma-core/checklists/pm-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Product Manager (PM) Requirements Checklist
 
@@ -2218,7 +2218,7 @@ After presenting the report, ask if the user wants:
 ==================== END: .xiaoma-core/checklists/pm-checklist.md ====================
 
 ==================== START: .xiaoma-core/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 

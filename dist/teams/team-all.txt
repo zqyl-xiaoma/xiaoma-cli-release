@@ -656,7 +656,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/ux-expert.md ====================
 
 ==================== START: .xiaoma-core/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Advanced Elicitation Task
 
@@ -884,7 +884,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .xiaoma-core/tasks/create-doc.md ====================
 
 ==================== START: .xiaoma-core/tasks/kb-mode-interaction.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # KB Mode Interaction Task
 
@@ -964,7 +964,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== END: .xiaoma-core/tasks/kb-mode-interaction.md ====================
 
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # BMAD™ Knowledge Base
 
@@ -992,7 +992,7 @@ XIAOMA-CLI™ (Breakthrough Method of Agile AI-driven Development) is a framewor
 
 ### The Core Method
 
-BMad transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
+XiaoMa transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
 
 1. **You Direct, AI Executes**: You provide vision and decisions; agents handle implementation details
 2. **Specialized Agents**: Each agent masters one role (PM, Developer, Architect, etc.)
@@ -1776,7 +1776,7 @@ Use the **expansion-creator** pack to build your own:
 ==================== END: .xiaoma-core/data/bmad-kb.md ====================
 
 ==================== START: .xiaoma-core/data/elicitation-methods.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Elicitation Methods Data
 
@@ -2009,7 +2009,7 @@ Agents should be workflow-aware: know active workflow, their role, access artifa
 ==================== END: .xiaoma-core/utils/workflow-management.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 
@@ -2292,7 +2292,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .xiaoma-core/tasks/document-project.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document an Existing Project
 
@@ -2640,7 +2640,7 @@ Apply the advanced elicitation task after major sections to refine based on user
 ==================== END: .xiaoma-core/tasks/document-project.md ====================
 
 ==================== START: .xiaoma-core/tasks/facilitate-brainstorming-session.md ====================
-## <!-- Powered by BMAD™ Core -->
+## <!-- Powered by XiaoMa™ Core -->
 
 docOutputLocation: docs/brainstorming-session-results.md
 template: '.xiaoma-core/templates/brainstorming-output-tmpl.yaml'
@@ -3731,7 +3731,7 @@ sections:
 ==================== END: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/data/brainstorming-techniques.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Brainstorming Techniques Data
 
@@ -6046,7 +6046,7 @@ sections:
 ==================== END: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/architect-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Architect Solution Validation Checklist
 
@@ -6489,7 +6489,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 ==================== END: .xiaoma-core/checklists/architect-checklist.md ====================
 
 ==================== START: .xiaoma-core/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 
@@ -6497,7 +6497,7 @@ None Listed
 ==================== END: .xiaoma-core/data/technical-preferences.md ====================
 
 ==================== START: .xiaoma-core/tasks/apply-qa-fixes.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # apply-qa-fixes
 
@@ -6650,7 +6650,7 @@ Fix plan:
 ==================== END: .xiaoma-core/tasks/apply-qa-fixes.md ====================
 
 ==================== START: .xiaoma-core/tasks/validate-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Validate Next Story Task
 
@@ -6789,7 +6789,7 @@ Provide a structured validation report including:
 ==================== END: .xiaoma-core/tasks/validate-next-story.md ====================
 
 ==================== START: .xiaoma-core/checklists/story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Story Definition of Done (DoD) Checklist
 
@@ -6888,7 +6888,7 @@ Be honest - it's better to flag issues now than have them discovered later.]]
 ==================== END: .xiaoma-core/checklists/story-dod-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/brownfield-create-epic.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Brownfield Epic Task
 
@@ -7053,7 +7053,7 @@ The epic creation is successful when:
 ==================== END: .xiaoma-core/tasks/brownfield-create-epic.md ====================
 
 ==================== START: .xiaoma-core/tasks/brownfield-create-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Brownfield Story Task
 
@@ -7205,7 +7205,7 @@ The story creation is successful when:
 ==================== END: .xiaoma-core/tasks/brownfield-create-story.md ====================
 
 ==================== START: .xiaoma-core/tasks/correct-course.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Correct Course Task
 
@@ -7280,7 +7280,7 @@ The story creation is successful when:
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
 ==================== START: .xiaoma-core/tasks/shard-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document Sharding Task
 
@@ -7960,7 +7960,7 @@ sections:
 ==================== END: .xiaoma-core/templates/prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/change-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Change Navigation Checklist
 
@@ -8147,7 +8147,7 @@ Keep it action-oriented and forward-looking.]]
 ==================== END: .xiaoma-core/checklists/change-checklist.md ====================
 
 ==================== START: .xiaoma-core/checklists/pm-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Product Manager (PM) Requirements Checklist
 
@@ -8663,7 +8663,7 @@ sections:
 ==================== END: .xiaoma-core/templates/story-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/po-master-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Product Owner (PO) Master Validation Checklist
 
@@ -9100,7 +9100,7 @@ After presenting the report, ask if the user wants:
 ==================== END: .xiaoma-core/checklists/po-master-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/nfr-assess.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # nfr-assess
 
@@ -9448,7 +9448,7 @@ performance_deep_dive:
 ==================== END: .xiaoma-core/tasks/nfr-assess.md ====================
 
 ==================== START: .xiaoma-core/tasks/qa-gate.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # qa-gate
 
@@ -9614,7 +9614,7 @@ Gate: CONCERNS → qa.qaLocation/gates/{epic}.{story}-{slug}.yml
 ==================== END: .xiaoma-core/tasks/qa-gate.md ====================
 
 ==================== START: .xiaoma-core/tasks/review-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # review-story
 
@@ -9933,7 +9933,7 @@ After review:
 ==================== END: .xiaoma-core/tasks/review-story.md ====================
 
 ==================== START: .xiaoma-core/tasks/risk-profile.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # risk-profile
 
@@ -10291,7 +10291,7 @@ Risk profile: qa.qaLocation/assessments/{epic}.{story}-risk-{YYYYMMDD}.md
 ==================== END: .xiaoma-core/tasks/risk-profile.md ====================
 
 ==================== START: .xiaoma-core/tasks/test-design.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # test-design
 
@@ -10470,7 +10470,7 @@ Before finalizing, verify:
 ==================== END: .xiaoma-core/tasks/test-design.md ====================
 
 ==================== START: .xiaoma-core/tasks/trace-requirements.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # trace-requirements
 
@@ -10845,7 +10845,7 @@ optional_fields_examples:
 ==================== END: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/tasks/create-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Next Story Task
 
@@ -10858,7 +10858,7 @@ To identify the next logical story based on project progress and epic definition
 ### 0. Load Core Configuration and Check Workflow
 
 - Load `.xiaoma-core/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy it from GITHUB xiaoma-core/core-config.yaml and configure it for your project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure core-config.yaml before proceeding."
+- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy it from GITHUB xiaoma-core/core-config.yaml and configure it for your project OR 2) Run the XiaoMa installer against your project to upgrade and add the file automatically. Please add and configure core-config.yaml before proceeding."
 - Extract key configurations: `devStoryLocation`, `prd.*`, `architecture.*`, `workflow.*`
 
 ### 1. Identify Next Story for Preparation
@@ -10962,7 +10962,7 @@ ALWAYS cite source documents: `[Source: architecture/{filename}.md#{section}]`
 ==================== END: .xiaoma-core/tasks/create-next-story.md ====================
 
 ==================== START: .xiaoma-core/checklists/story-draft-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Story Draft Checklist
 
@@ -11120,7 +11120,7 @@ Be pragmatic - perfect documentation doesn't exist, but it must be enough to pro
 ==================== END: .xiaoma-core/checklists/story-draft-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/generate-ai-frontend-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create AI Frontend Prompt Task
 

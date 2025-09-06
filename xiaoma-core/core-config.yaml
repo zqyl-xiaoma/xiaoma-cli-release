@@ -1,4 +1,4 @@
-# <!-- Powered by BMAD™ Core -->
+# <!-- Powered by XiaoMa™ Core -->
 markdownExploder: true
 qa:
   qaLocation: docs/qa
@@ -20,4 +20,4 @@ devLoadAlwaysFiles:
   - docs/architecture/source-tree.md
 devDebugLog: .ai/debug-log.md
 devStoryLocation: docs/stories
-slashPrefix: BMad
+slashPrefix: XiaoMa

@@ -208,7 +208,7 @@ class Installer {
     });
 
     if (files.length > 0) {
-      // Directory has other files, but no BMad installation.
+      // Directory has other files, but no XiaoMa installation.
       // Treat as clean install but record that it isn't empty.
       state.hasOtherFiles = true;
     }
@@ -444,7 +444,7 @@ class Installer {
     const newVersion = await this.getCoreVersion();
     const versionCompare = this.compareVersions(currentVersion, newVersion);
 
-    console.log(chalk.yellow('\n🔍 Found existing BMad v4 installation'));
+    console.log(chalk.yellow('\n🔍 Found existing XiaoMa v4 installation'));
     console.log(`   Directory: ${installDir}`);
     console.log(`   Current version: ${currentVersion}`);
     console.log(`   Available version: ${newVersion}`);
@@ -595,7 +595,7 @@ class Installer {
   async handleV3Installation(config, installDir, state, spinner) {
     spinner.stop();
 
-    console.log(chalk.yellow('\n🔍 Found BMad v3 installation (bmad-agent/ directory)'));
+    console.log(chalk.yellow('\n🔍 Found XiaoMa v3 installation (bmad-agent/ directory)'));
     console.log(`   Directory: ${installDir}`);
 
     const { action } = await inquirer.prompt([
@@ -972,13 +972,13 @@ class Installer {
       };
       return await this.install(config);
     }
-    console.log(chalk.red('No BMad installation found.'));
+    console.log(chalk.red('No XiaoMa installation found.'));
   }
 
   async listAgents() {
     const agents = await resourceLocator.getAvailableAgents();
 
-    console.log(chalk.bold('\nAvailable BMad Agents:\n'));
+    console.log(chalk.bold('\nAvailable XiaoMa Agents:\n'));
 
     for (const agent of agents) {
       console.log(chalk.cyan(`  ${agent.id.padEnd(20)}`), agent.description);
@@ -990,7 +990,7 @@ class Installer {
   async listExpansionPacks() {
     const expansionPacks = await resourceLocator.getExpansionPacks();
 
-    console.log(chalk.bold('\nAvailable BMad Expansion Packs:\n'));
+    console.log(chalk.bold('\nAvailable XiaoMa Expansion Packs:\n'));
 
     if (expansionPacks.length === 0) {
       console.log(chalk.yellow('No expansion packs found.'));
@@ -1013,7 +1013,7 @@ class Installer {
     const installDir = await this.findInstallation();
 
     if (!installDir) {
-      console.log(chalk.yellow('No BMad installation found in current directory tree'));
+      console.log(chalk.yellow('No XiaoMa installation found in current directory tree'));
       return;
     }
 
@@ -1623,7 +1623,7 @@ class Installer {
 
   async installWebBundles(webBundlesDirectory, config, spinner) {
     try {
-      // Find the dist directory in the BMad installation
+      // Find the dist directory in the XiaoMa installation
       const distDir = configLoader.getDistPath();
 
       if (!(await fileManager.pathExists(distDir))) {

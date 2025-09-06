@@ -1,4 +1,4 @@
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Story Definition of Done (DoD) Checklist
 

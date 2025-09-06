@@ -111,7 +111,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/qa.md ====================
 
 ==================== START: .xiaoma-core/tasks/nfr-assess.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # nfr-assess
 
@@ -459,7 +459,7 @@ performance_deep_dive:
 ==================== END: .xiaoma-core/tasks/nfr-assess.md ====================
 
 ==================== START: .xiaoma-core/tasks/qa-gate.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # qa-gate
 
@@ -625,7 +625,7 @@ Gate: CONCERNS → qa.qaLocation/gates/{epic}.{story}-{slug}.yml
 ==================== END: .xiaoma-core/tasks/qa-gate.md ====================
 
 ==================== START: .xiaoma-core/tasks/review-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # review-story
 
@@ -944,7 +944,7 @@ After review:
 ==================== END: .xiaoma-core/tasks/review-story.md ====================
 
 ==================== START: .xiaoma-core/tasks/risk-profile.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # risk-profile
 
@@ -1302,7 +1302,7 @@ Risk profile: qa.qaLocation/assessments/{epic}.{story}-risk-{YYYYMMDD}.md
 ==================== END: .xiaoma-core/tasks/risk-profile.md ====================
 
 ==================== START: .xiaoma-core/tasks/test-design.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # test-design
 
@@ -1481,7 +1481,7 @@ Before finalizing, verify:
 ==================== END: .xiaoma-core/tasks/test-design.md ====================
 
 ==================== START: .xiaoma-core/tasks/trace-requirements.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # trace-requirements
 
@@ -1997,7 +1997,7 @@ sections:
 ==================== END: .xiaoma-core/templates/story-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 

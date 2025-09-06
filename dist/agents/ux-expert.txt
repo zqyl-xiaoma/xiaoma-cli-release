@@ -286,7 +286,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/generate-ai-frontend-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create AI Frontend Prompt Task
 
@@ -695,7 +695,7 @@ sections:
 ==================== END: .xiaoma-core/templates/front-end-spec-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 

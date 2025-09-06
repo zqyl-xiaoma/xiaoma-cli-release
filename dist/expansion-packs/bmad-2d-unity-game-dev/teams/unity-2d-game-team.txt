@@ -1251,7 +1251,7 @@ This knowledge base provides the foundation for effective game development using
 ==================== END: .bmad-2d-unity-game-dev/data/bmad-kb.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/elicitation-methods.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Elicitation Methods Data
 
@@ -1631,7 +1631,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/kb-mode-interaction.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # KB Mode Interaction Task
 
@@ -1785,7 +1785,7 @@ Agents should be workflow-aware: know active workflow, their role, access artifa
 ==================== END: .bmad-2d-unity-game-dev/utils/workflow-management.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Brainstorming Techniques Data
 
@@ -1826,7 +1826,7 @@ Agents should be workflow-aware: know active workflow, their role, access artifa
 ==================== END: .bmad-2d-unity-game-dev/data/brainstorming-techniques.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 
@@ -2109,7 +2109,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/document-project.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document an Existing Project
 
@@ -2457,7 +2457,7 @@ Apply the advanced elicitation task after major sections to refine based on user
 ==================== END: .bmad-2d-unity-game-dev/tasks/document-project.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/facilitate-brainstorming-session.md ====================
-## <!-- Powered by BMAD™ Core -->
+## <!-- Powered by XiaoMa™ Core -->
 
 docOutputLocation: docs/brainstorming-session-results.md
 template: '.bmad-2d-unity-game-dev/templates/brainstorming-output-tmpl.yaml'
@@ -3639,7 +3639,7 @@ The LLM will:
 ==================== END: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document Sharding Task
 
@@ -7908,7 +7908,7 @@ These guidelines ensure consistent, high-quality game development that meets per
 ==================== END: .bmad-2d-unity-game-dev/data/development-guidelines.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/validate-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Validate Next Story Task
 

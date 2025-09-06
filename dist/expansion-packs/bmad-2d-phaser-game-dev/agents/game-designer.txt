@@ -587,7 +587,7 @@ This task provides a comprehensive toolkit of creative brainstorming techniques 
 ==================== END: .bmad-2d-phaser-game-dev/tasks/game-design-brainstorming.md ====================
 
 ==================== START: .bmad-2d-phaser-game-dev/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 

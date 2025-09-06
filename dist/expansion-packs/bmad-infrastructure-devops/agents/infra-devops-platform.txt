@@ -2079,7 +2079,7 @@ This checklist serves as a comprehensive framework for validating infrastructure
 ==================== END: .bmad-infrastructure-devops/checklists/infrastructure-checklist.md ====================
 
 ==================== START: .bmad-infrastructure-devops/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 

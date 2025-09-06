@@ -99,7 +99,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/po.md ====================
 
 ==================== START: .xiaoma-core/tasks/correct-course.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Correct Course Task
 
@@ -265,7 +265,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/shard-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document Sharding Task
 
@@ -455,7 +455,7 @@ Document sharded successfully:
 ==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/tasks/validate-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Validate Next Story Task
 
@@ -735,7 +735,7 @@ sections:
 ==================== END: .xiaoma-core/templates/story-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/change-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Change Navigation Checklist
 
@@ -922,7 +922,7 @@ Keep it action-oriented and forward-looking.]]
 ==================== END: .xiaoma-core/checklists/change-checklist.md ====================
 
 ==================== START: .xiaoma-core/checklists/po-master-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Product Owner (PO) Master Validation Checklist
 

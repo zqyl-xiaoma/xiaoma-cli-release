@@ -94,7 +94,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/dev.md ====================
 
 ==================== START: .xiaoma-core/tasks/apply-qa-fixes.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # apply-qa-fixes
 
@@ -338,7 +338,7 @@ The LLM will:
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
 
 ==================== START: .xiaoma-core/tasks/validate-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Validate Next Story Task
 
@@ -477,7 +477,7 @@ Provide a structured validation report including:
 ==================== END: .xiaoma-core/tasks/validate-next-story.md ====================
 
 ==================== START: .xiaoma-core/checklists/story-dod-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Story Definition of Done (DoD) Checklist
 

@@ -209,7 +209,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 
@@ -492,7 +492,7 @@ CRITICAL: collaborate with the user to develop specific, actionable research que
 ==================== END: .bmad-2d-unity-game-dev/tasks/create-deep-research-prompt.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document Sharding Task
 
@@ -682,7 +682,7 @@ Document sharded successfully:
 ==================== END: .bmad-2d-unity-game-dev/tasks/shard-doc.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/document-project.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document an Existing Project
 

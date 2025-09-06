@@ -1,4 +1,4 @@
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # BMAD™ Knowledge Base
 
@@ -26,7 +26,7 @@ XIAOMA-CLI™ (Breakthrough Method of Agile AI-driven Development) is a framewor
 
 ### The Core Method
 
-BMad transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
+XiaoMa transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
 
 1. **You Direct, AI Executes**: You provide vision and decisions; agents handle implementation details
 2. **Specialized Agents**: Each agent masters one role (PM, Developer, Architect, etc.)

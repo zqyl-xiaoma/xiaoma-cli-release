@@ -85,7 +85,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/sm.md ====================
 
 ==================== START: .xiaoma-core/tasks/correct-course.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Correct Course Task
 
@@ -160,7 +160,7 @@ dependencies:
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Next Story Task
 
@@ -173,7 +173,7 @@ To identify the next logical story based on project progress and epic definition
 ### 0. Load Core Configuration and Check Workflow
 
 - Load `.xiaoma-core/core-config.yaml` from the project root
-- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy it from GITHUB xiaoma-core/core-config.yaml and configure it for your project OR 2) Run the BMad installer against your project to upgrade and add the file automatically. Please add and configure core-config.yaml before proceeding."
+- If the file does not exist, HALT and inform the user: "core-config.yaml not found. This file is required for story creation. You can either: 1) Copy it from GITHUB xiaoma-core/core-config.yaml and configure it for your project OR 2) Run the XiaoMa installer against your project to upgrade and add the file automatically. Please add and configure core-config.yaml before proceeding."
 - Extract key configurations: `devStoryLocation`, `prd.*`, `architecture.*`, `workflow.*`
 
 ### 1. Identify Next Story for Preparation
@@ -509,7 +509,7 @@ sections:
 ==================== END: .xiaoma-core/templates/story-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/story-draft-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Story Draft Checklist
 

@@ -167,7 +167,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/xiaoma-orchestrator.md ====================
 
 ==================== START: .xiaoma-core/tasks/advanced-elicitation.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Advanced Elicitation Task
 
@@ -395,7 +395,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .xiaoma-core/tasks/create-doc.md ====================
 
 ==================== START: .xiaoma-core/tasks/kb-mode-interaction.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # KB Mode Interaction Task
 
@@ -475,7 +475,7 @@ Or ask me about anything else related to BMad-Method!
 ==================== END: .xiaoma-core/tasks/kb-mode-interaction.md ====================
 
 ==================== START: .xiaoma-core/data/bmad-kb.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # BMAD™ Knowledge Base
 
@@ -503,7 +503,7 @@ XIAOMA-CLI™ (Breakthrough Method of Agile AI-driven Development) is a framewor
 
 ### The Core Method
 
-BMad transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
+XiaoMa transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
 
 1. **You Direct, AI Executes**: You provide vision and decisions; agents handle implementation details
 2. **Specialized Agents**: Each agent masters one role (PM, Developer, Architect, etc.)
@@ -1287,7 +1287,7 @@ Use the **expansion-creator** pack to build your own:
 ==================== END: .xiaoma-core/data/bmad-kb.md ====================
 
 ==================== START: .xiaoma-core/data/elicitation-methods.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Elicitation Methods Data
 

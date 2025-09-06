@@ -105,7 +105,7 @@ dependencies:
 ==================== END: .xiaoma-core/agents/architect.md ====================
 
 ==================== START: .xiaoma-core/tasks/create-deep-research-prompt.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Create Deep Research Prompt Task
 
@@ -494,7 +494,7 @@ User can type `#yolo` to toggle to YOLO mode (process all sections at once).
 ==================== END: .xiaoma-core/tasks/create-doc.md ====================
 
 ==================== START: .xiaoma-core/tasks/document-project.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Document an Existing Project
 
@@ -3116,7 +3116,7 @@ sections:
 ==================== END: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/architect-checklist.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Architect Solution Validation Checklist
 
@@ -3559,7 +3559,7 @@ After presenting the report, ask the user if they would like detailed analysis o
 ==================== END: .xiaoma-core/checklists/architect-checklist.md ====================
 
 ==================== START: .xiaoma-core/data/technical-preferences.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # User-Defined Preferred Patterns and Preferences
 

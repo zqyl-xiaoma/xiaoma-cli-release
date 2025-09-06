@@ -188,7 +188,7 @@ The LLM will:
 ==================== END: .bmad-2d-unity-game-dev/tasks/execute-checklist.md ====================
 
 ==================== START: .bmad-2d-unity-game-dev/tasks/validate-next-story.md ====================
-<!-- Powered by BMAD™ Core -->
+<!-- Powered by XiaoMa™ Core -->
 
 # Validate Next Story Task
 
