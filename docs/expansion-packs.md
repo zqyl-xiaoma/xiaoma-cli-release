@@ -2,7 +2,7 @@
 
 ## Overview
 
-BMad Method's expansion packs unlock the framework's true potential by extending its natural language AI orchestration to ANY domain. While the core framework focuses on software development, expansion packs transform BMad into a universal AI agent system.
+XiaoMa Cli's expansion packs unlock the framework's true potential by extending its natural language AI orchestration to ANY domain. While the core framework focuses on software development, expansion packs transform BMad into a universal AI agent system.
 
 ## Why Expansion Packs?
 
@@ -195,6 +195,6 @@ The next major release will include a new agent and expansion pack builder and a
 
 ## Remember
 
-The BMad Method is more than a Software Development Agile Framework! Every expansion pack makes specialized knowledge and workflows more accessible to everyone.
+The XiaoMa Cli is more than a Software Development Agile Framework! Every expansion pack makes specialized knowledge and workflows more accessible to everyone.
 
 **What expertise will you share with the world?**

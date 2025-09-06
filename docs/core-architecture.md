@@ -1,8 +1,8 @@
-# BMad Method: Core Architecture
+# XiaoMa Cli: Core Architecture
 
 ## 1. Overview
 
-The BMad Method is designed to provide agentic modes, tasks and templates to allow repeatable helpful workflows be it for agile agentic development, or expansion into vastly different domains. The core purpose of the project is to provide a structured yet flexible set of prompts, templates, and workflows that users can employ to guide AI agents (like Gemini, Claude, or ChatGPT) to perform complex tasks, guided discussions, or other meaningful domain specific flows in a predictable, high-quality manner.
+The XiaoMa Cli is designed to provide agentic modes, tasks and templates to allow repeatable helpful workflows be it for agile agentic development, or expansion into vastly different domains. The core purpose of the project is to provide a structured yet flexible set of prompts, templates, and workflows that users can employ to guide AI agents (like Gemini, Claude, or ChatGPT) to perform complex tasks, guided discussions, or other meaningful domain specific flows in a predictable, high-quality manner.
 
 The systems core module facilitates a full development lifecycle tailored to the challenges of current modern AI Agentic tooling:
 
@@ -12,11 +12,11 @@ The systems core module facilitates a full development lifecycle tailored to the
 
 ## 2. System Architecture Diagram
 
-The entire BMad-Method ecosystem is designed around the installed `xiaoma-core` directory, which acts as the brain of the operation. The `tools` directory provides the means to process and package this brain for different environments.
+The entire XiaoMa-Cli ecosystem is designed around the installed `xiaoma-core` directory, which acts as the brain of the operation. The `tools` directory provides the means to process and package this brain for different environments.
 
 ```mermaid
 graph TD
-    subgraph BMad Method Project
+    subgraph XiaoMa Cli Project
         subgraph Core Framework
             A["xiaoma-core"]
             A --> B["agents"]

@@ -4,7 +4,7 @@
 
 ## Overview
 
-The BMad Infrastructure DevOps expansion pack extends the BMad Method framework with comprehensive infrastructure and DevOps capabilities. It enables teams to design, implement, validate, and maintain modern cloud-native infrastructure alongside their application development efforts.
+The BMad Infrastructure DevOps expansion pack extends the XiaoMa Cli framework with comprehensive infrastructure and DevOps capabilities. It enables teams to design, implement, validate, and maintain modern cloud-native infrastructure alongside their application development efforts.
 
 **Version**: 1.7.0  
 **BMad Compatibility**: v4+  
@@ -304,4 +304,4 @@ A comprehensive 16-section checklist covering:
 
 The BMad Infrastructure DevOps expansion pack provides a comprehensive framework for modern infrastructure and platform engineering. By following its structured approach and leveraging the provided tools and templates, teams can build reliable, scalable, and secure infrastructure that accelerates application delivery while maintaining operational excellence.
 
-For support and updates, refer to the main BMad Method documentation or contact the BMad community.
+For support and updates, refer to the main XiaoMa Cli documentation or contact the BMad community.

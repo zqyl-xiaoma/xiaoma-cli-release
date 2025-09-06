@@ -1,6 +1,6 @@
-# BMad Method Guiding Principles
+# XiaoMa Cli Guiding Principles
 
-The BMad Method is a natural language framework for AI-assisted software development. These principles ensure contributions maintain the method's effectiveness.
+The XiaoMa Cli is a natural language framework for AI-assisted software development. These principles ensure contributions maintain the method's effectiveness.
 
 ## Core Principles
 

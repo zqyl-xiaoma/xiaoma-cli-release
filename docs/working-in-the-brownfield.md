@@ -583,7 +583,7 @@ Does the change touch legacy code?
 
 ## Conclusion
 
-Brownfield development with BMad Method provides structure and safety when modifying existing systems. The Test Architect becomes your critical safety net, using risk assessment, regression testing, and continuous validation to ensure new changes don't destabilize existing functionality.
+Brownfield development with XiaoMa Cli provides structure and safety when modifying existing systems. The Test Architect becomes your critical safety net, using risk assessment, regression testing, and continuous validation to ensure new changes don't destabilize existing functionality.
 
 **The Brownfield Success Formula:**
 

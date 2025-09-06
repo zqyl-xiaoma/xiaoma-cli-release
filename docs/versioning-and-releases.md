@@ -1,6 +1,6 @@
 # Versioning and Releases
 
-BMad Method uses a simplified release system with manual control and automatic release notes generation.
+XiaoMa Cli uses a simplified release system with manual control and automatic release notes generation.
 
 ## 🚀 Release Workflow
 

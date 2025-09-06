@@ -4,7 +4,7 @@
 
 ## Overview
 
-This game development expansion of BMad-Method specializes in creating 2D games using Phaser 3 and TypeScript. It extends the core BMad framework with game-specific agents, workflows, and best practices for professional game development.
+This game development expansion of XiaoMa-Cli specializes in creating 2D games using Phaser 3 and TypeScript. It extends the core BMad framework with game-specific agents, workflows, and best practices for professional game development.
 
 ### Game Development Focus
 
@@ -249,4 +249,4 @@ game-project/
 - Culling and level-of-detail systems
 - Memory management and garbage collection optimization
 
-This knowledge base provides the foundation for effective game development using the BMad-Method framework with specialized focus on 2D game creation using Phaser 3 and TypeScript.
+This knowledge base provides the foundation for effective game development using the XiaoMa-Cli framework with specialized focus on 2D game creation using Phaser 3 and TypeScript.

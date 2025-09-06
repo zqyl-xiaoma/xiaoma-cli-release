@@ -4,7 +4,7 @@ Transform your AI into a complete creative writing studio with specialized agent
 
 ## 📚 Overview
 
-The Creative Writing Expansion Pack extends BMad-Method with a comprehensive suite of writing-focused agents, workflows, and tools. Whether you're crafting novels, screenplays, short stories, or interactive narratives, this pack provides structured AI assistance throughout your creative process.
+The Creative Writing Expansion Pack extends XiaoMa-Cli with a comprehensive suite of writing-focused agents, workflows, and tools. Whether you're crafting novels, screenplays, short stories, or interactive narratives, this pack provides structured AI assistance throughout your creative process.
 
 ### Key Features
 
@@ -44,7 +44,7 @@ npx xiaoma-cli install
 ### Manual Installation
 
 1. Clone or download this expansion pack
-2. Copy to your BMad Method installation:
+2. Copy to your XiaoMa Cli installation:
    ```bash
    cp -r bmad-creative-writing/* ~/xiaoma-cli/expansion-packs/bmad-creative-writing/
    ```
@@ -126,21 +126,21 @@ We welcome contributions! Please:
 
 1. Fork the repository
 2. Create a feature branch
-3. Follow BMad Method conventions
+3. Follow XiaoMa Cli conventions
 4. Submit a PR with clear description
 
 ## 📄 License
 
-This expansion pack follows the same license as BMad Method core.
+This expansion pack follows the same license as XiaoMa Cli core.
 
 ## 🙏 Credits
 
-Created by Wes for the BMad Method community.
+Created by Wes for the XiaoMa Cli community.
 
-Special thanks to Brian (BMad) for creating the BMad Method framework.
+Special thanks to Brian (BMad) for creating the XiaoMa Cli framework.
 
 ---
 
 **Version:** 1.0.0  
-**Compatible with:** BMad Method v1.0+  
+**Compatible with:** XiaoMa Cli v1.0+  
 **Last Updated:** 2024

@@ -4,7 +4,7 @@
 
 ## Overview
 
-This is the game development expansion of BMad-Method (Breakthrough Method of Agile AI-driven Development), specializing in creating 2D games using Unity and C#. The v4 system introduces a modular architecture with improved dependency management, bundle optimization, and support for both web and IDE environments, specifically optimized for game development workflows.
+This is the game development expansion of XiaoMa-Cli (Breakthrough Method of Agile AI-driven Development), specializing in creating 2D games using Unity and C#. The v4 system introduces a modular architecture with improved dependency management, bundle optimization, and support for both web and IDE environments, specifically optimized for game development workflows.
 
 ### Key Features for Game Development
 
@@ -697,7 +697,7 @@ UnityProject/
 - **Keep conversations focused** - One game agent, one Unity task per conversation
 - **Review everything** - Always review and approve before marking game features complete
 
-## Contributing to BMad-Method Game Development
+## Contributing to XiaoMa-Cli Game Development
 
 ### Game Development Contribution Guidelines
 
@@ -729,7 +729,7 @@ For full details, see `CONTRIBUTING.md`. Key points for game development:
 
 ### This Game Development Expansion Pack
 
-This 2D Unity Game Development expansion pack extends BMad-Method beyond traditional software development into professional game development. It provides specialized game agent teams, Unity templates, and game workflows while keeping the core framework lean and focused on general development.
+This 2D Unity Game Development expansion pack extends XiaoMa-Cli beyond traditional software development into professional game development. It provides specialized game agent teams, Unity templates, and game workflows while keeping the core framework lean and focused on general development.
 
 ### Why Use This Game Development Expansion Pack?
 
@@ -768,4 +768,4 @@ Use the **expansion-creator** pack to build your own game development extensions
 - **Game Community**: Discord and GitHub resources available for game development support
 - **Game Contributing**: See `CONTRIBUTING.md` for full game development guidelines
 
-This knowledge base provides the foundation for effective game development using the BMad-Method framework with specialized focus on 2D game creation using Unity and C#.
+This knowledge base provides the foundation for effective game development using the XiaoMa-Cli framework with specialized focus on 2D game creation using Unity and C#.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This expansion pack extends BMad Method with comprehensive infrastructure and DevOps capabilities. It's designed for teams that need to define, implement, and manage cloud infrastructure alongside their application development.
+This expansion pack extends XiaoMa Cli with comprehensive infrastructure and DevOps capabilities. It's designed for teams that need to define, implement, and manage cloud infrastructure alongside their application development.
 
 ## Purpose
 
@@ -144,4 +144,4 @@ You can customize this expansion pack by:
 ---
 
 _Version: 1.0_
-_Compatible with: BMad Method v4_
+_Compatible with: XiaoMa Cli v4_

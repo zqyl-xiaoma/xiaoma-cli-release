@@ -4,7 +4,7 @@
 
 ## Overview
 
-BMad Creative Writing Extension adapts the BMad-Method framework for fiction writing, narrative design, and creative storytelling projects. This extension provides specialized agents, workflows, and tools designed specifically for creative writers.
+BMad Creative Writing Extension adapts the XiaoMa-Cli framework for fiction writing, narrative design, and creative storytelling projects. This extension provides specialized agents, workflows, and tools designed specifically for creative writers.
 
 ### Key Features
 

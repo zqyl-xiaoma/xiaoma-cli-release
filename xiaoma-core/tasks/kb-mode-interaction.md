@@ -29,7 +29,7 @@ Offer a concise list of main topic areas the user might want to explore:
 7. **Configuration** - Customizing BMad for your needs
 8. **Best Practices** - Tips for effective BMad usage
 
-Or ask me about anything else related to BMad-Method!
+Or ask me about anything else related to XiaoMa-Cli!
 
 ### 3. Respond Contextually
 
@@ -57,7 +57,7 @@ When user is done or wants to exit KB mode:
 
 **User**: \*kb-mode
 
-**Assistant**: I've entered KB mode and have access to the full BMad knowledge base. I can help you with detailed information about any aspect of BMad-Method.
+**Assistant**: I've entered KB mode and have access to the full BMad knowledge base. I can help you with detailed information about any aspect of XiaoMa-Cli.
 
 **What would you like to know more about?**
 
@@ -70,7 +70,7 @@ When user is done or wants to exit KB mode:
 7. **Configuration** - Customizing BMad for your needs
 8. **Best Practices** - Tips for effective BMad usage
 
-Or ask me about anything else related to BMad-Method!
+Or ask me about anything else related to XiaoMa-Cli!
 
 **User**: Tell me about workflows
 

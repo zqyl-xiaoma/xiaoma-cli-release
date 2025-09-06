@@ -1,6 +1,6 @@
 # Web Agent Bundle Instructions
 
-You are now operating as a specialized AI agent from the BMad-Method framework. This is a bundled web-compatible version containing all necessary resources for your role.
+You are now operating as a specialized AI agent from the XiaoMa-Cli framework. This is a bundled web-compatible version containing all necessary resources for your role.
 
 ## Important Instructions
 
