@@ -1,7 +1,6 @@
-# <!-- Powered by XIAOMA™ Core -->
 template:
   id: fullstack-architecture-template-v2
-  name: Fullstack Architecture Document
+  name: 全栈架构文档
   version: 2.0
   output:
     format: markdown
@@ -14,242 +13,224 @@ workflow:
 
 sections:
   - id: introduction
-    title: Introduction
+    title: 引言
     instruction: |
-      If available, review any provided relevant documents to gather all relevant context before beginning. At minimum, you should have access to docs/prd.md and docs/front-end-spec.md. Ask the user for any documents you need but cannot locate. This template creates a unified architecture that covers both backend and frontend concerns to guide AI-driven fullstack development.
+      如果可以，请在开始前审阅所有提供的相关文档以收集全部上下文。你至少应能访问 docs/prd.md 和 docs/front-end-spec.md。如果需要但找不到任何文档，请向用户索取。该模板旨在创建一个统一的架构，涵盖后端和前端的关注点，以指导 AI 驱动的全栈开发。
     elicit: true
     content: |
-      This document outlines the complete fullstack architecture for {{project_name}}, including backend systems, frontend implementation, and their integration. It serves as the single source of truth for AI-driven development, ensuring consistency across the entire technology stack.
+      本文档概述了 {{project_name}} 的完整全栈架构，包括后端系统、前端实现及其集成。它将作为 AI 驱动开发的唯一事实来源，确保整个技术栈的一致性。
 
-      This unified approach combines what would traditionally be separate backend and frontend architecture documents, streamlining the development process for modern fullstack applications where these concerns are increasingly intertwined.
+      这种统一的方法结合了传统上独立的后端和前端架构文档，为现代全栈应用简化了开发流程，因为在这些应用中，前后端的关注点日益交织在一起。
     sections:
       - id: starter-template
-        title: Starter Template or Existing Project
+        title: 启动模板或现有项目
         instruction: |
-          Before proceeding with architecture design, check if the project is based on any starter templates or existing codebases:
+          在进行架构设计之前，请检查项目是否基于任何启动模板或现有代码库：
 
-          1. Review the PRD and other documents for mentions of:
-          - Fullstack starter templates (e.g., T3 Stack, MEAN/MERN starters, Django + React templates)
-          - Monorepo templates (e.g., Nx, Turborepo starters)
-          - Platform-specific starters (e.g., Vercel templates, AWS Amplify starters)
-          - Existing projects being extended or cloned
+          1. 审阅 PRD 和其他文档，查找是否提及：
+          - 全栈启动模板 (例如, T3 Stack, MEAN/MERN starters, Django + React templates)
+          - Monorepo 模板 (例如, Nx, Turborepo starters)
+          - 特定平台的启动模板 (例如, Vercel templates, AWS Amplify starters)
+          - 正在扩展或克隆的现有项目
 
-          2. If starter templates or existing projects are mentioned:
-          - Ask the user to provide access (links, repos, or files)
-          - Analyze to understand pre-configured choices and constraints
-          - Note any architectural decisions already made
-          - Identify what can be modified vs what must be retained
+          2. 如果提到了启动模板或现有项目：
+          - 请求用户提供访问权限 (链接、代码库或文件)
+          - 分析以理解预先配置的选择和约束
+          - 注意任何已经做出的架构决策
+          - 确定哪些可以修改，哪些必须保留
 
-          3. If no starter is mentioned but this is greenfield:
-          - Suggest appropriate fullstack starters based on tech preferences
-          - Consider platform-specific options (Vercel, AWS, etc.)
-          - Let user decide whether to use one
+          3. 如果没有提到启动模板但这是一个全新项目：
+          - 根据技术偏好建议合适的的全栈启动模板
+          - 考虑特定平台的选项 (Vercel, AWS, 等)
+          - 让用户决定是否使用
 
-          4. Document the decision and any constraints it imposes
+          4. 记录下最终决定及其带来的任何约束
 
-          If none, state "N/A - Greenfield project"
+          如果没有，请注明“N/A - 全新项目”
       - id: changelog
-        title: Change Log
+        title: 变更日志
         type: table
-        columns: [Date, Version, Description, Author]
-        instruction: Track document versions and changes
+        columns: [日期, 版本, 描述, 作者]
+        instruction: 跟踪文档版本和变更
 
   - id: high-level-architecture
-    title: High Level Architecture
-    instruction: This section contains multiple subsections that establish the foundation. Present all subsections together, then elicit feedback on the complete section.
+    title: 高层架构
+    instruction: 本节包含多个用于奠定基础的子部分。请将所有子部分一并呈现，然后就整个部分征求反馈。
     elicit: true
     sections:
       - id: technical-summary
-        title: Technical Summary
+        title: 技术摘要
         instruction: |
-          Provide a comprehensive overview (4-6 sentences) covering:
-          - Overall architectural style and deployment approach
-          - Frontend framework and backend technology choices
-          - Key integration points between frontend and backend
-          - Infrastructure platform and services
-          - How this architecture achieves PRD goals
+          提供一个全面的概述 (4-6句话)，涵盖：
+          - 整体架构风格和部署方法
+          - 前端框架和后端技术的选择
+          - 前后端之间的关键集成点
+          - 基础设施平台与服务
+          - 该架构如何实现 PRD 目标
       - id: platform-infrastructure
-        title: Platform and Infrastructure Choice
+        title: 平台与基础设施选择
         instruction: |
-          Based on PRD requirements and technical assumptions, make a platform recommendation:
+          基于 PRD 需求和技术假设，提出平台建议：
 
-          1. Consider common patterns (not an exhaustive list, use your own best judgement and search the web as needed for emerging trends):
-          - **Vercel + Supabase**: For rapid development with Next.js, built-in auth/storage
-          - **AWS Full Stack**: For enterprise scale with Lambda, API Gateway, S3, Cognito
-          - **Azure**: For .NET ecosystems or enterprise Microsoft environments
-          - **Google Cloud**: For ML/AI heavy applications or Google ecosystem integration
+          1. 考虑常见模式 (非详尽列表，请运用你的最佳判断并根据需要搜索网络以了解新兴趋势)：
+          - **Vercel + Supabase**: 用于 Next.js 的快速开发，内置认证/存储
+          - **AWS Full Stack**: 用于企业级规模，使用 Lambda, API Gateway, S3, Cognito
+          - **Azure**: 用于 .NET 生态系统或企业微软环境
+          - **Google Cloud**: 用于重度依赖 ML/AI 的应用或 Google 生态系统集成
 
-          2. Present 2-3 viable options with clear pros/cons
-          3. Make a recommendation with rationale
-          4. Get explicit user confirmation
+          2. 提出 2-3 个可行的选项，并清晰说明其优缺点
+          3. 提出建议并附上理由
+          4. 获得用户的明确确认
 
-          Document the choice and key services that will be used.
+          记录所选平台及将要使用的关键服务。
         template: |
-          **Platform:** {{selected_platform}}
-          **Key Services:** {{core_services_list}}
-          **Deployment Host and Regions:** {{regions}}
+          **平台:** {{selected_platform}}
+          **核心服务:** {{core_services_list}}
+          **部署主机与区域:** {{regions}}
       - id: repository-structure
-        title: Repository Structure
+        title: 代码仓库结构
         instruction: |
-          Define the repository approach based on PRD requirements and platform choice, explain your rationale or ask questions to the user if unsure:
+          根据 PRD 需求和平台选择定义代码仓库方案，解释你的理由，如果不确定则向用户提问：
 
-          1. For modern fullstack apps, monorepo is often preferred
-          2. Consider tooling (Nx, Turborepo, Lerna, npm workspaces)
-          3. Define package/app boundaries
-          4. Plan for shared code between frontend and backend
+          1. 对于现代全栈应用，通常首选 monorepo
+          2. 考虑相关工具 (Nx, Turborepo, Lerna, npm workspaces)
+          3. 定义包/应用的边界
+          4. 为前后端之间的共享代码进行规划
         template: |
-          **Structure:** {{repo_structure_choice}}
-          **Monorepo Tool:** {{monorepo_tool_if_applicable}}
-          **Package Organization:** {{package_strategy}}
+          **结构:** {{repo_structure_choice}}
+          **Monorepo 工具:** {{monorepo_tool_if_applicable}}
+          **包组织方式:** {{package_strategy}}
       - id: architecture-diagram
-        title: High Level Architecture Diagram
+        title: 高层架构图
         type: mermaid
         mermaid_type: graph
         instruction: |
-          Create a Mermaid diagram showing the complete system architecture including:
-          - User entry points (web, mobile)
-          - Frontend application deployment
-          - API layer (REST/GraphQL)
-          - Backend services
-          - Databases and storage
-          - External integrations
-          - CDN and caching layers
+          创建一个 Mermaid 图，展示完整的系统架构，包括：
+          - 用户入口点 (Web, 移动端)
+          - 前端应用部署
+          - API 层 (REST/GraphQL)
+          - 后端服务
+          - 数据库和存储
+          - 外部集成
+          - CDN 和缓存层
 
-          Use appropriate diagram type for clarity.
+          使用合适的图表类型以保证清晰。
       - id: architectural-patterns
-        title: Architectural Patterns
+        title: 架构模式
         instruction: |
-          List patterns that will guide both frontend and backend development. Include patterns for:
-          - Overall architecture (e.g., Jamstack, Serverless, Microservices)
-          - Frontend patterns (e.g., Component-based, State management)
-          - Backend patterns (e.g., Repository, CQRS, Event-driven)
-          - Integration patterns (e.g., BFF, API Gateway)
+          列出将指导前后端开发的模式。包括以下模式：
+          - 整体架构 (例如, Jamstack, Serverless, Microservices)
+          - 前端模式 (例如, Component-based, State management)
+          - 后端模式 (例如, Repository, CQRS, Event-driven)
+          - 集成模式 (例如, BFF, API Gateway)
 
-          For each pattern, provide recommendation and rationale.
+          为每种模式提供建议和理由。
         repeatable: true
-        template: "- **{{pattern_name}}:** {{pattern_description}} - _Rationale:_ {{rationale}}"
+        template: "- **{{pattern_name}}:** {{pattern_description}} - _理由：_ {{rationale}}"
         examples:
-          - "**Jamstack Architecture:** Static site generation with serverless APIs - _Rationale:_ Optimal performance and scalability for content-heavy applications"
-          - "**Component-Based UI:** Reusable React components with TypeScript - _Rationale:_ Maintainability and type safety across large codebases"
-          - "**Repository Pattern:** Abstract data access logic - _Rationale:_ Enables testing and future database migration flexibility"
-          - "**API Gateway Pattern:** Single entry point for all API calls - _Rationale:_ Centralized auth, rate limiting, and monitoring"
+          - "**Jamstack Architecture:** 静态站点生成与无服务器 API - _理由：_ 为内容密集型应用提供最佳性能和可伸缩性"
+          - "**Component-Based UI:** 使用 TypeScript 的可复用 React 组件 - _理由：_ 保证大型代码库的可维护性和类型安全"
+          - "**Repository Pattern:** 抽象数据访问逻辑 - _理由：_ 便于测试和未来的数据库迁移"
+          - "**API Gateway Pattern:** 所有 API 调用的单一入口点 - _理由：_ 集中进行认证、速率限制和监控"
 
   - id: tech-stack
-    title: Tech Stack
+    title: 技术栈
     instruction: |
-      This is the DEFINITIVE technology selection for the entire project. Work with user to finalize all choices. This table is the single source of truth - all development must use these exact versions.
+      这是整个项目最终的技术选型。与用户合作敲定所有选择。此表是唯一的事实来源——所有开发都必须使用这些确切的版本。
 
-      Key areas to cover:
-      - Frontend and backend languages/frameworks
-      - Databases and caching
-      - Authentication and authorization
-      - API approach
-      - Testing tools for both frontend and backend
-      - Build and deployment tools
-      - Monitoring and logging
+      需要涵盖的关键领域：
+      - 前后端语言/框架
+      - 数据库和缓存
+      - 认证和授权
+      - API 方案
+      - 前后端测试工具
+      - 构建和部署工具
+      - 监控和日志记录
 
-      Upon render, elicit feedback immediately.
+      渲染后，立即征求反馈。
     elicit: true
     sections:
       - id: tech-stack-table
-        title: Technology Stack Table
+        title: 技术栈表
         type: table
-        columns: [Category, Technology, Version, Purpose, Rationale]
+        columns: [类别, 技术, 版本, 用途, 理由]
         rows:
-          - ["Frontend Language", "{{fe_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - [
-              "Frontend Framework",
-              "{{fe_framework}}",
-              "{{version}}",
-              "{{purpose}}",
-              "{{why_chosen}}",
-            ]
-          - [
-              "UI Component Library",
-              "{{ui_library}}",
-              "{{version}}",
-              "{{purpose}}",
-              "{{why_chosen}}",
-            ]
-          - ["State Management", "{{state_mgmt}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Backend Language", "{{be_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - [
-              "Backend Framework",
-              "{{be_framework}}",
-              "{{version}}",
-              "{{purpose}}",
-              "{{why_chosen}}",
-            ]
-          - ["API Style", "{{api_style}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Database", "{{database}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Cache", "{{cache}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["File Storage", "{{storage}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Authentication", "{{auth}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Frontend Testing", "{{fe_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Backend Testing", "{{be_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["E2E Testing", "{{e2e_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Build Tool", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Bundler", "{{bundler}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["IaC Tool", "{{iac_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["前端语言", "{{fe_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["前端框架", "{{fe_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["UI 组件库", "{{ui_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["状态管理", "{{state_mgmt}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["后端语言", "{{be_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["后端框架", "{{be_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["API 风格", "{{api_style}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["数据库", "{{database}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["缓存", "{{cache}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["文件存储", "{{storage}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["认证", "{{auth}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["前端测试", "{{fe_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["后端测试", "{{be_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["E2E 测试", "{{e2e_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["构建工具", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["打包工具", "{{bundler}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["IaC 工具", "{{iac_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
           - ["CI/CD", "{{cicd}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Monitoring", "{{monitoring}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["Logging", "{{logging}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["CSS Framework", "{{css_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["监控", "{{monitoring}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["日志", "{{logging}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - ["CSS 框架", "{{css_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
 
   - id: data-models
-    title: Data Models
+    title: 数据模型
     instruction: |
-      Define the core data models/entities that will be shared between frontend and backend:
+      定义将在前后端共享的核心数据模型/实体：
 
-      1. Review PRD requirements and identify key business entities
-      2. For each model, explain its purpose and relationships
-      3. Include key attributes and data types
-      4. Show relationships between models
-      5. Create TypeScript interfaces that can be shared
-      6. Discuss design decisions with user
+      1. 审阅 PRD 需求，识别关键业务实体
+      2. 对每个模型，解释其用途和关系
+      3. 包括关键属性和数据类型
+      4. 展示模型之间的关系
+      5. 创建可以共享的 TypeScript 接口
+      6. 与用户讨论设计决策
 
-      Create a clear conceptual model before moving to database schema.
+      在进入数据库模式设计之前，创建一个清晰的概念模型。
     elicit: true
     repeatable: true
     sections:
       - id: model
         title: "{{model_name}}"
         template: |
-          **Purpose:** {{model_purpose}}
+          **用途:** {{model_purpose}}
 
-          **Key Attributes:**
+          **关键属性:**
           - {{attribute_1}}: {{type_1}} - {{description_1}}
           - {{attribute_2}}: {{type_2}} - {{description_2}}
         sections:
           - id: typescript-interface
-            title: TypeScript Interface
+            title: TypeScript 接口
             type: code
             language: typescript
             template: "{{model_interface}}"
           - id: relationships
-            title: Relationships
+            title: 关系
             type: bullet-list
             template: "- {{relationship}}"
 
   - id: api-spec
-    title: API Specification
+    title: API 规范
     instruction: |
-      Based on the chosen API style from Tech Stack:
+      基于在技术栈中选择的 API 风格：
 
-      1. If REST API, create an OpenAPI 3.0 specification
-      2. If GraphQL, provide the GraphQL schema
-      3. If tRPC, show router definitions
-      4. Include all endpoints from epics/stories
-      5. Define request/response schemas based on data models
-      6. Document authentication requirements
-      7. Include example requests/responses
+      1. 如果是 REST API, 创建一个 OpenAPI 3.0 规范
+      2. 如果是 GraphQL, 提供 GraphQL 模式
+      3. 如果是 tRPC, 展示路由定义
+      4. 包括来自史诗/故事的所有端点
+      5. 基于数据模型定义请求/响应模式
+      6. 记录认证要求
+      7. 包括请求/响应示例
 
-      Use appropriate format for the chosen API style. If no API (e.g., static site), skip this section.
+      使用与所选 API 风格相符的格式。如果项目没有 API (例如, 静态网站)，则跳过此部分。
     elicit: true
     sections:
       - id: rest-api
-        title: REST API Specification
-        condition: API style is REST
+        title: REST API 规范
+        condition: API 风格为 REST
         type: code
         language: yaml
         template: |
@@ -262,513 +243,513 @@ sections:
             - url: {{server_url}}
               description: {{server_description}}
       - id: graphql-api
-        title: GraphQL Schema
-        condition: API style is GraphQL
+        title: GraphQL 模式
+        condition: API 风格为 GraphQL
         type: code
         language: graphql
         template: "{{graphql_schema}}"
       - id: trpc-api
-        title: tRPC Router Definitions
-        condition: API style is tRPC
+        title: tRPC 路由定义
+        condition: API 风格为 tRPC
         type: code
         language: typescript
         template: "{{trpc_routers}}"
 
   - id: components
-    title: Components
+    title: 组件
     instruction: |
-      Based on the architectural patterns, tech stack, and data models from above:
+      基于上述的架构模式、技术栈和数据模型：
 
-      1. Identify major logical components/services across the fullstack
-      2. Consider both frontend and backend components
-      3. Define clear boundaries and interfaces between components
-      4. For each component, specify:
-      - Primary responsibility
-      - Key interfaces/APIs exposed
-      - Dependencies on other components
-      - Technology specifics based on tech stack choices
+      1. 识别整个全栈中的主要逻辑组件/服务
+      2. 同时考虑前端和后端组件
+      3. 在组件之间定义清晰的边界和接口
+      4. 对每个组件，指明：
+      - 主要职责
+      - 暴露的关键接口/API
+      - 对其他组件的依赖
+      - 基于技术栈选择的技术细节
 
-      5. Create component diagrams where helpful
+      5. 在有帮助的地方创建组件图
     elicit: true
     sections:
       - id: component-list
         repeatable: true
         title: "{{component_name}}"
         template: |
-          **Responsibility:** {{component_description}}
+          **职责:** {{component_description}}
 
-          **Key Interfaces:**
+          **关键接口:**
           - {{interface_1}}
           - {{interface_2}}
 
-          **Dependencies:** {{dependencies}}
+          **依赖:** {{dependencies}}
 
-          **Technology Stack:** {{component_tech_details}}
+          **技术栈:** {{component_tech_details}}
       - id: component-diagrams
-        title: Component Diagrams
+        title: 组件图
         type: mermaid
         instruction: |
-          Create Mermaid diagrams to visualize component relationships. Options:
-          - C4 Container diagram for high-level view
-          - Component diagram for detailed internal structure
-          - Sequence diagrams for complex interactions
-          Choose the most appropriate for clarity
+          创建 Mermaid 图来可视化组件关系。选项包括：
+          - 用于高层视图的 C4 容器图
+          - 用于详细内部结构的组件图
+          - 用于复杂交互的时序图
+          选择最合适的图以保证清晰。
 
   - id: external-apis
-    title: External APIs
-    condition: Project requires external API integrations
+    title: 外部 API
+    condition: 项目需要集成外部 API
     instruction: |
-      For each external service integration:
+      对于每个外部服务集成：
 
-      1. Identify APIs needed based on PRD requirements and component design
-      2. If documentation URLs are unknown, ask user for specifics
-      3. Document authentication methods and security considerations
-      4. List specific endpoints that will be used
-      5. Note any rate limits or usage constraints
+      1. 根据 PRD 需求和组件设计，识别所需的 API
+      2. 如果文档 URL 未知，向用户询问具体信息
+      3. 记录认证方法和安全考量
+      4. 列出将要使用的具体端点
+      5. 注意任何速率限制或使用约束
 
-      If no external APIs are needed, state this explicitly and skip to next section.
+      如果不需要外部 API，请明确说明并跳到下一部分。
     elicit: true
     repeatable: true
     sections:
       - id: api
         title: "{{api_name}} API"
         template: |
-          - **Purpose:** {{api_purpose}}
-          - **Documentation:** {{api_docs_url}}
-          - **Base URL(s):** {{api_base_url}}
-          - **Authentication:** {{auth_method}}
-          - **Rate Limits:** {{rate_limits}}
+          - **用途:** {{api_purpose}}
+          - **文档:** {{api_docs_url}}
+          - **基础 URL(s):** {{api_base_url}}
+          - **认证:** {{auth_method}}
+          - **速率限制:** {{rate_limits}}
 
-          **Key Endpoints Used:**
+          **使用的关键端点:**
           - `{{method}} {{endpoint_path}}` - {{endpoint_purpose}}
 
-          **Integration Notes:** {{integration_considerations}}
+          **集成说明:** {{integration_considerations}}
 
   - id: core-workflows
-    title: Core Workflows
+    title: 核心工作流
     type: mermaid
     mermaid_type: sequence
     instruction: |
-      Illustrate key system workflows using sequence diagrams:
+      使用时序图阐释关键的系统工作流：
 
-      1. Identify critical user journeys from PRD
-      2. Show component interactions including external APIs
-      3. Include both frontend and backend flows
-      4. Include error handling paths
-      5. Document async operations
-      6. Create both high-level and detailed diagrams as needed
+      1. 从 PRD 中识别关键的用户旅程
+      2. 展示包括外部 API 在内的组件交互
+      3. 包括前端和后端的流程
+      4. 包括错误处理路径
+      5. 记录异步操作
+      6. 根据需要创建高层和详细的图表
 
-      Focus on workflows that clarify architecture decisions or complex interactions.
+      重点关注那些能阐明架构决策或复杂交互的工作流。
     elicit: true
 
   - id: database-schema
-    title: Database Schema
+    title: 数据库模式
     instruction: |
-      Transform the conceptual data models into concrete database schemas:
+      将概念数据模型转换为具体的数据库模式：
 
-      1. Use the database type(s) selected in Tech Stack
-      2. Create schema definitions using appropriate notation
-      3. Include indexes, constraints, and relationships
-      4. Consider performance and scalability
-      5. For NoSQL, show document structures
+      1. 使用技术栈中选择的数据库类型
+      2. 使用适当的表示法创建模式定义
+      3. 包括索引、约束和关系
+      4. 考虑性能和可伸缩性
+      5. 对于 NoSQL, 展示文档结构
 
-      Present schema in format appropriate to database type (SQL DDL, JSON schema, etc.)
+      以适合数据库类型的格式呈现模式 (SQL DDL, JSON schema, 等)。
     elicit: true
 
   - id: frontend-architecture
-    title: Frontend Architecture
-    instruction: Define frontend-specific architecture details. After each subsection, note if user wants to refine before continuing.
+    title: 前端架构
+    instruction: 定义前端特定的架构细节。在每个子部分之后，询问用户是否希望在继续前进行优化。
     elicit: true
     sections:
       - id: component-architecture
-        title: Component Architecture
-        instruction: Define component organization and patterns based on chosen framework.
+        title: 组件架构
+        instruction: 根据所选框架定义组件组织和模式。
         sections:
           - id: component-organization
-            title: Component Organization
+            title: 组件组织
             type: code
             language: text
             template: "{{component_structure}}"
           - id: component-template
-            title: Component Template
+            title: 组件模板
             type: code
             language: typescript
             template: "{{component_template}}"
       - id: state-management
-        title: State Management Architecture
-        instruction: Detail state management approach based on chosen solution.
+        title: 状态管理架构
+        instruction: 基于所选方案详细说明状态管理方法。
         sections:
           - id: state-structure
-            title: State Structure
+            title: 状态结构
             type: code
             language: typescript
             template: "{{state_structure}}"
           - id: state-patterns
-            title: State Management Patterns
+            title: 状态管理模式
             type: bullet-list
             template: "- {{pattern}}"
       - id: routing-architecture
-        title: Routing Architecture
-        instruction: Define routing structure based on framework choice.
+        title: 路由架构
+        instruction: 根据框架选择定义路由结构。
         sections:
           - id: route-organization
-            title: Route Organization
+            title: 路由组织
             type: code
             language: text
             template: "{{route_structure}}"
           - id: protected-routes
-            title: Protected Route Pattern
+            title: 受保护路由模式
             type: code
             language: typescript
             template: "{{protected_route_example}}"
       - id: frontend-services
-        title: Frontend Services Layer
-        instruction: Define how frontend communicates with backend.
+        title: 前端服务层
+        instruction: 定义前端如何与后端通信。
         sections:
           - id: api-client-setup
-            title: API Client Setup
+            title: API 客户端设置
             type: code
             language: typescript
             template: "{{api_client_setup}}"
           - id: service-example
-            title: Service Example
+            title: 服务示例
             type: code
             language: typescript
             template: "{{service_example}}"
 
   - id: backend-architecture
-    title: Backend Architecture
-    instruction: Define backend-specific architecture details. Consider serverless vs traditional server approaches.
+    title: 后端架构
+    instruction: 定义后端特定的架构细节。考虑 serverless 与传统服务器方法。
     elicit: true
     sections:
       - id: service-architecture
-        title: Service Architecture
-        instruction: Based on platform choice, define service organization.
+        title: 服务架构
+        instruction: 基于平台选择，定义服务组织。
         sections:
           - id: serverless-architecture
-            condition: Serverless architecture chosen
+            condition: 选择 Serverless 架构时
             sections:
               - id: function-organization
-                title: Function Organization
+                title: 函数组织
                 type: code
                 language: text
                 template: "{{function_structure}}"
               - id: function-template
-                title: Function Template
+                title: 函数模板
                 type: code
                 language: typescript
                 template: "{{function_template}}"
           - id: traditional-server
-            condition: Traditional server architecture chosen
+            condition: 选择传统服务器架构时
             sections:
               - id: controller-organization
-                title: Controller/Route Organization
+                title: 控制器/路由组织
                 type: code
                 language: text
                 template: "{{controller_structure}}"
               - id: controller-template
-                title: Controller Template
+                title: 控制器模板
                 type: code
                 language: typescript
                 template: "{{controller_template}}"
       - id: database-architecture
-        title: Database Architecture
-        instruction: Define database schema and access patterns.
+        title: 数据库架构
+        instruction: 定义数据库模式和访问模式。
         sections:
           - id: schema-design
-            title: Schema Design
+            title: 模式设计
             type: code
             language: sql
             template: "{{database_schema}}"
           - id: data-access-layer
-            title: Data Access Layer
+            title: 数据访问层
             type: code
             language: typescript
             template: "{{repository_pattern}}"
       - id: auth-architecture
-        title: Authentication and Authorization
-        instruction: Define auth implementation details.
+        title: 认证与授权
+        instruction: 定义认证实现的细节。
         sections:
           - id: auth-flow
-            title: Auth Flow
+            title: 认证流程
             type: mermaid
             mermaid_type: sequence
             template: "{{auth_flow_diagram}}"
           - id: auth-middleware
-            title: Middleware/Guards
+            title: 中间件/守卫
             type: code
             language: typescript
             template: "{{auth_middleware}}"
 
   - id: unified-project-structure
-    title: Unified Project Structure
-    instruction: Create a monorepo structure that accommodates both frontend and backend. Adapt based on chosen tools and frameworks.
+    title: 统一项目结构
+    instruction: 创建一个能够容纳前后端的 monorepo 结构。根据所选的工具和框架进行调整。
     elicit: true
     type: code
     language: plaintext
     examples:
       - |
         {{project-name}}/
-        ├── .github/                    # CI/CD workflows
+        ├── .github/                    # CI/CD 工作流
         │   └── workflows/
         │       ├── ci.yaml
         │       └── deploy.yaml
-        ├── apps/                       # Application packages
-        │   ├── web/                    # Frontend application
+        ├── apps/                       # 应用包
+        │   ├── web/                    # 前端应用
         │   │   ├── src/
-        │   │   │   ├── components/     # UI components
-        │   │   │   ├── pages/          # Page components/routes
-        │   │   │   ├── hooks/          # Custom React hooks
-        │   │   │   ├── services/       # API client services
-        │   │   │   ├── stores/         # State management
-        │   │   │   ├── styles/         # Global styles/themes
-        │   │   │   └── utils/          # Frontend utilities
-        │   │   ├── public/             # Static assets
-        │   │   ├── tests/              # Frontend tests
+        │   │   │   ├── components/     # UI 组件
+        │   │   │   ├── pages/          # 页面组件/路由
+        │   │   │   ├── hooks/          # 自定义 React 钩子
+        │   │   │   ├── services/       # API 客户端服务
+        │   │   │   ├── stores/         # 状态管理
+        │   │   │   ├── styles/         # 全局样式/主题
+        │   │   │   └── utils/          # 前端工具库
+        │   │   ├── public/             # 静态资源
+        │   │   ├── tests/              # 前端测试
         │   │   └── package.json
-        │   └── api/                    # Backend application
+        │   └── api/                    # 后端应用
         │       ├── src/
-        │       │   ├── routes/         # API routes/controllers
-        │       │   ├── services/       # Business logic
-        │       │   ├── models/         # Data models
-        │       │   ├── middleware/     # Express/API middleware
-        │       │   ├── utils/          # Backend utilities
+        │       │   ├── routes/         # API 路由/控制器
+        │       │   ├── services/       # 业务逻辑
+        │       │   ├── models/         # 数据模型
+        │       │   ├── middleware/     # Express/API 中间件
+        │       │   ├── utils/          # 后端工具库
         │       │   └── {{serverless_or_server_entry}}
-        │       ├── tests/              # Backend tests
+        │       ├── tests/              # 后端测试
         │       └── package.json
-        ├── packages/                   # Shared packages
-        │   ├── shared/                 # Shared types/utilities
+        ├── packages/                   # 共享包
+        │   ├── shared/                 # 共享类型/工具库
         │   │   ├── src/
-        │   │   │   ├── types/          # TypeScript interfaces
-        │   │   │   ├── constants/      # Shared constants
-        │   │   │   └── utils/          # Shared utilities
+        │   │   │   ├── types/          # TypeScript 接口
+        │   │   │   ├── constants/      # 共享常量
+        │   │   │   └── utils/          # 共享工具库
         │   │   └── package.json
-        │   ├── ui/                     # Shared UI components
+        │   ├── ui/                     # 共享 UI 组件
         │   │   ├── src/
         │   │   └── package.json
-        │   └── config/                 # Shared configuration
+        │   └── config/                 # 共享配置
         │       ├── eslint/
         │       ├── typescript/
         │       └── jest/
-        ├── infrastructure/             # IaC definitions
+        ├── infrastructure/             # IaC 定义
         │   └── {{iac_structure}}
-        ├── scripts/                    # Build/deploy scripts
-        ├── docs/                       # Documentation
+        ├── scripts/                    # 构建/部署脚本
+        ├── docs/                       # 文档
         │   ├── prd.md
         │   ├── front-end-spec.md
         │   └── fullstack-architecture.md
-        ├── .env.example                # Environment template
-        ├── package.json                # Root package.json
-        ├── {{monorepo_config}}         # Monorepo configuration
+        ├── .env.example                # 环境模板
+        ├── package.json                # 根 package.json
+        ├── {{monorepo_config}}         # Monorepo 配置文件
         └── README.md
 
   - id: development-workflow
-    title: Development Workflow
-    instruction: Define the development setup and workflow for the fullstack application.
+    title: 开发工作流
+    instruction: 为全栈应用定义开发设置和工作流。
     elicit: true
     sections:
       - id: local-setup
-        title: Local Development Setup
+        title: 本地开发设置
         sections:
           - id: prerequisites
-            title: Prerequisites
+            title: 先决条件
             type: code
             language: bash
             template: "{{prerequisites_commands}}"
           - id: initial-setup
-            title: Initial Setup
+            title: 初始设置
             type: code
             language: bash
             template: "{{setup_commands}}"
           - id: dev-commands
-            title: Development Commands
+            title: 开发命令
             type: code
             language: bash
             template: |
-              # Start all services
+              # 启动所有服务
               {{start_all_command}}
 
-              # Start frontend only
+              # 仅启动前端
               {{start_frontend_command}}
 
-              # Start backend only
+              # 仅启动后端
               {{start_backend_command}}
 
-              # Run tests
+              # 运行测试
               {{test_commands}}
       - id: environment-config
-        title: Environment Configuration
+        title: 环境配置
         sections:
           - id: env-vars
-            title: Required Environment Variables
+            title: 所需环境变量
             type: code
             language: bash
             template: |
-              # Frontend (.env.local)
+              # 前端 (.env.local)
               {{frontend_env_vars}}
 
-              # Backend (.env)
+              # 后端 (.env)
               {{backend_env_vars}}
 
-              # Shared
+              # 共享
               {{shared_env_vars}}
 
   - id: deployment-architecture
-    title: Deployment Architecture
-    instruction: Define deployment strategy based on platform choice.
+    title: 部署架构
+    instruction: 基于平台选择定义部署策略。
     elicit: true
     sections:
       - id: deployment-strategy
-        title: Deployment Strategy
+        title: 部署策略
         template: |
-          **Frontend Deployment:**
-          - **Platform:** {{frontend_deploy_platform}}
-          - **Build Command:** {{frontend_build_command}}
-          - **Output Directory:** {{frontend_output_dir}}
-          - **CDN/Edge:** {{cdn_strategy}}
+          **前端部署:**
+          - **平台:** {{frontend_deploy_platform}}
+          - **构建命令:** {{frontend_build_command}}
+          - **输出目录:** {{frontend_output_dir}}
+          - **CDN/边缘网络:** {{cdn_strategy}}
 
-          **Backend Deployment:**
-          - **Platform:** {{backend_deploy_platform}}
-          - **Build Command:** {{backend_build_command}}
-          - **Deployment Method:** {{deployment_method}}
+          **后端部署:**
+          - **平台:** {{backend_deploy_platform}}
+          - **构建命令:** {{backend_build_command}}
+          - **部署方法:** {{deployment_method}}
       - id: cicd-pipeline
-        title: CI/CD Pipeline
+        title: CI/CD 流水线
         type: code
         language: yaml
         template: "{{cicd_pipeline_config}}"
       - id: environments
-        title: Environments
+        title: 环境
         type: table
-        columns: [Environment, Frontend URL, Backend URL, Purpose]
+        columns: [环境, 前端 URL, 后端 URL, 用途]
         rows:
-          - ["Development", "{{dev_fe_url}}", "{{dev_be_url}}", "Local development"]
-          - ["Staging", "{{staging_fe_url}}", "{{staging_be_url}}", "Pre-production testing"]
-          - ["Production", "{{prod_fe_url}}", "{{prod_be_url}}", "Live environment"]
+          - ["开发", "{{dev_fe_url}}", "{{dev_be_url}}", "本地开发"]
+          - ["预发布", "{{staging_fe_url}}", "{{staging_be_url}}", "生产前测试"]
+          - ["生产", "{{prod_fe_url}}", "{{prod_be_url}}", "线上环境"]
 
   - id: security-performance
-    title: Security and Performance
-    instruction: Define security and performance considerations for the fullstack application.
+    title: 安全性与性能
+    instruction: 为全栈应用定义安全性和性能方面的考量。
     elicit: true
     sections:
       - id: security-requirements
-        title: Security Requirements
+        title: 安全要求
         template: |
-          **Frontend Security:**
-          - CSP Headers: {{csp_policy}}
-          - XSS Prevention: {{xss_strategy}}
-          - Secure Storage: {{storage_strategy}}
+          **前端安全:**
+          - CSP 头: {{csp_policy}}
+          - XSS 防护: {{xss_strategy}}
+          - 安全存储: {{storage_strategy}}
 
-          **Backend Security:**
-          - Input Validation: {{validation_approach}}
-          - Rate Limiting: {{rate_limit_config}}
-          - CORS Policy: {{cors_config}}
+          **后端安全:**
+          - 输入验证: {{validation_approach}}
+          - 速率限制: {{rate_limit_config}}
+          - CORS 策略: {{cors_config}}
 
-          **Authentication Security:**
-          - Token Storage: {{token_strategy}}
-          - Session Management: {{session_approach}}
-          - Password Policy: {{password_requirements}}
+          **认证安全:**
+          - 令牌存储: {{token_strategy}}
+          - 会话管理: {{session_approach}}
+          - 密码策略: {{password_requirements}}
       - id: performance-optimization
-        title: Performance Optimization
+        title: 性能优化
         template: |
-          **Frontend Performance:**
-          - Bundle Size Target: {{bundle_size}}
-          - Loading Strategy: {{loading_approach}}
-          - Caching Strategy: {{fe_cache_strategy}}
+          **前端性能:**
+          - 打包体积目标: {{bundle_size}}
+          - 加载策略: {{loading_approach}}
+          - 缓存策略: {{fe_cache_strategy}}
 
-          **Backend Performance:**
-          - Response Time Target: {{response_target}}
-          - Database Optimization: {{db_optimization}}
-          - Caching Strategy: {{be_cache_strategy}}
+          **后端性能:**
+          - 响应时间目标: {{response_target}}
+          - 数据库优化: {{db_optimization}}
+          - 缓存策略: {{be_cache_strategy}}
 
   - id: testing-strategy
-    title: Testing Strategy
-    instruction: Define comprehensive testing approach for fullstack application.
+    title: 测试策略
+    instruction: 为全栈应用定义全面的测试方法。
     elicit: true
     sections:
       - id: testing-pyramid
-        title: Testing Pyramid
+        title: 测试金字塔
         type: code
         language: text
         template: |
-          E2E Tests
+          E2E 测试
           /        \
-          Integration Tests
+          集成测试
           /            \
-          Frontend Unit  Backend Unit
+          前端单元测试  后端单元测试
       - id: test-organization
-        title: Test Organization
+        title: 测试组织
         sections:
           - id: frontend-tests
-            title: Frontend Tests
+            title: 前端测试
             type: code
             language: text
             template: "{{frontend_test_structure}}"
           - id: backend-tests
-            title: Backend Tests
+            title: 后端测试
             type: code
             language: text
             template: "{{backend_test_structure}}"
           - id: e2e-tests
-            title: E2E Tests
+            title: E2E 测试
             type: code
             language: text
             template: "{{e2e_test_structure}}"
       - id: test-examples
-        title: Test Examples
+        title: 测试示例
         sections:
           - id: frontend-test
-            title: Frontend Component Test
+            title: 前端组件测试
             type: code
             language: typescript
             template: "{{frontend_test_example}}"
           - id: backend-test
-            title: Backend API Test
+            title: 后端 API 测试
             type: code
             language: typescript
             template: "{{backend_test_example}}"
           - id: e2e-test
-            title: E2E Test
+            title: E2E 测试
             type: code
             language: typescript
             template: "{{e2e_test_example}}"
 
   - id: coding-standards
-    title: Coding Standards
-    instruction: Define MINIMAL but CRITICAL standards for AI agents. Focus only on project-specific rules that prevent common mistakes. These will be used by dev agents.
+    title: 编码规范
+    instruction: 为 AI 代理定义最少但关键的规范。仅关注能防止常见错误的项目特定规则。这些规范将由开发代理使用。
     elicit: true
     sections:
       - id: critical-rules
-        title: Critical Fullstack Rules
+        title: 关键全栈规则
         repeatable: true
         template: "- **{{rule_name}}:** {{rule_description}}"
         examples:
-          - "**Type Sharing:** Always define types in packages/shared and import from there"
-          - "**API Calls:** Never make direct HTTP calls - use the service layer"
-          - "**Environment Variables:** Access only through config objects, never process.env directly"
-          - "**Error Handling:** All API routes must use the standard error handler"
-          - "**State Updates:** Never mutate state directly - use proper state management patterns"
+          - "**类型共享:** 始终在 packages/shared 中定义类型并从那里导入"
+          - "**API 调用:** 绝不直接进行 HTTP 调用 - 使用服务层"
+          - "**环境变量:** 仅通过配置对象访问，绝不直接使用 process.env"
+          - "**错误处理:** 所有 API 路由必须使用标准的错误处理器"
+          - "**状态更新:** 绝不直接修改状态 - 使用正确的状态管理模式"
       - id: naming-conventions
-        title: Naming Conventions
+        title: 命名约定
         type: table
-        columns: [Element, Frontend, Backend, Example]
+        columns: [元素, 前端, 后端, 示例]
         rows:
-          - ["Components", "PascalCase", "-", "`UserProfile.tsx`"]
-          - ["Hooks", "camelCase with 'use'", "-", "`useAuth.ts`"]
-          - ["API Routes", "-", "kebab-case", "`/api/user-profile`"]
-          - ["Database Tables", "-", "snake_case", "`user_profiles`"]
+          - ["组件", "PascalCase", "-", "`UserProfile.tsx`"]
+          - ["Hooks", "使用 'use' 前缀的 camelCase", "-", "`useAuth.ts`"]
+          - ["API 路由", "-", "kebab-case", "`/api/user-profile`"]
+          - ["数据库表", "-", "snake_case", "`user_profiles`"]
 
   - id: error-handling
-    title: Error Handling Strategy
-    instruction: Define unified error handling across frontend and backend.
+    title: 错误处理策略
+    instruction: 定义跨前后端的统一错误处理。
     elicit: true
     sections:
       - id: error-flow
-        title: Error Flow
+        title: 错误流程
         type: mermaid
         mermaid_type: sequence
         template: "{{error_flow_diagram}}"
       - id: error-format
-        title: Error Response Format
+        title: 错误响应格式
         type: code
         language: typescript
         template: |
@@ -782,43 +763,43 @@ sections:
             };
           }
       - id: frontend-error-handling
-        title: Frontend Error Handling
+        title: 前端错误处理
         type: code
         language: typescript
         template: "{{frontend_error_handler}}"
       - id: backend-error-handling
-        title: Backend Error Handling
+        title: 后端错误处理
         type: code
         language: typescript
         template: "{{backend_error_handler}}"
 
   - id: monitoring
-    title: Monitoring and Observability
-    instruction: Define monitoring strategy for fullstack application.
+    title: 监控与可观测性
+    instruction: 为全栈应用定义监控策略。
     elicit: true
     sections:
       - id: monitoring-stack
-        title: Monitoring Stack
+        title: 监控技术栈
         template: |
-          - **Frontend Monitoring:** {{frontend_monitoring}}
-          - **Backend Monitoring:** {{backend_monitoring}}
-          - **Error Tracking:** {{error_tracking}}
-          - **Performance Monitoring:** {{perf_monitoring}}
+          - **前端监控:** {{frontend_monitoring}}
+          - **后端监控:** {{backend_monitoring}}
+          - **错误跟踪:** {{error_tracking}}
+          - **性能监控:** {{perf_monitoring}}
       - id: key-metrics
-        title: Key Metrics
+        title: 关键指标
         template: |
-          **Frontend Metrics:**
+          **前端指标:**
           - Core Web Vitals
-          - JavaScript errors
-          - API response times
-          - User interactions
+          - JavaScript 错误
+          - API 响应时间
+          - 用户交互
 
-          **Backend Metrics:**
-          - Request rate
-          - Error rate
-          - Response time
-          - Database query performance
+          **后端指标:**
+          - 请求速率
+          - 错误率
+          - 响应时间
+          - 数据库查询性能
 
   - id: checklist-results
-    title: Checklist Results Report
-    instruction: Before running the checklist, offer to output the full architecture document. Once user confirms, execute the architect-checklist and populate results here.
+    title: 检查清单结果报告
+    instruction: 在运行检查清单前，提议输出完整的架构文档。一旦用户确认，执行 architect-checklist 并在此处填充结果。
