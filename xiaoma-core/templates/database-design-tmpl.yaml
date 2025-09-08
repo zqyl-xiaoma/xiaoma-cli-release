@@ -1,0 +1,266 @@
+name: Database Design Document Template
+version: 1.0.0
+description: Template for comprehensive database design documentation
+
+sections:
+  - id: overview
+    title: 数据库设计概述
+    required: true
+    template: |
+      ## 数据库设计概述
+
+      ### 项目信息
+      - **项目名称**: {project_name}
+      - **数据库名称**: {database_name}
+      - **版本号**: {version}
+      - **设计日期**: {design_date}
+      - **设计人员**: Database Architect
+
+      ### 设计目标
+      {design_goals}
+
+      ### 设计原则
+      - 数据完整性：确保数据的准确性和一致性
+      - 性能优化：合理的索引设计和查询优化
+      - 可扩展性：支持业务增长和功能扩展
+      - 安全性：数据访问控制和敏感信息保护
+      - 可维护性：清晰的命名规范和文档
+
+  - id: requirements_analysis
+    title: 需求分析
+    required: true
+    template: |
+      ## 需求分析
+
+      ### 业务需求
+      {business_requirements}
+
+      ### 功能需求
+      {functional_requirements}
+
+      ### 非功能需求
+      - **性能要求**: {performance_requirements}
+      - **容量规划**: {capacity_planning}
+      - **并发要求**: {concurrency_requirements}
+      - **备份策略**: {backup_strategy}
+
+  - id: entity_design
+    title: 实体设计
+    required: true
+    template: |
+      ## 实体设计
+
+      ### 核心实体
+      {core_entities_list}
+
+      ### 实体详细设计
+      {for_each_entity}
+      #### {entity_name}
+      **描述**: {entity_description}
+      **表名**: {table_name}
+
+      **字段设计**:
+      | 字段名 | 数据类型 | 长度 | 允许空 | 默认值 | 主键 | 说明 |
+      |--------|----------|------|--------|--------|------|------|
+      | id | BIGINT | - | NO | AUTO_INCREMENT | PK | 主键ID |
+      | {field_name} | {data_type} | {length} | {nullable} | {default} | {key} | {comment} |
+      | created_at | DATETIME | - | NO | CURRENT_TIMESTAMP | - | 创建时间 |
+      | updated_at | DATETIME | - | NO | CURRENT_TIMESTAMP | - | 更新时间 |
+      | deleted_at | DATETIME | - | YES | NULL | - | 删除时间 |
+      | version | INT | - | NO | 0 | - | 版本号 |
+      {end_for_each}
+
+  - id: relationship_design
+    title: 关系设计
+    required: true
+    template: |
+      ## 关系设计
+
+      ### 实体关系图
+      ```mermaid
+      erDiagram
+      {entity_relationships}
+      ```
+
+      ### 关系说明
+      {relationship_descriptions}
+
+      ### 外键约束
+      | 约束名 | 子表 | 子表字段 | 父表 | 父表字段 | 级联操作 |
+      |--------|------|----------|------|----------|----------|
+      | {fk_name} | {child_table} | {child_column} | {parent_table} | {parent_column} | {cascade_action} |
+
+  - id: index_design
+    title: 索引设计
+    required: true
+    template: |
+      ## 索引设计
+
+      ### 索引策略
+      - 主键索引：所有表的id字段自动创建主键索引
+      - 外键索引：所有外键字段创建索引
+      - 查询索引：基于查询频率创建索引
+      - 复合索引：多字段组合查询创建复合索引
+
+      ### 索引列表
+      | 表名 | 索引名 | 索引类型 | 字段 | 说明 |
+      |------|--------|----------|------|------|
+      | {table} | {index_name} | {index_type} | {columns} | {description} |
+
+  - id: data_dictionary
+    title: 数据字典
+    required: true
+    template: |
+      ## 数据字典
+
+      ### 枚举值定义
+      {enum_definitions}
+
+      ### 状态码定义
+      | 状态码 | 含义 | 说明 |
+      |--------|------|------|
+      | {code} | {meaning} | {description} |
+
+      ### 业务规则
+      {business_rules}
+
+  - id: performance_optimization
+    title: 性能优化
+    required: false
+    template: |
+      ## 性能优化
+
+      ### 分区策略
+      {partition_strategy}
+
+      ### 缓存策略
+      {cache_strategy}
+
+      ### 查询优化
+      {query_optimization}
+
+      ### 监控指标
+      - 查询响应时间
+      - 并发连接数
+      - 缓存命中率
+      - 慢查询日志
+
+  - id: security_design
+    title: 安全设计
+    required: true
+    template: |
+      ## 安全设计
+
+      ### 访问控制
+      - 数据库用户权限管理
+      - 应用层访问控制
+      - API接口鉴权
+
+      ### 数据加密
+      - 敏感字段加密存储
+      - 传输层加密（SSL/TLS）
+
+      ### 审计日志
+      - 操作日志记录
+      - 数据变更追踪
+      - 异常访问监控
+
+  - id: migration_plan
+    title: 迁移计划
+    required: false
+    condition: brownfield_project
+    template: |
+      ## 数据迁移计划
+
+      ### 现有数据分析
+      {existing_data_analysis}
+
+      ### 迁移策略
+      {migration_strategy}
+
+      ### 迁移步骤
+      1. {migration_steps}
+
+      ### 回滚方案
+      {rollback_plan}
+
+  - id: ddl_scripts
+    title: DDL脚本
+    required: true
+    template: |
+      ## DDL脚本
+
+      ### 建库脚本
+      ```sql
+      {create_database_script}
+      ```
+
+      ### 建表脚本
+      ```sql
+      {create_tables_script}
+      ```
+
+      ### 索引脚本
+      ```sql
+      {create_indexes_script}
+      ```
+
+      ### 约束脚本
+      ```sql
+      {create_constraints_script}
+      ```
+
+  - id: api_design
+    title: API接口设计
+    required: true
+    template: |
+      ## API接口设计
+
+      ### RESTful API设计
+      {for_each_entity}
+      #### {entity_name} API
+
+      | 方法 | 路径 | 说明 | 请求参数 | 响应 |
+      |------|------|------|----------|------|
+      | GET | /api/{entity_lowercase} | 分页查询 | page, size, sort | 分页数据 |
+      | GET | /api/{entity_lowercase}/{id} | 查询详情 | - | 实体详情 |
+      | POST | /api/{entity_lowercase} | 新增 | 实体数据 | 创建结果 |
+      | PUT | /api/{entity_lowercase}/{id} | 更新 | 实体数据 | 更新结果 |
+      | DELETE | /api/{entity_lowercase}/{id} | 删除 | - | 删除结果 |
+      {end_for_each}
+
+  - id: implementation_guide
+    title: 实现指南
+    required: false
+    template: |
+      ## 实现指南
+
+      ### 技术栈建议
+      - ORM框架：MyBatis Plus / JPA
+      - 连接池：HikariCP / Druid
+      - 缓存：Redis
+      - 数据库：MySQL 8.0+
+
+      ### 开发规范
+      - 实体类命名：大驼峰命名法
+      - 表名：小写下划线分隔
+      - 字段名：小写下划线分隔
+      - 使用软删除
+      - 使用乐观锁
+
+  - id: appendix
+    title: 附录
+    required: false
+    template: |
+      ## 附录
+
+      ### 参考文档
+      {references}
+
+      ### 变更历史
+      | 版本 | 日期 | 修改人 | 修改内容 |
+      |------|------|--------|----------|
+      | {version} | {date} | {author} | {changes} |
+
+      ### 术语表
+      {glossary}

@@ -1,0 +1,24 @@
+# <!-- Powered by XiaoMa™ Core -->
+bundle:
+  name: Team Fullstack with Database
+  icon: 🚀
+  description: Full-stack team with enhanced database design capabilities using MCP MySQL integration
+agents:
+  - xiaoma-orchestrator
+  - analyst
+  - pm
+  - database-architect # 新增的数据库架构师
+  - ux-expert
+  - architect
+  - po
+  - sm
+  - dev
+  - qa
+workflows:
+  - enhanced-fullstack-with-database.yaml # 增强的工作流
+  - brownfield-fullstack.yaml
+  - brownfield-service.yaml
+  - brownfield-ui.yaml
+  - greenfield-fullstack.yaml
+  - greenfield-service.yaml
+  - greenfield-ui.yaml

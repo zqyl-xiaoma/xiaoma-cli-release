@@ -1,0 +1,257 @@
+# <!-- Powered by XIAOMA™ Core -->
+workflow:
+  id: enhanced-fullstack-with-database
+  name: Enhanced Full-Stack Development with Database Design
+  description: >-
+    Enhanced agent workflow for building full-stack applications with comprehensive database design phase.
+    Includes MCP MySQL integration for existing database analysis and automated code generation.
+  type: greenfield
+  project_types:
+    - web-app
+    - saas
+    - enterprise-app
+    - data-driven-app
+    - api-first
+
+  sequence:
+    - agent: analyst
+      creates: project-brief.md
+      optional_steps:
+        - brainstorming_session
+        - market_research_prompt
+      notes: "Can do brainstorming first, then optional deep research before creating project brief. SAVE OUTPUT: Copy final project-brief.md to your project's docs/ folder."
+
+    - agent: pm
+      creates: prd.md
+      requires: project-brief.md
+      notes: "Creates PRD from project brief using prd-tmpl. SAVE OUTPUT: Copy final prd.md to your project's docs/ folder."
+
+    - agent: database-architect
+      action: analyze_existing_database
+      creates: existing-database-analysis.md
+      condition: has_existing_database
+      notes: |
+        Connect to MySQL via MCP service and analyze existing database:
+        - Check if docs/database/{project_name}-database.md exists
+        - If not, connect to database and generate complete documentation
+        - If exists, verify and update with current database state
+        SAVE OUTPUT: Copy to docs/database/{project_name}-database.md
+
+    - agent: database-architect
+      creates: database-design.md
+      requires:
+        - prd.md
+        - existing-database-analysis.md (if exists)
+      notes: |
+        Design database architecture based on requirements:
+        - Identify entities from PRD
+        - Design table structures
+        - Define relationships and constraints
+        - Create ER diagrams
+        - Generate optimization strategies
+        SAVE OUTPUT: Copy to docs/database/database-design.md
+
+    - agent: database-architect
+      action: generate_ddl_dml
+      creates: database-scripts/
+      requires: database-design.md
+      notes: |
+        Generate executable SQL scripts:
+        - DDL: CREATE TABLE statements with indexes and constraints
+        - DML: Initial data and sample queries
+        - Migration scripts if updating existing database
+        SAVE OUTPUT: Copy to docs/database/scripts/
+
+    - agent: database-architect
+      action: generate_entities_and_mappers
+      creates: generated-code/
+      requires: database-design.md
+      notes: |
+        Generate Java/Spring code:
+        - POJO entity classes with Lombok annotations
+        - DTO classes for data transfer
+        - MyBatis Mapper interfaces
+        - MyBatis XML mapping files
+        - Service interfaces and implementations
+        - RESTful Controller classes
+        SAVE OUTPUT: Copy to src/main/java/{package}/
+
+    - agent: ux-expert
+      creates: front-end-spec.md
+      requires:
+        - prd.md
+        - database-design.md
+      optional_steps:
+        - user_research_prompt
+      notes: "Creates UI/UX specification considering data models. SAVE OUTPUT: Copy to docs/front-end-spec.md"
+
+    - agent: architect
+      creates: fullstack-architecture.md
+      requires:
+        - prd.md
+        - database-design.md
+        - front-end-spec.md
+      optional_steps:
+        - technical_research_prompt
+        - review_generated_code_structure
+      notes: |
+        Creates comprehensive architecture integrating:
+        - Database layer design
+        - Generated entity and mapper code
+        - API layer design
+        - Frontend architecture
+        May suggest changes to PRD or database design.
+        SAVE OUTPUT: Copy to docs/fullstack-architecture.md
+
+    - agent: pm
+      updates: prd.md (if needed)
+      requires: fullstack-architecture.md
+      condition: architecture_suggests_changes
+      notes: "If architect suggests story changes, update PRD and re-export to docs/"
+
+    - agent: database-architect
+      updates: database-design.md (if needed)
+      requires: fullstack-architecture.md
+      condition: architecture_suggests_database_changes
+      notes: "If architect suggests database changes, update design and regenerate scripts"
+
+    - agent: po
+      validates: all_artifacts
+      uses: po-master-checklist
+      notes: |
+        Validates all documents including:
+        - Database design consistency
+        - API alignment with database
+        - Generated code quality
+        May require updates to any document.
+
+    - agent: various
+      updates: any_flagged_documents
+      condition: po_checklist_issues
+      notes: "Fix issues and re-export updated documents to docs/"
+
+    - agent: po
+      action: shard_documents
+      creates: sharded_docs
+      requires: all_artifacts_in_project
+      notes: |
+        Shard documents for IDE development:
+        - PRD sharding
+        - Architecture sharding
+        - Database design sharding
+        Creates organized story structure.
+
+    - agent: sm
+      action: create_story
+      creates: story.md
+      requires: sharded_docs
+      repeats: for_each_epic
+      notes: |
+        Story creation with database context:
+        - Include relevant database tables
+        - Reference generated code
+        - Include API endpoints
+        Story starts in "Draft" status
+
+    - agent: dev
+      action: implement_story
+      creates: implementation_files
+      requires:
+        - story.md
+        - generated-code/
+      notes: |
+        Dev implementation using generated code:
+        - Use generated entities and mappers
+        - Implement business logic
+        - Connect frontend to APIs
+        Updates File List and marks story as "Review"
+
+    - agent: qa
+      action: review_implementation
+      updates: implementation_files
+      requires: implementation_files
+      optional: true
+      notes: |
+        QA review including:
+        - Database query performance
+        - API contract validation
+        - Data integrity checks
+        Updates story status
+
+    - step: repeat_development_cycle
+      action: continue_for_all_stories
+      notes: "Repeat story cycle for all epic stories"
+
+    - agent: po
+      action: epic_retrospective
+      creates: epic-retrospective.md
+      condition: epic_complete
+      optional: true
+      notes: "Validate epic completion including database implementation"
+
+    - step: workflow_end
+      action: project_complete
+      notes: |
+        Project complete with:
+        - Fully designed database
+        - Generated code foundation
+        - Implemented business logic
+        - Tested integrations
+
+  flow_diagram: |
+    ```mermaid
+    graph TD
+        A[Start] --> B[analyst: project-brief]
+        B --> C[pm: prd.md]
+        C --> D{Existing DB?}
+        D -->|Yes| E[db-architect: analyze existing]
+        D -->|No| F[db-architect: design database]
+        E --> F
+        F --> G[db-architect: generate DDL/DML]
+        G --> H[db-architect: generate code]
+        H --> I[ux-expert: front-end-spec]
+        I --> J[architect: fullstack-architecture]
+        J --> K{Changes needed?}
+        K -->|Yes| L[Update PRD/DB]
+        K -->|No| M[po: validate all]
+        L --> M
+        M --> N{Issues?}
+        N -->|Yes| O[Fix issues]
+        N -->|No| P[po: shard docs]
+        O --> M
+        P --> Q[Development Cycle]
+        Q --> R[sm: create story]
+        R --> S[dev: implement]
+        S --> T[qa: review]
+        T --> U{More stories?}
+        U -->|Yes| R
+        U -->|No| V[Complete]
+
+        style F fill:#FFE4B5
+        style G fill:#FFE4B5
+        style H fill:#FFE4B5
+        style P fill:#ADD8E6
+        style R fill:#ADD8E6
+        style S fill:#ADD8E6
+        style V fill:#90EE90
+    ```
+
+  decision_guidance:
+    when_to_use:
+      - Data-driven applications
+      - Applications with complex database requirements
+      - Need for automated code generation
+      - Existing database integration
+      - API-first development approach
+      - Enterprise applications with strict data models
+
+  handoff_prompts:
+    analyst_to_pm: "Project brief complete. Save as docs/project-brief.md, then create PRD."
+    pm_to_database: "PRD ready. Save as docs/prd.md. Database Architect, please analyze requirements and design database."
+    database_analysis: "Connecting to MySQL via MCP to analyze existing database structure..."
+    database_to_code: "Database design complete. Generating entity classes, mappers, and API code..."
+    database_to_ux: "Database design and code generation complete. UX Expert, please create UI specs considering data models."
+    ux_to_architect: "UI/UX spec complete. Architect, please create fullstack architecture integrating database layer."
+    architect_review: "Architecture complete. Any changes needed to PRD or database design?"
+    po_validation: "All artifacts ready including database scripts and generated code. Validating consistency..."
+    complete: "Project planning complete with database design and code generation. Ready for development."
