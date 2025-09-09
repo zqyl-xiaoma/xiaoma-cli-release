@@ -1,0 +1,111 @@
+<!-- Powered by XIAOMA™ Core -->
+<!-- Maven POM配置模板 - Lombok最佳实践 -->
+<!-- 基于首周期经验优化，解决编译问题 -->
+
+<project>
+    <!-- 属性配置 -->
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lombok.version>1.18.34</lombok.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+    </properties>
+
+    <!-- 依赖配置 -->
+    <dependencies>
+        <!-- Lombok依赖（关键配置） -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- 构建配置（关键：解决Lombok编译问题） -->
+    <build>
+        <plugins>
+            <!-- Maven编译器插件 - 必须配置注解处理器路径 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- 关键配置：Lombok注解处理器路径 -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <!-- 如果使用MyBatis Plus，添加其注解处理器 -->
+                        <path>
+                            <groupId>com.baomidou</groupId>
+                            <artifactId>mybatis-plus-processor</artifactId>
+                            <version>3.5.3.1</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire插件 - 测试配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <!-- Failsafe插件 - 集成测试配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                        <include>**/*IntegrationTest.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 配置说明 -->
+    <!-- 
+    关键点：
+    1. Lombok版本使用1.18.34（兼容Java 17）
+    2. 必须配置annotationProcessorPaths
+    3. 编译器参数添加-parameters
+    4. scope设置为provided
+    5. 测试插件正确配置
+    
+    常见问题解决：
+    - 编译错误：检查annotationProcessorPaths配置
+    - IDE不识别：安装Lombok插件并启用注解处理
+    - 版本冲突：统一使用属性管理版本
+    -->
+</project>
