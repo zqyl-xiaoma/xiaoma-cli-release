@@ -5,6 +5,7 @@ bundle:
   description: Full-stack team with enhanced database design capabilities using MCP MySQL integration
 agents:
   - xiaoma-orchestrator
+  - full-requirement-orchestrator # 全需求自动化编排器
   - automation-orchestrator # 自动化流程编排器
   - analyst
   - pm
@@ -16,6 +17,7 @@ agents:
   - dev
   - qa
 workflows:
+  - full-requirement-automation.yaml # 全需求自动化工作流
   - enhanced-fullstack-with-database.yaml # 增强的工作流
   - automated-story-development.yaml # 自动化用户故事开发流程
   - brownfield-fullstack.yaml
