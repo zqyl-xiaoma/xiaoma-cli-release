@@ -273,6 +273,7 @@ commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行任务 correct-course.md
   - draft: 执行任务 create-next-story.md
+  - draft-enhanced: 执行任务 create-enhanced-story-with-database.md (增强版用户故事，包含数据库和API设计)
   - story-checklist: 使用清单 story-draft-checklist.md 执行任务 execute-checklist.md
   - exit: 作为 Scrum Master 道别，然后放弃扮演此角色
 dependencies:
@@ -281,9 +282,12 @@ dependencies:
   tasks:
     - correct-course.md
     - create-next-story.md
+    - create-enhanced-story-with-database.md
     - execute-checklist.md
   templates:
     - story-tmpl.yaml
+    - enhanced-story-with-database-tmpl.yaml
+    - api-design-tmpl.yaml
 ```
 ==================== END: .xiaoma-core/agents/sm.md ====================
 
@@ -3139,6 +3143,1397 @@ ALWAYS cite source documents: `[Source: architecture/{filename}.md#{section}]`
   - Checklist Results
   - Next steps: For Complex stories, suggest the user carefully review the story draft and also optionally have the PO run the task `.xiaoma-core/tasks/validate-next-story`
 ==================== END: .xiaoma-core/tasks/create-next-story.md ====================
+
+==================== START: .xiaoma-core/tasks/create-enhanced-story-with-database.md ====================
+# 创建增强用户故事（包含数据库和API设计）
+
+## 任务概述
+
+基于Epic分解，结合数据库设计和API接口规范，创建详细的用户故事文档。此任务要求深度集成database-architect生成的数据库设计和API接口设计。
+
+## 前置条件
+
+- 已完成Epic分解和优先级排序
+- 已有数据库设计文档 (`docs/database/database-design.md`)
+- 已有API接口设计文档
+- 已完成架构设计
+
+## 输入要求
+
+- Epic文档
+- 数据库设计文档
+- API接口设计文档
+- 架构设计文档
+
+## 执行步骤
+
+### 1. 分析Epic和设计文档
+
+#### 1.1 Epic分析
+
+- 确定用户故事的业务价值和优先级
+- 识别涉及的用户角色
+- 明确功能边界和范围
+
+#### 1.2 数据库设计分析
+
+- 从`docs/database/database-design.md`中识别相关实体
+- 确定涉及的数据表和字段
+- 分析数据操作类型（增删改查）
+- 理解业务规则和约束
+
+#### 1.3 API接口分析
+
+- 从API设计文档中识别相关接口
+- 确定HTTP方法和路径
+- 分析请求参数和响应格式
+- 理解错误处理机制
+
+### 2. 使用增强模板创建用户故事
+
+使用模板：`enhanced-story-with-database-tmpl.yaml`
+
+#### 2.1 基础信息填写
+
+```yaml
+epic_num: '{{epic_number}}'
+story_num: '{{story_number}}'
+story_title_short: '{{story_title}}'
+role: '{{user_role}}'
+action: '{{user_action}}'
+benefit: '{{user_benefit}}'
+```
+
+#### 2.2 数据库设计部分填写
+
+**相关实体表格**：
+
+```markdown
+| 实体名称 | 表名     | 主要用途     | 关键字段                     |
+| -------- | -------- | ------------ | ---------------------------- |
+| User     | users    | 用户信息管理 | id, username, email          |
+| Product  | products | 产品信息管理 | id, name, price, category_id |
+```
+
+**数据操作清单**：
+
+- 查询操作：明确需要的查询条件和返回字段
+- 插入操作：明确需要插入的数据和验证规则
+- 更新操作：明确可更新的字段和业务规则
+- 删除操作：明确删除条件和级联规则
+
+**业务规则约束**：
+
+- 数据验证规则（长度、格式、范围）
+- 外键约束和引用完整性
+- 唯一性约束
+- 业务逻辑约束（状态转换等）
+
+#### 2.3 API接口规范部分填写
+
+**API端点列表**：
+
+```markdown
+| 序号 | 接口名称     | HTTP方法 | 路径            | 说明               | 状态   |
+| ---- | ------------ | -------- | --------------- | ------------------ | ------ |
+| 1    | 创建用户     | POST     | /api/users      | 创建新用户账户     | 待实现 |
+| 2    | 查询用户详情 | GET      | /api/users/{id} | 根据ID查询用户信息 | 待实现 |
+```
+
+**API详细设计**：
+为每个API提供：
+
+- 完整的请求参数说明
+- 响应数据结构定义
+- 具体的请求示例（curl命令）
+- 成功和错误响应示例
+- 错误码定义和处理建议
+
+**数据映射关系**：
+
+```markdown
+#### 请求参数 -> 数据库字段映射
+
+| API参数  | 数据库表 | 数据库字段 | 数据类型     | 说明     |
+| -------- | -------- | ---------- | ------------ | -------- |
+| username | users    | username   | VARCHAR(50)  | 用户名   |
+| email    | users    | email      | VARCHAR(100) | 邮箱地址 |
+```
+
+#### 2.4 任务分解
+
+**后端开发任务**：
+
+- 数据库相关：Mapper方法实现、Service业务逻辑、数据验证
+- API接口实现：Controller方法、参数验证、响应格式化、异常处理
+- 测试相关：单元测试、集成测试、数据库测试
+
+**前端开发任务**（如需要）：
+
+- 页面组件实现
+- API调用集成
+- 表单验证
+- 用户交互
+
+#### 2.5 开发者说明
+
+**数据库上下文**：
+
+- 实体类位置：`src/main/java/{package}/entity/`
+- Mapper接口位置：`src/main/java/{package}/mapper/`
+- Service层位置：`src/main/java/{package}/service/`
+- 业务逻辑要求和数据验证规则
+
+**API接口上下文**：
+
+- Controller位置：`src/main/java/{package}/controller/`
+- 请求响应格式标准
+- 错误处理机制
+- 接口版本控制
+
+**集成上下文**：
+
+- 与其他模块的依赖关系
+- 外部系统调用要求
+- 缓存策略和事务处理
+- 性能要求
+
+### 3. 质量检查清单
+
+#### 3.1 完整性检查
+
+- [ ] 所有涉及的数据库实体都已识别
+- [ ] 所有需要的API接口都已定义
+- [ ] 请求参数和响应格式完整
+- [ ] 错误处理机制明确
+- [ ] 数据映射关系清晰
+
+#### 3.2 一致性检查
+
+- [ ] API参数与数据库字段对应
+- [ ] 数据类型一致
+- [ ] 业务规则与数据库约束匹配
+- [ ] 接口设计符合RESTful规范
+
+#### 3.3 可实现性检查
+
+- [ ] 任务分解合理可执行
+- [ ] 技术实现方案可行
+- [ ] 测试覆盖充分
+- [ ] 开发者说明详细
+
+### 4. 输出文件
+
+生成的用户故事文件：`docs/stories/{{epic_num}}.{{story_num}}.{{story_title_short}}.md`
+
+### 5. 后续协作
+
+#### 5.1 与开发者协作
+
+- 确保开发者理解数据库设计和API规范
+- 提供必要的技术支持和澄清
+- 跟踪开发进度和问题解决
+
+#### 5.2 与QA协作
+
+- 明确测试重点和验收标准
+- 提供API测试用例和数据
+- 确保质量标准得到执行
+
+## 模板使用示例
+
+### 示例：用户注册功能
+
+**用户故事**：
+
+> 作为新用户，我希望能够注册账户，以便使用系统的各项功能。
+
+**相关实体**：
+
+- Users表：存储用户基本信息
+- UserProfiles表：存储用户详细资料
+
+**涉及API**：
+
+- POST /api/users：创建用户账户
+- POST /api/users/verify-email：验证邮箱
+- GET /api/users/check-username：检查用户名可用性
+
+**数据操作**：
+
+- 插入用户基本信息到users表
+- 验证用户名和邮箱的唯一性
+- 创建用户会话信息
+
+**API详细设计**：
+
+```json
+// POST /api/users
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "password": "hashedPassword"
+}
+
+// 响应
+{
+  "code": 200,
+  "message": "用户创建成功",
+  "data": {
+    "userId": 12345,
+    "username": "johndoe",
+    "email": "john@example.com",
+    "status": "active"
+  }
+}
+```
+
+## 注意事项
+
+1. **数据一致性**：确保API设计与数据库设计保持一致
+2. **安全性**：考虑数据验证、权限控制和敏感信息保护
+3. **性能**：关注查询效率和接口响应时间
+4. **可维护性**：保持代码结构清晰和文档完整
+5. **可测试性**：确保功能可以被充分测试
+==================== END: .xiaoma-core/tasks/create-enhanced-story-with-database.md ====================
+
+==================== START: .xiaoma-core/templates/enhanced-story-with-database-tmpl.yaml ====================
+template:
+  id: enhanced-story-with-database-template-v1
+  name: 增强用户故事文档 (包含数据库和API设计)
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/stories/{{epic_num}}.{{story_num}}.{{story_title_short}}.md
+    title: "story {{epic_num}}.{{story_num}}: {{story_title_short}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+agent_config:
+  editable_sections:
+    - Status
+    - Story
+    - Acceptance Criteria
+    - Database Design
+    - API Specifications
+    - Tasks / Subtasks
+    - Dev Notes
+    - Testing
+    - Change Log
+
+sections:
+  - id: status
+    title: 状态
+    type: choice
+    choices: [Draft, Approved, InProgress, Review, Done]
+    instruction: 选择此用户故事的当前状态
+    owner: scrum-master
+    editors: [scrum-master, po-agent, dev-agent]
+
+  - id: story
+    title: 用户故事
+    type: template-text
+    template: |
+      **作为** {{role}}，
+      **我希望** {{action}}，
+      **以便** {{benefit}}
+    instruction: 使用包含角色、行动和收益的标准格式来定义用户故事
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: acceptance-criteria
+    title: 验收标准
+    type: numbered-list
+    instruction: 从 Epic 文件中复制验收标准的编号列表
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: database-design
+    title: 数据库设计相关
+    instruction: |
+      基于database-architect生成的数据库设计，明确此用户故事涉及的数据库相关内容。
+      从docs/database/database-design.md中提取相关信息。
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+    sections:
+      - id: related-entities
+        title: 相关实体
+        instruction: |
+          列出此用户故事涉及的所有数据库实体（表）：
+          - 实体名称
+          - 表名
+          - 主要用途
+          - 关键字段
+        template: |
+          ### 涉及的数据库实体
+
+          | 实体名称 | 表名 | 主要用途 | 关键字段 |
+          |---------|------|----------|----------|
+          | {{entity_name}} | {{table_name}} | {{purpose}} | {{key_fields}} |
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: data-operations
+        title: 数据操作
+        instruction: |
+          明确此用户故事需要进行的数据操作：
+          - 查询操作 (SELECT)
+          - 插入操作 (INSERT)
+          - 更新操作 (UPDATE)
+          - 删除操作 (DELETE)
+        template: |
+          ### 数据操作清单
+
+          **查询操作**:
+          - [ ] {{query_description}} (表: {{table_name}})
+
+          **插入操作**:
+          - [ ] {{insert_description}} (表: {{table_name}})
+
+          **更新操作**:
+          - [ ] {{update_description}} (表: {{table_name}})
+
+          **删除操作**:
+          - [ ] {{delete_description}} (表: {{table_name}})
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: business-rules
+        title: 业务规则约束
+        instruction: |
+          列出此用户故事涉及的数据业务规则和约束：
+          - 数据验证规则
+          - 外键约束
+          - 唯一性约束
+          - 业务逻辑约束
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+  - id: api-specifications
+    title: API接口规范
+    instruction: |
+      基于database-architect创建的API设计，详细定义此用户故事涉及的API接口。
+      每个接口必须包含完整的接口名称、入参、出参、传参示例和响应示例。
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+    sections:
+      - id: api-endpoints
+        title: API端点列表
+        instruction: |
+          列出此用户故事需要实现或调用的所有API端点
+        template: |
+          ### API端点清单
+
+          | 序号 | 接口名称 | HTTP方法 | 路径 | 说明 | 状态 |
+          |------|----------|----------|------|------|------|
+          | 1 | {{api_name}} | {{http_method}} | {{api_path}} | {{description}} | {{status}} |
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: api-details
+        title: API详细设计
+        instruction: |
+          为每个API端点提供详细的接口设计，包括：
+          - 接口名称和描述
+          - 请求参数详细说明
+          - 响应数据结构
+          - 请求示例
+          - 响应示例
+          - 错误码定义
+        template: |
+          ### API详细设计
+
+          #### {{api_name}}
+
+          **接口描述**: {{api_description}}
+          **HTTP方法**: {{http_method}}
+          **请求路径**: {{api_path}}
+
+          **请求参数**:
+          ```json
+          {
+            "param1": "string // 参数说明",
+            "param2": "integer // 参数说明",
+            "param3": {
+              "nested_param": "string // 嵌套参数说明"
+            }
+          }
+          ```
+
+          **响应数据结构**:
+          ```json
+          {
+            "code": "integer // 状态码",
+            "message": "string // 响应消息",
+            "data": {
+              "field1": "string // 字段说明",
+              "field2": "integer // 字段说明"
+            }
+          }
+          ```
+
+          **请求示例**:
+          ```bash
+          curl -X {{http_method}} "{{base_url}}{{api_path}}" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer {{token}}" \
+            -d '{
+              "param1": "示例值",
+              "param2": 123
+            }'
+          ```
+
+          **成功响应示例**:
+          ```json
+          {
+            "code": 200,
+            "message": "操作成功",
+            "data": {
+              "field1": "返回值示例",
+              "field2": 456
+            }
+          }
+          ```
+
+          **错误响应示例**:
+          ```json
+          {
+            "code": 400,
+            "message": "参数错误",
+            "data": null
+          }
+          ```
+
+          **错误码定义**:
+          | 错误码 | 说明 | 处理建议 |
+          |--------|------|----------|
+          | 400 | 参数错误 | 检查请求参数格式 |
+          | 401 | 未授权 | 检查token有效性 |
+          | 404 | 资源不存在 | 检查资源ID |
+          | 500 | 服务器错误 | 联系技术支持 |
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: data-mapping
+        title: 数据映射关系
+        instruction: |
+          定义API参数与数据库字段的映射关系
+        template: |
+          ### 数据映射关系
+
+          #### 请求参数 -> 数据库字段映射
+          | API参数 | 数据库表 | 数据库字段 | 数据类型 | 说明 |
+          |---------|----------|------------|----------|------|
+          | {{api_param}} | {{table_name}} | {{db_field}} | {{data_type}} | {{description}} |
+
+          #### 数据库字段 -> 响应参数映射
+          | 数据库表 | 数据库字段 | API响应字段 | 数据类型 | 说明 |
+          |----------|------------|-------------|----------|------|
+          | {{table_name}} | {{db_field}} | {{api_field}} | {{data_type}} | {{description}} |
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+  - id: tasks-subtasks
+    title: 任务 / 子任务
+    type: bullet-list
+    instruction: |
+      将用户故事分解为实施所需的具体任务和子任务。
+      在相关处引用适用的验收标准编号。
+      结合数据库设计和API规范，确保任务覆盖：
+      - 数据库相关操作（Mapper、Service层）
+      - API接口实现（Controller层）
+      - 数据验证和业务逻辑
+      - 单元测试和集成测试
+    template: |
+      ### 后端开发任务
+      - [ ] 数据库相关 (AC: # 如果适用)
+        - [ ] 实现{{entity_name}}Mapper接口方法
+        - [ ] 编写{{entity_name}}Service业务逻辑
+        - [ ] 添加数据验证和业务规则
+      - [ ] API接口实现 (AC: # 如果适用)
+        - [ ] 实现{{api_name}}接口 ({{http_method}} {{api_path}})
+        - [ ] 添加请求参数验证
+        - [ ] 实现响应数据格式化
+        - [ ] 添加异常处理和错误码
+      - [ ] 测试相关 (AC: # 如果适用)
+        - [ ] 编写Service层单元测试
+        - [ ] 编写API接口集成测试
+        - [ ] 数据库操作测试
+        - [ ] 边界条件和异常测试
+
+      ### 前端开发任务（如果需要）
+      - [ ] 前端界面 (AC: # 如果适用)
+        - [ ] 实现相关页面组件
+        - [ ] 集成API调用
+        - [ ] 添加表单验证
+        - [ ] 用户交互和反馈
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master, dev-agent]
+
+  - id: dev-notes
+    title: 开发者说明
+    instruction: |
+      填充相关信息，且仅限从 docs 文件夹中的实际工件中提取的、与此用户故事相关的内容：
+      - 数据库设计文档的相关部分
+      - 生成的Entity、Mapper、Service代码位置
+      - API接口设计的相关规范
+      - 架构设计中的相关约束
+      - 与前一个用户故事的关联信息
+      在此部分提供足够的信息，以确保开发者代理永远不需要阅读完整的设计文档。
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+    sections:
+      - id: database-context
+        title: 数据库上下文
+        instruction: |
+          提供数据库相关的开发上下文：
+          - 相关实体类的位置和结构
+          - Mapper接口需要实现的方法
+          - Service层的业务逻辑要求
+          - 数据验证规则
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: api-context
+        title: API接口上下文
+        instruction: |
+          提供API接口相关的开发上下文：
+          - Controller类的位置和结构
+          - 接口路径和HTTP方法
+          - 请求响应的数据格式
+          - 错误处理要求
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: integration-context
+        title: 集成上下文
+        instruction: |
+          提供系统集成相关的开发上下文：
+          - 与其他模块的接口依赖
+          - 外部系统调用要求
+          - 缓存策略
+          - 事务处理要求
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: testing-standards
+        title: 测试
+        instruction: |
+          列出开发者需要遵守的、源自架构文档的相关测试标准：
+          - 测试文件位置
+          - 测试标准
+          - 要使用的测试框架和模式
+          - 针对此用户故事的特定测试要求
+          - 数据库测试和API测试要求
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+  - id: change-log
+    title: 变更日志
+    type: table
+    columns: [日期, 版本, 描述, 作者]
+    instruction: 跟踪此用户故事文档的变更
+    owner: scrum-master
+    editors: [scrum-master, dev-agent, qa-agent]
+
+  - id: dev-agent-record
+    title: 开发者代理记录
+    instruction: 此部分由开发代理在实施过程中填充
+    owner: dev-agent
+    editors: [dev-agent]
+    sections:
+      - id: agent-model
+        title: 使用的代理模型
+        template: "{{agent_model_name_version}}"
+        instruction: 记录用于开发的特定 AI 代理模型和版本
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: database-implementation
+        title: 数据库实现记录
+        instruction: |
+          记录数据库相关的实现细节：
+          - 实现的Mapper方法
+          - Service层业务逻辑
+          - 数据验证实现
+          - 数据库测试结果
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: api-implementation
+        title: API实现记录
+        instruction: |
+          记录API接口的实现细节：
+          - 实现的Controller方法
+          - 参数验证逻辑
+          - 响应格式处理
+          - 错误处理实现
+          - API测试结果
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: debug-log-references
+        title: 调试日志参考
+        instruction: 引用开发过程中生成的任何调试日志或跟踪信息
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: completion-notes
+        title: 完成说明列表
+        instruction: 关于任务完成情况和遇到的任何问题的说明
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: file-list
+        title: 文件列表
+        instruction: |
+          列出在用户故事实施过程中创建、修改或影响的所有文件，
+          特别注意数据库和API相关文件：
+          - Entity类文件
+          - Mapper接口和XML文件
+          - Service接口和实现文件
+          - Controller文件
+          - 测试文件
+        owner: dev-agent
+        editors: [dev-agent]
+
+  - id: qa-results
+    title: QA 结果
+    instruction: |
+      QA 代理对已完成的用户故事实施进行 QA 审查的结果，
+      特别关注：
+      - 数据库操作的正确性
+      - API接口的功能性
+      - 数据一致性验证
+      - 性能测试结果
+    owner: qa-agent
+    editors: [qa-agent]
+==================== END: .xiaoma-core/templates/enhanced-story-with-database-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/api-design-tmpl.yaml ====================
+name: API接口设计文档模板
+version: 1.0.0
+description: 基于数据库设计的RESTful API接口规范模板
+
+sections:
+  - id: overview
+    title: API设计概述
+    required: true
+    template: |
+      ## API设计概述
+
+      ### 项目信息
+      - **项目名称**: {project_name}
+      - **API版本**: {api_version}
+      - **设计日期**: {design_date}
+      - **设计人员**: Database Architect
+      - **基础URL**: {base_url}
+
+      ### 设计原则
+      - **RESTful**: 遵循REST架构风格
+      - **统一响应**: 统一的响应数据格式
+      - **版本控制**: 支持API版本管理
+      - **安全性**: 完整的认证和授权机制
+      - **文档化**: 完整的接口文档和示例
+
+  - id: global_standards
+    title: 全局规范
+    required: true
+    template: |
+      ## 全局规范
+
+      ### HTTP状态码规范
+      | 状态码 | 含义 | 使用场景 |
+      |--------|------|----------|
+      | 200 | OK | 请求成功 |
+      | 201 | Created | 资源创建成功 |
+      | 204 | No Content | 删除成功，无返回内容 |
+      | 400 | Bad Request | 请求参数错误 |
+      | 401 | Unauthorized | 未认证 |
+      | 403 | Forbidden | 无权限 |
+      | 404 | Not Found | 资源不存在 |
+      | 409 | Conflict | 资源冲突 |
+      | 422 | Unprocessable Entity | 参数验证失败 |
+      | 500 | Internal Server Error | 服务器内部错误 |
+
+      ### 统一响应格式
+      ```json
+      {
+        "code": "integer // HTTP状态码",
+        "message": "string // 响应消息",
+        "data": "object|array|null // 响应数据",
+        "timestamp": "string // 时间戳",
+        "path": "string // 请求路径"
+      }
+      ```
+
+      ### 分页响应格式
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          "records": [], // 数据列表
+          "total": 100, // 总记录数
+          "size": 10, // 每页大小
+          "current": 1, // 当前页码
+          "pages": 10 // 总页数
+        }
+      }
+      ```
+
+      ### 请求头规范
+      | 请求头 | 必填 | 说明 |
+      |--------|------|------|
+      | Content-Type | 是 | application/json |
+      | Authorization | 是 | Bearer {token} |
+      | X-Request-ID | 否 | 请求追踪ID |
+      | Accept-Language | 否 | 语言偏好 |
+
+      ### 错误响应格式
+      ```json
+      {
+        "code": 400,
+        "message": "参数验证失败",
+        "data": {
+          "errors": [
+            {
+              "field": "username",
+              "message": "用户名不能为空"
+            }
+          ]
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/users"
+      }
+      ```
+
+  - id: authentication
+    title: 认证授权
+    required: true
+    template: |
+      ## 认证授权
+
+      ### JWT Token规范
+      ```
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      ```
+
+      ### Token结构
+      ```json
+      {
+        "header": {
+          "alg": "HS256",
+          "typ": "JWT"
+        },
+        "payload": {
+          "sub": "user_id",
+          "username": "johndoe",
+          "roles": ["USER", "ADMIN"],
+          "exp": 1640995200,
+          "iat": 1640908800
+        }
+      }
+      ```
+
+      ### 权限控制
+      | 角色 | 权限描述 | 可访问资源 |
+      |------|----------|------------|
+      | ADMIN | 管理员权限 | 所有资源 |
+      | USER | 普通用户权限 | 用户相关资源 |
+      | GUEST | 访客权限 | 公开资源 |
+
+  - id: api_endpoints
+    title: API端点设计
+    required: true
+    template: |
+      ## API端点设计
+
+      {for_each_entity}
+      ### {entity_name} API
+
+      #### 基础信息
+      - **资源名称**: {entity_name}
+      - **数据库表**: {table_name}
+      - **基础路径**: /api/{entity_lowercase}
+
+      #### 端点列表
+      | HTTP方法 | 路径 | 操作 | 说明 |
+      |----------|------|------|------|
+      | GET | /api/{entity_lowercase} | 查询列表 | 分页查询{entity_name}列表 |
+      | GET | /api/{entity_lowercase}/{id} | 查询详情 | 根据ID查询{entity_name}详情 |
+      | POST | /api/{entity_lowercase} | 创建 | 创建新的{entity_name} |
+      | PUT | /api/{entity_lowercase}/{id} | 更新 | 更新{entity_name}信息 |
+      | DELETE | /api/{entity_lowercase}/{id} | 删除 | 删除{entity_name} |
+
+      #### 1. 查询{entity_name}列表
+
+      **接口描述**: 分页查询{entity_name}列表，支持条件筛选
+      **HTTP方法**: GET
+      **请求路径**: /api/{entity_lowercase}
+      **权限要求**: {required_permissions}
+
+      **请求参数**:
+      ```
+      Query Parameters:
+      - page: integer (可选, 默认1) // 页码
+      - size: integer (可选, 默认10) // 每页大小
+      - sort: string (可选) // 排序字段，格式：field,direction
+      {query_parameters}
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X GET "{base_url}/api/{entity_lowercase}?page=1&size=10&sort=createdAt,desc" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          "records": [
+            {
+              {response_fields}
+            }
+          ],
+          "total": 100,
+          "size": 10,
+          "current": 1,
+          "pages": 10
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      #### 2. 查询{entity_name}详情
+
+      **接口描述**: 根据ID查询{entity_name}详细信息
+      **HTTP方法**: GET
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X GET "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          {detail_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      **错误响应** (404):
+      ```json
+      {
+        "code": 404,
+        "message": "{entity_name}不存在",
+        "data": null,
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 3. 创建{entity_name}
+
+      **接口描述**: 创建新的{entity_name}记录
+      **HTTP方法**: POST
+      **请求路径**: /api/{entity_lowercase}
+      **权限要求**: {required_permissions}
+
+      **请求体**:
+      ```json
+      {
+        {create_request_fields}
+      }
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X POST "{base_url}/api/{entity_lowercase}" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json" \
+        -d '{
+          {create_request_example}
+        }'
+      ```
+
+      **成功响应** (201):
+      ```json
+      {
+        "code": 201,
+        "message": "创建成功",
+        "data": {
+          {create_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      **参数验证失败** (422):
+      ```json
+      {
+        "code": 422,
+        "message": "参数验证失败",
+        "data": {
+          "errors": [
+            {
+              "field": "{field_name}",
+              "message": "{validation_message}"
+            }
+          ]
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      #### 4. 更新{entity_name}
+
+      **接口描述**: 更新{entity_name}信息
+      **HTTP方法**: PUT
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求体**:
+      ```json
+      {
+        {update_request_fields}
+      }
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X PUT "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json" \
+        -d '{
+          {update_request_example}
+        }'
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "更新成功",
+        "data": {
+          {update_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 5. 删除{entity_name}
+
+      **接口描述**: 删除{entity_name}记录（软删除）
+      **HTTP方法**: DELETE
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X DELETE "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (204):
+      ```
+      HTTP/1.1 204 No Content
+      ```
+
+      **错误响应** (404):
+      ```json
+      {
+        "code": 404,
+        "message": "{entity_name}不存在",
+        "data": null,
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 数据字段映射
+
+      **数据库字段 -> API响应字段映射**:
+      | 数据库字段 | API字段 | 数据类型 | 说明 |
+      |------------|---------|----------|------|
+      {field_mappings}
+
+      **API请求字段 -> 数据库字段映射**:
+      | API字段 | 数据库字段 | 数据类型 | 验证规则 |
+      |---------|------------|----------|----------|
+      {request_field_mappings}
+
+      #### 业务规则说明
+      {business_rules}
+
+      {end_for_each}
+
+  - id: data_types
+    title: 数据类型规范
+    required: true
+    template: |
+      ## 数据类型规范
+
+      ### 基础数据类型
+      | API类型 | JSON类型 | 数据库类型 | 说明 | 示例 |
+      |---------|----------|------------|------|------|
+      | integer | number | INT/BIGINT | 整数 | 123 |
+      | decimal | number | DECIMAL | 小数 | 123.45 |
+      | string | string | VARCHAR/TEXT | 字符串 | "hello" |
+      | boolean | boolean | TINYINT | 布尔值 | true/false |
+      | datetime | string | DATETIME | 日期时间 | "2024-01-01T12:00:00Z" |
+      | date | string | DATE | 日期 | "2024-01-01" |
+      | time | string | TIME | 时间 | "12:00:00" |
+      | array | array | JSON | 数组 | [1,2,3] |
+      | object | object | JSON | 对象 | {"key":"value"} |
+
+      ### 特殊字段规范
+      | 字段类型 | 字段名 | 数据类型 | 说明 |
+      |----------|--------|----------|------|
+      | 主键 | id | integer | 自增主键 |
+      | 创建时间 | createdAt | datetime | 记录创建时间 |
+      | 更新时间 | updatedAt | datetime | 记录更新时间 |
+      | 删除时间 | deletedAt | datetime | 软删除时间 |
+      | 版本号 | version | integer | 乐观锁版本 |
+
+      ### 日期时间格式
+      - **标准格式**: ISO 8601 (2024-01-01T12:00:00Z)
+      - **时区**: UTC时间
+      - **精度**: 秒级
+
+  - id: validation_rules
+    title: 参数验证规则
+    required: true
+    template: |
+      ## 参数验证规则
+
+      ### 通用验证规则
+      | 规则类型 | 说明 | 示例 |
+      |----------|------|------|
+      | required | 必填字段 | @NotNull, @NotBlank |
+      | length | 长度限制 | @Size(min=1, max=50) |
+      | pattern | 格式验证 | @Pattern(regexp="^[a-zA-Z0-9]+$") |
+      | range | 数值范围 | @Min(0), @Max(100) |
+      | email | 邮箱格式 | @Email |
+      | phone | 手机号格式 | @Pattern(regexp="^1[3-9]\\d{9}$") |
+
+      ### 业务验证规则
+      {business_validation_rules}
+
+      ### 错误信息国际化
+      ```properties
+      validation.required=字段不能为空
+      validation.length=字段长度必须在{min}到{max}之间
+      validation.pattern=字段格式不正确
+      validation.email=邮箱格式不正确
+      validation.phone=手机号格式不正确
+      ```
+
+  - id: error_codes
+    title: 错误码定义
+    required: true
+    template: |
+      ## 错误码定义
+
+      ### 系统级错误码 (1000-1999)
+      | 错误码 | 错误信息 | 说明 | 处理建议 |
+      |--------|----------|------|----------|
+      | 1000 | 系统错误 | 未知系统错误 | 联系技术支持 |
+      | 1001 | 参数错误 | 请求参数不正确 | 检查参数格式 |
+      | 1002 | 认证失败 | 身份认证失败 | 重新登录 |
+      | 1003 | 权限不足 | 无访问权限 | 联系管理员 |
+      | 1004 | 资源不存在 | 请求的资源不存在 | 检查资源ID |
+      | 1005 | 资源冲突 | 资源已存在或冲突 | 检查数据唯一性 |
+
+      ### 业务级错误码 (2000+)
+      {business_error_codes}
+
+      ### 错误响应示例
+      ```json
+      {
+        "code": 1001,
+        "message": "参数错误",
+        "data": {
+          "errorCode": "PARAM_INVALID",
+          "errorDetails": "用户名格式不正确"
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/users"
+      }
+      ```
+
+  - id: performance
+    title: 性能规范
+    required: true
+    template: |
+      ## 性能规范
+
+      ### 响应时间要求
+      | 接口类型 | 响应时间要求 | 说明 |
+      |----------|--------------|------|
+      | 查询接口 | < 200ms | 简单查询 |
+      | 复杂查询 | < 1s | 包含关联查询 |
+      | 创建接口 | < 500ms | 数据创建 |
+      | 更新接口 | < 500ms | 数据更新 |
+      | 删除接口 | < 300ms | 数据删除 |
+
+      ### 分页限制
+      - 默认页大小: 10
+      - 最大页大小: 100
+      - 支持的排序字段: {sortable_fields}
+
+      ### 缓存策略
+      | 数据类型 | 缓存时间 | 缓存键规则 |
+      |----------|----------|------------|
+      | 用户信息 | 30分钟 | user:{user_id} |
+      | 配置信息 | 1小时 | config:{config_key} |
+      | 静态数据 | 24小时 | static:{data_type} |
+
+  - id: security
+    title: 安全规范
+    required: true
+    template: |
+      ## 安全规范
+
+      ### 数据安全
+      - **敏感数据加密**: 密码、身份证号等
+      - **数据脱敏**: 日志中的敏感信息
+      - **SQL注入防护**: 使用参数化查询
+      - **XSS防护**: 输入数据过滤和转义
+
+      ### 接口安全
+      - **HTTPS传输**: 强制使用HTTPS
+      - **请求签名**: 关键接口要求签名验证
+      - **频率限制**: 防止恶意请求
+      - **IP白名单**: 敏感接口IP限制
+
+      ### 认证安全
+      - **Token过期**: JWT token有效期控制
+      - **刷新机制**: Token自动刷新
+      - **会话管理**: 用户会话状态管理
+      - **密码策略**: 密码复杂度要求
+
+  - id: testing
+    title: 测试规范
+    required: true
+    template: |
+      ## 测试规范
+
+      ### API测试用例
+
+      **测试用例模板**:
+      ```yaml
+      test_case:
+        name: "创建用户成功"
+        method: POST
+        url: "/api/users"
+        headers:
+          Authorization: "Bearer {valid_token}"
+          Content-Type: "application/json"
+        body:
+          username: "testuser"
+          email: "test@example.com"
+          password: "Test123456!"
+        expected:
+          status: 201
+          body:
+            code: 201
+            message: "创建成功"
+            data:
+              id: "{integer}"
+              username: "testuser"
+              email: "test@example.com"
+      ```
+
+      ### 测试数据
+      ```yaml
+      test_data:
+        valid_user:
+          username: "validuser"
+          email: "valid@example.com"
+          password: "Valid123456!"
+        invalid_user:
+          username: "" # 空用户名
+          email: "invalid-email" # 无效邮箱
+          password: "123" # 密码过短
+      ```
+
+      ### 性能测试
+      - **并发用户数**: 100
+      - **测试时长**: 10分钟
+      - **响应时间**: 95%请求 < 1s
+      - **成功率**: > 99.9%
+
+  - id: documentation
+    title: 文档规范
+    required: true
+    template: |
+      ## 文档规范
+
+      ### Swagger/OpenAPI规范
+      ```yaml
+      openapi: 3.0.0
+      info:
+        title: {project_name} API
+        version: {api_version}
+        description: {project_description}
+      servers:
+        - url: {base_url}
+          description: 生产环境
+      paths:
+        /api/{entity_lowercase}:
+          get:
+            summary: 查询{entity_name}列表
+            tags: [{entity_name}]
+            parameters:
+              - name: page
+                in: query
+                schema:
+                  type: integer
+                  default: 1
+            responses:
+              '200':
+                description: 查询成功
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/PageResult'
+      ```
+
+      ### 接口文档要求
+      - **完整性**: 包含所有接口信息
+      - **准确性**: 与实际实现保持一致
+      - **实时性**: 及时更新文档内容
+      - **可读性**: 清晰的描述和示例
+
+      ### 示例代码
+      ```javascript
+      // JavaScript调用示例
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          username: 'johndoe',
+          email: 'john@example.com'
+        })
+      });
+      const result = await response.json();
+      ```
+
+  - id: versioning
+    title: 版本管理
+    required: true
+    template: |
+      ## 版本管理
+
+      ### 版本号规范
+      - **格式**: v{major}.{minor}.{patch}
+      - **示例**: v1.0.0, v1.1.0, v2.0.0
+
+      ### 版本策略
+      | 版本类型 | 变更说明 | 兼容性 |
+      |----------|----------|--------|
+      | Major | 重大功能变更，API不兼容 | 不兼容 |
+      | Minor | 新增功能，向后兼容 | 向后兼容 |
+      | Patch | Bug修复，向后兼容 | 向后兼容 |
+
+      ### 版本控制方式
+      1. **URL路径版本**: /api/v1/users
+      2. **请求头版本**: API-Version: v1
+      3. **参数版本**: /api/users?version=v1
+
+      ### 版本生命周期
+      - **开发版本**: v1.0.0-dev
+      - **测试版本**: v1.0.0-beta
+      - **发布版本**: v1.0.0
+      - **废弃版本**: 提前3个月通知
+
+  - id: changelog
+    title: 变更记录
+    required: true
+    template: |
+      ## 变更记录
+
+      ### v1.0.0 (2024-01-01)
+      **新增功能**:
+      - 初始API设计
+      - 用户管理接口
+      - 认证授权机制
+
+      **修复问题**:
+      - 无
+
+      **破坏性变更**:
+      - 无
+
+      ### 变更记录模板
+      ```markdown
+      ### v{version} ({date})
+      **新增功能**:
+      - 功能描述
+
+      **修复问题**:
+      - 问题描述
+
+      **破坏性变更**:
+      - 变更描述
+      ```
+==================== END: .xiaoma-core/templates/api-design-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/story-draft-checklist.md ====================
 <!-- Powered by XiaoMa™ Core -->
