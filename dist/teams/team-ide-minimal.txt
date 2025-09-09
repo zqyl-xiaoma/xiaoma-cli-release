@@ -220,7 +220,7 @@ persona:
 commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行 correct-course 任务
-  - create-epic: 为棕地项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
   - execute-checklist-po: 运行任务 execute-checklist (清单 po-master-checklist)

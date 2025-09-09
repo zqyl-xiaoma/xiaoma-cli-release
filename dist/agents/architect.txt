@@ -1588,7 +1588,7 @@ sections:
 ==================== START: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
 template:
   id: brownfield-architecture-template-v2
-  name: 棕地项目增强架构
+  name: 现有项目项目增强架构
   version: 2.0
   output:
     format: markdown
@@ -1667,7 +1667,7 @@ sections:
     instruction: |
       定义增强功能将如何与现有系统集成：
 
-      1. 回顾棕地项目 PRD 的增强范围
+      1. 回顾现有项目项目 PRD 的增强范围
       2. 识别与现有代码的集成点
       3. 定义新旧功能之间的边界
       4. 建立兼容性要求
@@ -2032,12 +2032,12 @@ sections:
 
   - id: checklist-results
     title: 清单结果报告
-    instruction: 执行 architect-checklist 并在此处填充结果，重点关注棕地项目的特定验证
+    instruction: 执行 architect-checklist 并在此处填充结果，重点关注现有项目项目的特定验证
 
   - id: next-steps
     title: 后续步骤
     instruction: |
-      完成棕地项目架构后：
+      完成现有项目项目架构后：
 
       1. 审查与现有系统的集成点
       2. 与开发代理一起开始故事的实现
@@ -2047,7 +2047,7 @@ sections:
       - id: story-manager-handoff
         title: 故事负责人交接
         instruction: |
-          为故事负责人创建一个简短的提示，以便处理此棕地项目增强。包括：
+          为故事负责人创建一个简短的提示，以便处理此现有项目项目增强。包括：
           - 引用此架构文档
           - 与用户验证过的关键集成要求
           - 基于实际项目分析的现有系统约束

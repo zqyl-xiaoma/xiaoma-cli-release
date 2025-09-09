@@ -1,0 +1,704 @@
+name: API接口设计文档模板
+version: 1.0.0
+description: 基于数据库设计的RESTful API接口规范模板
+
+sections:
+  - id: overview
+    title: API设计概述
+    required: true
+    template: |
+      ## API设计概述
+
+      ### 项目信息
+      - **项目名称**: {project_name}
+      - **API版本**: {api_version}
+      - **设计日期**: {design_date}
+      - **设计人员**: Database Architect
+      - **基础URL**: {base_url}
+
+      ### 设计原则
+      - **RESTful**: 遵循REST架构风格
+      - **统一响应**: 统一的响应数据格式
+      - **版本控制**: 支持API版本管理
+      - **安全性**: 完整的认证和授权机制
+      - **文档化**: 完整的接口文档和示例
+
+  - id: global_standards
+    title: 全局规范
+    required: true
+    template: |
+      ## 全局规范
+
+      ### HTTP状态码规范
+      | 状态码 | 含义 | 使用场景 |
+      |--------|------|----------|
+      | 200 | OK | 请求成功 |
+      | 201 | Created | 资源创建成功 |
+      | 204 | No Content | 删除成功，无返回内容 |
+      | 400 | Bad Request | 请求参数错误 |
+      | 401 | Unauthorized | 未认证 |
+      | 403 | Forbidden | 无权限 |
+      | 404 | Not Found | 资源不存在 |
+      | 409 | Conflict | 资源冲突 |
+      | 422 | Unprocessable Entity | 参数验证失败 |
+      | 500 | Internal Server Error | 服务器内部错误 |
+
+      ### 统一响应格式
+      ```json
+      {
+        "code": "integer // HTTP状态码",
+        "message": "string // 响应消息",
+        "data": "object|array|null // 响应数据",
+        "timestamp": "string // 时间戳",
+        "path": "string // 请求路径"
+      }
+      ```
+
+      ### 分页响应格式
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          "records": [], // 数据列表
+          "total": 100, // 总记录数
+          "size": 10, // 每页大小
+          "current": 1, // 当前页码
+          "pages": 10 // 总页数
+        }
+      }
+      ```
+
+      ### 请求头规范
+      | 请求头 | 必填 | 说明 |
+      |--------|------|------|
+      | Content-Type | 是 | application/json |
+      | Authorization | 是 | Bearer {token} |
+      | X-Request-ID | 否 | 请求追踪ID |
+      | Accept-Language | 否 | 语言偏好 |
+
+      ### 错误响应格式
+      ```json
+      {
+        "code": 400,
+        "message": "参数验证失败",
+        "data": {
+          "errors": [
+            {
+              "field": "username",
+              "message": "用户名不能为空"
+            }
+          ]
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/users"
+      }
+      ```
+
+  - id: authentication
+    title: 认证授权
+    required: true
+    template: |
+      ## 认证授权
+
+      ### JWT Token规范
+      ```
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      ```
+
+      ### Token结构
+      ```json
+      {
+        "header": {
+          "alg": "HS256",
+          "typ": "JWT"
+        },
+        "payload": {
+          "sub": "user_id",
+          "username": "johndoe",
+          "roles": ["USER", "ADMIN"],
+          "exp": 1640995200,
+          "iat": 1640908800
+        }
+      }
+      ```
+
+      ### 权限控制
+      | 角色 | 权限描述 | 可访问资源 |
+      |------|----------|------------|
+      | ADMIN | 管理员权限 | 所有资源 |
+      | USER | 普通用户权限 | 用户相关资源 |
+      | GUEST | 访客权限 | 公开资源 |
+
+  - id: api_endpoints
+    title: API端点设计
+    required: true
+    template: |
+      ## API端点设计
+
+      {for_each_entity}
+      ### {entity_name} API
+
+      #### 基础信息
+      - **资源名称**: {entity_name}
+      - **数据库表**: {table_name}
+      - **基础路径**: /api/{entity_lowercase}
+
+      #### 端点列表
+      | HTTP方法 | 路径 | 操作 | 说明 |
+      |----------|------|------|------|
+      | GET | /api/{entity_lowercase} | 查询列表 | 分页查询{entity_name}列表 |
+      | GET | /api/{entity_lowercase}/{id} | 查询详情 | 根据ID查询{entity_name}详情 |
+      | POST | /api/{entity_lowercase} | 创建 | 创建新的{entity_name} |
+      | PUT | /api/{entity_lowercase}/{id} | 更新 | 更新{entity_name}信息 |
+      | DELETE | /api/{entity_lowercase}/{id} | 删除 | 删除{entity_name} |
+
+      #### 1. 查询{entity_name}列表
+
+      **接口描述**: 分页查询{entity_name}列表，支持条件筛选
+      **HTTP方法**: GET
+      **请求路径**: /api/{entity_lowercase}
+      **权限要求**: {required_permissions}
+
+      **请求参数**:
+      ```
+      Query Parameters:
+      - page: integer (可选, 默认1) // 页码
+      - size: integer (可选, 默认10) // 每页大小
+      - sort: string (可选) // 排序字段，格式：field,direction
+      {query_parameters}
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X GET "{base_url}/api/{entity_lowercase}?page=1&size=10&sort=createdAt,desc" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          "records": [
+            {
+              {response_fields}
+            }
+          ],
+          "total": 100,
+          "size": 10,
+          "current": 1,
+          "pages": 10
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      #### 2. 查询{entity_name}详情
+
+      **接口描述**: 根据ID查询{entity_name}详细信息
+      **HTTP方法**: GET
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X GET "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+          {detail_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      **错误响应** (404):
+      ```json
+      {
+        "code": 404,
+        "message": "{entity_name}不存在",
+        "data": null,
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 3. 创建{entity_name}
+
+      **接口描述**: 创建新的{entity_name}记录
+      **HTTP方法**: POST
+      **请求路径**: /api/{entity_lowercase}
+      **权限要求**: {required_permissions}
+
+      **请求体**:
+      ```json
+      {
+        {create_request_fields}
+      }
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X POST "{base_url}/api/{entity_lowercase}" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json" \
+        -d '{
+          {create_request_example}
+        }'
+      ```
+
+      **成功响应** (201):
+      ```json
+      {
+        "code": 201,
+        "message": "创建成功",
+        "data": {
+          {create_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      **参数验证失败** (422):
+      ```json
+      {
+        "code": 422,
+        "message": "参数验证失败",
+        "data": {
+          "errors": [
+            {
+              "field": "{field_name}",
+              "message": "{validation_message}"
+            }
+          ]
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}"
+      }
+      ```
+
+      #### 4. 更新{entity_name}
+
+      **接口描述**: 更新{entity_name}信息
+      **HTTP方法**: PUT
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求体**:
+      ```json
+      {
+        {update_request_fields}
+      }
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X PUT "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json" \
+        -d '{
+          {update_request_example}
+        }'
+      ```
+
+      **成功响应** (200):
+      ```json
+      {
+        "code": 200,
+        "message": "更新成功",
+        "data": {
+          {update_response_fields}
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 5. 删除{entity_name}
+
+      **接口描述**: 删除{entity_name}记录（软删除）
+      **HTTP方法**: DELETE
+      **请求路径**: /api/{entity_lowercase}/{id}
+      **权限要求**: {required_permissions}
+
+      **路径参数**:
+      ```
+      - id: integer (必填) // {entity_name}的唯一标识
+      ```
+
+      **请求示例**:
+      ```bash
+      curl -X DELETE "{base_url}/api/{entity_lowercase}/123" \
+        -H "Authorization: Bearer {token}" \
+        -H "Content-Type: application/json"
+      ```
+
+      **成功响应** (204):
+      ```
+      HTTP/1.1 204 No Content
+      ```
+
+      **错误响应** (404):
+      ```json
+      {
+        "code": 404,
+        "message": "{entity_name}不存在",
+        "data": null,
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/{entity_lowercase}/123"
+      }
+      ```
+
+      #### 数据字段映射
+
+      **数据库字段 -> API响应字段映射**:
+      | 数据库字段 | API字段 | 数据类型 | 说明 |
+      |------------|---------|----------|------|
+      {field_mappings}
+
+      **API请求字段 -> 数据库字段映射**:
+      | API字段 | 数据库字段 | 数据类型 | 验证规则 |
+      |---------|------------|----------|----------|
+      {request_field_mappings}
+
+      #### 业务规则说明
+      {business_rules}
+
+      {end_for_each}
+
+  - id: data_types
+    title: 数据类型规范
+    required: true
+    template: |
+      ## 数据类型规范
+
+      ### 基础数据类型
+      | API类型 | JSON类型 | 数据库类型 | 说明 | 示例 |
+      |---------|----------|------------|------|------|
+      | integer | number | INT/BIGINT | 整数 | 123 |
+      | decimal | number | DECIMAL | 小数 | 123.45 |
+      | string | string | VARCHAR/TEXT | 字符串 | "hello" |
+      | boolean | boolean | TINYINT | 布尔值 | true/false |
+      | datetime | string | DATETIME | 日期时间 | "2024-01-01T12:00:00Z" |
+      | date | string | DATE | 日期 | "2024-01-01" |
+      | time | string | TIME | 时间 | "12:00:00" |
+      | array | array | JSON | 数组 | [1,2,3] |
+      | object | object | JSON | 对象 | {"key":"value"} |
+
+      ### 特殊字段规范
+      | 字段类型 | 字段名 | 数据类型 | 说明 |
+      |----------|--------|----------|------|
+      | 主键 | id | integer | 自增主键 |
+      | 创建时间 | createdAt | datetime | 记录创建时间 |
+      | 更新时间 | updatedAt | datetime | 记录更新时间 |
+      | 删除时间 | deletedAt | datetime | 软删除时间 |
+      | 版本号 | version | integer | 乐观锁版本 |
+
+      ### 日期时间格式
+      - **标准格式**: ISO 8601 (2024-01-01T12:00:00Z)
+      - **时区**: UTC时间
+      - **精度**: 秒级
+
+  - id: validation_rules
+    title: 参数验证规则
+    required: true
+    template: |
+      ## 参数验证规则
+
+      ### 通用验证规则
+      | 规则类型 | 说明 | 示例 |
+      |----------|------|------|
+      | required | 必填字段 | @NotNull, @NotBlank |
+      | length | 长度限制 | @Size(min=1, max=50) |
+      | pattern | 格式验证 | @Pattern(regexp="^[a-zA-Z0-9]+$") |
+      | range | 数值范围 | @Min(0), @Max(100) |
+      | email | 邮箱格式 | @Email |
+      | phone | 手机号格式 | @Pattern(regexp="^1[3-9]\\d{9}$") |
+
+      ### 业务验证规则
+      {business_validation_rules}
+
+      ### 错误信息国际化
+      ```properties
+      validation.required=字段不能为空
+      validation.length=字段长度必须在{min}到{max}之间
+      validation.pattern=字段格式不正确
+      validation.email=邮箱格式不正确
+      validation.phone=手机号格式不正确
+      ```
+
+  - id: error_codes
+    title: 错误码定义
+    required: true
+    template: |
+      ## 错误码定义
+
+      ### 系统级错误码 (1000-1999)
+      | 错误码 | 错误信息 | 说明 | 处理建议 |
+      |--------|----------|------|----------|
+      | 1000 | 系统错误 | 未知系统错误 | 联系技术支持 |
+      | 1001 | 参数错误 | 请求参数不正确 | 检查参数格式 |
+      | 1002 | 认证失败 | 身份认证失败 | 重新登录 |
+      | 1003 | 权限不足 | 无访问权限 | 联系管理员 |
+      | 1004 | 资源不存在 | 请求的资源不存在 | 检查资源ID |
+      | 1005 | 资源冲突 | 资源已存在或冲突 | 检查数据唯一性 |
+
+      ### 业务级错误码 (2000+)
+      {business_error_codes}
+
+      ### 错误响应示例
+      ```json
+      {
+        "code": 1001,
+        "message": "参数错误",
+        "data": {
+          "errorCode": "PARAM_INVALID",
+          "errorDetails": "用户名格式不正确"
+        },
+        "timestamp": "2024-01-01T12:00:00Z",
+        "path": "/api/users"
+      }
+      ```
+
+  - id: performance
+    title: 性能规范
+    required: true
+    template: |
+      ## 性能规范
+
+      ### 响应时间要求
+      | 接口类型 | 响应时间要求 | 说明 |
+      |----------|--------------|------|
+      | 查询接口 | < 200ms | 简单查询 |
+      | 复杂查询 | < 1s | 包含关联查询 |
+      | 创建接口 | < 500ms | 数据创建 |
+      | 更新接口 | < 500ms | 数据更新 |
+      | 删除接口 | < 300ms | 数据删除 |
+
+      ### 分页限制
+      - 默认页大小: 10
+      - 最大页大小: 100
+      - 支持的排序字段: {sortable_fields}
+
+      ### 缓存策略
+      | 数据类型 | 缓存时间 | 缓存键规则 |
+      |----------|----------|------------|
+      | 用户信息 | 30分钟 | user:{user_id} |
+      | 配置信息 | 1小时 | config:{config_key} |
+      | 静态数据 | 24小时 | static:{data_type} |
+
+  - id: security
+    title: 安全规范
+    required: true
+    template: |
+      ## 安全规范
+
+      ### 数据安全
+      - **敏感数据加密**: 密码、身份证号等
+      - **数据脱敏**: 日志中的敏感信息
+      - **SQL注入防护**: 使用参数化查询
+      - **XSS防护**: 输入数据过滤和转义
+
+      ### 接口安全
+      - **HTTPS传输**: 强制使用HTTPS
+      - **请求签名**: 关键接口要求签名验证
+      - **频率限制**: 防止恶意请求
+      - **IP白名单**: 敏感接口IP限制
+
+      ### 认证安全
+      - **Token过期**: JWT token有效期控制
+      - **刷新机制**: Token自动刷新
+      - **会话管理**: 用户会话状态管理
+      - **密码策略**: 密码复杂度要求
+
+  - id: testing
+    title: 测试规范
+    required: true
+    template: |
+      ## 测试规范
+
+      ### API测试用例
+
+      **测试用例模板**:
+      ```yaml
+      test_case:
+        name: "创建用户成功"
+        method: POST
+        url: "/api/users"
+        headers:
+          Authorization: "Bearer {valid_token}"
+          Content-Type: "application/json"
+        body:
+          username: "testuser"
+          email: "test@example.com"
+          password: "Test123456!"
+        expected:
+          status: 201
+          body:
+            code: 201
+            message: "创建成功"
+            data:
+              id: "{integer}"
+              username: "testuser"
+              email: "test@example.com"
+      ```
+
+      ### 测试数据
+      ```yaml
+      test_data:
+        valid_user:
+          username: "validuser"
+          email: "valid@example.com"
+          password: "Valid123456!"
+        invalid_user:
+          username: "" # 空用户名
+          email: "invalid-email" # 无效邮箱
+          password: "123" # 密码过短
+      ```
+
+      ### 性能测试
+      - **并发用户数**: 100
+      - **测试时长**: 10分钟
+      - **响应时间**: 95%请求 < 1s
+      - **成功率**: > 99.9%
+
+  - id: documentation
+    title: 文档规范
+    required: true
+    template: |
+      ## 文档规范
+
+      ### Swagger/OpenAPI规范
+      ```yaml
+      openapi: 3.0.0
+      info:
+        title: {project_name} API
+        version: {api_version}
+        description: {project_description}
+      servers:
+        - url: {base_url}
+          description: 生产环境
+      paths:
+        /api/{entity_lowercase}:
+          get:
+            summary: 查询{entity_name}列表
+            tags: [{entity_name}]
+            parameters:
+              - name: page
+                in: query
+                schema:
+                  type: integer
+                  default: 1
+            responses:
+              '200':
+                description: 查询成功
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/PageResult'
+      ```
+
+      ### 接口文档要求
+      - **完整性**: 包含所有接口信息
+      - **准确性**: 与实际实现保持一致
+      - **实时性**: 及时更新文档内容
+      - **可读性**: 清晰的描述和示例
+
+      ### 示例代码
+      ```javascript
+      // JavaScript调用示例
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          username: 'johndoe',
+          email: 'john@example.com'
+        })
+      });
+      const result = await response.json();
+      ```
+
+  - id: versioning
+    title: 版本管理
+    required: true
+    template: |
+      ## 版本管理
+
+      ### 版本号规范
+      - **格式**: v{major}.{minor}.{patch}
+      - **示例**: v1.0.0, v1.1.0, v2.0.0
+
+      ### 版本策略
+      | 版本类型 | 变更说明 | 兼容性 |
+      |----------|----------|--------|
+      | Major | 重大功能变更，API不兼容 | 不兼容 |
+      | Minor | 新增功能，向后兼容 | 向后兼容 |
+      | Patch | Bug修复，向后兼容 | 向后兼容 |
+
+      ### 版本控制方式
+      1. **URL路径版本**: /api/v1/users
+      2. **请求头版本**: API-Version: v1
+      3. **参数版本**: /api/users?version=v1
+
+      ### 版本生命周期
+      - **开发版本**: v1.0.0-dev
+      - **测试版本**: v1.0.0-beta
+      - **发布版本**: v1.0.0
+      - **废弃版本**: 提前3个月通知
+
+  - id: changelog
+    title: 变更记录
+    required: true
+    template: |
+      ## 变更记录
+
+      ### v1.0.0 (2024-01-01)
+      **新增功能**:
+      - 初始API设计
+      - 用户管理接口
+      - 认证授权机制
+
+      **修复问题**:
+      - 无
+
+      **破坏性变更**:
+      - 无
+
+      ### 变更记录模板
+      ```markdown
+      ### v{version} ({date})
+      **新增功能**:
+      - 功能描述
+
+      **修复问题**:
+      - 问题描述
+
+      **破坏性变更**:
+      - 变更描述
+      ```

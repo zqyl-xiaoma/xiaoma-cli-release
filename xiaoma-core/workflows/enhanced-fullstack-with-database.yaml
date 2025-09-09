@@ -142,15 +142,22 @@ workflow:
         Creates organized story structure.
 
     - agent: sm
-      action: create_story
+      action: create_enhanced_story_with_database
       creates: story.md
-      requires: sharded_docs
+      requires:
+        - sharded_docs
+        - database-design.md
+        - generated-code/
       repeats: for_each_epic
+      template: enhanced-story-with-database-tmpl.yaml
       notes: |
-        Story creation with database context:
-        - Include relevant database tables
-        - Reference generated code
-        - Include API endpoints
+        Enhanced story creation with comprehensive database and API integration:
+        - Use enhanced-story-with-database-tmpl.yaml template
+        - Include detailed database entity mappings
+        - Define complete API specifications with request/response examples
+        - Reference generated entity classes and mappers
+        - Provide data mapping relationships
+        - Include comprehensive testing requirements
         Story starts in "Draft" status
 
     - agent: dev

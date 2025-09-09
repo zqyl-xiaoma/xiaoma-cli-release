@@ -1,0 +1,331 @@
+# <!-- Powered by XIAOMA™ Core -->
+workflow:
+  id: automated-story-development
+  name: 自动化用户故事开发流程
+  description: >-
+    完全自动化的用户故事开发流程，从故事创建到测试完成的端到端自动化。
+    包含故事验证、代码开发、自测、QA测试等完整环节，每个环节都有严格的通过标准。
+  type: automated-development
+  project_types:
+    - web-app
+    - saas
+    - enterprise-app
+    - api-first
+
+  sequence:
+    - step: story_development_cycle
+      action: repeat_until_all_stories_complete
+      condition: has_pending_stories
+      notes: "重复执行用户故事开发循环直到所有故事开发完成"
+
+      cycle_steps:
+        # 第1步：SM创建用户故事
+        - agent: sm
+          action: create_next_story
+          creates: story.md
+          requires:
+            - epic-shards
+            - database-design.md
+            - generated-code/
+          validation_criteria:
+            - story_format_valid
+            - database_entities_defined
+            - api_specifications_complete
+            - acceptance_criteria_clear
+          on_failure:
+            action: retry_creation
+            max_retries: 3
+          on_success:
+            action: proceed_to_validation
+          notes: |
+            创建下一个用户故事：
+            - 使用enhanced-story-with-database模板
+            - 包含完整的数据库和API设计
+            - 设置故事状态为 "Draft"
+            - 必须通过格式和完整性验证
+
+        # 第2步：PO验证用户故事
+        - agent: po
+          action: validate_story_draft
+          requires: story.md
+          validation_criteria:
+            - business_requirements_met
+            - acceptance_criteria_testable
+            - database_design_consistent
+            - api_specifications_complete
+            - story_estimation_reasonable
+          on_failure:
+            action: fix_story_issues
+            retry_with: sm
+            max_iterations: 3
+          on_success:
+            action: approve_story
+            status_change: "Draft -> Approved"
+          notes: |
+            验证用户故事质量：
+            - 业务需求符合PRD要求
+            - 验收标准可测试
+            - 数据库设计一致性
+            - API规范完整性
+            - 故事规模合理性
+            - 验证通过后状态变更为 "Approved"
+
+        # 第3步：Dev开发用户故事
+        - agent: dev
+          action: develop_story
+          requires:
+            - story.md (status: Approved)
+            - database-design.md
+            - generated-code/
+          validation_criteria:
+            - code_implementation_complete
+            - database_operations_working
+            - api_endpoints_functional
+            - business_logic_correct
+            - unit_tests_passing
+          sub_steps:
+            - implement_database_layer
+            - implement_business_logic
+            - implement_api_endpoints
+            - write_unit_tests
+            - run_self_tests
+          on_failure:
+            action: fix_implementation
+            max_iterations: 5
+          on_success:
+            action: mark_for_review
+            status_change: "Approved -> InProgress -> Review"
+          notes: |
+            开发用户故事实现：
+            - 实现数据库操作层（Mapper/Repository）
+            - 实现业务逻辑层（Service）
+            - 实现API接口层（Controller）
+            - 编写单元测试
+            - 执行自测验证
+            - 所有测试通过后状态变更为 "Review"
+
+        # 第4步：Dev自测验证
+        - agent: dev
+          action: run_self_tests
+          requires: implementation_files
+          test_types:
+            - unit_tests
+            - integration_tests
+            - api_tests
+            - database_tests
+          validation_criteria:
+            - all_tests_passing
+            - code_coverage_adequate
+            - performance_acceptable
+            - no_critical_issues
+          on_failure:
+            action: fix_and_retest
+            loop_until: all_tests_pass
+          on_success:
+            action: ready_for_qa
+          notes: |
+            开发者自测验证：
+            - 运行所有单元测试
+            - 运行集成测试
+            - 验证API功能
+            - 测试数据库操作
+            - 检查代码覆盖率
+            - 性能基准测试
+
+        # 第5步：QA测试验证
+        - agent: qa
+          action: review_story_implementation
+          requires:
+            - story.md (status: Review)
+            - implementation_files
+            - test_results
+          validation_criteria:
+            - functional_requirements_met
+            - acceptance_criteria_satisfied
+            - api_contracts_valid
+            - data_integrity_maintained
+            - error_handling_proper
+            - performance_requirements_met
+          test_types:
+            - functional_testing
+            - api_contract_testing
+            - data_validation_testing
+            - error_scenario_testing
+            - performance_testing
+          on_failure:
+            action: report_issues_to_dev
+            assign_to: dev
+            status_change: "Review -> InProgress"
+            loop_until: issues_resolved
+          on_success:
+            action: mark_story_complete
+            status_change: "Review -> Done"
+          notes: |
+            QA测试验证：
+            - 功能需求验证
+            - 验收标准检查
+            - API契约测试
+            - 数据完整性测试
+            - 错误处理测试
+            - 性能要求验证
+            - 通过后状态变更为 "Done"
+
+    # 循环条件检查
+    - step: check_completion
+      action: evaluate_project_status
+      conditions:
+        all_stories_done: "所有用户故事状态为Done"
+        no_blocking_issues: "没有阻塞性问题"
+      on_complete:
+        action: finalize_development
+        create: development-completion-report.md
+      on_continue:
+        action: start_next_cycle
+      notes: "检查是否所有故事都已完成开发"
+
+  # 状态管理
+  story_states:
+    - Draft: "故事已创建，等待验证"
+    - Approved: "故事已验证，可以开发"
+    - InProgress: "正在开发中"
+    - Review: "开发完成，等待测试"
+    - Done: "所有工作完成"
+
+  # 质量门控
+  quality_gates:
+    story_creation:
+      required_sections:
+        - 用户故事
+        - 验收标准
+        - 数据库设计相关
+        - API接口规范
+        - 任务分解
+      validation_rules:
+        - 所有必填字段完整
+        - API规范包含完整示例
+        - 数据库实体映射正确
+        - 验收标准可测试
+
+    story_validation:
+      criteria:
+        - business_alignment: "与业务需求对齐"
+        - technical_feasibility: "技术实现可行"
+        - testability: "可测试性充分"
+        - scope_appropriate: "范围适当"
+      validation_checklist: po-story-validation-checklist.md
+
+    development_completion:
+      criteria:
+        - functionality_implemented: "功能完全实现"
+        - tests_passing: "所有测试通过"
+        - code_quality: "代码质量达标"
+        - documentation_updated: "文档已更新"
+      validation_checklist: dev-completion-checklist.md
+
+    qa_approval:
+      criteria:
+        - acceptance_criteria_met: "验收标准满足"
+        - regression_tests_passed: "回归测试通过"
+        - performance_acceptable: "性能可接受"
+        - security_validated: "安全性验证"
+      validation_checklist: qa-approval-checklist.md
+
+  # 错误处理和重试策略
+  error_handling:
+    story_creation_failure:
+      max_retries: 3
+      escalation: "通知项目经理"
+
+    validation_failure:
+      action: "返回SM修正故事"
+      tracking: "记录问题详情"
+
+    development_failure:
+      action: "开发者自行修复"
+      max_attempts: 5
+      escalation: "超过尝试次数通知架构师"
+
+    qa_failure:
+      action: "返回开发者修复"
+      impact_analysis: "评估对其他故事的影响"
+
+  # 进度追踪
+  progress_tracking:
+    metrics:
+      - stories_created
+      - stories_approved
+      - stories_in_development
+      - stories_in_review
+      - stories_completed
+      - cycle_time_per_story
+      - defect_rate
+      - rework_rate
+
+    reporting:
+      frequency: "每个故事完成后"
+      format: "markdown报告"
+      location: "docs/reports/"
+
+  # 自动化流程图
+  flow_diagram: |
+    ```mermaid
+    graph TD
+        A[开始] --> B[SM: 创建用户故事]
+        B --> C{故事格式验证}
+        C -->|失败| B
+        C -->|通过| D[PO: 验证故事草稿]
+        D --> E{业务验证}
+        E -->|失败| F[修复故事]
+        F --> D
+        E -->|通过| G[状态: Draft -> Approved]
+        G --> H[Dev: 开发用户故事]
+        H --> I[实现数据库层]
+        I --> J[实现业务逻辑]
+        J --> K[实现API接口]
+        K --> L[编写单元测试]
+        L --> M[Dev: 运行自测]
+        M --> N{自测结果}
+        N -->|失败| O[修复代码]
+        O --> M
+        N -->|通过| P[状态: Approved -> Review]
+        P --> Q[QA: 测试验证]
+        Q --> R{QA测试结果}
+        R -->|失败| S[报告问题给Dev]
+        S --> T[状态: Review -> InProgress]
+        T --> H
+        R -->|通过| U[状态: Review -> Done]
+        U --> V{还有待开发故事?}
+        V -->|是| B
+        V -->|否| W[完成所有开发]
+
+        style B fill:#FFE4B5
+        style D fill:#ADD8E6  
+        style H fill:#98FB98
+        style M fill:#F0E68C
+        style Q fill:#DDA0DD
+        style W fill:#90EE90
+    ```
+
+  # 决策指导
+  decision_guidance:
+    when_to_use:
+      - 需要完全自动化的开发流程
+      - 多个用户故事需要批量开发
+      - 严格的质量控制要求
+      - 团队协作需要标准化流程
+
+    prerequisites:
+      - 已完成数据库设计
+      - 已生成基础代码框架
+      - 已定义完整的Epic和故事
+      - 测试环境已准备就绪
+
+  # 流程交接提示
+  handoff_prompts:
+    start_automation: "开始自动化用户故事开发流程..."
+    story_created: "用户故事已创建，等待PO验证..."
+    story_approved: "用户故事已通过验证，开始开发..."
+    development_complete: "开发完成，开始QA测试..."
+    qa_passed: "QA测试通过，故事开发完成。"
+    cycle_complete: "当前故事完成，检查是否有下一个故事..."
+    all_complete: "🎉 所有用户故事开发完成！项目开发阶段结束。"

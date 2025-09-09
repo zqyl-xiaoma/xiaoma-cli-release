@@ -212,7 +212,7 @@ agent:
   id: analyst
   title: 业务分析师
   icon: 📊
-  whenToUse: 用于市场调研、头脑风暴、竞品分析、创建项目简报、初期项目探索以及为现有项目（棕地项目）编写文档
+  whenToUse: 用于市场调研、头脑风暴、竞品分析、创建项目简报、初期项目探索以及为现有项目（现有项目项目）编写文档
   customization: null
 persona:
   role: 富有洞察力的分析师与战略构想伙伴
@@ -297,7 +297,7 @@ commands:
   - create-brownfield-epic: 运行任务 brownfield-create-epic.md
   - create-brownfield-prd: 使用模板 brownfield-prd-tmpl.yaml 运行任务 create-doc.md
   - create-brownfield-story: 运行任务 brownfield-create-story.md
-  - create-epic: 为棕地项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
@@ -371,7 +371,7 @@ agent:
 
 **命令**: `*analyze-database`
 **功能**: 分析现有数据库结构
-**适用场景**: 棕地项目，需要了解现有数据库
+**适用场景**: 现有项目项目，需要了解现有数据库
 **执行流程**:
 
 1. 通过MCP服务连接MySQL数据库
@@ -757,7 +757,7 @@ persona:
 commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行 correct-course 任务
-  - create-epic: 为棕地项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
   - execute-checklist-po: 运行任务 execute-checklist (清单 po-master-checklist)
@@ -4737,7 +4737,7 @@ Document sharded successfully:
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 template:
   id: brownfield-prd-template-v2
-  name: 棕地增强功能PRD
+  name: 现有项目增强功能PRD
   version: 2.0
   output:
     format: markdown
@@ -4876,7 +4876,7 @@ sections:
           - "NFR1: 增强功能必须保持现有的性能特征，且内存使用量增幅不得超过当前的20%。"
       - id: compatibility
         title: 兼容性要求
-        instruction: 对于棕地项目至关重要 - 必须保持兼容性的内容
+        instruction: 对于现有项目项目至关重要 - 必须保持兼容性的内容
         type: numbered-list
         prefix: CR
         template: "{{requirement}}: {{description}}"
@@ -4965,20 +4965,20 @@ sections:
   - id: epic-structure
     title: Epic与Story结构
     instruction: |
-      对于棕地项目，倾向于使用单个综合性Epic，除非用户明确要求多个不相关的增强功能。在展示Epic结构之前，请确认：“根据我对您现有项目的分析，我认为此增强功能应构建为 [单个Epic/多个Epic]，因为 [基于实际项目分析的理由]。这与您对所需工作的理解是否一致？”
+      对于现有项目项目，倾向于使用单个综合性Epic，除非用户明确要求多个不相关的增强功能。在展示Epic结构之前，请确认：“根据我对您现有项目的分析，我认为此增强功能应构建为 [单个Epic/多个Epic]，因为 [基于实际项目分析的理由]。这与您对所需工作的理解是否一致？”
     elicit: true
     sections:
       - id: epic-approach
         title: Epic方法
-        instruction: 解释Epic结构的理由 - 棕地项目通常使用单个Epic，除非涉及多个不相关的功能
+        instruction: 解释Epic结构的理由 - 现有项目项目通常使用单个Epic，除非涉及多个不相关的功能
         template: "**Epic结构决策**: {{epic_decision}} 并陈述理由"
 
   - id: epic-details
     title: "Epic 1: {{enhancement_title}}"
     instruction: |
-      交付棕地增强功能同时保持现有功能不变的综合性Epic
+      交付现有项目增强功能同时保持现有功能不变的综合性Epic
 
-      棕地项目关键的STORY排序：
+      现有项目项目关键的STORY排序：
       - Story必须确保现有功能保持完好
       - 每个Story都应包含对现有功能是否仍然有效的验证
       - Story的顺序应旨在最大限度地降低对现有系统的风险
@@ -6856,7 +6856,7 @@ sections:
 ==================== START: .xiaoma-core/templates/brownfield-architecture-tmpl.yaml ====================
 template:
   id: brownfield-architecture-template-v2
-  name: 棕地项目增强架构
+  name: 现有项目项目增强架构
   version: 2.0
   output:
     format: markdown
@@ -6935,7 +6935,7 @@ sections:
     instruction: |
       定义增强功能将如何与现有系统集成：
 
-      1. 回顾棕地项目 PRD 的增强范围
+      1. 回顾现有项目项目 PRD 的增强范围
       2. 识别与现有代码的集成点
       3. 定义新旧功能之间的边界
       4. 建立兼容性要求
@@ -7300,12 +7300,12 @@ sections:
 
   - id: checklist-results
     title: 清单结果报告
-    instruction: 执行 architect-checklist 并在此处填充结果，重点关注棕地项目的特定验证
+    instruction: 执行 architect-checklist 并在此处填充结果，重点关注现有项目项目的特定验证
 
   - id: next-steps
     title: 后续步骤
     instruction: |
-      完成棕地项目架构后：
+      完成现有项目项目架构后：
 
       1. 审查与现有系统的集成点
       2. 与开发代理一起开始故事的实现
@@ -7315,7 +7315,7 @@ sections:
       - id: story-manager-handoff
         title: 故事负责人交接
         instruction: |
-          为故事负责人创建一个简短的提示，以便处理此棕地项目增强。包括：
+          为故事负责人创建一个简短的提示，以便处理此现有项目项目增强。包括：
           - 引用此架构文档
           - 与用户验证过的关键集成要求
           - 基于实际项目分析的现有系统约束

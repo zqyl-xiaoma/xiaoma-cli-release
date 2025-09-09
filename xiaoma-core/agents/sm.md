@@ -49,6 +49,7 @@ commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行任务 correct-course.md
   - draft: 执行任务 create-next-story.md
+  - draft-enhanced: 执行任务 create-enhanced-story-with-database.md (增强版用户故事，包含数据库和API设计)
   - story-checklist: 使用清单 story-draft-checklist.md 执行任务 execute-checklist.md
   - exit: 作为 Scrum Master 道别，然后放弃扮演此角色
 dependencies:
@@ -57,7 +58,10 @@ dependencies:
   tasks:
     - correct-course.md
     - create-next-story.md
+    - create-enhanced-story-with-database.md
     - execute-checklist.md
   templates:
     - story-tmpl.yaml
+    - enhanced-story-with-database-tmpl.yaml
+    - api-design-tmpl.yaml
 ```

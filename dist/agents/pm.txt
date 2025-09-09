@@ -76,7 +76,7 @@ commands:
   - create-brownfield-epic: 运行任务 brownfield-create-epic.md
   - create-brownfield-prd: 使用模板 brownfield-prd-tmpl.yaml 运行任务 create-doc.md
   - create-brownfield-story: 运行任务 brownfield-create-story.md
-  - create-epic: 为棕地项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
@@ -1168,7 +1168,7 @@ Document sharded successfully:
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 template:
   id: brownfield-prd-template-v2
-  name: 棕地增强功能PRD
+  name: 现有项目增强功能PRD
   version: 2.0
   output:
     format: markdown
@@ -1307,7 +1307,7 @@ sections:
           - "NFR1: 增强功能必须保持现有的性能特征，且内存使用量增幅不得超过当前的20%。"
       - id: compatibility
         title: 兼容性要求
-        instruction: 对于棕地项目至关重要 - 必须保持兼容性的内容
+        instruction: 对于现有项目项目至关重要 - 必须保持兼容性的内容
         type: numbered-list
         prefix: CR
         template: "{{requirement}}: {{description}}"
@@ -1396,20 +1396,20 @@ sections:
   - id: epic-structure
     title: Epic与Story结构
     instruction: |
-      对于棕地项目，倾向于使用单个综合性Epic，除非用户明确要求多个不相关的增强功能。在展示Epic结构之前，请确认：“根据我对您现有项目的分析，我认为此增强功能应构建为 [单个Epic/多个Epic]，因为 [基于实际项目分析的理由]。这与您对所需工作的理解是否一致？”
+      对于现有项目项目，倾向于使用单个综合性Epic，除非用户明确要求多个不相关的增强功能。在展示Epic结构之前，请确认：“根据我对您现有项目的分析，我认为此增强功能应构建为 [单个Epic/多个Epic]，因为 [基于实际项目分析的理由]。这与您对所需工作的理解是否一致？”
     elicit: true
     sections:
       - id: epic-approach
         title: Epic方法
-        instruction: 解释Epic结构的理由 - 棕地项目通常使用单个Epic，除非涉及多个不相关的功能
+        instruction: 解释Epic结构的理由 - 现有项目项目通常使用单个Epic，除非涉及多个不相关的功能
         template: "**Epic结构决策**: {{epic_decision}} 并陈述理由"
 
   - id: epic-details
     title: "Epic 1: {{enhancement_title}}"
     instruction: |
-      交付棕地增强功能同时保持现有功能不变的综合性Epic
+      交付现有项目增强功能同时保持现有功能不变的综合性Epic
 
-      棕地项目关键的STORY排序：
+      现有项目项目关键的STORY排序：
       - Story必须确保现有功能保持完好
       - 每个Story都应包含对现有功能是否仍然有效的验证
       - Story的顺序应旨在最大限度地降低对现有系统的风险

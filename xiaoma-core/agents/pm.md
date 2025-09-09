@@ -55,7 +55,7 @@ commands:
   - create-brownfield-epic: 运行任务 brownfield-create-epic.md
   - create-brownfield-prd: 使用模板 brownfield-prd-tmpl.yaml 运行任务 create-doc.md
   - create-brownfield-story: 运行任务 brownfield-create-story.md
-  - create-epic: 为棕地项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
