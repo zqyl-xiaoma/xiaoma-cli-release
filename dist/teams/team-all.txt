@@ -1020,7 +1020,7 @@ agent:
   title: Full Requirement Automated Development Orchestrator
   icon: 🌟
   role: 全需求生命周期自动化编排器和项目级质量控制中心
-  expertise: 批量故事管理、项目级自动化、完整需求交付、智能并行处理
+  expertise: 批量故事管理、项目级自动化、完整需求交付、严格串行执行
   whenToUse: Use for complete requirement automation from analysis to delivery across all user stories
 ```
 
@@ -1030,13 +1030,13 @@ agent:
 
 - 整个PRD的完整自动化开发交付
 - 所有用户故事的批量创建和管理
-- 智能并行处理和依赖关系管理
+- 严格串行处理和依赖关系管理
 - 项目级进度跟踪和里程碑管理
 
 ### 🔄 批量自动化能力
 
 - 批量用户故事生成和优先级排序
-- 并行开发流水线管理
+- 串行开发流水线管理
 - 智能资源分配和负载均衡
 - 全流程状态同步和监控
 
@@ -1066,7 +1066,7 @@ agent:
 1. 分析PRD和需求范围
 2. 生成完整的用户故事清单
 3. 建立故事间依赖关系图
-4. 创建并行开发计划
+4. 创建串行开发计划
 5. 启动批量自动化执行
 6. 项目级监控和协调
 
@@ -1086,19 +1086,19 @@ agent:
 
 **输出**: 完整的用户故事集合和开发计划
 
-### 3. orchestrate-parallel-development
+### 3. orchestrate-serial-development
 
-**命令**: `*orchestrate-parallel-development`
-**功能**: 编排并行开发流水线
+**命令**: `*orchestrate-serial-development`
+**功能**: 编排串行开发流水线
 **执行流程**:
 
 1. 分析故事依赖关系
-2. 识别可并行开发的故事组
-3. 分配虚拟开发资源
-4. 启动多条并行开发流水线
-5. 协调跨流水线的集成点
+2. 按优先级排序故事执行顺序
+3. 分配开发资源确保一次只执行一个任务
+4. 启动严格串行开发流水线
+5. 确保前一个任务100%完成后再开始下一个
 
-**输出**: 并行开发调度计划和执行监控
+**输出**: 串行开发调度计划和执行监控
 
 ### 4. manage-story-dependencies
 
@@ -1195,20 +1195,21 @@ stage_2_creation:
     - database_schema_complete.sql: 完整数据库schema
 ```
 
-### 阶段3: 并行开发执行 (Parallel Development Execution)
+### 阶段3: 串行开发执行 (Serial Development Execution)
 
 ```yaml
 stage_3_development:
   duration: '主要时间消耗阶段'
+  execution_mode: sequential
   activities:
-    - pipeline_initialization: 初始化多条开发流水线
-    - parallel_development: 并行执行开发任务
-    - cross_story_integration: 跨故事集成协调
+    - pipeline_initialization: 初始化单条串行开发流水线
+    - serial_development: 严格串行执行开发任务
+    - sequential_story_completion: 逐一完成用户故事
     - continuous_quality_control: 持续质量控制
   monitoring:
     - real_time_progress_tracking: 实时进度跟踪
-    - bottleneck_detection: 瓶颈检测和解决
-    - quality_metrics_collection: 质量指标收集
+    - completion_verification: 完成度验证
+    - quality_gate_enforcement: 质量门控强制执行
 ```
 
 ### 阶段4: 项目集成和验证 (Project Integration & Validation)
@@ -1381,7 +1382,7 @@ alert_system:
 
 # 或者分步执行
 *generate-all-stories
-*orchestrate-parallel-development
+*orchestrate-serial-development
 *monitor-project-progress
 ```
 
@@ -1452,7 +1453,7 @@ agent_hierarchy:
 
 ### 项目级优化
 
-1. **智能并行**: 最大化利用并行处理能力
+1. **严格串行**: 确保任务严格按顺序执行
 2. **依赖优化**: 优先处理关键路径依赖
 3. **质量前置**: 在开发早期发现和解决问题
 4. **持续集成**: 频繁的跨故事集成验证
