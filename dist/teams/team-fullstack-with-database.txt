@@ -47,6 +47,7 @@ bundle:
   description: Full-stack team with enhanced database design capabilities using MCP MySQL integration
 agents:
   - xiaoma-orchestrator
+  - full-requirement-orchestrator # 全需求自动化编排器
   - automation-orchestrator # 自动化流程编排器
   - analyst
   - pm
@@ -58,6 +59,7 @@ agents:
   - dev
   - qa
 workflows:
+  - full-requirement-automation.yaml # 全需求自动化工作流
   - enhanced-fullstack-with-database.yaml # 增强的工作流
   - automated-story-development.yaml # 自动化用户故事开发流程
   - brownfield-fullstack.yaml
@@ -197,6 +199,470 @@ dependencies:
     - workflow-management.md
 ```
 ==================== END: .xiaoma-core/agents/xiaoma-orchestrator.md ====================
+
+==================== START: .xiaoma-core/agents/full-requirement-orchestrator.md ====================
+# full-requirement-orchestrator
+
+CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
+
+```yaml
+agent:
+  name: full-requirement-orchestrator
+  id: full-requirement-orchestrator
+  title: Full Requirement Automated Development Orchestrator
+  icon: 🌟
+  role: 全需求生命周期自动化编排器和项目级质量控制中心
+  expertise: 批量故事管理、项目级自动化、完整需求交付、智能并行处理
+  whenToUse: Use for complete requirement automation from analysis to delivery across all user stories
+```
+
+## Core Capabilities
+
+### 🎯 全需求级编排能力
+
+- 整个PRD的完整自动化开发交付
+- 所有用户故事的批量创建和管理
+- 智能并行处理和依赖关系管理
+- 项目级进度跟踪和里程碑管理
+
+### 🔄 批量自动化能力
+
+- 批量用户故事生成和优先级排序
+- 并行开发流水线管理
+- 智能资源分配和负载均衡
+- 全流程状态同步和监控
+
+### 📊 项目级质量控制
+
+- 跨故事质量标准一致性
+- 项目级集成测试自动化
+- 端到端验收测试编排
+- 项目交付质量评估
+
+### 🚀 智能优化能力
+
+- 基于依赖关系的智能调度
+- 动态资源分配和优化
+- 瓶颈识别和自动解决
+- 交付时间预测和优化
+
+## Available Commands
+
+### 1. start-full-requirement-automation
+
+**命令**: `*start-full-requirement-automation`
+**功能**: 启动整个需求的全自动化开发流程
+**适用场景**: 需要将完整PRD自动转换为可交付的产品
+**执行流程**:
+
+1. 分析PRD和需求范围
+2. 生成完整的用户故事清单
+3. 建立故事间依赖关系图
+4. 创建并行开发计划
+5. 启动批量自动化执行
+6. 项目级监控和协调
+
+**输出**: 项目自动化执行计划和实时进度仪表板
+
+### 2. generate-all-stories
+
+**命令**: `*generate-all-stories`
+**功能**: 批量生成整个需求的所有用户故事
+**执行流程**:
+
+1. 深度分析PRD文档结构
+2. 识别所有功能模块和用户场景
+3. 批量生成增强版用户故事
+4. 建立故事优先级和依赖关系
+5. 创建故事开发路线图
+
+**输出**: 完整的用户故事集合和开发计划
+
+### 3. orchestrate-parallel-development
+
+**命令**: `*orchestrate-parallel-development`
+**功能**: 编排并行开发流水线
+**执行流程**:
+
+1. 分析故事依赖关系
+2. 识别可并行开发的故事组
+3. 分配虚拟开发资源
+4. 启动多条并行开发流水线
+5. 协调跨流水线的集成点
+
+**输出**: 并行开发调度计划和执行监控
+
+### 4. manage-story-dependencies
+
+**命令**: `*manage-story-dependencies`
+**功能**: 智能管理用户故事依赖关系
+**执行流程**:
+
+1. 自动识别故事间的技术依赖
+2. 检测业务流程依赖
+3. 分析数据库schema依赖
+4. 构建依赖关系图
+5. 优化开发顺序
+
+### 5. execute-project-integration
+
+**命令**: `*execute-project-integration`
+**功能**: 执行项目级集成和测试
+**执行流程**:
+
+1. 等待所有故事完成开发
+2. 执行跨模块集成测试
+3. 进行端到端业务流程验证
+4. 执行性能和安全测试
+5. 生成项目交付报告
+
+### 6. monitor-project-progress
+
+**命令**: `*monitor-project-progress`
+**功能**: 实时监控整个项目进度
+**执行流程**:
+
+1. 收集所有故事的实时状态
+2. 计算项目整体完成度
+3. 识别瓶颈和风险点
+4. 预测项目完成时间
+5. 生成进度仪表板
+
+### 7. handle-cross-story-conflicts
+
+**命令**: `*handle-cross-story-conflicts`
+**功能**: 处理跨故事冲突和依赖问题
+**执行流程**:
+
+1. 检测API接口冲突
+2. 识别数据库schema冲突
+3. 分析业务逻辑冲突
+4. 自动协调冲突解决
+5. 更新相关故事规范
+
+### 8. generate-project-deliverables
+
+**命令**: `*generate-project-deliverables`
+**功能**: 生成项目最终交付物
+**执行流程**:
+
+1. 整合所有故事的实现代码
+2. 生成完整的API文档
+3. 创建数据库部署脚本
+4. 生成用户使用手册
+5. 创建项目交付报告
+
+## Project-Level Automation Flow
+
+### 阶段1: 需求分析和计划 (Requirement Analysis & Planning)
+
+```yaml
+stage_1_analysis:
+  duration: '5-10 minutes'
+  activities:
+    - prd_deep_analysis: 深度分析PRD文档结构
+    - story_identification: 识别所有用户故事
+    - dependency_mapping: 建立依赖关系图
+    - priority_ranking: 故事优先级排序
+    - resource_planning: 开发资源规划
+  outputs:
+    - project_story_backlog.md
+    - dependency_graph.yaml
+    - development_plan.md
+```
+
+### 阶段2: 批量故事创建 (Batch Story Creation)
+
+```yaml
+stage_2_creation:
+  duration: '15-30 minutes'
+  activities:
+    - parallel_story_generation: 并行生成所有用户故事
+    - database_design_integration: 集成数据库设计
+    - api_specification_creation: 创建API规范
+    - story_cross_validation: 跨故事一致性验证
+  outputs:
+    - stories/: 所有用户故事文件
+    - api_specifications/: API规范文档
+    - database_schema_complete.sql: 完整数据库schema
+```
+
+### 阶段3: 并行开发执行 (Parallel Development Execution)
+
+```yaml
+stage_3_development:
+  duration: '主要时间消耗阶段'
+  activities:
+    - pipeline_initialization: 初始化多条开发流水线
+    - parallel_development: 并行执行开发任务
+    - cross_story_integration: 跨故事集成协调
+    - continuous_quality_control: 持续质量控制
+  monitoring:
+    - real_time_progress_tracking: 实时进度跟踪
+    - bottleneck_detection: 瓶颈检测和解决
+    - quality_metrics_collection: 质量指标收集
+```
+
+### 阶段4: 项目集成和验证 (Project Integration & Validation)
+
+```yaml
+stage_4_integration:
+  duration: '10-20 minutes'
+  activities:
+    - cross_module_integration: 跨模块集成测试
+    - end_to_end_testing: 端到端业务流程测试
+    - performance_validation: 性能验证
+    - security_scanning: 安全扫描
+  outputs:
+    - integration_test_report.md
+    - performance_benchmark.md
+    - security_audit_report.md
+```
+
+### 阶段5: 项目交付 (Project Delivery)
+
+```yaml
+stage_5_delivery:
+  duration: '5-10 minutes'
+  activities:
+    - deliverable_packaging: 交付物打包
+    - documentation_generation: 文档生成
+    - deployment_preparation: 部署准备
+    - handover_documentation: 交接文档创建
+  outputs:
+    - deployment_package/: 部署包
+    - project_documentation/: 项目文档
+    - handover_guide.md: 交接指南
+```
+
+## Parallel Processing Architecture
+
+### 智能并行调度
+
+```yaml
+parallel_scheduling:
+  dependency_analysis:
+    - identify_independent_stories: 识别独立故事
+    - group_dependent_stories: 依赖故事分组
+    - create_execution_stages: 创建执行阶段
+
+  resource_allocation:
+    - virtual_dev_teams: 虚拟开发团队分配
+    - load_balancing: 负载均衡
+    - priority_based_scheduling: 基于优先级调度
+
+  synchronization_points:
+    - dependency_checkpoints: 依赖检查点
+    - integration_milestones: 集成里程碑
+    - quality_gates: 质量门控
+```
+
+### 并行执行流水线
+
+```yaml
+pipeline_architecture:
+  pipeline_1:
+    focus: '核心业务功能'
+    stories: ['用户注册', '用户登录', '权限管理']
+    priority: high
+
+  pipeline_2:
+    focus: '业务数据管理'
+    stories: ['数据录入', '数据查询', '数据导出']
+    priority: medium
+
+  pipeline_3:
+    focus: '系统支撑功能'
+    stories: ['系统配置', '日志监控', '备份恢复']
+    priority: low
+```
+
+## Cross-Story Quality Control
+
+### 一致性验证
+
+```yaml
+consistency_validation:
+  api_consistency:
+    - naming_conventions: API命名规范一致性
+    - response_format: 响应格式一致性
+    - error_handling: 错误处理一致性
+
+  database_consistency:
+    - schema_integrity: 数据库schema完整性
+    - constraint_compliance: 约束条件合规性
+    - performance_optimization: 性能优化一致性
+
+  code_consistency:
+    - architecture_patterns: 架构模式一致性
+    - coding_standards: 编码标准一致性
+    - security_practices: 安全实践一致性
+```
+
+### 集成测试策略
+
+```yaml
+integration_testing:
+  unit_level:
+    - individual_story_testing: 单个故事单元测试
+    - mock_dependency_testing: 依赖模拟测试
+
+  integration_level:
+    - cross_story_integration: 跨故事集成测试
+    - api_contract_testing: API契约测试
+    - database_integration: 数据库集成测试
+
+  system_level:
+    - end_to_end_workflows: 端到端业务流程
+    - performance_testing: 系统性能测试
+    - security_testing: 安全测试
+```
+
+## Progress Monitoring Dashboard
+
+### 实时监控指标
+
+```yaml
+monitoring_metrics:
+  progress_metrics:
+    - stories_completed: 已完成故事数量
+    - overall_completion: 整体完成百分比
+    - estimated_remaining_time: 预计剩余时间
+
+  quality_metrics:
+    - test_coverage: 测试覆盖率
+    - code_quality_score: 代码质量分数
+    - defect_density: 缺陷密度
+
+  performance_metrics:
+    - development_velocity: 开发速度
+    - pipeline_efficiency: 流水线效率
+    - bottleneck_indicators: 瓶颈指标
+```
+
+### 智能预警系统
+
+```yaml
+alert_system:
+  progress_alerts:
+    - timeline_deviation: 进度偏差预警
+    - dependency_blocking: 依赖阻塞预警
+    - resource_contention: 资源争用预警
+
+  quality_alerts:
+    - quality_degradation: 质量下降预警
+    - test_failure_spike: 测试失败激增
+    - security_vulnerability: 安全漏洞发现
+
+  system_alerts:
+    - performance_degradation: 性能下降预警
+    - integration_conflicts: 集成冲突预警
+    - deployment_readiness: 部署就绪状态
+```
+
+## Usage Examples
+
+### 启动全需求自动化
+
+```bash
+# 切换到全需求自动化编排器
+*agent full-requirement-orchestrator
+
+# 启动完整需求自动化开发
+*start-full-requirement-automation
+
+# 或者分步执行
+*generate-all-stories
+*orchestrate-parallel-development
+*monitor-project-progress
+```
+
+### 项目进度监控
+
+```bash
+# 实时监控项目进度
+*monitor-project-progress
+
+# 检查故事依赖关系
+*manage-story-dependencies
+
+# 处理跨故事冲突
+*handle-cross-story-conflicts
+```
+
+### 项目交付
+
+```bash
+# 执行项目集成
+*execute-project-integration
+
+# 生成交付物
+*generate-project-deliverables
+```
+
+## Integration with Existing Architecture
+
+### 与单故事自动化编排器协作
+
+```yaml
+orchestrator_collaboration:
+  full_requirement_orchestrator:
+    role: 项目级编排和协调
+    scope: 整个需求生命周期
+    responsibilities:
+      - 批量故事管理
+      - 并行流水线协调
+      - 项目级质量控制
+
+  automation_orchestrator:
+    role: 单故事开发执行
+    scope: 个体用户故事开发循环
+    responsibilities:
+      - SM→PO→Dev→QA循环执行
+      - 单故事质量门控
+      - 故事级错误处理
+```
+
+### 智能体层次结构
+
+```yaml
+agent_hierarchy:
+  level_1_project:
+    agent: full-requirement-orchestrator
+    scope: 整个项目/需求
+
+  level_2_story:
+    agent: automation-orchestrator
+    scope: 单个用户故事
+
+  level_3_role:
+    agents: [sm, po, dev, qa, database-architect]
+    scope: 具体角色任务
+```
+
+## Best Practices
+
+### 项目级优化
+
+1. **智能并行**: 最大化利用并行处理能力
+2. **依赖优化**: 优先处理关键路径依赖
+3. **质量前置**: 在开发早期发现和解决问题
+4. **持续集成**: 频繁的跨故事集成验证
+
+### 资源管理
+
+1. **负载均衡**: 智能分配开发任务
+2. **瓶颈识别**: 快速发现和解决瓶颈
+3. **优先级动态调整**: 基于实际进度调整优先级
+4. **风险管理**: 主动识别和缓解项目风险
+
+### 交付保障
+
+1. **质量一致性**: 确保所有故事质量标准一致
+2. **集成完整性**: 保障跨故事功能完整集成
+3. **文档完整性**: 生成完整的项目交付文档
+4. **可维护性**: 确保交付代码的长期可维护性
+==================== END: .xiaoma-core/agents/full-requirement-orchestrator.md ====================
 
 ==================== START: .xiaoma-core/agents/automation-orchestrator.md ====================
 # automation-orchestrator
@@ -13531,6 +13997,407 @@ optional_fields_examples:
         - action: "考虑使用缓存以提高性能"
           refs: ["services/data.service.ts"]
 ==================== END: .xiaoma-core/templates/qa-gate-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/workflows/full-requirement-automation.yaml ====================
+# Full Requirement Automation Workflow - 全需求自动化工作流
+
+workflow:
+  name: full-requirement-automation
+  id: full-requirement-automation
+  title: 全需求自动化开发工作流 🌟
+  description: 完整需求从分析到交付的端到端自动化工作流
+  version: "2.0.0"
+
+  # 工作流分类和标签
+  category: project-automation
+  tags:
+    - full-automation
+    - batch-processing
+    - project-delivery
+    - parallel-development
+
+  # 工作流适用场景
+  use_cases:
+    - 完整PRD的端到端自动化开发
+    - 大型项目的批量故事管理
+    - 多团队并行开发协调
+    - 项目级质量控制和交付
+
+# 工作流参与的智能体
+agents:
+  primary_orchestrator:
+    agent: full-requirement-orchestrator
+    role: 全需求生命周期总指挥
+    responsibilities:
+      - 项目级编排和协调
+      - 批量故事管理
+      - 并行开发调度
+      - 项目交付控制
+
+  story_orchestrator:
+    agent: automation-orchestrator
+    role: 单故事开发执行器
+    responsibilities:
+      - 执行SM→PO→Dev→QA循环
+      - 故事级质量门控
+      - 个体故事状态管理
+
+  role_agents:
+    - agent: sm
+      role: 需求分析和故事创建
+    - agent: po
+      role: 故事验证和业务确认
+    - agent: dev
+      role: 开发实现和自测
+    - agent: qa
+      role: 质量验证和验收测试
+    - agent: database-architect
+      role: 数据库设计和优化
+
+# 工作流阶段定义
+phases:
+  phase_1_analysis:
+    name: 需求分析与规划
+    duration: "5-15分钟"
+    description: 深度分析PRD，生成完整故事清单和依赖关系
+
+    steps:
+      - step: prd_analysis
+        agent: full-requirement-orchestrator
+        action: analyze_requirement_document
+        inputs: ["prd.md", "existing_database_design.md"]
+        outputs: ["requirement_analysis.md"]
+
+      - step: story_generation
+        agent: full-requirement-orchestrator
+        action: generate_all_stories
+        inputs: ["requirement_analysis.md", "database_design.md"]
+        outputs:
+          - "project_story_backlog.md"
+          - "stories/"
+          - "story_dependency_graph.yaml"
+
+      - step: development_planning
+        agent: full-requirement-orchestrator
+        action: create_development_plan
+        inputs: ["story_dependency_graph.yaml"]
+        outputs:
+          - "parallel_development_plan.yaml"
+          - "development_roadmap.md"
+
+    quality_gates:
+      - gate: story_completeness_check
+        criteria: "所有识别的功能点都有对应故事"
+      - gate: dependency_consistency_check
+        criteria: "依赖关系逻辑一致且无环"
+      - gate: priority_logic_validation
+        criteria: "优先级分配符合业务价值"
+
+  phase_2_parallel_development:
+    name: 并行开发执行
+    duration: "主要时间消耗阶段(数小时到数天)"
+    description: 启动多条并行开发流水线，同时执行所有用户故事开发
+
+    parallel_pipelines:
+      pipeline_foundation:
+        focus: "基础设施和核心依赖"
+        agent_coordination: automation-orchestrator
+        story_selection: "priority=P0 AND category=foundation"
+
+        execution_flow:
+          - step: foundation_story_development
+            parallel_execution: true
+            story_cycle: "SM→PO→Dev→QA"
+            quality_gates: ["story_format", "implementation", "testing"]
+
+          - step: foundation_integration
+            action: integrate_foundation_components
+            validation: ["api_contracts", "database_schema", "authentication"]
+
+      pipeline_core_business:
+        focus: "核心业务功能"
+        agent_coordination: automation-orchestrator
+        story_selection: "priority=P1 AND category=business"
+        dependencies: ["pipeline_foundation"]
+
+        execution_flow:
+          - step: core_business_development
+            parallel_execution: true
+            story_cycle: "SM→PO→Dev→QA"
+            cross_story_coordination: true
+
+          - step: business_process_integration
+            action: validate_business_workflows
+            validation: ["end_to_end_flows", "business_rules", "data_consistency"]
+
+      pipeline_features:
+        focus: "特性功能开发"
+        agent_coordination: automation-orchestrator
+        story_selection: "priority=P2 AND category=features"
+        dependencies: ["pipeline_core_business"]
+
+        execution_flow:
+          - step: feature_development
+            parallel_execution: true
+            story_cycle: "SM→PO→Dev→QA"
+
+          - step: feature_integration
+            action: integrate_feature_modules
+            validation: ["ui_consistency", "api_compatibility", "performance"]
+
+      pipeline_support:
+        focus: "支撑功能开发"
+        agent_coordination: automation-orchestrator
+        story_selection: "priority=P3 AND category=support"
+        dependencies: ["pipeline_features"]
+
+        execution_flow:
+          - step: support_feature_development
+            parallel_execution: true
+            story_cycle: "SM→PO→Dev→QA"
+
+    synchronization_points:
+      sync_foundation_complete:
+        trigger: "pipeline_foundation完成"
+        validation: "基础API和认证系统就绪"
+        next_action: "启动pipeline_core_business"
+
+      sync_core_complete:
+        trigger: "pipeline_core_business完成"
+        validation: "核心业务流程就绪"
+        next_action: "启动pipeline_features"
+
+      sync_features_complete:
+        trigger: "pipeline_features完成"
+        validation: "所有功能模块就绪"
+        next_action: "启动pipeline_support"
+
+    monitoring_and_coordination:
+      - real_time_progress_tracking: 实时进度跟踪
+      - dependency_satisfaction_monitoring: 依赖满足监控
+      - quality_metrics_collection: 质量指标收集
+      - bottleneck_detection_and_resolution: 瓶颈检测和解决
+      - cross_pipeline_conflict_resolution: 跨流水线冲突解决
+
+  phase_3_project_integration:
+    name: 项目集成与验证
+    duration: "15-30分钟"
+    description: 执行项目级集成测试，确保系统完整性
+
+    steps:
+      - step: cross_module_integration
+        agent: full-requirement-orchestrator
+        action: execute_integration_testing
+        scope: "跨模块集成测试"
+        validation:
+          - api_integration_testing: API集成测试
+          - database_consistency_check: 数据库一致性检查
+          - cross_service_communication: 跨服务通信验证
+
+      - step: end_to_end_validation
+        agent: full-requirement-orchestrator
+        action: validate_business_processes
+        scope: "端到端业务流程验证"
+        validation:
+          - complete_user_journeys: 完整用户旅程
+          - business_workflow_execution: 业务工作流执行
+          - data_lifecycle_validation: 数据生命周期验证
+
+      - step: performance_validation
+        agent: full-requirement-orchestrator
+        action: execute_performance_testing
+        scope: "性能和扩展性验证"
+        validation:
+          - load_testing: 负载测试
+          - stress_testing: 压力测试
+          - scalability_validation: 扩展性验证
+
+      - step: security_validation
+        agent: full-requirement-orchestrator
+        action: execute_security_testing
+        scope: "安全性综合验证"
+        validation:
+          - vulnerability_scanning: 漏洞扫描
+          - penetration_testing: 渗透测试
+          - compliance_validation: 合规性验证
+
+    quality_gates:
+      - gate: integration_test_pass_rate
+        criteria: "集成测试通过率≥98%"
+      - gate: performance_benchmark_compliance
+        criteria: "性能指标满足基准要求"
+      - gate: security_vulnerability_threshold
+        criteria: "零高危安全漏洞"
+      - gate: business_process_validation
+        criteria: "所有业务流程验证通过"
+
+  phase_4_delivery:
+    name: 项目交付
+    duration: "5-10分钟"
+    description: 生成最终交付物和项目文档
+
+    steps:
+      - step: deliverable_packaging
+        agent: full-requirement-orchestrator
+        action: generate_project_deliverables
+        outputs:
+          - deployment_package: 部署包
+          - api_documentation: API文档
+          - user_documentation: 用户文档
+          - maintenance_guide: 维护指南
+
+      - step: handover_preparation
+        agent: full-requirement-orchestrator
+        action: prepare_project_handover
+        outputs:
+          - project_summary_report: 项目总结报告
+          - quality_metrics_report: 质量指标报告
+          - deployment_instructions: 部署说明
+          - support_contact_info: 支持联系信息
+
+      - step: final_validation
+        agent: full-requirement-orchestrator
+        action: validate_delivery_completeness
+        validation:
+          - deliverable_completeness: 交付物完整性
+          - documentation_quality: 文档质量
+          - deployment_readiness: 部署就绪度
+          - handover_checklist: 交接检查清单
+
+# 工作流执行配置
+execution:
+  # 并行执行配置
+  parallelization:
+    max_parallel_pipelines: 4
+    max_stories_per_pipeline: 15
+    resource_allocation: "dynamic"
+    load_balancing: "priority_based"
+
+  # 错误处理配置
+  error_handling:
+    retry_strategy: "exponential_backoff"
+    max_retries: 3
+    failure_escalation: "human_intervention"
+    rollback_capability: true
+
+  # 质量控制配置
+  quality_control:
+    continuous_monitoring: true
+    real_time_alerts: true
+    quality_gate_enforcement: "strict"
+    deviation_threshold: "5%"
+
+  # 监控和报告
+  monitoring:
+    progress_tracking: "real_time"
+    metrics_collection: "comprehensive"
+    dashboard_updates: "every_5_minutes"
+    notification_channels: ["email", "slack", "webhook"]
+
+# 工作流模板和配置
+templates:
+  enhanced_story_template: "enhanced-story-with-database-tmpl.yaml"
+  integration_test_template: "integration-test-tmpl.yaml"
+  deliverable_package_template: "project-deliverable-tmpl.yaml"
+
+# 质量标准和验收标准
+quality_standards:
+  story_level:
+    - acceptance_criteria_completeness: 100%
+    - unit_test_coverage: ≥80%
+    - code_quality_score: ≥8.5/10
+    - api_documentation_completeness: 100%
+
+  pipeline_level:
+    - integration_test_pass_rate: ≥95%
+    - cross_story_consistency: 100%
+    - performance_benchmark_compliance: 100%
+
+  project_level:
+    - end_to_end_test_coverage: 100%
+    - security_vulnerability_count: 0 (high severity)
+    - deployment_readiness_score: ≥9/10
+    - documentation_completeness: 100%
+
+# 风险管理和缓解策略
+risk_management:
+  identified_risks:
+    dependency_blocking:
+      probability: "medium"
+      impact: "high"
+      mitigation: "dynamic_dependency_resolution"
+
+    resource_contention:
+      probability: "low"
+      impact: "medium"
+      mitigation: "intelligent_load_balancing"
+
+    integration_conflicts:
+      probability: "medium"
+      impact: "high"
+      mitigation: "continuous_integration_validation"
+
+    quality_degradation:
+      probability: "low"
+      impact: "high"
+      mitigation: "strict_quality_gates"
+
+  monitoring_triggers:
+    - progress_deviation_threshold: "10%"
+    - quality_metric_decline: "5%"
+    - error_rate_spike: "2x baseline"
+    - dependency_satisfaction_delay: "15 minutes"
+
+# 成功指标和KPI
+success_metrics:
+  delivery_metrics:
+    - on_time_delivery_rate: ≥95%
+    - scope_completion_rate: 100%
+    - quality_standard_compliance: ≥98%
+
+  efficiency_metrics:
+    - automation_coverage: ≥90%
+    - parallel_processing_efficiency: ≥75%
+    - resource_utilization_rate: ≥80%
+
+  quality_metrics:
+    - defect_escape_rate: ≤2%
+    - customer_satisfaction_score: ≥8.5/10
+    - maintenance_cost_reduction: ≥30%
+
+# 使用示例和最佳实践
+usage_examples:
+  basic_usage:
+    command: "*agent full-requirement-orchestrator"
+    followed_by: "*start-full-requirement-automation"
+
+  advanced_configuration:
+    custom_prd: "*start-full-requirement-automation --prd custom_requirements.md"
+    parallel_config: "*start-full-requirement-automation --pipelines 6 --max-stories 10"
+
+  monitoring_and_control:
+    progress_check: "*monitor-project-progress"
+    quality_validation: "*validate-quality-gates"
+    issue_resolution: "*handle-cross-story-conflicts"
+
+# 集成点和扩展能力
+integrations:
+  existing_workflows:
+    - enhanced-fullstack-with-database: "story-level integration"
+    - automated-story-development: "individual story processing"
+
+  external_tools:
+    - mysql_mcp: "database operations"
+    - testing_frameworks: "automated testing"
+    - deployment_tools: "continuous deployment"
+    - monitoring_systems: "real-time monitoring"
+
+  customization_points:
+    - story_generation_rules: "自定义故事生成规则"
+    - quality_gate_criteria: "自定义质量门控标准"
+    - parallel_execution_strategy: "自定义并行执行策略"
+    - integration_test_scenarios: "自定义集成测试场景"
+==================== END: .xiaoma-core/workflows/full-requirement-automation.yaml ====================
 
 ==================== START: .xiaoma-core/workflows/enhanced-fullstack-with-database.yaml ====================
 # <!-- Powered by XIAOMA™ Core -->

@@ -1,0 +1,442 @@
+# Global Quality Assurance Monitoring Template
+# 全局质量保证监控模板
+
+meta:
+  name: "Global QA Monitoring Dashboard"
+  version: "2.0"
+  description: "工作流状态监控与质量保证追踪模板"
+  created_date: "2025-09-10"
+  template_type: "monitoring_dashboard"
+
+# ========== 实时监控面板 ==========
+real_time_dashboard:
+  # 工作流状态总览
+  workflow_status_overview:
+    title: "🎯 工作流执行状态"
+    widgets:
+      - widget: "current_phase"
+        display: "Large Status Badge"
+        data_source: "workflow_state_machine"
+        refresh_rate: "5_seconds"
+
+      - widget: "progress_bar"
+        display: "Animated Progress Bar"
+        calculation: "completed_steps / total_steps * 100"
+        show_percentage: true
+
+      - widget: "time_elapsed"
+        display: "Digital Clock"
+        format: "HH:MM:SS"
+        color_coding: true # 绿色正常，黄色警告，红色超时
+
+      - widget: "next_milestone"
+        display: "Countdown Timer"
+        shows: "time_to_next_phase"
+        alert_threshold: "30_minutes"
+
+  # 质量指标仪表盘
+  quality_metrics_dashboard:
+    title: "📊 质量指标实时监控"
+    layout: "grid_2x3"
+
+    metrics:
+      - metric: "overall_quality_score"
+        display: "Circular Gauge"
+        range: [0, 100]
+        target: 95
+        color_zones:
+          critical: [0, 70] # 红色
+          warning: [70, 85] # 黄色
+          good: [85, 95] # 蓝色
+          excellent: [95, 100] # 绿色
+
+      - metric: "requirement_coverage"
+        display: "Progress Ring"
+        target: 100
+        show_percentage: true
+        alerts:
+          - threshold: 90
+            message: "需求覆盖度低于90%"
+
+      - metric: "story_completeness_avg"
+        display: "Horizontal Bar Chart"
+        breakdown: ["excellent", "good", "needs_improvement", "incomplete"]
+
+      - metric: "code_quality_trend"
+        display: "Line Chart"
+        time_range: "last_24_hours"
+        y_axis: [0, 100]
+        trend_line: true
+
+      - metric: "test_coverage"
+        display: "Donut Chart"
+        segments: ["unit_tests", "integration_tests", "e2e_tests"]
+        target: 90
+
+      - metric: "defect_density"
+        display: "Heatmap"
+        dimensions: ["component", "severity"]
+        color_scale: "red_to_green_inverted"
+
+  # 问题追踪面板
+  issue_tracking_panel:
+    title: "🚨 问题识别与处理状态"
+
+    issue_summary:
+      - widget: "issue_count_by_severity"
+        display: "Stacked Bar Chart"
+        categories: ["critical", "high", "medium", "low"]
+        colors: ["#FF0000", "#FF8800", "#FFAA00", "#00AA00"]
+
+      - widget: "resolution_progress"
+        display: "Kanban Board"
+        columns: ["identified", "assigned", "in_progress", "validation", "resolved"]
+        drag_drop: false # 只读视图
+
+      - widget: "sla_compliance"
+        display: "Traffic Light Status"
+        rules:
+          green: "all_sla_met"
+          yellow: "sla_at_risk"
+          red: "sla_breached"
+
+    active_fixes:
+      - widget: "fix_execution_timeline"
+        display: "Gantt Chart"
+        shows: ["agent", "task", "start_time", "estimated_completion"]
+
+      - widget: "agent_workload"
+        display: "Resource Utilization Chart"
+        agents: ["sm", "dev", "qa", "architect"]
+        metrics: ["active_tasks", "queue_depth", "avg_resolution_time"]
+
+  # 循环质量保证状态
+  qa_loop_monitor:
+    title: "🔄 质量保证循环监控"
+
+    loop_visualization:
+      - widget: "loop_iteration_counter"
+        display: "Large Number Display"
+        current_iteration: true
+        max_iterations: 5
+        warning_threshold: 3
+
+      - widget: "convergence_trend"
+        display: "Multi-Line Chart"
+        lines: ["quality_score", "issue_count", "coverage_percentage"]
+        shows_convergence: true
+
+      - widget: "loop_decision_tree"
+        display: "Interactive Flowchart"
+        shows: "current_decision_point"
+        highlights: "active_path"
+
+    exit_criteria_status:
+      - widget: "exit_criteria_checklist"
+        display: "Status List"
+        items:
+          - "无关键问题": "status_icon"
+          - "无高优先级问题": "status_icon"
+          - "质量分数>90": "progress_bar"
+          - "需求100%覆盖": "progress_bar"
+        refresh_rate: "10_seconds"
+
+# ========== 告警与通知系统 ==========
+alerting_system:
+  alert_levels:
+    critical:
+      conditions:
+        - "workflow_stuck_for > 30_minutes"
+        - "quality_score < 70"
+        - "critical_defect_found"
+        - "sla_breach_imminent"
+      actions:
+        - immediate_notification
+        - escalate_to_supervisor
+        - auto_intervention_trigger
+      channels: ["email", "slack", "sms", "dashboard_popup"]
+
+    warning:
+      conditions:
+        - "quality_degradation > 10%"
+        - "loop_iteration > 3"
+        - "agent_unresponsive > 15_minutes"
+        - "resource_utilization > 85%"
+      actions:
+        - notification_to_team
+        - increase_monitoring_frequency
+      channels: ["email", "slack", "dashboard_notification"]
+
+    info:
+      conditions:
+        - "milestone_achieved"
+        - "quality_improvement_detected"
+        - "loop_convergence_progress"
+      actions:
+        - log_event
+        - update_dashboard
+      channels: ["dashboard_notification", "log_file"]
+
+  notification_templates:
+    critical_alert: |
+      🚨 CRITICAL ALERT: {{alert_type}}
+
+      Workflow: {{workflow_name}}
+      Current Phase: {{current_phase}}
+      Issue: {{issue_description}}
+
+      Immediate Action Required:
+      {{recommended_action}}
+
+      Dashboard: {{dashboard_url}}
+
+    progress_update: |
+      📈 Progress Update: {{workflow_name}}
+
+      Phase: {{current_phase}} ({{progress_percentage}}%)
+      Quality Score: {{quality_score}}/100
+      Issues: {{active_issues_count}}
+
+      Next Milestone: {{next_milestone}}
+      ETA: {{estimated_completion}}
+
+# ========== 历史数据与趋势分析 ==========
+historical_analysis:
+  trend_charts:
+    quality_evolution:
+      chart_type: "line_chart"
+      time_range: "configurable" # 1hour, 4hours, 24hours, 7days
+      metrics:
+        - overall_quality_score
+        - requirement_coverage
+        - defect_density
+        - resolution_rate
+      annotations:
+        - milestone_markers
+        - intervention_points
+        - quality_gates_passed
+
+    performance_benchmarks:
+      chart_type: "comparison_chart"
+      compares: ["current_run", "historical_average", "best_practice"]
+      metrics:
+        - total_execution_time
+        - loop_iterations_count
+        - fix_success_rate
+        - sla_compliance_rate
+
+    agent_performance:
+      chart_type: "radar_chart"
+      agents: ["sm", "dev", "qa", "architect", "auditor"]
+      dimensions:
+        - task_completion_rate
+        - quality_of_output
+        - response_time
+        - error_rate
+        - learning_efficiency
+
+  pattern_recognition:
+    common_issues:
+      - issue_pattern: "story_quality_degradation"
+        frequency: "daily_analysis"
+        root_causes: ["template_deviation", "requirement_ambiguity"]
+
+      - issue_pattern: "loop_convergence_slowdown"
+        frequency: "per_loop_analysis"
+        root_causes: ["complex_fixes", "interdependent_issues"]
+
+      - issue_pattern: "agent_performance_variance"
+        frequency: "weekly_analysis"
+        root_causes: ["workload_imbalance", "skill_gaps"]
+
+    predictive_insights:
+      - prediction: "loop_iteration_forecast"
+        algorithm: "regression_analysis"
+        accuracy_target: "85%"
+
+      - prediction: "completion_time_estimate"
+        algorithm: "monte_carlo_simulation"
+        confidence_interval: "95%"
+
+      - prediction: "quality_score_projection"
+        algorithm: "trend_extrapolation"
+        adjustment_factors: ["current_issues", "fix_complexity"]
+
+# ========== 交互式操作界面 ==========
+interactive_controls:
+  workflow_controls:
+    - control: "pause_workflow"
+      permission: "supervisor"
+      confirmation: required
+
+    - control: "skip_quality_gate"
+      permission: "architect"
+      requires_justification: true
+
+    - control: "force_loop_exit"
+      permission: "po"
+      requires_approval: true
+
+    - control: "manual_intervention"
+      permission: "any_authorized"
+      opens: "intervention_wizard"
+
+  quality_adjustments:
+    - adjustment: "quality_threshold"
+      range: [70, 100]
+      requires_justification: true
+      impact_warning: true
+
+    - adjustment: "max_loop_iterations"
+      range: [1, 10]
+      default: 5
+      warning_at: 8
+
+  view_customization:
+    - option: "metric_selection"
+      allows: "custom_dashboard_layout"
+
+    - option: "time_range_filter"
+      options: ["real_time", "1h", "4h", "24h", "7d", "custom"]
+
+    - option: "alert_preferences"
+      customizable: ["channels", "frequency", "severity_filter"]
+
+# ========== 导出和报告 ==========
+export_reporting:
+  automated_reports:
+    hourly_snapshot:
+      content: ["current_status", "key_metrics", "active_alerts"]
+      format: "json"
+      recipients: ["monitoring_system", "api_consumers"]
+
+    daily_summary:
+      content: ["progress_summary", "quality_trends", "issue_resolution"]
+      format: "markdown"
+      recipients: ["development_team", "stakeholders"]
+
+    completion_report:
+      content: ["full_execution_trace", "quality_analysis", "lessons_learned"]
+      format: "html"
+      recipients: ["project_management", "quality_team"]
+
+  on_demand_exports:
+    - export_type: "dashboard_screenshot"
+      format: "png"
+      resolution: "1920x1080"
+
+    - export_type: "metrics_data"
+      format: "csv"
+      time_range: "configurable"
+
+    - export_type: "alert_history"
+      format: "json"
+      filters: ["severity", "time_range", "alert_type"]
+
+    - export_type: "agent_performance_report"
+      format: "pdf"
+      includes: ["charts", "analysis", "recommendations"]
+
+# ========== 集成配置 ==========
+integration_config:
+  external_systems:
+    logging:
+      - system: "elasticsearch"
+        index_pattern: "xiaoma-qa-monitoring-*"
+
+      - system: "prometheus"
+        metrics_endpoint: "/metrics"
+        scrape_interval: "30s"
+
+    notifications:
+      - system: "slack"
+        webhook_url: "{{SLACK_WEBHOOK}}"
+        channels: ["#quality-alerts", "#development-team"]
+
+      - system: "email"
+        smtp_config: "{{EMAIL_CONFIG}}"
+        distribution_lists: ["qa-team", "management"]
+
+    storage:
+      - system: "mongodb"
+        collection: "qa_monitoring_data"
+        retention: "90_days"
+
+      - system: "redis"
+        usage: "real_time_cache"
+        ttl: "1_hour"
+
+  api_endpoints:
+    - endpoint: "/api/v1/workflow/status"
+      method: "GET"
+      returns: "current_workflow_state"
+
+    - endpoint: "/api/v1/quality/metrics"
+      method: "GET"
+      parameters: ["time_range", "metric_types"]
+
+    - endpoint: "/api/v1/issues/active"
+      method: "GET"
+      returns: "active_issues_list"
+
+    - endpoint: "/api/v1/alerts/subscribe"
+      method: "POST"
+      allows: "webhook_registration"
+
+# ========== 配置模板 ==========
+configuration_template:
+  monitor_settings:
+    refresh_intervals:
+      real_time_data: 5 # seconds
+      quality_metrics: 30 # seconds
+      historical_data: 300 # seconds (5 minutes)
+
+    data_retention:
+      real_time_cache: "1_hour"
+      detailed_metrics: "7_days"
+      summary_data: "90_days"
+      alert_history: "1_year"
+
+    performance_limits:
+      max_concurrent_widgets: 20
+      chart_data_points: 1000
+      alert_queue_size: 500
+
+  customization_options:
+    theme: ["dark", "light", "auto"]
+    language: ["zh-CN", "en-US"]
+    timezone: "auto_detect"
+    number_format: "locale_based"
+
+    default_views:
+      - "executive_summary"
+      - "technical_details"
+      - "quality_focus"
+      - "operations_center"
+
+    role_based_access:
+      developer: ["code_quality", "implementation_status"]
+      qa_engineer: ["test_coverage", "defect_tracking"]
+      project_manager: ["progress_overview", "milestone_tracking"]
+      architect: ["system_health", "technical_debt"]
+      executive: ["business_metrics", "risk_assessment"]
+
+# ========== 成功度量标准 ==========
+success_metrics:
+  monitoring_effectiveness:
+    - "问题检测时间 < 5分钟"
+    - "预测准确率 > 85%"
+    - "告警误报率 < 5%"
+    - "系统可用性 > 99.9%"
+
+  用户体验:
+    - "仪表板响应时间 < 2秒"
+    - "数据刷新延迟 < 10秒"
+    - "用户满意度 > 90%"
+    - "自助服务率 > 80%"
+
+  business_value:
+    - "决策支持及时性提升 > 70%"
+    - "问题解决速度提升 > 50%"
+    - "质量可视性改善 > 90%"
+    - "团队协作效率提升 > 60%"

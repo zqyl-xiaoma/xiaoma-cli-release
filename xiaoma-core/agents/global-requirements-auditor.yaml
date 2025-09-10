@@ -1,0 +1,512 @@
+# Global Requirements Auditor Agent
+# 全局需求实现审计智能体
+
+meta:
+  name: "Global Requirements Auditor"
+  version: "2.0"
+  description: "全自动化的全局项目需求实现与质量保证审计智能体，负责终检阶段的深度验证"
+  created_date: "2025-09-10"
+  specialization: "global_requirements_validation_and_quality_assurance"
+  priority: "CRITICAL"
+
+# ========== 智能体核心能力 ==========
+agent_capabilities:
+  core_competencies:
+    - "PRD全覆盖性验证"
+    - "用户故事完整性深度检查"
+    - "开发任务质量全面审计"
+    - "代码实现与需求一致性验证"
+    - "测试覆盖度与质量评估"
+    - "跨层次依赖关系验证"
+    - "自动化问题识别与分类"
+    - "智能修复建议生成"
+
+  verification_dimensions:
+    - dimension: "requirements_coverage"
+      description: "需求覆盖度验证"
+      focus_areas:
+        - "功能需求完整性"
+        - "非功能需求实现"
+        - "业务规则遵循"
+        - "边界条件处理"
+        - "异常场景覆盖"
+
+    - dimension: "story_quality"
+      description: "用户故事质量评估"
+      focus_areas:
+        - "INVEST原则符合度"
+        - "验收标准可测试性"
+        - "技术实现可行性"
+        - "业务价值对齐"
+
+    - dimension: "implementation_quality"
+      description: "实现质量审计"
+      focus_areas:
+        - "代码质量指标"
+        - "架构设计遵循"
+        - "性能基准达标"
+        - "安全标准符合"
+        - "可维护性评估"
+
+# ========== 全局审计执行引擎 ==========
+global_audit_engine:
+  # 阶段1：全局数据收集与解析
+  phase_1_global_data_collection:
+    name: "全局数据收集与智能解析"
+    execution_mode: "PARALLEL"
+    timeout: 600 # 10分钟
+
+    collectors:
+      - collector: "prd_requirements_collector"
+        description: "PRD需求全量收集器"
+        sources:
+          - "docs/prd.md"
+          - "docs/prd/*.md"
+          - "docs/requirements/*.md"
+        extraction_rules:
+          - extract_all_functional_requirements
+          - extract_all_non_functional_requirements
+          - extract_business_rules_and_constraints
+          - extract_acceptance_criteria
+          - extract_priority_and_dependencies
+        output: "requirements_inventory.json"
+
+      - collector: "user_stories_collector"
+        description: "用户故事全量收集器"
+        sources:
+          - "docs/stories/*.md"
+          - "docs/epics/*.md"
+          - "story-implementations/*.md"
+        extraction_rules:
+          - extract_story_metadata
+          - extract_acceptance_criteria
+          - extract_task_breakdown
+          - extract_implementation_status
+          - extract_test_results
+        output: "stories_inventory.json"
+
+      - collector: "implementation_collector"
+        description: "实现产物收集器"
+        sources:
+          - "src/**/*"
+          - "tests/**/*"
+          - "docs/api/*.md"
+          - "database/scripts/*.sql"
+        analysis_rules:
+          - analyze_code_structure
+          - extract_api_endpoints
+          - analyze_database_schema
+          - extract_test_coverage
+          - analyze_documentation
+        output: "implementation_inventory.json"
+
+  # 阶段2：深度映射与覆盖度分析
+  phase_2_deep_mapping_analysis:
+    name: "深度映射与覆盖度分析"
+    execution_mode: "SEQUENTIAL"
+
+    mapping_engines:
+      - engine: "requirement_to_story_mapper"
+        description: "需求到故事映射引擎"
+        algorithms:
+          - semantic_similarity_matching
+          - keyword_based_mapping
+          - context_aware_association
+          - dependency_chain_analysis
+        mapping_rules:
+          - one_to_many_mapping_allowed
+          - bidirectional_traceability_required
+          - orphan_detection_enabled
+        output: "requirement_story_mapping.json"
+
+      - engine: "story_to_implementation_mapper"
+        description: "故事到实现映射引擎"
+        algorithms:
+          - code_reference_analysis
+          - api_endpoint_matching
+          - database_table_association
+          - test_case_correlation
+        verification_methods:
+          - implementation_completeness_check
+          - functionality_alignment_verification
+          - integration_point_validation
+        output: "story_implementation_mapping.json"
+
+      - engine: "coverage_calculator"
+        description: "覆盖度计算引擎"
+        metrics:
+          - requirement_coverage_percentage
+          - story_implementation_percentage
+          - test_coverage_percentage
+          - documentation_coverage_percentage
+        weighted_scoring:
+          critical_requirements: 40
+          high_priority_requirements: 30
+          medium_priority_requirements: 20
+          low_priority_requirements: 10
+        output: "coverage_metrics.json"
+
+  # 阶段3：质量深度评估
+  phase_3_quality_deep_assessment:
+    name: "质量深度评估"
+    execution_mode: "PARALLEL"
+
+    quality_validators:
+      - validator: "story_quality_validator"
+        description: "用户故事质量验证器"
+        validation_criteria:
+          invest_compliance:
+            independent: 90
+            negotiable: 85
+            valuable: 95
+            estimable: 90
+            small: 85
+            testable: 95
+          content_quality:
+            clarity: 90
+            completeness: 95
+            consistency: 90
+            technical_accuracy: 95
+        severity_classification:
+          critical: "blocks_deployment"
+          high: "requires_immediate_fix"
+          medium: "should_fix_soon"
+          low: "nice_to_have"
+        output: "story_quality_report.json"
+
+      - validator: "implementation_quality_validator"
+        description: "实现质量验证器"
+        quality_dimensions:
+          code_quality:
+            - complexity_analysis
+            - duplication_detection
+            - security_vulnerability_scan
+            - performance_profiling
+            - maintainability_index
+          architecture_compliance:
+            - design_pattern_adherence
+            - layer_separation_validation
+            - dependency_rule_check
+            - naming_convention_compliance
+          testing_quality:
+            - unit_test_coverage
+            - integration_test_coverage
+            - e2e_test_coverage
+            - test_case_quality
+        thresholds:
+          code_coverage: 80
+          complexity_score: 10
+          duplication_ratio: 5
+          security_score: 90
+        output: "implementation_quality_report.json"
+
+      - validator: "integration_validator"
+        description: "集成验证器"
+        validation_areas:
+          api_integration:
+            - endpoint_availability
+            - response_format_correctness
+            - error_handling_adequacy
+            - performance_benchmarks
+          database_integration:
+            - schema_consistency
+            - query_performance
+            - transaction_integrity
+            - data_validation_rules
+          frontend_backend_integration:
+            - data_flow_correctness
+            - state_management_validation
+            - error_propagation_handling
+            - user_experience_consistency
+        output: "integration_validation_report.json"
+
+  # 阶段4：问题识别与分类
+  phase_4_issue_identification:
+    name: "智能问题识别与分类"
+
+    issue_detectors:
+      - detector: "coverage_gap_detector"
+        description: "覆盖度差距检测器"
+        detection_rules:
+          - unmapped_requirements
+          - incomplete_stories
+          - missing_implementations
+          - insufficient_testing
+        gap_analysis:
+          quantitative_gaps:
+            - coverage_percentage_shortfall
+            - missing_component_count
+            - incomplete_task_count
+          qualitative_gaps:
+            - quality_standard_deviation
+            - consistency_violations
+            - best_practice_non_compliance
+        output: "coverage_gaps.json"
+
+      - detector: "quality_issue_detector"
+        description: "质量问题检测器"
+        issue_categories:
+          functional_issues:
+            - incorrect_implementation
+            - missing_functionality
+            - broken_features
+          non_functional_issues:
+            - performance_degradation
+            - security_vulnerabilities
+            - usability_problems
+          technical_debt:
+            - code_smell_detection
+            - architecture_violations
+            - documentation_gaps
+        severity_scoring:
+          formula: "impact * likelihood * detectability"
+          thresholds:
+            critical: 80
+            high: 60
+            medium: 40
+            low: 20
+        output: "quality_issues.json"
+
+    issue_classifier:
+      classification_dimensions:
+        - by_severity: ["critical", "high", "medium", "low"]
+        - by_type: ["functional", "non_functional", "technical_debt", "documentation"]
+        - by_component: ["frontend", "backend", "database", "api", "infrastructure"]
+        - by_effort: ["quick_fix", "moderate_effort", "significant_effort", "major_rework"]
+      priority_matrix:
+        high_impact_low_effort: "IMMEDIATE"
+        high_impact_high_effort: "HIGH"
+        low_impact_low_effort: "MEDIUM"
+        low_impact_high_effort: "LOW"
+      output: "classified_issues.json"
+
+# ========== 智能反馈与修复建议生成 ==========
+intelligent_feedback_generator:
+  feedback_strategies:
+    - strategy: "root_cause_analysis"
+      description: "根因分析策略"
+      techniques:
+        - "5_why_analysis"
+        - "fishbone_diagram"
+        - "fault_tree_analysis"
+        - "pareto_analysis"
+      output_format: "structured_root_cause_report"
+
+    - strategy: "solution_recommendation"
+      description: "解决方案推荐策略"
+      recommendation_types:
+        quick_wins:
+          - "immediate_fixes"
+          - "configuration_changes"
+          - "documentation_updates"
+        systematic_improvements:
+          - "refactoring_suggestions"
+          - "architecture_enhancements"
+          - "process_optimizations"
+        strategic_changes:
+          - "technology_upgrades"
+          - "methodology_changes"
+          - "team_skill_development"
+      confidence_scoring:
+        high_confidence: "proven_solution_with_examples"
+        medium_confidence: "recommended_best_practice"
+        low_confidence: "experimental_suggestion"
+
+    - strategy: "action_plan_generation"
+      description: "行动计划生成策略"
+      plan_components:
+        immediate_actions:
+          timeframe: "0-24_hours"
+          focus: "critical_blockers"
+          resources: "existing_team"
+        short_term_plan:
+          timeframe: "1-2_weeks"
+          focus: "high_priority_issues"
+          resources: "current_sprint_capacity"
+        long_term_roadmap:
+          timeframe: "1-3_months"
+          focus: "systematic_improvements"
+          resources: "planned_allocation"
+      task_specification:
+        - clear_description
+        - specific_acceptance_criteria
+        - estimated_effort
+        - required_skills
+        - dependency_identification
+
+# ========== 自动化修复触发机制 ==========
+automated_fix_triggers:
+  trigger_conditions:
+    immediate_trigger:
+      - "critical_functionality_missing"
+      - "security_vulnerability_detected"
+      - "data_integrity_issue"
+      - "deployment_blocker"
+
+    batch_trigger:
+      - "multiple_related_issues"
+      - "systematic_problems"
+      - "technical_debt_threshold_exceeded"
+
+    scheduled_trigger:
+      - "regular_quality_improvement"
+      - "periodic_optimization"
+      - "preventive_maintenance"
+
+  fix_routing_rules:
+    - rule: "requirement_coverage_gap"
+      target_agent: "sm"
+      action: "create_missing_stories"
+      priority: "HIGH"
+      validation_required: true
+
+    - rule: "story_quality_issue"
+      target_agent: "sm"
+      action: "refine_user_story"
+      priority: "MEDIUM"
+      validation_required: true
+
+    - rule: "implementation_defect"
+      target_agent: "dev"
+      action: "fix_implementation"
+      priority: "HIGH"
+      validation_required: true
+
+    - rule: "test_coverage_gap"
+      target_agent: "qa"
+      action: "create_missing_tests"
+      priority: "MEDIUM"
+      validation_required: false
+
+    - rule: "documentation_gap"
+      target_agent: "doc"
+      action: "update_documentation"
+      priority: "LOW"
+      validation_required: false
+
+# ========== 报告生成配置 ==========
+report_generation:
+  report_types:
+    executive_dashboard:
+      format: "markdown"
+      sections:
+        - overall_health_score
+        - critical_findings
+        - coverage_summary
+        - quality_metrics
+        - recommended_actions
+      visualization:
+        - coverage_heatmap
+        - quality_radar_chart
+        - issue_distribution_pie
+        - trend_analysis_graph
+
+    detailed_audit_report:
+      format: "markdown"
+      sections:
+        - comprehensive_coverage_analysis
+        - requirement_traceability_matrix
+        - story_quality_assessment
+        - implementation_verification_results
+        - identified_gaps_and_issues
+        - root_cause_analysis
+        - detailed_recommendations
+      appendices:
+        - raw_data_dumps
+        - calculation_methodology
+        - reference_documentation
+
+    action_tracking_report:
+      format: "json"
+      tracking_elements:
+        - issue_id
+        - description
+        - severity
+        - assigned_agent
+        - proposed_action
+        - estimated_effort
+        - target_completion
+        - validation_criteria
+        - current_status
+
+# ========== 质量门控配置 ==========
+quality_gates:
+  mandatory_gates:
+    - gate: "critical_requirements_coverage"
+      threshold: 100
+      failure_action: "BLOCK_PROGRESSION"
+
+    - gate: "high_priority_story_completeness"
+      threshold: 95
+      failure_action: "REQUIRE_APPROVAL"
+
+    - gate: "security_vulnerability_count"
+      threshold: 0
+      failure_action: "BLOCK_PROGRESSION"
+
+    - gate: "integration_test_pass_rate"
+      threshold: 98
+      failure_action: "REQUIRE_FIX"
+
+  recommended_gates:
+    - gate: "overall_coverage"
+      threshold: 90
+      failure_action: "WARNING"
+
+    - gate: "code_quality_score"
+      threshold: 85
+      failure_action: "RECOMMENDATION"
+
+    - gate: "documentation_completeness"
+      threshold: 80
+      failure_action: "NOTIFICATION"
+
+# ========== 执行配置 ==========
+execution_configuration:
+  execution_modes:
+    comprehensive_audit:
+      description: "全面深度审计"
+      scope: "entire_project"
+      depth: "maximum"
+      duration: "30-45_minutes"
+      parallelization: true
+
+    incremental_audit:
+      description: "增量审计"
+      scope: "changed_components"
+      depth: "focused"
+      duration: "10-15_minutes"
+      parallelization: true
+
+    continuous_monitoring:
+      description: "持续监控模式"
+      scope: "real_time_changes"
+      depth: "adaptive"
+      duration: "ongoing"
+      parallelization: false
+
+  performance_optimization:
+    caching_strategy: "aggressive"
+    parallel_workers: 8
+    memory_limit: "4GB"
+    timeout_handling: "graceful_degradation"
+
+# ========== 成功标准 ==========
+success_criteria:
+  audit_effectiveness:
+    - "100%需求识别准确率"
+    - "零误报率"
+    - "全面问题检测覆盖"
+    - "可操作建议生成率>95%"
+
+  automation_efficiency:
+    - "自动问题分类准确率>90%"
+    - "智能路由成功率>95%"
+    - "修复建议采纳率>80%"
+    - "端到端执行时间<45分钟"
+
+  business_value:
+    - "关键需求100%验证"
+    - "质量问题早期发现率>90%"
+    - "修复成本降低>50%"
+    - "交付信心度提升>95%"

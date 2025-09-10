@@ -1,0 +1,529 @@
+# Master Execution Engine
+# 主执行引擎 - 统一编排和控制中心
+
+meta:
+  name: "Master Execution Engine"
+  version: "2.0"
+  description: "统一执行引擎，编排所有自动化组件，确保全流程质量保证"
+  created_date: "2025-09-10"
+  execution_philosophy: "QUALITY_FIRST_AUTOMATION"
+
+# ========== 引擎架构 ==========
+execution_engine_architecture:
+  components:
+    - component: "enhanced-workflow-orchestrator"
+      role: "WORKFLOW_COORDINATION"
+      responsibility: "任务规划和流程编排"
+
+    - component: "intelligent-template-adapter"
+      role: "TEMPLATE_INTELLIGENCE"
+      responsibility: "模板理解和内容生成"
+
+    - component: "automated-quality-validator"
+      role: "QUALITY_ASSURANCE"
+      responsibility: "多层质量验证和纠错"
+
+    - component: "master-execution-engine"
+      role: "ORCHESTRATION_CONTROL"
+      responsibility: "统一控制和协调"
+
+  integration_model: "MICROSERVICE_ORCHESTRATION"
+  communication_pattern: "EVENT_DRIVEN_WITH_QUALITY_GATES"
+  failure_handling: "CIRCUIT_BREAKER_WITH_ROLLBACK"
+
+# ========== 执行流程定义 ==========
+master_execution_workflow:
+  # ========== 阶段1：初始化和准备 ==========
+  phase_1_initialization:
+    name: "System Initialization and Preparation"
+    duration: "5-10 minutes"
+    quality_gates: 2
+
+    steps:
+      - step: "system_health_check"
+        description: "系统健康检查"
+        actions:
+          - verify_all_components_available
+          - check_template_files_accessibility
+          - validate_project_structure
+          - confirm_write_permissions
+        success_criteria: "ALL_SYSTEMS_OPERATIONAL"
+        failure_action: "ABORT_WITH_DIAGNOSTIC_REPORT"
+
+      - step: "project_context_loading"
+        description: "项目上下文加载"
+        actions:
+          - scan_project_directory_structure
+          - identify_existing_documents
+          - load_template_definitions
+          - extract_project_requirements
+        success_criteria: "CONTEXT_FULLY_LOADED"
+        quality_gate: "CONTEXT_VALIDATION"
+
+      - step: "template_intelligence_activation"
+        description: "模板智能系统激活"
+        actions:
+          - activate_intelligent_template_adapter
+          - perform_template_comprehension_validation
+          - generate_template_application_strategy
+          - validate_template_understanding
+        success_criteria: "TEMPLATE_INTELLIGENCE_READY"
+        quality_gate: "TEMPLATE_UNDERSTANDING_VERIFIED"
+
+      - step: "quality_validation_system_preparation"
+        description: "质量验证系统准备"
+        actions:
+          - initialize_automated_quality_validator
+          - setup_quality_validation_layers
+          - configure_quality_thresholds
+          - prepare_correction_mechanisms
+        success_criteria: "QUALITY_SYSTEM_READY"
+        failure_action: "RECONFIGURE_QUALITY_SYSTEM"
+
+  # ========== 阶段2：智能任务规划 ==========
+  phase_2_intelligent_task_planning:
+    name: "Intelligent Task Planning and Optimization"
+    duration: "10-15 minutes"
+    quality_gates: 3
+
+    steps:
+      - step: "task_scope_analysis"
+        description: "任务范围分析"
+        actions:
+          - analyze_document_requirements
+          - identify_task_dependencies
+          - calculate_optimization_opportunities
+          - generate_execution_plan
+        success_criteria: "COMPREHENSIVE_TASK_ANALYSIS"
+        quality_gate: "TASK_ANALYSIS_VALIDATION"
+
+      - step: "execution_strategy_optimization"
+        description: "执行策略优化"
+        actions:
+          - determine_parallel_processing_opportunities
+          - optimize_resource_allocation
+          - plan_quality_checkpoint_placement
+          - configure_rollback_points
+        success_criteria: "OPTIMIZED_EXECUTION_STRATEGY"
+        quality_gate: "STRATEGY_FEASIBILITY_CHECK"
+
+      - step: "quality_assurance_planning"
+        description: "质量保证规划"
+        actions:
+          - map_quality_validation_requirements
+          - configure_multi_layer_validation
+          - setup_automated_correction_triggers
+          - prepare_quality_reporting_framework
+        success_criteria: "QA_STRATEGY_COMPLETE"
+        quality_gate: "QA_READINESS_VALIDATION"
+
+  # ========== 阶段3：自动化内容生成 ==========
+  phase_3_automated_content_generation:
+    name: "Automated Content Generation with Real-time Quality Assurance"
+    duration: "20-40 minutes per batch"
+    quality_gates: 7 # 对应7层质量验证
+
+    batch_processing_strategy:
+      batch_size: 3
+      parallel_processing: true
+      quality_validation_per_document: true
+      immediate_correction: true
+
+    steps:
+      - step: "document_batch_processing"
+        description: "文档批量处理"
+        actions:
+          - load_document_batch
+          - apply_intelligent_template_adaptation
+          - generate_enhanced_content
+          - perform_immediate_format_validation
+        success_criteria: "BATCH_PROCESSING_SUCCESS"
+        quality_gate: "LAYER_1_SYNTAX_FORMAT_VALIDATION"
+
+      - step: "content_completeness_validation"
+        description: "内容完整性验证"
+        actions:
+          - validate_content_completeness
+          - check_required_sections_presence
+          - verify_information_adequacy
+          - perform_gap_analysis
+        success_criteria: "CONTENT_COMPLETENESS_VERIFIED"
+        quality_gate: "LAYER_2_CONTENT_COMPLETENESS_VALIDATION"
+        failure_action: "AUTOMATED_CONTENT_ENHANCEMENT"
+
+      - step: "content_quality_assurance"
+        description: "内容质量保证"
+        actions:
+          - perform_technical_accuracy_validation
+          - check_clarity_and_readability
+          - verify_professional_quality_standards
+          - conduct_expert_system_review
+        success_criteria: "HIGH_QUALITY_CONTENT_ACHIEVED"
+        quality_gate: "LAYER_3_CONTENT_QUALITY_VALIDATION"
+        failure_action: "ITERATIVE_QUALITY_IMPROVEMENT"
+
+      - step: "consistency_validation_and_correction"
+        description: "一致性验证和纠错"
+        actions:
+          - validate_terminology_consistency
+          - check_structural_consistency
+          - verify_cross_reference_integrity
+          - perform_automated_consistency_correction
+        success_criteria: "CONSISTENCY_STANDARDS_MET"
+        quality_gate: "LAYER_4_CONSISTENCY_VALIDATION"
+        failure_action: "CONSISTENCY_CORRECTION_CYCLE"
+
+      - step: "implementation_feasibility_assessment"
+        description: "实施可行性评估"
+        actions:
+          - validate_database_design_feasibility
+          - assess_api_design_feasibility
+          - verify_implementation_task_feasibility
+          - generate_feasibility_improvement_recommendations
+        success_criteria: "IMPLEMENTATION_FEASIBILITY_CONFIRMED"
+        quality_gate: "LAYER_5_IMPLEMENTATION_FEASIBILITY_VALIDATION"
+        failure_action: "FEASIBILITY_OPTIMIZATION_CYCLE"
+
+      - step: "business_value_alignment_verification"
+        description: "业务价值对齐验证"
+        actions:
+          - validate_requirement_traceability
+          - assess_user_experience_impact
+          - verify_business_objectives_alignment
+          - confirm_stakeholder_value_delivery
+        success_criteria: "BUSINESS_VALUE_ALIGNED"
+        quality_gate: "LAYER_6_BUSINESS_VALUE_VALIDATION"
+        failure_action: "BUSINESS_ALIGNMENT_REFINEMENT"
+
+      - step: "final_integration_validation"
+        description: "最终集成验证"
+        actions:
+          - perform_end_to_end_document_validation
+          - verify_quality_metrics_achievement
+          - conduct_delivery_readiness_assessment
+          - generate_quality_certification
+        success_criteria: "DELIVERY_READY_QUALITY_ACHIEVED"
+        quality_gate: "LAYER_7_FINAL_INTEGRATION_VALIDATION"
+        failure_action: "COMPREHENSIVE_REFINEMENT_CYCLE"
+
+  # ========== 阶段4：跨文档集成验证 ==========
+  phase_4_cross_document_integration:
+    name: "Cross-Document Integration and Global Quality Assurance"
+    duration: "15-25 minutes"
+    quality_gates: 3
+
+    steps:
+      - step: "global_consistency_validation"
+        description: "全局一致性验证"
+        actions:
+          - perform_cross_document_consistency_check
+          - validate_global_terminology_alignment
+          - verify_structural_uniformity
+          - check_cross_reference_integrity
+        success_criteria: "GLOBAL_CONSISTENCY_ACHIEVED"
+        quality_gate: "GLOBAL_CONSISTENCY_VALIDATION"
+
+      - step: "comprehensive_quality_assessment"
+        description: "综合质量评估"
+        actions:
+          - calculate_overall_quality_scores
+          - perform_quality_trend_analysis
+          - generate_quality_improvement_recommendations
+          - prepare_quality_certification_documentation
+        success_criteria: "COMPREHENSIVE_QUALITY_VERIFIED"
+        quality_gate: "COMPREHENSIVE_QUALITY_VALIDATION"
+
+      - step: "integration_testing_and_validation"
+        description: "集成测试和验证"
+        actions:
+          - perform_end_to_end_workflow_testing
+          - validate_implementation_readiness
+          - test_documentation_usability
+          - confirm_delivery_completeness
+        success_criteria: "INTEGRATION_TESTING_PASSED"
+        quality_gate: "INTEGRATION_READINESS_VALIDATION"
+
+  # ========== 阶段5：最终交付准备 ==========
+  phase_5_delivery_preparation:
+    name: "Final Delivery Preparation and Quality Certification"
+    duration: "10-15 minutes"
+    quality_gates: 2
+
+    steps:
+      - step: "comprehensive_reporting_generation"
+        description: "综合报告生成"
+        actions:
+          - generate_executive_quality_summary
+          - create_detailed_quality_analysis_report
+          - prepare_implementation_readiness_certificate
+          - compile_continuous_improvement_recommendations
+        success_criteria: "COMPREHENSIVE_REPORTING_COMPLETE"
+        quality_gate: "REPORTING_QUALITY_VALIDATION"
+
+      - step: "delivery_package_finalization"
+        description: "交付包最终确认"
+        actions:
+          - finalize_all_documentation
+          - perform_final_quality_verification
+          - generate_delivery_certification
+          - prepare_maintenance_and_support_documentation
+        success_criteria: "DELIVERY_PACKAGE_READY"
+        quality_gate: "DELIVERY_READINESS_FINAL_VALIDATION"
+
+      - step: "success_confirmation_and_handover"
+        description: "成功确认和交接"
+        actions:
+          - confirm_all_success_criteria_met
+          - validate_stakeholder_acceptance_criteria
+          - prepare_knowledge_transfer_materials
+          - complete_project_documentation
+        success_criteria: "PROJECT_SUCCESSFULLY_COMPLETED"
+        final_validation: "COMPREHENSIVE_SUCCESS_VERIFICATION"
+
+# ========== 质量门控系统 ==========
+quality_gate_system:
+  gate_types:
+    - type: "CRITICAL_GATE"
+      description: "关键质量门，失败时必须停止"
+      failure_action: "IMMEDIATE_STOP_AND_CORRECTION"
+      retry_policy: "UNLIMITED_RETRIES_UNTIL_SUCCESS"
+
+    - type: "HIGH_PRIORITY_GATE"
+      description: "高优先级质量门，失败时自动纠错"
+      failure_action: "AUTOMATED_CORRECTION_CYCLE"
+      retry_policy: "MAX_3_CORRECTION_ATTEMPTS"
+
+    - type: "STANDARD_GATE"
+      description: "标准质量门，失败时记录并继续"
+      failure_action: "LOG_AND_CONTINUE_WITH_NOTIFICATION"
+      retry_policy: "OPTIONAL_CORRECTION"
+
+  gate_configuration:
+    - phase: "phase_1_initialization"
+      gates: ["CONTEXT_VALIDATION", "TEMPLATE_UNDERSTANDING_VERIFIED"]
+      type: "CRITICAL_GATE"
+
+    - phase: "phase_2_intelligent_task_planning"
+      gates: ["TASK_ANALYSIS_VALIDATION", "STRATEGY_FEASIBILITY_CHECK", "QA_READINESS_VALIDATION"]
+      type: "CRITICAL_GATE"
+
+    - phase: "phase_3_automated_content_generation"
+      gates:
+        [
+          "LAYER_1_SYNTAX_FORMAT_VALIDATION",
+          "LAYER_2_CONTENT_COMPLETENESS_VALIDATION",
+          "LAYER_3_CONTENT_QUALITY_VALIDATION",
+          "LAYER_4_CONSISTENCY_VALIDATION",
+          "LAYER_5_IMPLEMENTATION_FEASIBILITY_VALIDATION",
+          "LAYER_6_BUSINESS_VALUE_VALIDATION",
+          "LAYER_7_FINAL_INTEGRATION_VALIDATION",
+        ]
+      type: "HIGH_PRIORITY_GATE"
+
+    - phase: "phase_4_cross_document_integration"
+      gates:
+        [
+          "GLOBAL_CONSISTENCY_VALIDATION",
+          "COMPREHENSIVE_QUALITY_VALIDATION",
+          "INTEGRATION_READINESS_VALIDATION",
+        ]
+      type: "CRITICAL_GATE"
+
+    - phase: "phase_5_delivery_preparation"
+      gates: ["REPORTING_QUALITY_VALIDATION", "DELIVERY_READINESS_FINAL_VALIDATION"]
+      type: "CRITICAL_GATE"
+
+# ========== 自动纠错和恢复系统 ==========
+automated_correction_and_recovery_system:
+  correction_strategies:
+    - strategy: "IMMEDIATE_AUTO_CORRECTION"
+      triggers: ["syntax_errors", "format_violations", "missing_required_sections"]
+      actions:
+        - apply_template_format_correction
+        - perform_syntax_standardization
+        - generate_missing_content_sections
+      success_criteria: "ERROR_ELIMINATION"
+      max_attempts: 5
+
+    - strategy: "ITERATIVE_QUALITY_IMPROVEMENT"
+      triggers: ["quality_score_below_threshold", "content_completeness_issues"]
+      actions:
+        - perform_content_enhancement_cycle
+        - apply_quality_improvement_algorithms
+        - conduct_expert_system_optimization
+      success_criteria: "QUALITY_THRESHOLD_ACHIEVEMENT"
+      max_attempts: 3
+
+    - strategy: "COMPREHENSIVE_REFINEMENT_CYCLE"
+      triggers: ["integration_validation_failure", "business_value_misalignment"]
+      actions:
+        - perform_holistic_document_review
+        - apply_comprehensive_improvement_strategies
+        - conduct_stakeholder_alignment_optimization
+      success_criteria: "COMPREHENSIVE_QUALITY_STANDARDS_MET"
+      max_attempts: 2
+
+  recovery_mechanisms:
+    - mechanism: "CHECKPOINT_ROLLBACK"
+      description: "回滚到最近成功检查点"
+      trigger: "CRITICAL_FAILURE_DETECTION"
+      action: "RESTORE_FROM_LAST_SUCCESSFUL_STATE"
+
+    - mechanism: "PARTIAL_RECOVERY"
+      description: "部分恢复和继续"
+      trigger: "NON_CRITICAL_FAILURE"
+      action: "RECOVER_FAILED_COMPONENTS_ONLY"
+
+    - mechanism: "FULL_RESTART"
+      description: "完整重启流程"
+      trigger: "SYSTEMATIC_FAILURE"
+      action: "COMPLETE_WORKFLOW_RESTART"
+
+# ========== 监控和报告系统 ==========
+monitoring_and_reporting_system:
+  real_time_monitoring:
+    - metric: "PHASE_PROGRESS_TRACKING"
+      update_frequency: "REAL_TIME"
+      visualization: "PROGRESS_BAR_WITH_MILESTONES"
+
+    - metric: "QUALITY_SCORE_MONITORING"
+      update_frequency: "PER_VALIDATION_LAYER"
+      visualization: "MULTI_LAYER_QUALITY_DASHBOARD"
+
+    - metric: "ERROR_DETECTION_AND_CORRECTION"
+      update_frequency: "IMMEDIATE"
+      visualization: "ERROR_LOG_WITH_RESOLUTION_STATUS"
+
+    - metric: "PERFORMANCE_METRICS"
+      update_frequency: "CONTINUOUS"
+      visualization: "PERFORMANCE_ANALYTICS_DASHBOARD"
+
+  comprehensive_reporting:
+    - report: "EXECUTIVE_SUMMARY_REPORT"
+      content: ["overall_quality_score", "key_achievements", "critical_issues", "recommendations"]
+      audience: "STAKEHOLDERS_AND_MANAGEMENT"
+
+    - report: "DETAILED_TECHNICAL_REPORT"
+      content:
+        [
+          "layer_by_layer_analysis",
+          "quality_metrics_breakdown",
+          "technical_findings",
+          "improvement_suggestions",
+        ]
+      audience: "TECHNICAL_TEAMS"
+
+    - report: "QUALITY_CERTIFICATION_REPORT"
+      content:
+        [
+          "quality_standards_compliance",
+          "validation_results",
+          "certification_status",
+          "delivery_readiness",
+        ]
+      audience: "QUALITY_ASSURANCE_TEAMS"
+
+    - report: "CONTINUOUS_IMPROVEMENT_REPORT"
+      content:
+        [
+          "process_optimization_opportunities",
+          "quality_trend_analysis",
+          "best_practice_recommendations",
+          "future_enhancement_suggestions",
+        ]
+      audience: "PROCESS_IMPROVEMENT_TEAMS"
+
+# ========== 成功标准和验收准则 ==========
+success_criteria_and_acceptance:
+  technical_success_criteria:
+    overall_quality_score: ">=90"
+    critical_error_count: "0"
+    template_compliance_rate: "100%"
+    content_completeness_score: ">=90"
+    consistency_score: ">=95"
+    implementation_feasibility_score: ">=85"
+    business_value_alignment_score: ">=80"
+
+  process_success_criteria:
+    automated_correction_success_rate: ">=95%"
+    quality_gate_pass_rate: "100%"
+    execution_time_efficiency: "WITHIN_ESTIMATED_TIMEFRAMES"
+    resource_utilization_optimization: "EFFICIENT_RESOURCE_USAGE"
+
+  business_success_criteria:
+    stakeholder_satisfaction: "HIGH"
+    implementation_readiness: "DEVELOPMENT_READY"
+    documentation_usability: "USER_FRIENDLY"
+    maintenance_feasibility: "EASILY_MAINTAINABLE"
+
+  acceptance_validation:
+    - validation: "TECHNICAL_ACCEPTANCE"
+      criteria: "ALL_TECHNICAL_SUCCESS_CRITERIA_MET"
+      validator: "TECHNICAL_EXPERT_SYSTEM"
+
+    - validation: "PROCESS_ACCEPTANCE"
+      criteria: "ALL_PROCESS_SUCCESS_CRITERIA_MET"
+      validator: "PROCESS_MONITORING_SYSTEM"
+
+    - validation: "BUSINESS_ACCEPTANCE"
+      criteria: "ALL_BUSINESS_SUCCESS_CRITERIA_MET"
+      validator: "BUSINESS_VALUE_ASSESSMENT_SYSTEM"
+
+    - validation: "OVERALL_ACCEPTANCE"
+      criteria: "ALL_ACCEPTANCE_VALIDATIONS_PASSED"
+      validator: "COMPREHENSIVE_ACCEPTANCE_FRAMEWORK"
+
+# ========== 配置和个性化设置 ==========
+configuration_and_customization:
+  execution_modes:
+    - mode: "MAXIMUM_QUALITY"
+      description: "最高质量模式，质量优先"
+      quality_thresholds: "HIGHEST_STANDARDS"
+      correction_attempts: "UNLIMITED"
+      validation_depth: "EXHAUSTIVE"
+
+    - mode: "BALANCED_EFFICIENCY"
+      description: "平衡效率模式，质量和效率并重"
+      quality_thresholds: "HIGH_STANDARDS"
+      correction_attempts: "LIMITED_BUT_SUFFICIENT"
+      validation_depth: "COMPREHENSIVE"
+
+    - mode: "RAPID_DELIVERY"
+      description: "快速交付模式，效率优先但保证基本质量"
+      quality_thresholds: "ACCEPTABLE_STANDARDS"
+      correction_attempts: "MINIMAL_SUFFICIENT"
+      validation_depth: "FOCUSED_ON_CRITICAL_ASPECTS"
+
+  customization_options:
+    quality_thresholds: "ADJUSTABLE_PER_PROJECT"
+    validation_layer_configuration: "CUSTOMIZABLE_PER_REQUIREMENT"
+    correction_strategy_selection: "CONFIGURABLE_PER_ERROR_TYPE"
+    reporting_detail_level: "ADJUSTABLE_PER_AUDIENCE"
+
+# ========== 当前推荐配置 ==========
+recommended_configuration:
+  execution_mode: "MAXIMUM_QUALITY"
+  reasoning: "Based on user requirement for comprehensive quality assurance with multiple validation rounds"
+
+  specific_settings:
+    quality_thresholds:
+      overall_minimum_score: 90
+      critical_layer_minimum_score: 95
+      consistency_minimum_score: 95
+      feasibility_minimum_score: 85
+
+    correction_strategies:
+      immediate_correction: "ENABLED_FOR_ALL_CRITICAL_ISSUES"
+      iterative_improvement: "ENABLED_WITH_3_MAX_ATTEMPTS"
+      comprehensive_refinement: "ENABLED_WITH_2_MAX_ATTEMPTS"
+
+    validation_configuration:
+      all_seven_layers: "ENABLED"
+      cross_document_validation: "ENABLED"
+      business_value_validation: "ENABLED"
+      final_integration_validation: "ENABLED"
+
+    reporting_settings:
+      real_time_monitoring: "FULL_DETAIL"
+      comprehensive_reporting: "ALL_REPORT_TYPES"
+      quality_certification: "FORMAL_CERTIFICATION_REQUIRED"
