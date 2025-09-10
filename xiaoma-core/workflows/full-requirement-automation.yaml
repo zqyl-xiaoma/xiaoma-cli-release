@@ -369,7 +369,7 @@ ultimate_sequence:
       - step: enhanced_story_creation
         agent: sm
         action: create_enhanced_stories_with_database
-        creates: enhanced_stories/
+        creates: docs/stories/
         requires:
           - sharded_docs
           - database-design.md
@@ -406,7 +406,7 @@ ultimate_sequence:
         action: implement_stories_sequentially
         creates: implementation_files/
         requires:
-          - enhanced_stories/
+          - docs/stories/
           - generated-code/
           - fullstack-architecture.md
         execution_mode: sequential_per_story
