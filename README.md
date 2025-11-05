@@ -1,18 +1,3 @@
-# XIAOMA-CLI™: Universal AI Agent Framework
-
-[![Version](https://img.shields.io/npm/v/xiaoma-cli?color=blue&label=version)](https://www.npmjs.com/package/xiaoma-cli)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Community-7289da?logo=discord&logoColor=white)](https://discord.gg/gk8jAdXWmj)
-
-XiaoMa CLI - Advanced AI Agent Framework for universal domain applications with specialized AI expertise. Transform any domain with specialized AI expertise: software development, entertainment, creative writing, business strategy to personal wellness just to name a few.
-
-**[Subscribe to BMadCode on YouTube](https://www.youtube.com/@BMadCode?sub_confirmation=1)**
-
-**[Join our Discord Community](https://discord.gg/gk8jAdXWmj)** - A growing community for AI enthusiasts! Get help, share ideas, explore AI agents & frameworks, collaborate on tech projects, enjoy hobbies, and help each other succeed. Whether you're stuck on BMad, building your own agents, or just want to chat about the latest in AI - we're here for you! **Some mobile and VPN may have issue joining the discord, this is a discord issue - if the invite does not work, try from your own internet or another network, or non-VPN.**
-
-⭐ **If you find this project helpful or useful, please give it a star in the upper right hand corner!** It helps others discover XIAOMA-CLI™ and you will be notified of updates!
-
 ## Overview
 
 **XIAOMA-CLI™'s Two Key Innovations:**

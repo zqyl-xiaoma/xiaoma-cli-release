@@ -21,6 +21,57 @@ workflow:
     - enhanced_quality_gates: true
 
   sequence:
+    # 🆕 前置步骤：环境和依赖验证（首次执行）
+    - step: pre_workflow_validation
+      action: validate_environment_and_dependencies
+      run_once: true
+      duration: 1m
+      detailed_steps:
+        - step: check_epic_shards
+          description: "验证Epic分解文件是否存在"
+          required_files:
+            - docs/epics/*.md
+          on_missing:
+            action: halt_workflow
+            message: "请先完成Epic分解（使用PM或PO智能体）"
+
+        - step: check_database_design
+          description: "验证数据库设计文档是否存在"
+          required_files:
+            - docs/database/database-design.md
+          on_missing:
+            action: halt_workflow
+            message: "请先完成数据库设计（使用database-architect智能体）"
+
+        - step: check_generated_code
+          description: "验证基础代码是否已生成"
+          required_directories:
+            - src/main/java/
+          validation:
+            - check_entity_classes_exist
+            - check_mapper_interfaces_exist
+            - check_service_interfaces_exist
+          on_missing:
+            action: halt_workflow
+            message: "请先生成基础代码（使用database-architect的*generate-entities命令）"
+
+        - step: check_stories_directory
+          description: "确保stories目录存在"
+          action: create_if_missing
+          directory: docs/stories/
+          notes: "自动创建stories目录用于存放用户故事文件"
+
+      on_success:
+        message: "✅ 环境验证通过，开始自动化开发流程"
+      on_failure:
+        action: halt_with_instructions
+        instructions: |
+          ❌ 环境验证失败，请完成以下前置工作：
+          1. 使用PM完成Epic分解
+          2. 使用database-architect完成数据库设计
+          3. 使用database-architect生成基础代码
+          4. 确保所有依赖文件就绪后重新启动工作流
+
     - step: story_development_cycle
       action: repeat_until_all_stories_complete
       condition: has_pending_stories
@@ -35,6 +86,51 @@ workflow:
             - epic-shards
             - database-design.md
             - generated-code/
+          detailed_steps:
+            - step: switch_to_sm_agent
+              command: "/sm"
+              description: "执行/sm命令切换到SM智能体"
+              notes: "激活SM角色，准备生成用户故事"
+
+            - step: check_story_progress
+              action: read_latest_story_status
+              source: "stories/"
+              description: "读取stories用户故事文件夹中最新的用户故事状态"
+              checks:
+                - locate_stories_folder
+                - identify_latest_story
+                - parse_story_status
+                - determine_next_story_sequence
+              notes: |
+                检查当前用户故事进度：
+                - 定位stories/文件夹
+                - 识别最新的用户故事文件
+                - 解析故事状态（Draft/Approved/InProgress/Review/Done）
+                - 确定下一个待创建的故事序号
+
+            - step: generate_next_story
+              command: "*draft"
+              description: "根据当前用户故事进度，执行*draft命令，生成下一份用户故事"
+              action: execute_draft_command
+              output: "stories/story-{next_sequence}.md"
+              template: story-tmpl.yaml
+              notes: |
+                使用*draft命令生成新的用户故事：
+                - 基于当前进度自动确定故事范围
+                - 使用标准的story-tmpl.yaml模板
+                - 从Epic shard中提取业务需求
+                - 从PRD和架构文档中获取技术上下文
+                - 生成清晰的验收标准
+                - 分解为可执行的开发任务
+                - 自动设置故事状态为 "Draft"
+                - 必须通过格式和完整性验证
+
+              story_creation_principles:
+                - focus_on_business_value: 明确业务价值
+                - clear_acceptance_criteria: 清晰可测试的验收标准
+                - appropriate_scope: 适当的故事规模（1-3天完成）
+                - testable_requirements: 所有需求可测试
+                - implementation_guidance: 为Dev提供足够的上下文
           validation_criteria:
             - story_format_valid
             - database_entities_defined
@@ -46,13 +142,17 @@ workflow:
           on_success:
             action: proceed_to_validation
           notes: |
-            创建下一个用户故事：
-            - 使用enhanced-story-with-database模板
+            SM创建用户故事的完整流程：
+            1. 执行 /sm 命令切换到SM智能体
+            2. 读取 stories/ 文件夹中最新的用户故事状态
+            3. 根据当前用户故事进度，执行 *draft 命令生成下一份用户故事
+
+            生成的用户故事特点：
+            - 使用story-tmpl.yaml模板
             - 包含完整的数据库和API设计
             - 设置故事状态为 "Draft"
             - 必须通过格式和完整性验证
             - 🆕 应用构建就绪规范（防止编译问题）
-            - 🆕 包含Lombok配置最佳实践
 
         # 🆕 第1.5步：快速构建验证（30秒）
         - agent: automation
@@ -70,6 +170,82 @@ workflow:
         - agent: po
           action: validate_story_draft
           requires: story.md
+          detailed_steps:
+            - step: switch_to_po_agent
+              command: "/po"
+              description: "执行/po命令切换到PO智能体"
+              notes: "激活PO角色，准备验证用户故事草稿"
+
+            - step: validate_story_draft
+              command: "*validate-story-draft {story_file}"
+              description: "通过*validate-story-draft命令来校验上一步生成的用户故事草稿"
+              action: execute_validation_command
+              task_file: xiaoma-core/tasks/validate-next-story.md
+              validation_process:
+                step_1: template_completeness_validation
+                step_2: file_structure_validation
+                step_3: ui_frontend_completeness
+                step_4: acceptance_criteria_satisfaction
+                step_5: validation_testing_instructions
+                step_6: security_considerations
+                step_7: tasks_subtasks_sequence
+                step_8: anti_hallucination_verification
+                step_9: dev_agent_implementation_readiness
+                step_10: generate_validation_report
+              checks:
+                - template_compliance_check
+                - business_requirements_met
+                - acceptance_criteria_testable
+                - database_design_consistent
+                - api_specifications_complete
+                - story_estimation_reasonable
+                - no_hallucinated_content
+                - implementation_ready
+              output:
+                - validation_report:
+                    - template_compliance_issues
+                    - critical_issues
+                    - should_fix_issues
+                    - nice_to_have_improvements
+                    - anti_hallucination_findings
+                    - final_assessment: GO/NO-GO
+                    - implementation_readiness_score: 1-10
+              notes: |
+                校验用户故事草稿（10步验证流程）：
+                1. 模板完整性验证：检查所有必需章节
+                2. 文件结构验证：路径、目录结构合理性
+                3. UI/前端完整性：组件规格、交互流程
+                4. 验收标准满足：AC覆盖、可测试性
+                5. 验证测试指令：测试方法、场景、工具
+                6. 安全考虑：安全需求、访问控制
+                7. 任务序列验证：逻辑顺序、依赖关系
+                8. 反幻觉验证：源文档可追溯、无虚构内容
+                9. Dev实现准备度：自包含上下文、清晰指令
+                10. 生成验证报告：GO/NO-GO决策
+
+            - step: analyze_validation_result
+              description: "判断是否有修复建议"
+              decision_logic: |
+                IF 有修复建议 THEN
+                  按照修复建议完成用户故事修复
+                  可能需要返回/sm智能体进行修复
+                ELSE IF 用户故事草稿已经非常好 THEN
+                  状态变更: Draft -> Approved
+                  准备进入下一步
+                END IF
+              on_has_fix_suggestions:
+                action: fix_story_based_on_suggestions
+                notes: |
+                  按照修复建议修复用户故事：
+                  - 分析PO提出的所有修复建议
+                  - 逐项修复用户故事中的问题
+                  - 可能需要切换回/sm进行修复
+                  - 修复完成后重新验证
+              on_story_approved:
+                action: proceed_to_development
+                status_change: "Draft -> Approved"
+                notes: "用户故事草稿质量优秀，直接批准进入开发"
+
           validation_criteria:
             - business_requirements_met
             - acceptance_criteria_testable
@@ -83,14 +259,25 @@ workflow:
           on_success:
             action: approve_story
             status_change: "Draft -> Approved"
+            next_step: switch_to_dev
           notes: |
-            验证用户故事质量：
+            PO验证用户故事的完整流程：
+            1. 执行 /po 命令切换到PO智能体
+            2. 通过 *validate_story_draft 命令校验用户故事草稿
+            3. 判断验证结果：
+               - 有修复建议：按照建议完成修复，然后重新验证
+               - 草稿已经很好：状态变更为 "Approved"，准备切换到/dev
+
+            验证标准：
             - 业务需求符合PRD要求
             - 验收标准可测试
             - 数据库设计一致性
             - API规范完整性
             - 故事规模合理性
-            - 验证通过后状态变更为 "Approved"
+
+            验证通过后：
+            - 状态变更为 "Approved"
+            - 准备执行 /dev 命令进入开发阶段
 
         # 🆕 第2.5步：预开发构建检查（2分钟）
         - agent: automation
@@ -118,83 +305,394 @@ workflow:
             - story.md (status: Approved)
             - database-design.md
             - generated-code/
+          detailed_steps:
+            - step: switch_to_dev_agent
+              command: "/dev"
+              description: "执行/dev命令切换到Dev智能体"
+              notes: "激活Dev角色，准备开发用户故事"
+
+            - step: develop_story
+              command: "*develop-story story"
+              description: "执行*develop-story命令开发Approved状态的用户故事"
+              action: execute_develop_command
+              input: "story.md (status: Approved)"
+              implementation_tasks:
+                - implement_database_layer
+                - implement_business_logic
+                - implement_api_endpoints
+                - write_unit_tests
+              status_change: "Approved -> InProgress"
+              notes: |
+                使用*develop-story命令开发用户故事：
+                - 读取Approved状态的用户故事
+                - 实现数据库操作层（Mapper/Repository）
+                - 实现业务逻辑层（Service）
+                - 实现API接口层（Controller）
+                - 编写单元测试
+                - 状态变更为 InProgress
+
+            - step: run_self_tests
+              command: "*run-tests"
+              description: "用户故事开发完毕后，执行*run-tests命令对开发进行自测"
+              action: execute_tests_command
+              test_types:
+                - unit_tests
+                - integration_tests
+                - api_tests
+                - database_tests
+              validation_criteria:
+                - all_tests_passing: true
+                - code_coverage_target: ">=80%"
+                - performance_acceptable: true
+                - no_critical_issues: true
+                - maven_build_success: true
+                - no_compilation_errors: true
+              test_execution_sequence:
+                1_compile: "mvn clean compile"
+                2_unit_tests: "mvn test"
+                3_integration_tests: "mvn verify"
+                4_coverage_report: "mvn jacoco:report"
+              quality_checks:
+                - checkstyle_validation
+                - pmd_analysis
+                - spotbugs_scan
+                - dependency_check
+              notes: |
+                对用户故事开发进行自测：
+                - 🔧 Maven编译验证（必须通过）
+                - 运行所有单元测试
+                - 运行集成测试
+                - 验证API功能
+                - 测试数据库操作
+                - 检查代码覆盖率（目标≥80%）
+                - 性能基准测试
+                - 代码质量扫描（checkstyle/pmd/spotbugs）
+
+            - step: analyze_test_results
+              description: "判断自测结果"
+              decision_logic: |
+                IF 自测有问题 THEN
+                  按照自测的修复建议完成修复
+                  修复完成后重新执行 *run-tests
+                  循环直到所有测试通过
+                ELSE IF 代码质量非常好，自测全部通过 THEN
+                  状态变更: InProgress -> Review
+                  准备进入下一阶段
+                  执行 /qa 命令切换到QA智能体
+                END IF
+              on_has_test_failures:
+                action: fix_based_on_test_results
+                notes: |
+                  按照自测修复建议完成修复：
+                  - 分析测试失败的原因
+                  - 根据错误信息和堆栈跟踪定位问题
+                  - 修复代码实现
+                  - 重新执行 *run-tests 命令
+                  - 循环直到所有测试通过
+              on_all_tests_passed:
+                action: ready_for_qa
+                status_change: "InProgress -> Review"
+                next_step: switch_to_qa
+                notes: "代码质量优秀，所有自测通过，准备进入QA测试阶段"
+
           validation_criteria:
             - code_implementation_complete
             - database_operations_working
             - api_endpoints_functional
             - business_logic_correct
-            - unit_tests_passing
-          sub_steps:
-            - implement_database_layer
-            - implement_business_logic
-            - implement_api_endpoints
-            - write_unit_tests
-            - run_self_tests
+            - all_tests_passing
           on_failure:
             action: fix_implementation
             max_iterations: 5
           on_success:
             action: mark_for_review
             status_change: "Approved -> InProgress -> Review"
+            next_step: switch_to_qa
           notes: |
-            开发用户故事实现：
-            - 实现数据库操作层（Mapper/Repository）
-            - 实现业务逻辑层（Service）
-            - 实现API接口层（Controller）
-            - 编写单元测试
-            - 执行自测验证
-            - 所有测试通过后状态变更为 "Review"
+            Dev开发用户故事的完整流程：
+            1. 执行 /dev 命令切换到Dev智能体
+            2. 执行 *develop-story story 命令开发Approved状态的用户故事
+               - 实现数据库操作层（Mapper/Repository）
+               - 实现业务逻辑层（Service）
+               - 实现API接口层（Controller）
+               - 编写单元测试
+            3. 用户故事开发完毕后，执行 *run-tests 命令进行自测
+            4. 判断自测结果：
+               - 有问题：按照修复建议完成修复，重新测试
+               - 全部通过：状态变更为 "Review"，准备执行 /qa 进入测试阶段
 
-        # 🆕 第3.5步：渐进式开发验证
-        - agent: dev
-          action: progressive_development_validation
-          stages:
-            - stage: compilation_check
-              duration: 30s
-              on_failure: fix_immediately
-            - stage: unit_test_quick
-              duration: 2m
-              on_failure: fix_and_retry
-            - stage: integration_test
-              duration: 5m
-              on_failure: analyze_impact
-          notes: "每个开发阶段后的快速验证"
+            开发完成标准：
+            - 功能完全实现
+            - 所有测试通过
+            - 代码质量达标
+            - 性能可接受
 
-        # 第4步：Dev自测验证
-        - agent: dev
-          action: run_self_tests
-          requires: implementation_files
-          test_types:
-            - unit_tests
-            - integration_tests
-            - api_tests
-            - database_tests
-          validation_criteria:
-            - all_tests_passing
-            - code_coverage_adequate
-            - performance_acceptable
-            - no_critical_issues
-          on_failure:
-            action: fix_and_retest
-            loop_until: all_tests_pass
-          on_success:
-            action: ready_for_qa
-          notes: |
-            开发者自测验证：
-            - 运行所有单元测试
-            - 运行集成测试
-            - 验证API功能
-            - 测试数据库操作
-            - 检查代码覆盖率
-            - 性能基准测试
+            自测通过后：
+            - 状态变更为 "Review"
+            - 准备执行 /qa 命令进入QA测试阶段
 
-        # 第5步：QA测试验证
+        # 第4步：QA测试验证
         - agent: qa
           action: review_story_implementation
           requires:
             - story.md (status: Review)
             - implementation_files
             - test_results
+          detailed_steps:
+            - step: switch_to_qa_agent
+              command: "/qa"
+              description: "执行/qa命令切换到QA智能体"
+              notes: "激活QA角色，准备进行测试工作"
+
+            - step: review_story
+              command: "*review {story_file}"
+              description: "通过*review命令对待测试的用户故事进行全面的功能测试和质量审查"
+              action: execute_review_command
+              task_file: xiaoma-core/tasks/review-story.md
+              input: "story.md (status: Review)"
+
+              # ⚠️ 核心测试原则：真实数据测试
+              testing_principles:
+                real_data_testing:
+                  description: "所有测试必须使用真实的数据库数据，禁止mock数据"
+                  requirements:
+                    - real_database_queries: "查询接口必须真实从数据库查询数据"
+                    - real_database_operations: "操作接口必须真实操作到数据库"
+                    - no_mock_data_allowed: "❌ 严禁使用mock数据假装测试通过"
+                    - verify_actual_results: "验证实际的数据库状态变化"
+                    - end_to_end_validation: "端到端验证整个数据流"
+                  examples:
+                    query_test: |
+                      ✅ 正确：调用查询API → 验证返回的数据与数据库中实际数据一致
+                      ❌ 错误：使用mock数据返回假的查询结果
+                    create_test: |
+                      ✅ 正确：调用创建API → 查询数据库验证记录真实插入
+                      ❌ 错误：mock数据库返回成功，实际没有插入数据
+                    update_test: |
+                      ✅ 正确：调用更新API → 查询数据库验证记录真实更新
+                      ❌ 错误：mock返回成功，实际数据库没有变化
+                    delete_test: |
+                      ✅ 正确：调用删除API → 查询数据库验证记录真实删除/软删除
+                      ❌ 错误：mock返回成功，实际数据库记录仍存在
+
+                functional_testing_focus:
+                  description: "测试以功能测试为主，确保业务逻辑正确性"
+                  priority: "HIGHEST"
+                  test_sequence:
+                    1: "功能需求验证（所有验收标准）"
+                    2: "真实数据库操作测试"
+                    3: "API契约测试（真实请求/响应）"
+                    4: "业务流程端到端测试"
+                    5: "边界条件和异常场景测试"
+                    6: "数据完整性和一致性验证"
+
+              review_process:
+                phase_1: functional_testing_with_real_data
+                phase_2: requirements_traceability
+                phase_3: code_quality_review
+                phase_4: standards_compliance_check
+                phase_5: acceptance_criteria_validation
+
+              test_types:
+                - functional_testing: "功能测试（主要）"
+                - real_database_testing: "真实数据库操作测试"
+                - api_contract_testing: "API契约测试（真实数据）"
+                - business_logic_testing: "业务逻辑验证"
+                - data_validation_testing: "数据验证测试"
+                - error_scenario_testing: "错误场景测试"
+                - end_to_end_testing: "端到端流程测试"
+
+              validation_criteria:
+                - functional_requirements_met: "功能需求完全满足"
+                - acceptance_criteria_satisfied: "所有验收标准达成"
+                - real_database_operations_verified: "⭐ 真实数据库操作验证通过"
+                - api_contracts_valid: "API契约有效（真实测试）"
+                - data_integrity_maintained: "数据完整性保持"
+                - business_logic_correct: "业务逻辑正确"
+                - error_handling_proper: "错误处理正确"
+                - no_mocked_test_data: "⚠️ 确认无mock数据测试"
+              qa_permissions:
+                allowed_modifications:
+                  - refactor_code: true
+                  - add_missing_tests: true
+                  - improve_code_quality: true
+                required_documentation:
+                  - record_all_changes_in_qa_results: true
+                  - explain_why_and_how: true
+                forbidden_modifications:
+                  - story_content: false
+                  - acceptance_criteria: false
+                  - dev_notes: false
+                  - status: false
+                  - file_list: false
+              output:
+                qa_results_section:
+                  - review_date
+                  - reviewed_by
+                  - code_quality_assessment
+                  - refactoring_performed
+                  - compliance_check
+                  - improvements_checklist
+                  - security_review
+                  - performance_considerations
+                  - files_modified_during_review
+                  - gate_status
+                  - recommended_status
+                gate_file:
+                  location: "qa.qaLocation/gates/{epic}.{story}-{slug}.yml"
+                  content:
+                    - gate_decision: PASS/CONCERNS/FAIL/WAIVED
+                    - status_reason
+                    - top_issues
+                    - nfr_validation
+                    - quality_score
+                    - evidence
+                    - recommendations
+              notes: |
+                使用*review命令进行全面的功能测试和质量审查：
+
+                【⚠️ 核心测试原则：真实数据测试】
+                ❌ 严禁使用mock数据假装测试通过
+                ✅ 所有查询接口必须真实从数据库查询
+                ✅ 所有操作接口必须真实操作到数据库
+                ✅ 验证实际的数据库状态变化
+                ✅ 端到端验证整个数据流
+
+                【功能测试流程】（以功能测试为主）
+                1. 功能需求验证：所有验收标准逐一测试
+                2. 真实数据库操作测试：
+                   - 查询：验证返回数据与数据库实际一致
+                   - 创建：查询数据库验证记录真实插入
+                   - 更新：查询数据库验证记录真实更新
+                   - 删除：查询数据库验证记录真实删除/软删除
+                3. API契约测试：使用真实请求/响应
+                4. 业务流程端到端测试
+                5. 边界条件和异常场景测试
+                6. 数据完整性和一致性验证
+
+                【质量审查流程】
+                - 需求可追溯性验证（AC→测试映射）
+                - 代码质量审查
+                - 标准合规检查
+                - 验收标准验证
+
+                【QA权限】
+                ✅ 可以重构代码
+                ✅ 可以添加缺失测试
+                ✅ 可以改进代码质量
+                ⚠️ 必须在QA Results中详细记录所有修改
+
+                【Quality Gate决策】
+                生成gate文件：{epic}.{story}-{slug}.yml
+                决策标准：功能完整性→真实数据测试→代码质量→标准合规
+
+            - step: analyze_test_results
+              description: "测试工作完毕后，判断是否有修复建议"
+              decision_logic: |
+                IF 有修复建议 THEN
+                  根据修复建议完成代码修复
+                  可能需要切换回/dev智能体进行修复
+                  修复完成后重新提交测试
+                  循环直到所有测试通过
+                ELSE IF 代码质量特别好，全部测试通过 THEN
+                  状态变更: Review -> Done
+                  提示：当前开发任务已完成，可以进入下一开发任务
+                END IF
+              on_has_fix_suggestions:
+                action: fix_based_on_qa_feedback
+                status_change: "Review -> InProgress"
+                assign_to: dev
+                detailed_fix_process:
+                  - step: switch_back_to_dev
+                    command: "/dev"
+                    description: "切换回Dev智能体处理QA反馈"
+
+                  - step: apply_qa_fixes
+                    command: "*review-qa {story_file}"
+                    description: "执行*review-qa命令应用QA修复建议"
+                    task_file: xiaoma-core/tasks/apply-qa-fixes.md
+                    process:
+                      step_0: load_core_config_and_locate_story
+                      step_1: collect_qa_findings
+                      step_2: build_deterministic_fix_plan
+                      step_3: apply_changes
+                      step_4: validate_fixes
+                      step_5: update_story_dev_sections_only
+                    qa_sources:
+                      gate_yaml: "qa.qaLocation/gates/{epic}.{story}-*.yml"
+                      assessments:
+                        - test_design
+                        - traceability
+                        - risk_profile
+                        - nfr_assessment
+                    fix_priority_order:
+                      1: high_severity_issues_in_top_issues
+                      2: nfr_fail_status
+                      3: test_design_coverage_gaps
+                      4: trace_uncovered_requirements
+                      5: risk_must_fix_recommendations
+                      6: medium_and_low_severity_issues
+                    dev_permissions:
+                      allowed_story_updates:
+                        - tasks_subtasks_checkboxes: true
+                        - dev_agent_record: true
+                        - change_log: true
+                        - status: true
+                      forbidden_updates:
+                        - qa_results: false
+                        - story_content: false
+                        - acceptance_criteria: false
+                        - dev_notes: false
+                        - testing: false
+                    completion_criteria:
+                      - deno_lint_zero_problems
+                      - deno_test_all_passing
+                      - high_severity_addressed
+                      - nfr_fail_resolved
+                      - coverage_gaps_closed
+                      - story_updated_allowed_sections
+                      - status_set_per_rule
+                    status_rule: |
+                      IF gate was PASS AND all gaps closed THEN
+                        Status: Ready for Done
+                      ELSE
+                        Status: Ready for Review
+                        (Request QA to re-run review)
+
+                  - step: rerun_self_tests
+                    command: "*run-tests"
+                    description: "修复完成后重新运行自测"
+                    validation:
+                      - all_tests_passing
+                      - coverage_improved
+                      - issues_resolved
+
+                  - step: resubmit_to_qa
+                    description: "自测通过后重新提交QA测试"
+                    status_change: "InProgress -> Review"
+                    next: return_to_qa_review
+
+                notes: |
+                  根据QA修复建议完成代码修复（确定性流程）：
+                  1. 切换回/dev智能体
+                  2. 执行*review-qa命令应用QA修复
+                     - 读取gate YAML和assessment报告
+                     - 构建优先级修复计划
+                     - 应用代码和测试修复
+                     - 运行lint和测试验证
+                     - 只更新Dev Agent Record部分
+                  3. 重新运行自测验证修复
+                  4. 自测通过后重新提交QA
+                  5. 循环直到所有QA测试通过
+
+                  ⚠️ 关键：Dev只能更新故事的特定部分
+                  ❌ 不能修改QA Results（QA专属）
+              on_all_tests_passed:
+                action: mark_story_complete
+                status_change: "Review -> Done"
+                message: "✅ 当前开发任务已完成，可以进入下一开发任务"
+                notes: "代码质量优秀，所有QA测试通过，用户故事完成"
+
           validation_criteria:
             - functional_requirements_met
             - acceptance_criteria_satisfied
@@ -202,12 +700,6 @@ workflow:
             - data_integrity_maintained
             - error_handling_proper
             - performance_requirements_met
-          test_types:
-            - functional_testing
-            - api_contract_testing
-            - data_validation_testing
-            - error_scenario_testing
-            - performance_testing
           on_failure:
             action: report_issues_to_dev
             assign_to: dev
@@ -216,15 +708,32 @@ workflow:
           on_success:
             action: mark_story_complete
             status_change: "Review -> Done"
+            message: "✅ 当前开发任务已完成，可以进入下一开发任务"
           notes: |
-            QA测试验证：
-            - 功能需求验证
-            - 验收标准检查
-            - API契约测试
-            - 数据完整性测试
-            - 错误处理测试
-            - 性能要求验证
-            - 通过后状态变更为 "Done"
+            QA测试验证的完整流程：
+            1. 执行 /qa 命令切换到QA智能体
+            2. 执行 *review 待测试的用户故事 命令进行测试工作
+               - 功能需求验证
+               - 验收标准检查
+               - API契约测试
+               - 数据完整性测试
+               - 错误处理测试
+               - 性能要求验证
+            3. 测试工作完毕后，判断是否有修复建议：
+               - 有修复建议：根据建议完成代码修复，重新测试
+               - 全部通过：状态变更为 "Done"，提示任务完成
+
+            测试通过标准：
+            - 功能需求完全满足
+            - 验收标准全部达成
+            - API契约有效
+            - 数据完整性保持
+            - 错误处理正确
+            - 性能要求达标
+
+            测试通过后：
+            - 用户故事状态变更为 "Done"
+            - 提示：✅ 当前开发任务已完成，可以进入下一开发任务
 
     # 循环条件检查
     - step: check_completion
@@ -431,3 +940,325 @@ workflow:
     qa_passed: "QA测试通过，故事开发完成。"
     cycle_complete: "当前故事完成，检查是否有下一个故事..."
     all_complete: "🎉 所有用户故事开发完成！项目开发阶段结束。"
+
+  # 🆕 工作流优化总结和最佳实践
+  workflow_optimizations_summary:
+    version: "2.0"
+    optimization_date: "2025-01-XX"
+    key_improvements:
+      1_pre_workflow_validation:
+        description: "工作流启动前的环境和依赖验证"
+        benefits:
+          - 早期发现缺失依赖，避免中途失败
+          - 确保Epic、数据库设计、基础代码就绪
+          - 自动创建必要的目录结构
+        failure_prevention: "防止无效执行，节省时间"
+
+      2_standard_story_creation:
+        description: "使用*draft命令创建标准用户故事"
+        agent: sm
+        command: "*draft"
+        template: story-tmpl.yaml
+        benefits:
+          - 基于Epic shard提取业务需求
+          - 从PRD和架构文档获取技术上下文
+          - 生成清晰可测试的验收标准
+          - 分解为可执行的开发任务
+          - 适当的故事规模（1-3天完成）
+        story_principles:
+          - focus_on_business_value: "明确业务价值"
+          - clear_acceptance_criteria: "清晰可测试的验收标准"
+          - appropriate_scope: "适当的故事规模"
+          - testable_requirements: "所有需求可测试"
+          - implementation_guidance: "为Dev提供足够的上下文"
+        quality_improvement: "标准化的故事创建流程，成熟稳定"
+
+      3_10_step_validation:
+        description: "PO使用10步验证流程确保故事质量"
+        agent: po
+        command: "*validate-story-draft {story_file}"
+        task_file: xiaoma-core/tasks/validate-next-story.md
+        validation_steps:
+          step_1: template_completeness_validation
+          step_2: file_structure_validation
+          step_3: ui_frontend_completeness
+          step_4: acceptance_criteria_satisfaction
+          step_5: validation_testing_instructions
+          step_6: security_considerations
+          step_7: tasks_subtasks_sequence
+          step_8: anti_hallucination_verification
+          step_9: dev_agent_implementation_readiness
+          step_10: generate_validation_report
+        benefits:
+          - 反幻觉验证（防止虚构内容）
+          - GO/NO-GO明确决策
+          - 实现准备度评分（1-10）
+        quality_gate: "确保故事进入开发前100%就绪"
+
+      4_enhanced_dev_testing:
+        description: "Dev自测增强，包含编译验证"
+        agent: dev
+        command: "*run-tests"
+        test_sequence:
+          1: "mvn clean compile"
+          2: "mvn test"
+          3: "mvn verify"
+          4: "mvn jacoco:report"
+        quality_checks:
+          - checkstyle_validation
+          - pmd_analysis
+          - spotbugs_scan
+          - code_coverage_target: ">=80%"
+        benefits:
+          - 早期发现编译问题
+          - 确保代码质量标准
+          - 防止低质量代码进入QA
+
+      5_real_data_functional_testing:
+        description: "QA以功能测试为主，使用真实数据库数据测试"
+        agent: qa
+        command: "*review {story_file}"
+        task_file: xiaoma-core/tasks/review-story.md
+        core_principle: "⚠️ 所有测试必须使用真实数据，严禁mock数据"
+        testing_focus:
+          priority: "功能测试（HIGHEST）"
+          real_data_requirements:
+            - "❌ 严禁使用mock数据假装测试通过"
+            - "✅ 查询接口必须真实从数据库查询"
+            - "✅ 操作接口必须真实操作到数据库"
+            - "✅ 验证实际的数据库状态变化"
+            - "✅ 端到端验证整个数据流"
+        test_sequence:
+          1: "功能需求验证（所有验收标准）"
+          2: "真实数据库操作测试（CRUD验证）"
+          3: "API契约测试（真实请求/响应）"
+          4: "业务流程端到端测试"
+          5: "边界条件和异常场景测试"
+          6: "数据完整性和一致性验证"
+        real_data_test_examples:
+          query_test: "调用查询API → 验证返回数据与数据库实际一致"
+          create_test: "调用创建API → 查询数据库验证记录真实插入"
+          update_test: "调用更新API → 查询数据库验证记录真实更新"
+          delete_test: "调用删除API → 查询数据库验证记录真实删除/软删除"
+        review_phases:
+          phase_1: functional_testing_with_real_data
+          phase_2: requirements_traceability
+          phase_3: code_quality_review
+          phase_4: standards_compliance
+          phase_5: acceptance_criteria_validation
+        qa_permissions:
+          allowed:
+            - refactor_code
+            - add_missing_tests
+            - improve_code_quality
+          required:
+            - document_all_changes_in_qa_results
+        gate_generation:
+          file: "qa.qaLocation/gates/{epic}.{story}-{slug}.yml"
+          decisions: "PASS/CONCERNS/FAIL/WAIVED"
+          decision_criteria: "功能完整性→真实数据测试→代码质量→标准合规"
+        benefits:
+          - 真实数据测试确保功能实际可用
+          - 端到端验证业务流程
+          - 发现真实环境中的问题
+          - 避免mock数据导致的假阳性
+          - 保证数据库操作的正确性
+
+      6_deterministic_qa_fix_process:
+        description: "确定性的QA修复流程"
+        agent: dev
+        command: "*review-qa {story_file}"
+        task_file: xiaoma-core/tasks/apply-qa-fixes.md
+        fix_priority:
+          1: high_severity_issues
+          2: nfr_fail_status
+          3: test_coverage_gaps
+          4: uncovered_requirements
+          5: risk_must_fix
+          6: medium_low_issues
+        benefits:
+          - 优先级清晰的修复计划
+          - 读取gate YAML和assessments
+          - 只更新Dev Agent Record
+          - 严格权限控制
+        quality_assurance: "确保修复有效且不破坏边界"
+
+    agent_responsibility_boundaries:
+      sm_scrum_master:
+        responsibilities:
+          - create_standard_user_stories
+          - extract_requirements_from_epic_shards
+          - break_down_tasks
+          - provide_implementation_context
+        strict_prohibitions:
+          - "❌ 绝对不允许实施代码"
+          - "❌ 不修改已批准的故事"
+        command: "*draft"
+        template: story-tmpl.yaml
+
+      po_product_owner:
+        responsibilities:
+          - validate_story_quality
+          - anti_hallucination_check
+          - implementation_readiness_assessment
+        strict_prohibitions:
+          - "❌ 不创建故事（SM职责）"
+          - "❌ 不实现代码（Dev职责）"
+          - "❌ 不测试（QA职责）"
+        command: "*validate-story-draft {story_file}"
+        permission: "质量门卫，批准/拒绝故事进入开发"
+
+      dev_developer:
+        responsibilities:
+          - implement_code_per_story
+          - write_comprehensive_tests
+          - apply_qa_fixes
+        allowed_story_updates:
+          - tasks_subtasks_checkboxes
+          - dev_agent_record
+          - change_log
+          - status
+        forbidden_story_updates:
+          - "❌ Story/AC/Dev Notes/Testing"
+          - "❌ QA Results（QA专属）"
+        commands:
+          - "*develop-story {story_file}"
+          - "*run-tests"
+          - "*review-qa {story_file}"
+
+      qa_quality_assurance:
+        responsibilities:
+          - functional_testing_with_real_data
+          - requirements_traceability_verification
+          - code_quality_review
+          - quality_gate_decision
+        core_testing_principle:
+          - "⚠️ 所有测试必须使用真实数据库数据"
+          - "❌ 严禁使用mock数据假装测试通过"
+          - "✅ 查询接口真实从数据库查询"
+          - "✅ 操作接口真实操作到数据库"
+          - "✅ 验证实际的数据库状态变化"
+        test_focus:
+          priority: "功能测试为主（HIGHEST）"
+          test_types:
+            1: "功能需求验证（所有验收标准）"
+            2: "真实数据库操作测试（CRUD）"
+            3: "API契约测试（真实请求/响应）"
+            4: "业务流程端到端测试"
+            5: "边界条件和异常场景测试"
+        allowed_modifications:
+          - "✅ 重构代码"
+          - "✅ 添加缺失测试"
+          - "✅ 改进代码质量"
+        required_documentation:
+          - "⚠️ 在QA Results中记录所有修改"
+        allowed_story_updates:
+          - qa_results_section_only
+        forbidden_story_updates:
+          - "❌ Story/AC/Tasks/Dev Notes"
+          - "❌ Status/File List（只能推荐）"
+        commands:
+          - "*review {story_file}"
+        output: "gate file + QA Results section"
+        gate_decision_criteria: "功能完整性→真实数据测试→代码质量→标准合规"
+
+    quality_gates_hierarchy:
+      level_1_po_validation:
+        gate: "故事是否完整、准确、可实现"
+        criteria:
+          - template_compliance
+          - no_hallucination
+          - implementation_ready
+        decision: "GO/NO-GO"
+
+      level_2_dev_self_test:
+        gate: "代码质量、测试覆盖、功能完整"
+        criteria:
+          - all_tests_passing
+          - coverage_target_met: ">=80%"
+          - compilation_success
+        decision: "Ready for Review"
+
+      level_3_qa_review:
+        gate: "全面质量评估、风险识别、Gate决策"
+        criteria:
+          - risk_assessment
+          - requirements_traceability
+          - nfr_validation
+          - code_quality
+        decision: "PASS/CONCERNS/FAIL/WAIVED"
+
+      level_4_story_completion:
+        gate: "故事100%完成，可以进入下一个"
+        criteria:
+          - qa_gate_pass
+          - all_ac_satisfied
+          - no_blocking_issues
+        decision: "Done"
+
+    anti_patterns_to_avoid:
+      - name: "跨智能体边界操作"
+        description: "SM不能实施代码，Dev不能修改QA Results"
+        prevention: "严格权限控制和工作流验证"
+
+      - name: "跳过质量门控"
+        description: "为了速度跳过PO验证或QA审查"
+        prevention: "工作流强制执行质量门控"
+
+      - name: "故事内容幻觉"
+        description: "故事包含虚构的技术细节"
+        prevention: "PO的反幻觉验证（Step 8）"
+
+      - name: "编译失败进入QA"
+        description: "代码编译失败但仍提交QA"
+        prevention: "Dev自测强制包含编译验证"
+
+      - name: "低测试覆盖率"
+        description: "测试覆盖率不足就标记完成"
+        prevention: "覆盖率目标>=80%，QA验证"
+
+    success_metrics:
+      story_quality:
+        - zero_hallucination_issues
+        - implementation_readiness_score: ">=8/10"
+        - po_validation_pass_rate: ">90%"
+
+      development_quality:
+        - compilation_success_rate: "100%"
+        - test_coverage: ">=80%"
+        - dev_self_test_pass_rate: ">95%"
+
+      qa_quality:
+        - gate_pass_rate_first_attempt: ">70%"
+        - critical_issues_found_and_fixed: "100%"
+        - nfr_validation_coverage: "100%"
+
+      cycle_efficiency:
+        - average_cycle_time_per_story: "<2 days"
+        - rework_rate: "<20%"
+        - stories_completed_without_blocking: ">85%"
+
+    best_practices:
+      before_starting:
+        - "✅ 完成Epic分解（PM/PO）"
+        - "✅ 完成数据库设计（database-architect）"
+        - "✅ 生成基础代码（database-architect）"
+        - "✅ 验证所有前置条件"
+
+      during_execution:
+        - "✅ 严格遵守智能体责任边界"
+        - "✅ 不跳过质量门控"
+        - "✅ 详细记录所有修改（Dev/QA）"
+        - "✅ 及时更新故事状态"
+
+      quality_focus:
+        - "✅ PO：反幻觉验证是关键"
+        - "✅ Dev：编译+测试+覆盖率"
+        - "✅ QA：风险驱动+主动改进"
+        - "✅ 所有角色：严格权限遵守"
+
+      automation_principles:
+        - "🤖 信任但验证每个环节"
+        - "🤖 早期发现问题（左移测试）"
+        - "🤖 快速反馈循环"
+        - "🤖 持续质量改进"
