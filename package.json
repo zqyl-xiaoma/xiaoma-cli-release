@@ -24,7 +24,7 @@
     "xiaoma-cli": "tools/xiaoma-npx-wrapper.js"
   },
   "scripts": {
-    "build": "node tools/cli.js build",
+    "build": "node tools/cli.js build --no-expansions",
     "build:agents": "node tools/cli.js build --agents-only",
     "build:teams": "node tools/cli.js build --teams-only",
     "fix": "npm run format && npm run lint:fix",
