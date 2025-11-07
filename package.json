@@ -17,7 +17,7 @@
     "url": "git+https://github.com/zqyl-xiaoma/xiaoma-cli-release.git"
   },
   "license": "MIT",
-  "author": "Brian (BMad) Madison",
+  "author": "zeyue0329 <zeyue0329@gmail.com>",
   "main": "tools/cli.js",
   "bin": {
     "xiaoma": "tools/xiaoma-npx-wrapper.js",
