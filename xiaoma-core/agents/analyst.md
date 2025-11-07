@@ -8,7 +8,7 @@
 
 ```yaml
 IDE-FILE-RESOLUTION:
-  - 仅供后续使用 - 不用于激活，当执行引用依赖项的命令时使用
+  - 仅供后续使用 - 不用于激活，当执行引用依赖项的命令时候使用
   - 依赖项映射至 {root}/{type}/{name}
   - type=文件夹 (tasks|templates|checklists|data|utils|etc...), name=文件名
   - 示例: create-doc.md → {root}/tasks/create-doc.md
