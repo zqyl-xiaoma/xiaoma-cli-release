@@ -235,15 +235,12 @@ async function promptInstallation() {
   // Get available expansion packs
   const availableExpansionPacks = await installer.getAvailableExpansionPacks();
 
-  // Build choices list
-  const choices = [];
-
   // Load core config to get short-title
   const coreConfigPath = path.join(__dirname, '..', '..', '..', 'xiaoma-core', 'core-config.yaml');
   const coreConfig = yaml.load(await fs.readFile(coreConfigPath, 'utf8'));
   const coreShortTitle = coreConfig['short-title'] || 'XiaoMa Agile Core System';
 
-  // Add XiaoMa core option
+  // Display what will be installed
   let bmadOptionText;
   if (state.type === 'v4_existing') {
     const currentVersion = state.manifest?.version || 'unknown';
@@ -252,123 +249,28 @@ async function promptInstallation() {
       currentVersion === newVersion
         ? `(v${currentVersion} - reinstall)`
         : `(v${currentVersion} → v${newVersion})`;
-    bmadOptionText = `Update ${coreShortTitle} ${versionInfo} .xiaoma-core`;
+    bmadOptionText = `Update ${coreShortTitle} ${versionInfo}`;
   } else {
-    bmadOptionText = `${coreShortTitle} (v${version}) .xiaoma-core`;
+    bmadOptionText = `${coreShortTitle} (v${version})`;
   }
 
-  choices.push({
-    name: bmadOptionText,
-    value: 'xiaoma-core',
-    checked: true,
-  });
+  console.log(chalk.cyan(`\n📦 Installing: ${bmadOptionText} → .xiaoma-core`));
 
-  // Add expansion pack options
-  for (const pack of availableExpansionPacks) {
-    const existing = existingExpansionPacks[pack.id];
-    let packOptionText;
-
-    if (existing) {
-      const currentVersion = existing.manifest?.version || 'unknown';
-      const newVersion = pack.version;
-      const versionInfo =
-        currentVersion === newVersion
-          ? `(v${currentVersion} - reinstall)`
-          : `(v${currentVersion} → v${newVersion})`;
-      packOptionText = `Update ${pack.shortTitle} ${versionInfo} .${pack.id}`;
-    } else {
-      packOptionText = `${pack.shortTitle} (v${pack.version}) .${pack.id}`;
-    }
-
-    choices.push({
-      name: packOptionText,
-      value: pack.id,
-      checked: false,
-    });
-  }
-
-  // Ask what to install
-  const { selectedItems } = await inquirer.prompt([
-    {
-      type: 'checkbox',
-      name: 'selectedItems',
-      message: 'Select what to install/update (use space to select, enter to continue):',
-      choices: choices,
-      validate: (selected) => {
-        if (selected.length === 0) {
-          return 'Please select at least one item to install';
-        }
-        return true;
-      },
-    },
-  ]);
+  // Automatically select xiaoma-core (no user prompt)
+  const selectedItems = ['xiaoma-core'];
 
   // Process selections
-  answers.installType = selectedItems.includes('xiaoma-core') ? 'full' : 'expansion-only';
-  answers.expansionPacks = selectedItems.filter((item) => item !== 'xiaoma-core');
+  answers.installType = 'full';
+  answers.expansionPacks = [];
 
-  // Ask sharding questions if installing XiaoMa core
+  // Configure sharding settings if installing XiaoMa core
   if (selectedItems.includes('xiaoma-core')) {
     console.log(chalk.cyan('\n📋 Document Organization Settings'));
-    console.log(chalk.dim('Configure how your project documentation should be organized.\n'));
+    console.log(chalk.dim('PRD and Architecture documents will be sharded into multiple files.\n'));
 
-    // Ask about PRD sharding
-    const { prdSharded } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'prdSharded',
-        message: 'Will the PRD (Product Requirements Document) be sharded into multiple files?',
-        default: true,
-      },
-    ]);
-    answers.prdSharded = prdSharded;
-
-    // Ask about architecture sharding
-    const { architectureSharded } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'architectureSharded',
-        message: 'Will the architecture documentation be sharded into multiple files?',
-        default: true,
-      },
-    ]);
-    answers.architectureSharded = architectureSharded;
-
-    // Show warning if architecture sharding is disabled
-    if (!architectureSharded) {
-      console.log(chalk.yellow.bold('\n⚠️  IMPORTANT: Architecture Sharding Disabled'));
-      console.log(
-        chalk.yellow(
-          'With architecture sharding disabled, you should still create the files listed',
-        ),
-      );
-      console.log(
-        chalk.yellow(
-          'in devLoadAlwaysFiles (like coding-standards.md, tech-stack.md, source-tree.md)',
-        ),
-      );
-      console.log(chalk.yellow('as these are used by the dev agent at runtime.'));
-      console.log(
-        chalk.yellow(
-          '\nAlternatively, you can remove these files from the devLoadAlwaysFiles list',
-        ),
-      );
-      console.log(chalk.yellow('in your core-config.yaml after installation.'));
-
-      const { acknowledge } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'acknowledge',
-          message: 'Do you acknowledge this requirement and want to proceed?',
-          default: false,
-        },
-      ]);
-
-      if (!acknowledge) {
-        console.log(chalk.red('Installation cancelled.'));
-        process.exit(0);
-      }
-    }
+    // Automatically enable both PRD and architecture sharding
+    answers.prdSharded = true;
+    answers.architectureSharded = true;
   }
 
   // Ask for IDE configuration
@@ -507,106 +409,16 @@ async function promptInstallation() {
     answers.augmentCodeConfig = { selectedLocations };
   }
 
-  // Ask for web bundles installation
-  const { includeWebBundles } = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'includeWebBundles',
-      message:
-        'Would you like to include pre-built web bundles? (standalone files for ChatGPT, Claude, Gemini)',
-      default: false,
-    },
-  ]);
+  // Automatically include pre-built web bundles
+  console.log(chalk.cyan('\n📦 Web Bundles Configuration'));
+  console.log(
+    chalk.dim('Pre-built web bundles for ChatGPT, Claude, and Gemini will be included.\n'),
+  );
 
-  if (includeWebBundles) {
-    console.log(chalk.cyan('\n📦 Web bundles are standalone files perfect for web AI platforms.'));
-    console.log(
-      chalk.dim('   You can choose different teams/agents than your IDE installation.\n'),
-    );
-
-    const { webBundleType } = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'webBundleType',
-        message: 'What web bundles would you like to include?',
-        choices: [
-          {
-            name: 'All available bundles (agents, teams, expansion packs)',
-            value: 'all',
-          },
-          {
-            name: 'Specific teams only',
-            value: 'teams',
-          },
-          {
-            name: 'Individual agents only',
-            value: 'agents',
-          },
-          {
-            name: 'Custom selection',
-            value: 'custom',
-          },
-        ],
-      },
-    ]);
-
-    answers.webBundleType = webBundleType;
-
-    // If specific teams, let them choose which teams
-    if (webBundleType === 'teams' || webBundleType === 'custom') {
-      const teams = await installer.getAvailableTeams();
-      const { selectedTeams } = await inquirer.prompt([
-        {
-          type: 'checkbox',
-          name: 'selectedTeams',
-          message: 'Select team bundles to include:',
-          choices: teams.map((t) => ({
-            name: `${t.icon || '📋'} ${t.name}: ${t.description}`,
-            value: t.id,
-            checked: webBundleType === 'teams', // Check all if teams-only mode
-          })),
-          validate: (answer) => {
-            if (answer.length === 0) {
-              return 'You must select at least one team.';
-            }
-            return true;
-          },
-        },
-      ]);
-      answers.selectedWebBundleTeams = selectedTeams;
-    }
-
-    // If custom selection, also ask about individual agents
-    if (webBundleType === 'custom') {
-      const { includeIndividualAgents } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'includeIndividualAgents',
-          message: 'Also include individual agent bundles?',
-          default: true,
-        },
-      ]);
-      answers.includeIndividualAgents = includeIndividualAgents;
-    }
-
-    const { webBundlesDirectory } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'webBundlesDirectory',
-        message: 'Enter directory for web bundles:',
-        default: `${answers.directory}/web-bundles`,
-        validate: (input) => {
-          if (!input.trim()) {
-            return 'Please enter a valid directory path';
-          }
-          return true;
-        },
-      },
-    ]);
-    answers.webBundlesDirectory = webBundlesDirectory;
-  }
-
-  answers.includeWebBundles = includeWebBundles;
+  // Set default configuration for web bundles
+  answers.includeWebBundles = true;
+  answers.webBundleType = 'all'; // Include all available bundles
+  answers.webBundlesDirectory = `${answers.directory}/web-bundles`;
 
   return answers;
 }
