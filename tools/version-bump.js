@@ -1,6 +1,6 @@
-const fs = require('node:fs');
-const { execSync } = require('node:child_process');
-const path = require('node:path');
+const fs = require("node:fs");
+const { execSync } = require("node:child_process");
+const path = require("node:path");
 
 // Dynamic import for ES module
 let chalk;
@@ -8,7 +8,7 @@ let chalk;
 // Initialize ES modules
 async function initializeModules() {
   if (!chalk) {
-    chalk = (await import('chalk')).default;
+    chalk = (await import("chalk")).default;
   }
 }
 
@@ -18,33 +18,35 @@ async function initializeModules() {
  */
 
 function getCurrentVersion() {
-  const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
   return packageJson.version;
 }
 
-async function bumpVersion(type = 'patch') {
+async function bumpVersion(type = "patch") {
   await initializeModules();
 
-  const validTypes = ['patch', 'minor', 'major'];
+  const validTypes = ["patch", "minor", "major"];
   if (!validTypes.includes(type)) {
-    console.error(chalk.red(`Invalid version type: ${type}. Use: ${validTypes.join(', ')}`));
+    console.error(
+      chalk.red(`Invalid version type: ${type}. Use: ${validTypes.join(", ")}`),
+    );
     process.exit(1);
   }
 
   const currentVersion = getCurrentVersion();
-  const versionParts = currentVersion.split('.').map(Number);
+  const versionParts = currentVersion.split(".").map(Number);
   let newVersion;
 
   switch (type) {
-    case 'major': {
+    case "major": {
       newVersion = `${versionParts[0] + 1}.0.0`;
       break;
     }
-    case 'minor': {
+    case "minor": {
       newVersion = `${versionParts[0]}.${versionParts[1] + 1}.0`;
       break;
     }
-    case 'patch': {
+    case "patch": {
       newVersion = `${versionParts[0]}.${versionParts[1]}.${versionParts[2] + 1}`;
       break;
     }
@@ -53,9 +55,9 @@ async function bumpVersion(type = 'patch') {
   console.log(chalk.blue(`Bumping version: ${currentVersion} → ${newVersion}`));
 
   // Update package.json
-  const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
   packageJson.version = newVersion;
-  fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2) + '\n');
+  fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
   console.log(chalk.green(`✓ Updated package.json to ${newVersion}`));
 
@@ -65,16 +67,20 @@ async function bumpVersion(type = 'patch') {
 async function main() {
   await initializeModules();
 
-  const type = process.argv[2] || 'patch';
+  const type = process.argv[2] || "patch";
   const currentVersion = getCurrentVersion();
 
   console.log(chalk.blue(`Current version: ${currentVersion}`));
 
   // Check if working directory is clean
   try {
-    execSync('git diff-index --quiet HEAD --');
+    execSync("git diff-index --quiet HEAD --");
   } catch {
-    console.error(chalk.red('❌ Working directory is not clean. Commit your changes first.'));
+    console.error(
+      chalk.red(
+        "❌ Working directory is not clean. Commit your changes first.",
+      ),
+    );
     process.exit(1);
   }
 
@@ -86,7 +92,7 @@ async function main() {
 
 if (require.main === module) {
   main().catch((error) => {
-    console.error('Error:', error);
+    console.error("Error:", error);
     process.exit(1);
   });
 }

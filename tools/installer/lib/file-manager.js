@@ -1,11 +1,15 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const crypto = require('node:crypto');
-const yaml = require('js-yaml');
-const chalk = require('chalk');
-const { createReadStream, createWriteStream, promises: fsPromises } = require('node:fs');
-const { pipeline } = require('node:stream/promises');
-const resourceLocator = require('./resource-locator');
+const fs = require("fs-extra");
+const path = require("node:path");
+const crypto = require("node:crypto");
+const yaml = require("js-yaml");
+const chalk = require("chalk");
+const {
+  createReadStream,
+  createWriteStream,
+  promises: fsPromises,
+} = require("node:fs");
+const { pipeline } = require("node:stream/promises");
+const resourceLocator = require("./resource-locator");
 
 class FileManager {
   constructor() {}
@@ -31,7 +35,7 @@ class FileManager {
       await fs.ensureDir(destination);
 
       // Use streaming copy for large directories
-      const files = await resourceLocator.findFiles('**/*', {
+      const files = await resourceLocator.findFiles("**/*", {
         cwd: source,
         nodir: true,
       });
@@ -41,12 +45,20 @@ class FileManager {
       for (let index = 0; index < files.length; index += batchSize) {
         const batch = files.slice(index, index + batchSize);
         await Promise.all(
-          batch.map((file) => this.copyFile(path.join(source, file), path.join(destination, file))),
+          batch.map((file) =>
+            this.copyFile(
+              path.join(source, file),
+              path.join(destination, file),
+            ),
+          ),
         );
       }
       return true;
     } catch (error) {
-      console.error(chalk.red(`Failed to copy directory ${source}:`), error.message);
+      console.error(
+        chalk.red(`Failed to copy directory ${source}:`),
+        error.message,
+      );
       return false;
     }
   }
@@ -61,11 +73,18 @@ class FileManager {
 
       // Use root replacement if rootValue is provided and file needs it
       const needsRootReplacement =
-        rootValue && (file.endsWith('.md') || file.endsWith('.yaml') || file.endsWith('.yml'));
+        rootValue &&
+        (file.endsWith(".md") ||
+          file.endsWith(".yaml") ||
+          file.endsWith(".yml"));
 
       let success = false;
       success = await (needsRootReplacement
-        ? this.copyFileWithRootReplacement(sourcePath, destinationPath, rootValue)
+        ? this.copyFileWithRootReplacement(
+            sourcePath,
+            destinationPath,
+            rootValue,
+          )
         : this.copyFile(sourcePath, destinationPath));
 
       if (success) {
@@ -80,25 +99,35 @@ class FileManager {
     try {
       // Use streaming for hash calculation to reduce memory usage
       const stream = createReadStream(filePath);
-      const hash = crypto.createHash('sha256');
+      const hash = crypto.createHash("sha256");
 
       for await (const chunk of stream) {
         hash.update(chunk);
       }
 
-      return hash.digest('hex').slice(0, 16);
+      return hash.digest("hex").slice(0, 16);
     } catch {
       return null;
     }
   }
 
   async createManifest(installDir, config, files) {
-    const manifestPath = path.join(installDir, this.manifestDir, this.manifestFile);
+    const manifestPath = path.join(
+      installDir,
+      this.manifestDir,
+      this.manifestFile,
+    );
 
     // Read version from package.json
-    let coreVersion = 'unknown';
+    let coreVersion = "unknown";
     try {
-      const packagePath = path.join(__dirname, '..', '..', '..', 'package.json');
+      const packagePath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "package.json",
+      );
       const packageJson = require(packagePath);
       coreVersion = packageJson.version;
     } catch {
@@ -135,10 +164,14 @@ class FileManager {
   }
 
   async readManifest(installDir) {
-    const manifestPath = path.join(installDir, this.manifestDir, this.manifestFile);
+    const manifestPath = path.join(
+      installDir,
+      this.manifestDir,
+      this.manifestFile,
+    );
 
     try {
-      const content = await fs.readFile(manifestPath, 'utf8');
+      const content = await fs.readFile(manifestPath, "utf8");
       return yaml.load(content);
     } catch {
       return null;
@@ -149,7 +182,7 @@ class FileManager {
     const manifestPath = path.join(installDir, `.${packId}`, this.manifestFile);
 
     try {
-      const content = await fs.readFile(manifestPath, 'utf8');
+      const content = await fs.readFile(manifestPath, "utf8");
       return yaml.load(content);
     } catch {
       return null;
@@ -181,7 +214,7 @@ class FileManager {
       const filePath = path.join(installDir, file.path);
 
       // Skip checking the manifest file itself - it will always be different due to timestamps
-      if (file.path.endsWith('install-manifest.yaml')) {
+      if (file.path.endsWith("install-manifest.yaml")) {
         continue;
       }
 
@@ -199,7 +232,7 @@ class FileManager {
   }
 
   async backupFile(filePath) {
-    const backupPath = filePath + '.bak';
+    const backupPath = filePath + ".bak";
     let counter = 1;
     let finalBackupPath = backupPath;
 
@@ -227,7 +260,7 @@ class FileManager {
   }
 
   async readFile(filePath) {
-    return fs.readFile(filePath, 'utf8');
+    return fs.readFile(filePath, "utf8");
   }
 
   async writeFile(filePath, content) {
@@ -243,7 +276,8 @@ class FileManager {
     const manifestPath = path.join(installDir, `.${packId}`, this.manifestFile);
 
     const manifest = {
-      version: config.expansionPackVersion || require('../../../package.json').version,
+      version:
+        config.expansionPackVersion || require("../../../package.json").version,
       installed_at: new Date().toISOString(),
       install_type: config.installType,
       expansion_pack_id: config.expansionPackId,
@@ -272,11 +306,15 @@ class FileManager {
   }
 
   async modifyCoreConfig(installDir, config) {
-    const coreConfigPath = path.join(installDir, '.xiaoma-core', 'core-config.yaml');
+    const coreConfigPath = path.join(
+      installDir,
+      ".xiaoma-core",
+      "core-config.yaml",
+    );
 
     try {
       // Read the existing core-config.yaml
-      const coreConfigContent = await fs.readFile(coreConfigPath, 'utf8');
+      const coreConfigContent = await fs.readFile(coreConfigPath, "utf8");
       const coreConfig = yaml.load(coreConfigContent);
 
       // Modify sharding settings if provided
@@ -285,7 +323,8 @@ class FileManager {
       }
 
       if (config.architectureSharded !== undefined) {
-        coreConfig.architecture.architectureSharded = config.architectureSharded;
+        coreConfig.architecture.architectureSharded =
+          config.architectureSharded;
       }
 
       // Write back the modified config
@@ -293,7 +332,10 @@ class FileManager {
 
       return true;
     } catch (error) {
-      console.error(chalk.red(`Failed to modify core-config.yaml:`), error.message);
+      console.error(
+        chalk.red(`Failed to modify core-config.yaml:`),
+        error.message,
+      );
       return false;
     }
   }
@@ -306,31 +348,34 @@ class FileManager {
       if (stats.size > 5 * 1024 * 1024) {
         // 5MB threshold
         // Use streaming for large files
-        const { Transform } = require('node:stream');
+        const { Transform } = require("node:stream");
         const replaceStream = new Transform({
           transform(chunk, encoding, callback) {
-            const modified = chunk.toString().replaceAll('{root}', rootValue);
+            const modified = chunk.toString().replaceAll("{root}", rootValue);
             callback(null, modified);
           },
         });
 
         await this.ensureDirectory(path.dirname(destination));
         await pipeline(
-          createReadStream(source, { encoding: 'utf8' }),
+          createReadStream(source, { encoding: "utf8" }),
           replaceStream,
-          createWriteStream(destination, { encoding: 'utf8' }),
+          createWriteStream(destination, { encoding: "utf8" }),
         );
       } else {
         // Regular approach for smaller files
-        const content = await fsPromises.readFile(source, 'utf8');
-        const updatedContent = content.replaceAll('{root}', rootValue);
+        const content = await fsPromises.readFile(source, "utf8");
+        const updatedContent = content.replaceAll("{root}", rootValue);
         await this.ensureDirectory(path.dirname(destination));
-        await fsPromises.writeFile(destination, updatedContent, 'utf8');
+        await fsPromises.writeFile(destination, updatedContent, "utf8");
       }
 
       return true;
     } catch (error) {
-      console.error(chalk.red(`Failed to copy ${source} with root replacement:`), error.message);
+      console.error(
+        chalk.red(`Failed to copy ${source} with root replacement:`),
+        error.message,
+      );
       return false;
     }
   }
@@ -339,13 +384,13 @@ class FileManager {
     source,
     destination,
     rootValue,
-    fileExtensions = ['.md', '.yaml', '.yml'],
+    fileExtensions = [".md", ".yaml", ".yml"],
   ) {
     try {
       await this.ensureDirectory(destination);
 
       // Get all files in source directory
-      const files = await resourceLocator.findFiles('**/*', {
+      const files = await resourceLocator.findFiles("**/*", {
         cwd: source,
         nodir: true,
       });
@@ -357,10 +402,18 @@ class FileManager {
         const destinationPath = path.join(destination, file);
 
         // Check if this file type should have {root} replacement
-        const shouldReplace = fileExtensions.some((extension) => file.endsWith(extension));
+        const shouldReplace = fileExtensions.some((extension) =>
+          file.endsWith(extension),
+        );
 
         if (shouldReplace) {
-          if (await this.copyFileWithRootReplacement(sourcePath, destinationPath, rootValue)) {
+          if (
+            await this.copyFileWithRootReplacement(
+              sourcePath,
+              destinationPath,
+              rootValue,
+            )
+          ) {
             replacedCount++;
           }
         } else {
@@ -370,7 +423,11 @@ class FileManager {
       }
 
       if (replacedCount > 0) {
-        console.log(chalk.dim(`  Processed ${replacedCount} files with {root} replacement`));
+        console.log(
+          chalk.dim(
+            `  Processed ${replacedCount} files with {root} replacement`,
+          ),
+        );
       }
 
       return true;
@@ -382,8 +439,8 @@ class FileManager {
       return false;
     }
   }
-  manifestDir = '.xiaoma-core';
-  manifestFile = 'install-manifest.yaml';
+  manifestDir = ".xiaoma-core";
+  manifestFile = "install-manifest.yaml";
 }
 
 module.exports = new FileManager();

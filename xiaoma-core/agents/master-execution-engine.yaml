@@ -304,7 +304,12 @@ quality_gate_system:
       type: "CRITICAL_GATE"
 
     - phase: "phase_2_intelligent_task_planning"
-      gates: ["TASK_ANALYSIS_VALIDATION", "STRATEGY_FEASIBILITY_CHECK", "QA_READINESS_VALIDATION"]
+      gates:
+        [
+          "TASK_ANALYSIS_VALIDATION",
+          "STRATEGY_FEASIBILITY_CHECK",
+          "QA_READINESS_VALIDATION",
+        ]
       type: "CRITICAL_GATE"
 
     - phase: "phase_3_automated_content_generation"
@@ -330,14 +335,16 @@ quality_gate_system:
       type: "CRITICAL_GATE"
 
     - phase: "phase_5_delivery_preparation"
-      gates: ["REPORTING_QUALITY_VALIDATION", "DELIVERY_READINESS_FINAL_VALIDATION"]
+      gates:
+        ["REPORTING_QUALITY_VALIDATION", "DELIVERY_READINESS_FINAL_VALIDATION"]
       type: "CRITICAL_GATE"
 
 # ========== 自动纠错和恢复系统 ==========
 automated_correction_and_recovery_system:
   correction_strategies:
     - strategy: "IMMEDIATE_AUTO_CORRECTION"
-      triggers: ["syntax_errors", "format_violations", "missing_required_sections"]
+      triggers:
+        ["syntax_errors", "format_violations", "missing_required_sections"]
       actions:
         - apply_template_format_correction
         - perform_syntax_standardization
@@ -355,7 +362,8 @@ automated_correction_and_recovery_system:
       max_attempts: 3
 
     - strategy: "COMPREHENSIVE_REFINEMENT_CYCLE"
-      triggers: ["integration_validation_failure", "business_value_misalignment"]
+      triggers:
+        ["integration_validation_failure", "business_value_misalignment"]
       actions:
         - perform_holistic_document_review
         - apply_comprehensive_improvement_strategies
@@ -400,7 +408,13 @@ monitoring_and_reporting_system:
 
   comprehensive_reporting:
     - report: "EXECUTIVE_SUMMARY_REPORT"
-      content: ["overall_quality_score", "key_achievements", "critical_issues", "recommendations"]
+      content:
+        [
+          "overall_quality_score",
+          "key_achievements",
+          "critical_issues",
+          "recommendations",
+        ]
       audience: "STAKEHOLDERS_AND_MANAGEMENT"
 
     - report: "DETAILED_TECHNICAL_REPORT"

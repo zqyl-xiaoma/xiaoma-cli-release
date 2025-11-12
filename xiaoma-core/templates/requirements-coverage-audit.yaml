@@ -245,7 +245,8 @@ quality_check_rules:
       criticality: "HIGH"
 
     - element: "开发者代理记录"
-      required_subsections: ["使用的代理模型", "数据库实现记录", "API实现记录", "文件列表"]
+      required_subsections:
+        ["使用的代理模型", "数据库实现记录", "API实现记录", "文件列表"]
       criticality: "LOW"
 
   # 实施状态验证规则

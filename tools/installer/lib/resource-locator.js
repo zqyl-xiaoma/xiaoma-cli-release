@@ -3,9 +3,9 @@
  * Reduces duplicate file system operations and memory usage
  */
 
-const path = require('node:path');
-const fs = require('fs-extra');
-const moduleManager = require('./module-manager');
+const path = require("node:path");
+const fs = require("fs-extra");
+const moduleManager = require("./module-manager");
 
 class ResourceLocator {
   constructor() {
@@ -20,7 +20,7 @@ class ResourceLocator {
    */
   getBmadCorePath() {
     if (!this._bmadCorePath) {
-      this._bmadCorePath = path.join(__dirname, '../../../xiaoma-core');
+      this._bmadCorePath = path.join(__dirname, "../../../xiaoma-core");
     }
     return this._bmadCorePath;
   }
@@ -30,7 +30,10 @@ class ResourceLocator {
    */
   getExpansionPacksPath() {
     if (!this._expansionPacksPath) {
-      this._expansionPacksPath = path.join(__dirname, '../../../expansion-packs');
+      this._expansionPacksPath = path.join(
+        __dirname,
+        "../../../expansion-packs",
+      );
     }
     return this._expansionPacksPath;
   }
@@ -48,7 +51,7 @@ class ResourceLocator {
       return this._globCache.get(cacheKey);
     }
 
-    const { glob } = await moduleManager.getModules(['glob']);
+    const { glob } = await moduleManager.getModules(["glob"]);
     const files = await glob(pattern, options);
 
     // Cache for 5 minutes
@@ -71,7 +74,11 @@ class ResourceLocator {
     }
 
     // Check in xiaoma-core
-    let agentPath = path.join(this.getBmadCorePath(), 'agents', `${agentId}.md`);
+    let agentPath = path.join(
+      this.getBmadCorePath(),
+      "agents",
+      `${agentId}.md`,
+    );
     if (await fs.pathExists(agentPath)) {
       this._pathCache.set(cacheKey, agentPath);
       return agentPath;
@@ -80,7 +87,7 @@ class ResourceLocator {
     // Check in expansion packs
     const expansionPacks = await this.getExpansionPacks();
     for (const pack of expansionPacks) {
-      agentPath = path.join(pack.path, 'agents', `${agentId}.md`);
+      agentPath = path.join(pack.path, "agents", `${agentId}.md`);
       if (await fs.pathExists(agentPath)) {
         this._pathCache.set(cacheKey, agentPath);
         return agentPath;
@@ -95,32 +102,35 @@ class ResourceLocator {
    * @returns {Promise<Array>} Array of agent objects
    */
   async getAvailableAgents() {
-    const cacheKey = 'all-agents';
+    const cacheKey = "all-agents";
 
     if (this._pathCache.has(cacheKey)) {
       return this._pathCache.get(cacheKey);
     }
 
     const agents = [];
-    const yaml = require('js-yaml');
-    const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+    const yaml = require("js-yaml");
+    const { extractYamlFromAgent } = require("../../lib/yaml-utils");
 
     // Get agents from xiaoma-core
-    const coreAgents = await this.findFiles('agents/*.md', {
+    const coreAgents = await this.findFiles("agents/*.md", {
       cwd: this.getBmadCorePath(),
     });
 
     for (const agentFile of coreAgents) {
-      const content = await fs.readFile(path.join(this.getBmadCorePath(), agentFile), 'utf8');
+      const content = await fs.readFile(
+        path.join(this.getBmadCorePath(), agentFile),
+        "utf8",
+      );
       const yamlContent = extractYamlFromAgent(content);
       if (yamlContent) {
         try {
           const metadata = yaml.load(yamlContent);
           agents.push({
-            id: path.basename(agentFile, '.md'),
-            name: metadata.agent_name || path.basename(agentFile, '.md'),
-            description: metadata.description || 'No description available',
-            source: 'core',
+            id: path.basename(agentFile, ".md"),
+            name: metadata.agent_name || path.basename(agentFile, ".md"),
+            description: metadata.description || "No description available",
+            source: "core",
           });
         } catch {
           // Skip invalid agents
@@ -140,7 +150,7 @@ class ResourceLocator {
    * @returns {Promise<Array>} Array of expansion pack objects
    */
   async getExpansionPacks() {
-    const cacheKey = 'expansion-packs';
+    const cacheKey = "expansion-packs";
 
     if (this._pathCache.has(cacheKey)) {
       return this._pathCache.get(cacheKey);
@@ -150,23 +160,31 @@ class ResourceLocator {
     const expansionPacksPath = this.getExpansionPacksPath();
 
     if (await fs.pathExists(expansionPacksPath)) {
-      const entries = await fs.readdir(expansionPacksPath, { withFileTypes: true });
+      const entries = await fs.readdir(expansionPacksPath, {
+        withFileTypes: true,
+      });
 
       for (const entry of entries) {
         if (entry.isDirectory()) {
-          const configPath = path.join(expansionPacksPath, entry.name, 'config.yaml');
+          const configPath = path.join(
+            expansionPacksPath,
+            entry.name,
+            "config.yaml",
+          );
           if (await fs.pathExists(configPath)) {
             try {
-              const yaml = require('js-yaml');
-              const config = yaml.load(await fs.readFile(configPath, 'utf8'));
+              const yaml = require("js-yaml");
+              const config = yaml.load(await fs.readFile(configPath, "utf8"));
               packs.push({
                 id: entry.name,
                 name: config.name || entry.name,
-                version: config.version || '1.0.0',
-                description: config.description || 'No description available',
+                version: config.version || "1.0.0",
+                description: config.description || "No description available",
                 shortTitle:
-                  config['short-title'] || config.description || 'No description available',
-                author: config.author || 'Unknown',
+                  config["short-title"] ||
+                  config.description ||
+                  "No description available",
+                author: config.author || "Unknown",
                 path: path.join(expansionPacksPath, entry.name),
               });
             } catch {
@@ -196,12 +214,16 @@ class ResourceLocator {
       return this._pathCache.get(cacheKey);
     }
 
-    const teamPath = path.join(this.getBmadCorePath(), 'agent-teams', `${teamId}.yaml`);
+    const teamPath = path.join(
+      this.getBmadCorePath(),
+      "agent-teams",
+      `${teamId}.yaml`,
+    );
 
     if (await fs.pathExists(teamPath)) {
       try {
-        const yaml = require('js-yaml');
-        const content = await fs.readFile(teamPath, 'utf8');
+        const yaml = require("js-yaml");
+        const content = await fs.readFile(teamPath, "utf8");
         const config = yaml.load(content);
         this._pathCache.set(cacheKey, config);
         return config;
@@ -230,8 +252,8 @@ class ResourceLocator {
       return { all: [], byType: {} };
     }
 
-    const content = await fs.readFile(agentPath, 'utf8');
-    const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+    const content = await fs.readFile(agentPath, "utf8");
+    const { extractYamlFromAgent } = require("../../lib/yaml-utils");
     const yamlContent = extractYamlFromAgent(content);
 
     if (!yamlContent) {
@@ -239,7 +261,7 @@ class ResourceLocator {
     }
 
     try {
-      const yaml = require('js-yaml');
+      const yaml = require("js-yaml");
       const metadata = yaml.load(yamlContent);
       const dependencies = metadata.dependencies || {};
 
@@ -284,12 +306,16 @@ class ResourceLocator {
       return this._pathCache.get(cacheKey);
     }
 
-    const idePath = path.join(this.getBmadCorePath(), 'ide-rules', `${ideId}.yaml`);
+    const idePath = path.join(
+      this.getBmadCorePath(),
+      "ide-rules",
+      `${ideId}.yaml`,
+    );
 
     if (await fs.pathExists(idePath)) {
       try {
-        const yaml = require('js-yaml');
-        const content = await fs.readFile(idePath, 'utf8');
+        const yaml = require("js-yaml");
+        const content = await fs.readFile(idePath, "utf8");
         const config = yaml.load(content);
         this._pathCache.set(cacheKey, config);
         return config;

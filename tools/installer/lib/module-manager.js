@@ -15,9 +15,9 @@ class ModuleManager {
    */
   async initializeCommonModules() {
     const modules = await Promise.all([
-      this.getModule('chalk'),
-      this.getModule('ora'),
-      this.getModule('inquirer'),
+      this.getModule("chalk"),
+      this.getModule("ora"),
+      this.getModule("inquirer"),
     ]);
 
     return {
@@ -64,20 +64,20 @@ class ModuleManager {
    */
   async _loadModule(moduleName) {
     switch (moduleName) {
-      case 'chalk': {
-        return (await import('chalk')).default;
+      case "chalk": {
+        return (await import("chalk")).default;
       }
-      case 'ora': {
-        return (await import('ora')).default;
+      case "ora": {
+        return (await import("ora")).default;
       }
-      case 'inquirer': {
-        return (await import('inquirer')).default;
+      case "inquirer": {
+        return (await import("inquirer")).default;
       }
-      case 'glob': {
-        return (await import('glob')).glob;
+      case "glob": {
+        return (await import("glob")).glob;
       }
-      case 'globSync': {
-        return (await import('glob')).globSync;
+      case "globSync": {
+        return (await import("glob")).globSync;
       }
       default: {
         throw new Error(`Unknown module: ${moduleName}`);
@@ -99,7 +99,9 @@ class ModuleManager {
    * @returns {Promise<Object>} Object with module names as keys
    */
   async getModules(moduleNames) {
-    const modules = await Promise.all(moduleNames.map((name) => this.getModule(name)));
+    const modules = await Promise.all(
+      moduleNames.map((name) => this.getModule(name)),
+    );
 
     return moduleNames.reduce((accumulator, name, index) => {
       accumulator[name] = modules[index];

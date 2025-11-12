@@ -1,4 +1,4 @@
-const H = require('./stats.helpers.js');
+const H = require("./stats.helpers.js");
 
 async function calculateStatistics(aggregatedContent, xmlFileSize, rootDir) {
   const { textFiles, binaryFiles, errors } = aggregatedContent;

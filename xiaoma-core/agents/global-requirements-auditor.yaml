@@ -270,9 +270,17 @@ global_audit_engine:
     issue_classifier:
       classification_dimensions:
         - by_severity: ["critical", "high", "medium", "low"]
-        - by_type: ["functional", "non_functional", "technical_debt", "documentation"]
-        - by_component: ["frontend", "backend", "database", "api", "infrastructure"]
-        - by_effort: ["quick_fix", "moderate_effort", "significant_effort", "major_rework"]
+        - by_type:
+            ["functional", "non_functional", "technical_debt", "documentation"]
+        - by_component:
+            ["frontend", "backend", "database", "api", "infrastructure"]
+        - by_effort:
+            [
+              "quick_fix",
+              "moderate_effort",
+              "significant_effort",
+              "major_rework",
+            ]
       priority_matrix:
         high_impact_low_effort: "IMMEDIATE"
         high_impact_high_effort: "HIGH"

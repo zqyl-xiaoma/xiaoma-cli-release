@@ -1061,7 +1061,7 @@ workflow:
         action: proceed_to_architecture_design
         message: "✅ 所有史诗创建完成，准备进行技术架构设计"
 
-      notes: |
+      detailed_notes: |
         PM 拆分史诗的完整流程：
         1. 保持 PM Agent 激活状态
         2. 从 PRD 的"实施计划"部分提取史诗清单
@@ -1521,9 +1521,9 @@ workflow:
               - 下一阶段：用户故事创建和细化
               - 建议使用：automated-story-development.yaml 工作流
               - 前置条件已满足：
-                  - Epic 文档已创建
-                  - 数据库设计已完成
-                  - 架构设计已完成
+                - Epic 文档已创建
+                - 数据库设计已完成
+                - 架构设计已完成
 
             section_4_metrics:
               - 识别的 Epic 数量

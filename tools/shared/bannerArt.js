@@ -1,8 +1,8 @@
 // ASCII banner art definitions extracted from banners.js to separate art from logic
 
-const XIAOMA_TITLE = 'XIAOMA-CLI™';
-const FLATTENER_TITLE = 'FLATTENER';
-const INSTALLER_TITLE = 'INSTALLER';
+const XIAOMA_TITLE = "XIAOMA-CLI™";
+const FLATTENER_TITLE = "FLATTENER";
+const INSTALLER_TITLE = "INSTALLER";
 
 // Large ASCII blocks (block-style fonts)
 const XIAOMA_LARGE = `

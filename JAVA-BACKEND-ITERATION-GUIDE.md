@@ -16,6 +16,7 @@
 - ✅ PM 提供的需求文档（`req.txt`）
 - ✅ 已安装 xiaoma-core 到项目目录
 - ✅ 项目目录结构：
+
 ```
 /your-project/
 ├── src/                 # Java 源码
@@ -41,17 +42,20 @@
 #### 操作步骤：
 
 **① 进入项目目录**
+
 ```bash
 cd /your-project/
 ```
 
 **② 激活 xiaoma-orchestrator 并切换到 architect**
+
 ```bash
 # 在 IDE 中（如 Cursor/Claude Code）或 Web UI 中
 *agent architect
 ```
 
 **③ 发送 Prompt**
+
 ```
 请分析当前项目的后端架构。
 
@@ -79,6 +83,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 架构分析报告（Markdown 格式）
 - 保存到 `docs/architecture/current-architecture-analysis.md`
 
@@ -91,11 +96,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 PM Agent**
+
 ```bash
 *agent pm
 ```
 
 **② 发送 Prompt**
+
 ```
 我需要为现有 Java 后端项目创建一份迭代需求的 PRD 文档。
 
@@ -134,18 +141,21 @@ cd /your-project/
 ```
 
 **③ Agent 执行命令**
+
 ```bash
 # PM Agent 会自动执行
 *create-brownfield-prd
 ```
 
 **期望输出**：
+
 - PRD 文档：`docs/prd/云链API平台需求文档.md`（或类似文件名）
 - 包含完整的需求描述、功能列表、验收标准等
 
 **④ 验证 PRD 质量**
 
 发送验证 Prompt：
+
 ```
 请审查刚才创建的 PRD 文档，确认：
 1. ✓ 所有功能需求都已覆盖（对照 req.txt）
@@ -168,6 +178,7 @@ cd /your-project/
 **① 保持 PM Agent 激活状态**
 
 **② 发送 Prompt（针对每个史诗）**
+
 ```
 基于刚才创建的 PRD，我需要创建史诗。
 
@@ -200,11 +211,13 @@ cd /your-project/
 ```
 
 **③ Agent 执行命令**
+
 ```bash
 *create-epic
 ```
 
 **期望输出**：
+
 - 史诗文档：`docs/prd/史诗-[名称].md`
 - 对每个史诗重复此步骤
 
@@ -219,11 +232,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 Architect Agent**
+
 ```bash
 *agent architect
 ```
 
 **② 发送 Prompt**
+
 ```
 基于现有系统架构，我需要设计此次迭代需求的技术实现方案。
 
@@ -282,10 +297,12 @@ cd /your-project/
 **③ Agent 生成架构设计**
 
 **期望输出**：
+
 - 后端架构设计文档：`docs/architecture/iteration-backend-design.md`
 - 数据库变更脚本：`docs/architecture/db-migration-scripts.sql`
 
 **④ 架构评审 Prompt**
+
 ```
 请对刚才的架构设计进行自我评审，检查：
 1. ✓ 是否与现有架构一致
@@ -308,11 +325,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 SM Agent**
+
 ```bash
 *agent sm
 ```
 
 **② 发送 Prompt**
+
 ```
 基于 PRD 和架构设计，我需要识别并列出所有用户故事。
 
@@ -343,6 +362,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 用户故事清单表格
 - 建议开发顺序
 
@@ -357,7 +377,8 @@ cd /your-project/
 **① 保持 SM Agent 激活状态**
 
 **② 针对第一个用户故事，发送 Prompt**
-```
+
+````
 请为用户故事 US-01 创建增强版用户故事文档。
 
 **故事基本信息**：
@@ -408,7 +429,7 @@ cd /your-project/
 ```sql
 -- 如果是新表，提供完整 CREATE TABLE 语句
 -- 如果是修改表，提供 ALTER TABLE 语句
-```
+````
 
 **4. API 接口规范**（重点！）：
 **4.1 API 端点清单**：
@@ -418,6 +439,7 @@ cd /your-project/
 
 **4.2 API 详细设计**（每个端点）：
 对于每个 API，包含：
+
 - 接口描述
 - HTTP 方法和路径
 - 请求参数（Path/Query/Body）
@@ -430,11 +452,13 @@ cd /your-project/
 - 响应示例（JSON）
 
 **4.3 数据映射关系**：
+
 - DTO 到 Entity 的映射
 - 字段转换逻辑
 
 **5. 任务/子任务分解**（Java 后端）：
 **后端开发任务**：
+
 - [ ] 创建/修改 Entity 类（`entity/[ClassName].java`）
 - [ ] 创建 DTO 类（`dto/[ClassName]DTO.java`）
 - [ ] 创建 Mapper 接口（`mapper/[ClassName]Mapper.java`）
@@ -445,17 +469,20 @@ cd /your-project/
 - [ ] 配置文件更新（如需要）
 
 **测试任务**：
+
 - [ ] Service 单元测试（JUnit + Mockito）
 - [ ] Mapper 集成测试（Spring Boot Test）
 - [ ] Controller API 测试（MockMvc）
 - [ ] 端到端业务流程测试
 
 **数据库任务**：
+
 - [ ] 执行 DDL 脚本（开发环境）
 - [ ] 数据迁移脚本（如需要）
 - [ ] 验证数据完整性
 
 **6. 开发者说明**：
+
 - 技术实现要点
 - 需要注意的现有代码
 - 性能优化建议
@@ -464,35 +491,41 @@ cd /your-project/
 - 日志记录要求
 
 **7. 技术约束**：
+
 - 使用的框架版本
 - 编码规范
 - 与现有代码的集成点
 - 不能修改的现有代码
 
 **8. 测试策略**：
+
 - 单元测试覆盖率要求（≥80%）
 - 集成测试场景
 - API 测试用例
 
 **特别要求**：
+
 - 这是现有项目，需要明确标注哪些是新增、哪些是修改
 - 数据库设计要考虑数据迁移
 - API 设计要保持与现有 API 的一致性
 - 所有 Java 类名、包名要符合现有项目规范
 
-请执行 *draft-enhanced 命令。
-```
+请执行 \*draft-enhanced 命令。
+
+````
 
 **③ Agent 执行命令并生成文档**
 ```bash
 *draft-enhanced
-```
+````
 
 **期望输出**：
+
 - 用户故事文档：`docs/stories/epic01-story01.md`
 - 文档状态：`Draft`（草稿）
 
 **④ 验证故事质量 Prompt**
+
 ```
 请对刚才创建的用户故事文档进行自检，确认：
 
@@ -531,11 +564,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 PO Agent**
+
 ```bash
 *agent po
 ```
 
 **② 针对每个用户故事，发送验证 Prompt**
+
 ```
 请验证用户故事的质量和完整性。
 
@@ -575,15 +610,18 @@ cd /your-project/
 ```
 
 **③ Agent 执行验证**
+
 ```bash
 *validate-story-draft
 ```
 
 **期望输出**：
+
 - 验证通过：故事状态更新为 `Approved`
 - 验证不通过：问题清单，需返回步骤 3.2 修改
 
 **④ 如果不通过，返回 SM Agent 修改**
+
 ```bash
 *agent sm
 
@@ -615,11 +653,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 Dev Agent**
+
 ```bash
 *agent dev
 ```
 
 **② 发送开发 Prompt**
+
 ```
 请开发用户故事 US-01 的 Java 后端代码。
 
@@ -762,11 +802,13 @@ cd /your-project/
 ```
 
 **③ Agent 执行开发**
+
 ```bash
 *develop-story docs/stories/epic01-story01.md
 ```
 
 **期望输出**：
+
 - 完整的 Java 代码文件（Entity, Mapper, Service, Controller, DTO, Test）
 - 更新后的用户故事文档（开发者记录）
 
@@ -779,6 +821,7 @@ cd /your-project/
 **① 保持 Dev Agent 激活**
 
 **② 发送测试 Prompt**
+
 ```
 请运行刚才开发的代码的所有测试。
 
@@ -806,16 +849,19 @@ cd /your-project/
 ```
 
 **③ Agent 执行测试**
+
 ```bash
 *run-tests
 ```
 
 **期望输出**：
+
 - 测试通过报告
 - 覆盖率报告
 - 如有失败，显示失败原因
 
 **④ 如果测试失败，发送修复 Prompt**
+
 ```
 测试失败，请修复。
 
@@ -840,6 +886,7 @@ cd /your-project/
 **① 保持 Dev Agent 激活**
 
 **② 发送自检 Prompt**
+
 ```
 请对刚才开发的代码进行自检和优化。
 
@@ -891,6 +938,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 自检报告
 - 优化建议（如有）
 - 优化后的代码（如有）
@@ -904,11 +952,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 QA Agent**
+
 ```bash
 *agent qa
 ```
 
 **② 发送审查 Prompt**
+
 ```
 请对用户故事 US-01 进行全面的 QA 审查。
 
@@ -1023,11 +1073,13 @@ cd /your-project/
 ```
 
 **③ Agent 执行审查**
+
 ```bash
 *review docs/stories/epic01-story01.md
 ```
 
 **期望输出**：
+
 - QA 审查报告
 - 问题清单（如有）
 - 质量评分
@@ -1040,11 +1092,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 如果 QA 发现问题，切换回 Dev Agent**
+
 ```bash
 *agent dev
 ```
 
 **② 发送修复 Prompt**
+
 ```
 请根据 QA 审查报告修复发现的问题。
 
@@ -1075,16 +1129,19 @@ cd /your-project/
 ```
 
 **③ Agent 执行修复**
+
 ```bash
 *review-qa docs/stories/epic01-story01.md
 ```
 
 **④ 修复后重新测试**
+
 ```bash
 *run-tests
 ```
 
 **⑤ 返回 QA Agent 重新审查**
+
 ```bash
 *agent qa
 *review docs/stories/epic01-story01.md
@@ -1101,6 +1158,7 @@ cd /your-project/
 **① 保持 QA Agent 激活**
 
 **② 发送门禁决策 Prompt**
+
 ```
 请对用户故事 US-01 进行质量门禁决策。
 
@@ -1150,11 +1208,13 @@ cd /your-project/
 ```
 
 **③ Agent 执行门禁决策**
+
 ```bash
 *gate docs/stories/epic01-story01.md
 ```
 
 **期望输出**：
+
 - Go/No-Go 决策
 - 决策理由
 - 故事状态更新
@@ -1178,11 +1238,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 XiaoMa Master（使用 requirements-coverage-auditor）**
+
 ```bash
 *agent xiaoma-master
 ```
 
 **② 发送审计 Prompt**
+
 ```
 请对整个迭代需求进行全面的覆盖度审计。
 
@@ -1266,6 +1328,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 需求覆盖度审计报告
 - 覆盖度百分比（目标：≥95%）
 - 差距清单（如有）
@@ -1274,6 +1337,7 @@ cd /your-project/
 **③ 审查审计报告**
 
 如果发现覆盖度不足（<95%），需要：
+
 1. 识别未覆盖的需求
 2. 创建补充用户故事
 3. 重复阶段 3-5 完成补充故事
@@ -1289,6 +1353,7 @@ cd /your-project/
 **① 保持 XiaoMa Master 激活**
 
 **② 发送质量验证 Prompt**
+
 ```
 请对整个迭代的交付物进行 7 层全局质量验证。
 
@@ -1372,6 +1437,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 7 层质量验证报告
 - 整体质量评分（目标：≥90）
 - 问题清单（如有）
@@ -1380,6 +1446,7 @@ cd /your-project/
 **③ 处理质量问题**
 
 如果质量评分 <90 或存在 Critical 问题：
+
 1. 识别问题所在（哪一层、哪个故事/文件）
 2. 返回相应 Agent 修复（Dev/SM/QA）
 3. 重新验证
@@ -1393,11 +1460,13 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 PO Agent**
+
 ```bash
 *agent po
 ```
 
 **② 发送汇总生成 Prompt**
+
 ```
 请生成本次迭代的已完成用户故事汇总文档。
 
@@ -1474,6 +1543,7 @@ cd /your-project/
 ```
 
 **期望输出**：
+
 - 完成故事汇总文档：`docs/stories/COMPLETED_STORIES_SUMMARY.md`
 
 ---
@@ -1483,12 +1553,14 @@ cd /your-project/
 #### 操作步骤：
 
 **① 切换到 Architect Agent**
+
 ```bash
 *agent architect
 ```
 
 **② 发送 API 文档生成 Prompt**
-```
+
+````
 请生成本次迭代新增/修改的 API 接口文档。
 
 **任务要求**：
@@ -1511,7 +1583,7 @@ cd /your-project/
   "data": { ... },
   "timestamp": "2025-01-15T10:30:00Z"
 }
-```
+````
 
 **3. 通用错误码**：
 | 错误码 | HTTP状态码 | 说明 | 示例 |
@@ -1527,15 +1599,18 @@ cd /your-project/
 ### 示例：用户注册 API
 
 **基本信息**：
+
 - 接口路径：`/api/v1/users/register`
 - 请求方法：`POST`
 - 接口描述：用户注册接口
 - 认证要求：无
 
 **请求参数**：
+
 - Content-Type: `application/json`
 
 **请求 Body**：
+
 ```json
 {
   "username": "string, 必填, 4-20字符, 字母数字下划线",
@@ -1546,6 +1621,7 @@ cd /your-project/
 ```
 
 **Java DTO 类**：
+
 ```java
 @Data
 public class UserRegisterRequest {
@@ -1567,6 +1643,7 @@ public class UserRegisterRequest {
 ```
 
 **响应数据**：
+
 ```json
 {
   "code": 200,
@@ -1581,6 +1658,7 @@ public class UserRegisterRequest {
 ```
 
 **curl 示例**：
+
 ```bash
 curl -X POST "https://api.example.com/v1/users/register" \
   -H "Content-Type: application/json" \
@@ -1600,6 +1678,7 @@ curl -X POST "https://api.example.com/v1/users/register" \
 记录 API 版本变更历史。
 
 请基于所有用户故事中的 API 设计，生成完整的 API 文档。
+
 ```
 
 **期望输出**：
@@ -1615,6 +1694,7 @@ curl -X POST "https://api.example.com/v1/users/register" \
 
 **② 发送数据库文档生成 Prompt**
 ```
+
 请生成本次迭代的数据库变更文档。
 
 **任务要求**：
@@ -1623,6 +1703,7 @@ curl -X POST "https://api.example.com/v1/users/register" \
 **文档内容**：
 
 **1. 数据库概述**：
+
 - 数据库类型：MySQL 8.0
 - 字符集：utf8mb4
 - 排序规则：utf8mb4_unicode_ci
@@ -1632,6 +1713,7 @@ curl -X POST "https://api.example.com/v1/users/register" \
 ### 示例：用户表（user）
 
 **表基本信息**：
+
 - 表名：`user`
 - 用途：存储用户基本信息
 - 引擎：InnoDB
@@ -1649,12 +1731,14 @@ curl -X POST "https://api.example.com/v1/users/register" \
 | updated_at | DATETIME | - | 否 | 否 | CURRENT_TIMESTAMP ON UPDATE | 更新时间 |
 
 **索引**：
+
 - PRIMARY KEY (`id`)
 - UNIQUE KEY `uk_username` (`username`)
 - UNIQUE KEY `uk_email` (`email`)
 - INDEX `idx_status` (`status`)
 
 **DDL 语句**：
+
 ```sql
 CREATE TABLE `user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
@@ -1673,6 +1757,7 @@ CREATE TABLE `user` (
 ```
 
 **Java Entity 类**：
+
 ```java
 @Entity
 @Table(name = "user")
@@ -1716,6 +1801,7 @@ public class User {
 **修改说明**：新增 `stock` 字段用于记录产品库存
 
 **ALTER 语句**：
+
 ```sql
 ALTER TABLE `product`
 ADD COLUMN `stock` INT NOT NULL DEFAULT 0 COMMENT '库存数量' AFTER `price`,
@@ -1723,10 +1809,12 @@ ADD INDEX `idx_stock` (`stock`);
 ```
 
 **影响**：
+
 - 现有数据：默认库存为 0
 - 需要手动更新现有产品的库存数据
 
 **4. 表关系图**：
+
 ```
 user (1) ----< (N) order
 order (1) ----< (N) order_item
@@ -1736,6 +1824,7 @@ product (1) ----< (N) order_item
 **5. 数据迁移脚本**：
 
 **5.1 初始化脚本**（新环境）：
+
 ```sql
 -- 文件：db/migration/V1.0.0__init.sql
 SOURCE db/ddl/create_user_table.sql;
@@ -1743,6 +1832,7 @@ SOURCE db/ddl/create_order_table.sql;
 ```
 
 **5.2 增量脚本**（现有环境）：
+
 ```sql
 -- 文件：db/migration/V1.1.0__add_stock_to_product.sql
 ALTER TABLE `product`
@@ -1753,10 +1843,12 @@ ADD COLUMN `stock` INT NOT NULL DEFAULT 0 COMMENT '库存数量' AFTER `price`;
 完整的数据字典（所有表、所有字段）。
 
 **7. 性能优化建议**：
+
 - 索引策略
 - 查询优化建议
 
 请基于所有用户故事中的数据库设计，生成完整的数据库文档。
+
 ```
 
 **期望输出**：
@@ -1774,6 +1866,7 @@ ADD COLUMN `stock` INT NOT NULL DEFAULT 0 COMMENT '库存数量' AFTER `price`;
 
 **② 发送部署文档生成 Prompt**
 ```
+
 请生成本次迭代的部署文档。
 
 **任务要求**：
@@ -1782,6 +1875,7 @@ ADD COLUMN `stock` INT NOT NULL DEFAULT 0 COMMENT '库存数量' AFTER `price`;
 **文档内容**：
 
 **1. 部署概述**：
+
 - 版本号：v1.1.0
 - 部署类型：增量部署（现有系统升级）
 - 部署环境：开发/测试/生产
@@ -1790,11 +1884,13 @@ ADD COLUMN `stock` INT NOT NULL DEFAULT 0 COMMENT '库存数量' AFTER `price`;
 **2. 部署前准备**：
 
 **2.1 环境要求**：
+
 - JDK 版本：11+
 - Maven/Gradle 版本：[版本]
 - 数据库版本：MySQL 8.0+
 
 **2.2 代码准备**：
+
 ```bash
 git pull origin main
 git checkout release/v1.1.0
@@ -1802,6 +1898,7 @@ mvn clean package -DskipTests
 ```
 
 **2.3 数据库备份**：
+
 ```bash
 mysqldump -u root -p your_database > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
@@ -1809,6 +1906,7 @@ mysqldump -u root -p your_database > backup_$(date +%Y%m%d_%H%M%S).sql
 **3. 数据库迁移**：
 
 **3.1 执行 DDL 脚本**：
+
 ```bash
 mysql -u root -p your_database
 SOURCE db/migration/V1.1.0__*.sql;
@@ -1817,16 +1915,19 @@ SOURCE db/migration/V1.1.0__*.sql;
 **4. 应用部署**：
 
 **4.1 停止服务**：
+
 ```bash
 systemctl stop your-service
 ```
 
 **4.2 部署新版本**：
+
 ```bash
 cp target/your-app-1.1.0.jar /opt/app/your-app.jar
 ```
 
 **4.3 启动服务**：
+
 ```bash
 systemctl start your-service
 tail -f /opt/app/logs/application.log
@@ -1835,11 +1936,13 @@ tail -f /opt/app/logs/application.log
 **5. 部署验证**：
 
 **5.1 健康检查**：
+
 ```bash
 curl http://localhost:8080/actuator/health
 ```
 
 **5.2 API 测试**：
+
 ```bash
 curl -X POST "http://localhost:8080/api/v1/users/register" \
   -H "Content-Type: application/json" \
@@ -1847,6 +1950,7 @@ curl -X POST "http://localhost:8080/api/v1/users/register" \
 ```
 
 **6. 回滚方案**（如部署失败）：
+
 ```bash
 systemctl stop your-service
 cp /opt/app/backup/your-app_*.jar /opt/app/your-app.jar
@@ -1854,7 +1958,8 @@ systemctl start your-service
 ```
 
 请生成此部署文档。
-```
+
+````
 
 **期望输出**：
 - 部署文档：`docs/deployment/iteration-deployment-guide.md`
@@ -1868,9 +1973,10 @@ systemctl start your-service
 **① 切换到 PO Agent**
 ```bash
 *agent po
-```
+````
 
 **② 发送最终验收 Prompt**
+
 ```
 请对本次迭代进行最终验收。
 
@@ -1924,6 +2030,7 @@ systemctl start your-service
 ```
 
 **期望输出**：
+
 - 验收记录：`docs/acceptance/iteration-acceptance-record.md`
 - 验收结果：通过/不通过
 
@@ -1976,15 +2083,15 @@ systemctl start your-service
 
 ## ⏱️ 时间估算（10 个用户故事的项目）
 
-| 阶段 | 时间 |
-|-----|------|
-| 阶段 1-2：准备和设计 | 2-4 小时 |
-| 阶段 3：故事创建（10个） | 5-10 小时 |
-| 阶段 4：开发（10个） | 20-40 小时 |
-| 阶段 5：QA（10个） | 10-20 小时 |
-| 阶段 6：审计验证 | 2-3 小时 |
-| 阶段 7：文档交付 | 2-3 小时 |
-| **总计** | **41-80 小时**（5-10 个工作日） |
+| 阶段                     | 时间                            |
+| ------------------------ | ------------------------------- |
+| 阶段 1-2：准备和设计     | 2-4 小时                        |
+| 阶段 3：故事创建（10个） | 5-10 小时                       |
+| 阶段 4：开发（10个）     | 20-40 小时                      |
+| 阶段 5：QA（10个）       | 10-20 小时                      |
+| 阶段 6：审计验证         | 2-3 小时                        |
+| 阶段 7：文档交付         | 2-3 小时                        |
+| **总计**                 | **41-80 小时**（5-10 个工作日） |
 
 ---
 

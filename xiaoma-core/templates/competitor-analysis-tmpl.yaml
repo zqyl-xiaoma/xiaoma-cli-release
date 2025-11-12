@@ -152,11 +152,29 @@ sections:
         rows:
           - category: "核心功能"
             items:
-              - ["功能A", "{{status}}", "{{status}}", "{{status}}", "{{status}}"]
-              - ["功能B", "{{status}}", "{{status}}", "{{status}}", "{{status}}"]
+              - [
+                  "功能A",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                ]
+              - [
+                  "功能B",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                ]
           - category: "用户体验"
             items:
-              - ["移动应用", "{{rating}}", "{{rating}}", "{{rating}}", "{{rating}}"]
+              - [
+                  "移动应用",
+                  "{{rating}}",
+                  "{{rating}}",
+                  "{{rating}}",
+                  "{{rating}}",
+                ]
               - ["上手时间", "{{time}}", "{{time}}", "{{time}}", "{{time}}"]
           - category: "集成与生态系统"
             items:
@@ -167,11 +185,23 @@ sections:
                   "{{availability}}",
                   "{{availability}}",
                 ]
-              - ["第三方集成", "{{number}}", "{{number}}", "{{number}}", "{{number}}"]
+              - [
+                  "第三方集成",
+                  "{{number}}",
+                  "{{number}}",
+                  "{{number}}",
+                  "{{number}}",
+                ]
           - category: "定价与计划"
             items:
               - ["起步价", "{{price}}", "{{price}}", "{{price}}", "{{price}}"]
-              - ["免费套餐", "{{yes_no}}", "{{yes_no}}", "{{yes_no}}", "{{yes_no}}"]
+              - [
+                  "免费套餐",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                ]
       - id: swot-comparison
         title: SWOT 对比
         instruction: 为你的解决方案与主要竞争对手创建 SWOT 分析

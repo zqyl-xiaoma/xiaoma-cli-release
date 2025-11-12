@@ -49,12 +49,12 @@
 #### 2.1 基础信息填写
 
 ```yaml
-epic_num: '{{epic_number}}'
-story_num: '{{story_number}}'
-story_title_short: '{{story_title}}'
-role: '{{user_role}}'
-action: '{{user_action}}'
-benefit: '{{user_benefit}}'
+epic_num: "{{epic_number}}"
+story_num: "{{story_number}}"
+story_title_short: "{{story_title}}"
+role: "{{user_role}}"
+action: "{{user_action}}"
+benefit: "{{user_benefit}}"
 ```
 
 #### 2.2 数据库设计部分填写

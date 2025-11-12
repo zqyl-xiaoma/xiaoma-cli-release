@@ -11,7 +11,7 @@
 ```yaml
 action: check_existing_documentation
 path: docs/database/
-pattern: '{project_name}-database.md'
+pattern: "{project_name}-database.md"
 ```
 
 ### 2. 连接数据库

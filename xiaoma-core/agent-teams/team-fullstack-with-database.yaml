@@ -9,7 +9,6 @@ agents:
   - automation-orchestrator # 自动化流程编排器
   - analyst
   - pm
-  - database-architect # 数据库架构师
   - ux-expert
   - architect
   - po

@@ -56,15 +56,15 @@ pipeline_design:
     pipeline_count: 1 # 单一串行流水线
 
     serial_pipeline:
-      focus: '严格串行执行所有故事'
-      execution_policy: 'one_task_at_a_time'
-      completion_requirement: '100%_before_next'
+      focus: "严格串行执行所有故事"
+      execution_policy: "one_task_at_a_time"
+      completion_requirement: "100%_before_next"
 
       story_execution_order:
-        priority_1_foundation: ['用户认证', '权限管理', '基础数据模型']
-        priority_2_core: ['主要业务流程', '核心数据操作']
-        priority_3_features: ['扩展功能', '用户体验优化']
-        priority_4_support: ['监控', '配置', '工具功能']
+        priority_1_foundation: ["用户认证", "权限管理", "基础数据模型"]
+        priority_2_core: ["主要业务流程", "核心数据操作"]
+        priority_3_features: ["扩展功能", "用户体验优化"]
+        priority_4_support: ["监控", "配置", "工具功能"]
 
   quality_gates:
     strict_validation:
@@ -80,28 +80,28 @@ pipeline_design:
 synchronization_design:
   sync_points:
     foundation_completion:
-      trigger: '基础故事100%完成'
-      validation: '基础API和数据模型完全就绪'
-      quality_gate: '通过所有测试和质量检查'
-      next_stage: '核心业务开发启动'
+      trigger: "基础故事100%完成"
+      validation: "基础API和数据模型完全就绪"
+      quality_gate: "通过所有测试和质量检查"
+      next_stage: "核心业务开发启动"
 
     core_business_completion:
-      trigger: '核心业务故事100%完成'
-      validation: '主要业务流程完全就绪'
-      quality_gate: '通过所有集成测试'
-      next_stage: '特性功能开发启动'
+      trigger: "核心业务故事100%完成"
+      validation: "主要业务流程完全就绪"
+      quality_gate: "通过所有集成测试"
+      next_stage: "特性功能开发启动"
 
     features_completion:
-      trigger: '特性功能故事100%完成'
-      validation: '所有特性功能完全就绪'
-      quality_gate: '通过端到端测试'
-      next_stage: '优化支撑功能启动'
+      trigger: "特性功能故事100%完成"
+      validation: "所有特性功能完全就绪"
+      quality_gate: "通过端到端测试"
+      next_stage: "优化支撑功能启动"
 
     final_completion:
-      trigger: '所有故事100%完成'
-      validation: '完整产品就绪'
-      quality_gate: '通过最终验收测试'
-      next_stage: '项目交付准备'
+      trigger: "所有故事100%完成"
+      validation: "完整产品就绪"
+      quality_gate: "通过最终验收测试"
+      next_stage: "项目交付准备"
 ```
 
 ### 第4步: 质量门控实施
@@ -114,31 +114,31 @@ quality_gates:
 
     gate_1_foundation:
       requirements:
-        - code_coverage: '>=95%'
-        - unit_tests: 'all_passing'
-        - integration_tests: 'all_passing'
-        - code_quality: 'A_grade'
+        - code_coverage: ">=95%"
+        - unit_tests: "all_passing"
+        - integration_tests: "all_passing"
+        - code_quality: "A_grade"
 
     gate_2_core:
       requirements:
-        - api_tests: 'all_passing'
-        - business_logic_tests: 'all_passing'
-        - database_tests: 'all_passing'
-        - performance_tests: 'baseline_met'
+        - api_tests: "all_passing"
+        - business_logic_tests: "all_passing"
+        - database_tests: "all_passing"
+        - performance_tests: "baseline_met"
 
     gate_3_features:
       requirements:
-        - feature_tests: 'all_passing'
-        - ui_tests: 'all_passing'
-        - cross_browser_tests: 'all_passing'
-        - accessibility_tests: 'all_passing'
+        - feature_tests: "all_passing"
+        - ui_tests: "all_passing"
+        - cross_browser_tests: "all_passing"
+        - accessibility_tests: "all_passing"
 
     gate_4_final:
       requirements:
-        - end_to_end_tests: 'all_passing'
-        - security_scan: 'no_critical_issues'
-        - performance_benchmark: 'meets_requirements'
-        - user_acceptance: 'approved'
+        - end_to_end_tests: "all_passing"
+        - security_scan: "no_critical_issues"
+        - performance_benchmark: "meets_requirements"
+        - user_acceptance: "approved"
 ```
 
 ### 第5步: 执行监控和控制
@@ -153,7 +153,7 @@ execution_control:
       - blocking_issues: 阻塞问题
 
     progress_reporting:
-      frequency: 'continuous'
+      frequency: "continuous"
       metrics:
         - story_completion_status: 故事完成状态
         - quality_gate_status: 质量门控状态
@@ -265,7 +265,7 @@ ${final_validation_results}
 triggers:
   primary:
     condition: story_backlog_ready
-    trigger: '*orchestrate-serial-development'
+    trigger: "*orchestrate-serial-development"
 
   dependencies:
     required_inputs:
@@ -289,10 +289,10 @@ success_criteria:
     - deliverable_ready: 交付物就绪
 
   quality:
-    - code_coverage: '>=95%'
-    - test_pass_rate: '100%'
-    - defect_density: '<=0.1 per KLOC'
-    - performance_baseline: 'met'
+    - code_coverage: ">=95%"
+    - test_pass_rate: "100%"
+    - defect_density: "<=0.1 per KLOC"
+    - performance_baseline: "met"
 
   process:
     - strict_sequence_followed: 严格按序执行
@@ -319,16 +319,16 @@ error_handling:
 
   quality_failures:
     test_failures:
-      action: 'stop_and_fix'
-      escalation: 'immediate'
+      action: "stop_and_fix"
+      escalation: "immediate"
 
     coverage_below_threshold:
-      action: 'stop_and_improve'
-      requirement: 'meet_coverage_target'
+      action: "stop_and_improve"
+      requirement: "meet_coverage_target"
 
     integration_failures:
-      action: 'rollback_and_debug'
-      validation: 'complete_retest'
+      action: "rollback_and_debug"
+      validation: "complete_retest"
 ```
 
 ## Integration Points

@@ -1,7 +1,7 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const os = require('node:os');
-const { isBinaryFile } = require('./binary.js');
+const fs = require("fs-extra");
+const path = require("node:path");
+const os = require("node:os");
+const { isBinaryFile } = require("./binary.js");
 
 /**
  * Aggregate file contents with bounded concurrency.
@@ -22,10 +22,16 @@ async function aggregateFileContents(files, rootDir, spinner = null) {
   // Automatic concurrency selection based on CPU count and workload size.
   // - Base on 2x logical CPUs, clamped to [2, 64]
   // - For very small workloads, avoid excessive parallelism
-  const cpuCount = os.cpus && Array.isArray(os.cpus()) ? os.cpus().length : os.cpus?.length || 4;
+  const cpuCount =
+    os.cpus && Array.isArray(os.cpus())
+      ? os.cpus().length
+      : os.cpus?.length || 4;
   let concurrency = Math.min(64, Math.max(2, (Number(cpuCount) || 4) * 2));
   if (files.length > 0 && files.length < concurrency) {
-    concurrency = Math.max(1, Math.min(concurrency, Math.ceil(files.length / 2)));
+    concurrency = Math.max(
+      1,
+      Math.min(concurrency, Math.ceil(files.length / 2)),
+    );
   }
 
   async function processOne(filePath) {
@@ -38,25 +44,37 @@ async function aggregateFileContents(files, rootDir, spinner = null) {
       const binary = await isBinaryFile(filePath);
       if (binary) {
         const { size } = await fs.stat(filePath);
-        results.binaryFiles.push({ path: relativePath, absolutePath: filePath, size });
+        results.binaryFiles.push({
+          path: relativePath,
+          absolutePath: filePath,
+          size,
+        });
       } else {
-        const content = await fs.readFile(filePath, 'utf8');
+        const content = await fs.readFile(filePath, "utf8");
         results.textFiles.push({
           path: relativePath,
           absolutePath: filePath,
           content,
           size: content.length,
-          lines: content.split('\n').length,
+          lines: content.split("\n").length,
         });
       }
     } catch (error) {
       const relativePath = path.relative(rootDir, filePath);
-      const errorInfo = { path: relativePath, absolutePath: filePath, error: error.message };
+      const errorInfo = {
+        path: relativePath,
+        absolutePath: filePath,
+        error: error.message,
+      };
       results.errors.push(errorInfo);
       if (spinner) {
-        spinner.warn(`Warning: Could not read file ${relativePath}: ${error.message}`);
+        spinner.warn(
+          `Warning: Could not read file ${relativePath}: ${error.message}`,
+        );
       } else {
-        console.warn(`Warning: Could not read file ${relativePath}: ${error.message}`);
+        console.warn(
+          `Warning: Could not read file ${relativePath}: ${error.message}`,
+        );
       }
     } finally {
       results.processedFiles++;

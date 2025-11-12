@@ -3,7 +3,7 @@
  * Helps identify memory leaks and optimize resource usage
  */
 
-const v8 = require('node:v8');
+const v8 = require("node:v8");
 
 class MemoryProfiler {
   constructor() {
@@ -134,9 +134,11 @@ class MemoryProfiler {
 
     if (largeGrowths.length > 0) {
       recommendations.push({
-        type: 'warning',
+        type: "warning",
         message: `Large memory growth detected in ${largeGrowths.length} operations`,
-        details: largeGrowths.map((g) => `${g.from} → ${g.to}: ${g.heapGrowth}`),
+        details: largeGrowths.map(
+          (g) => `${g.from} → ${g.to}: ${g.heapGrowth}`,
+        ),
       });
     }
 
@@ -144,9 +146,9 @@ class MemoryProfiler {
     if (this.peakMemory > 500 * 1024 * 1024) {
       // 500MB
       recommendations.push({
-        type: 'warning',
+        type: "warning",
         message: `High peak memory usage: ${this.formatBytes(this.peakMemory)}`,
-        suggestion: 'Consider processing files in smaller batches',
+        suggestion: "Consider processing files in smaller batches",
       });
     }
 
@@ -154,9 +156,10 @@ class MemoryProfiler {
     const continuousGrowth = this.checkContinuousGrowth();
     if (continuousGrowth) {
       recommendations.push({
-        type: 'error',
-        message: 'Potential memory leak detected',
-        details: 'Memory usage continuously increases without significant decreases',
+        type: "error",
+        message: "Potential memory leak detected",
+        details:
+          "Memory usage continuously increases without significant decreases",
       });
     }
 
@@ -171,7 +174,10 @@ class MemoryProfiler {
 
     let increasingCount = 0;
     for (let index = 1; index < this.checkpoints.length; index++) {
-      if (this.checkpoints[index].raw.heapUsed > this.checkpoints[index - 1].raw.heapUsed) {
+      if (
+        this.checkpoints[index].raw.heapUsed >
+        this.checkpoints[index - 1].raw.heapUsed
+      ) {
         increasingCount++;
       }
     }
@@ -184,13 +190,17 @@ class MemoryProfiler {
    * Format bytes to human-readable string
    */
   formatBytes(bytes) {
-    if (bytes === 0) return '0 B';
+    if (bytes === 0) return "0 B";
 
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = ["B", "KB", "MB", "GB"];
     const index = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return Number.parseFloat((bytes / Math.pow(k, index)).toFixed(2)) + ' ' + sizes[index];
+    return (
+      Number.parseFloat((bytes / Math.pow(k, index)).toFixed(2)) +
+      " " +
+      sizes[index]
+    );
   }
 
   /**

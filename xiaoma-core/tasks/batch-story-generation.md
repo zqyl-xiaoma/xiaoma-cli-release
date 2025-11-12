@@ -73,7 +73,7 @@ prioritization_algorithm:
     - implementation_risk: 实现风险评估
 
   priority_calculation:
-    formula: 'business_value * user_impact / (dependency_weight + risk_factor)'
+    formula: "business_value * user_impact / (dependency_weight + risk_factor)"
 
   priority_levels:
     - p0_critical: 关键路径故事
@@ -181,12 +181,12 @@ enhanced_story_generation:
 dependency_graph:
   nodes:
     - id: US001
-      title: '用户注册与登录'
+      title: "用户注册与登录"
       priority: P0
       estimated_effort: 3
 
     - id: US002
-      title: '权限管理基础'
+      title: "权限管理基础"
       priority: P0
       estimated_effort: 5
 
@@ -194,26 +194,26 @@ dependency_graph:
     - from: US001
       to: US002
       type: technical_dependency
-      description: '权限管理需要用户身份认证'
+      description: "权限管理需要用户身份认证"
 
     - from: US002
       to: US013
       type: business_flow_dependency
-      description: '个人信息管理需要权限控制'
+      description: "个人信息管理需要权限控制"
 
 critical_paths:
   - path: [US001, US002, US013, US025]
     duration: 15
-    description: '用户管理关键路径'
+    description: "用户管理关键路径"
 
 parallel_groups:
   - group_id: A
     stories: [US001, US002, US013]
-    focus: '用户管理'
+    focus: "用户管理"
 
   - group_id: B
     stories: [US003, US014, US025]
-    focus: '数据管理'
+    focus: "数据管理"
 ```
 
 ## Automation Integration
@@ -222,18 +222,18 @@ parallel_groups:
 
 ```yaml
 integration_points:
-  trigger_command: '*generate-all-stories'
+  trigger_command: "*generate-all-stories"
 
   input_sources:
-    - file: 'prd.md'
+    - file: "prd.md"
       validator: prd_completeness_check
-    - file: 'database_design.md'
+    - file: "database_design.md"
       validator: schema_consistency_check
 
   output_handlers:
-    - target: 'project_story_backlog.md'
+    - target: "project_story_backlog.md"
       post_processor: priority_validation
-    - target: 'stories/'
+    - target: "stories/"
       post_processor: story_format_validation
 ```
 
@@ -296,19 +296,19 @@ dynamic_adjustment:
 ```yaml
 error_scenarios:
   incomplete_prd:
-    detection: 'PRD缺少关键信息章节'
-    handling: '生成缺失信息提示，暂停生成'
-    recovery: '要求补充PRD信息后重新生成'
+    detection: "PRD缺少关键信息章节"
+    handling: "生成缺失信息提示，暂停生成"
+    recovery: "要求补充PRD信息后重新生成"
 
   conflicting_requirements:
-    detection: '需求之间存在逻辑冲突'
-    handling: '标记冲突点，生成冲突报告'
-    recovery: '人工review和冲突解决'
+    detection: "需求之间存在逻辑冲突"
+    handling: "标记冲突点，生成冲突报告"
+    recovery: "人工review和冲突解决"
 
   circular_dependencies:
-    detection: '故事间存在循环依赖'
-    handling: '依赖环检测和报告'
-    recovery: '自动依赖重构建议'
+    detection: "故事间存在循环依赖"
+    handling: "依赖环检测和报告"
+    recovery: "自动依赖重构建议"
 ```
 
 ### 质量保证措施

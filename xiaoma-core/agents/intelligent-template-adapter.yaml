@@ -158,7 +158,8 @@ multi_dimensional_quality_validation:
 
       - field_format_validation:
           user_story_format: "^\\*\\*作为\\*\\*.*\\*\\*我希望\\*\\*.*\\*\\*以便\\*\\*.*"
-          status_values: ["Draft", "Approved", "InProgress", "Review", "Done", "Completed"]
+          status_values:
+            ["Draft", "Approved", "InProgress", "Review", "Done", "Completed"]
           table_format: "MARKDOWN_TABLE"
           validation_method: "REGEX_AND_FORMAT_CHECK"
 
@@ -192,7 +193,8 @@ multi_dimensional_quality_validation:
     scoring:
       weight: 25
       pass_threshold: 90
-      improvement_strategies: ["content_enhancement", "clarity_improvement", "accuracy_correction"]
+      improvement_strategies:
+        ["content_enhancement", "clarity_improvement", "accuracy_correction"]
 
   # 维度3：跨文档一致性
   cross_document_consistency_validation:
@@ -220,7 +222,11 @@ multi_dimensional_quality_validation:
       weight: 20
       pass_threshold: 95
       correction_strategies:
-        ["terminology_standardization", "format_alignment", "reference_correction"]
+        [
+          "terminology_standardization",
+          "format_alignment",
+          "reference_correction",
+        ]
 
   # 维度4：实施可行性
   implementation_feasibility_validation:
@@ -248,7 +254,11 @@ multi_dimensional_quality_validation:
       weight: 15
       pass_threshold: 85
       improvement_actions:
-        ["design_optimization", "feasibility_enhancement", "implementation_guidance"]
+        [
+          "design_optimization",
+          "feasibility_enhancement",
+          "implementation_guidance",
+        ]
 
   # 维度5：业务价值对齐
   business_value_alignment_validation:
@@ -270,7 +280,11 @@ multi_dimensional_quality_validation:
       weight: 10
       pass_threshold: 80
       enhancement_strategies:
-        ["value_clarification", "requirement_refinement", "stakeholder_alignment"]
+        [
+          "value_clarification",
+          "requirement_refinement",
+          "stakeholder_alignment",
+        ]
 
 # ========== 自动纠错和改进系统 ==========
 auto_correction_and_improvement_system:

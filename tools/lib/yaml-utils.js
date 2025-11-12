@@ -10,7 +10,9 @@
  */
 function extractYamlFromAgent(agentContent, cleanCommands = false) {
   // Remove carriage returns and match YAML block
-  const yamlMatch = agentContent.replaceAll('\r', '').match(/```ya?ml\n([\s\S]*?)\n```/);
+  const yamlMatch = agentContent
+    .replaceAll("\r", "")
+    .match(/```ya?ml\n([\s\S]*?)\n```/);
   if (!yamlMatch) return null;
 
   let yamlContent = yamlMatch[1].trim();
@@ -18,7 +20,10 @@ function extractYamlFromAgent(agentContent, cleanCommands = false) {
   // Clean up command descriptions if requested
   // Converts "- command - description" to just "- command"
   if (cleanCommands) {
-    yamlContent = yamlContent.replaceAll(/^(\s*-)(\s*"[^"]+")(\s*-\s*.*)$/gm, '$1$2');
+    yamlContent = yamlContent.replaceAll(
+      /^(\s*-)(\s*"[^"]+")(\s*-\s*.*)$/gm,
+      "$1$2",
+    );
   }
 
   return yamlContent;

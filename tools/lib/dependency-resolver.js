@@ -1,19 +1,19 @@
-const fs = require('node:fs').promises;
-const path = require('node:path');
-const yaml = require('js-yaml');
-const { extractYamlFromAgent } = require('./yaml-utils');
+const fs = require("node:fs").promises;
+const path = require("node:path");
+const yaml = require("js-yaml");
+const { extractYamlFromAgent } = require("./yaml-utils");
 
 class DependencyResolver {
   constructor(rootDir) {
     this.rootDir = rootDir;
-    this.xiaomaCore = path.join(rootDir, 'xiaoma-core');
-    this.common = path.join(rootDir, 'common');
+    this.xiaomaCore = path.join(rootDir, "xiaoma-core");
+    this.common = path.join(rootDir, "common");
     this.cache = new Map();
   }
 
   async resolveAgentDependencies(agentId) {
-    const agentPath = path.join(this.xiaomaCore, 'agents', `${agentId}.md`);
-    const agentContent = await fs.readFile(agentPath, 'utf8');
+    const agentPath = path.join(this.xiaomaCore, "agents", `${agentId}.md`);
+    const agentContent = await fs.readFile(agentPath, "utf8");
 
     // Extract YAML from markdown content with command cleaning
     const yamlContent = extractYamlFromAgent(agentContent, true);
@@ -36,7 +36,7 @@ class DependencyResolver {
     // Personas are now embedded in agent configs, no need to resolve separately
 
     // Resolve other dependencies
-    const depTypes = ['tasks', 'templates', 'checklists', 'data', 'utils'];
+    const depTypes = ["tasks", "templates", "checklists", "data", "utils"];
     for (const depType of depTypes) {
       const deps = agentConfig.dependencies?.[depType] || [];
       for (const depId of deps) {
@@ -49,8 +49,12 @@ class DependencyResolver {
   }
 
   async resolveTeamDependencies(teamId) {
-    const teamPath = path.join(this.xiaomaCore, 'agent-teams', `${teamId}.yaml`);
-    const teamContent = await fs.readFile(teamPath, 'utf8');
+    const teamPath = path.join(
+      this.xiaomaCore,
+      "agent-teams",
+      `${teamId}.yaml`,
+    );
+    const teamContent = await fs.readFile(teamPath, "utf8");
     const teamConfig = yaml.load(teamContent);
 
     const dependencies = {
@@ -65,7 +69,9 @@ class DependencyResolver {
     };
 
     // Always add xiaoma-orchestrator agent first if it's a team
-    const bmadAgent = await this.resolveAgentDependencies('xiaoma-orchestrator');
+    const bmadAgent = await this.resolveAgentDependencies(
+      "xiaoma-orchestrator",
+    );
     dependencies.agents.push(bmadAgent.agent);
     for (const res of bmadAgent.resources) {
       dependencies.resources.set(res.path, res);
@@ -75,19 +81,20 @@ class DependencyResolver {
     let agentsToResolve = teamConfig.agents || [];
 
     // Handle wildcard "*" - include all agents except xiaoma-master
-    if (agentsToResolve.includes('*')) {
+    if (agentsToResolve.includes("*")) {
       const allAgents = await this.listAgents();
       // Remove wildcard and add all agents except those already in the list and xiaoma-master
-      agentsToResolve = agentsToResolve.filter((a) => a !== '*');
+      agentsToResolve = agentsToResolve.filter((a) => a !== "*");
       for (const agent of allAgents) {
-        if (!agentsToResolve.includes(agent) && agent !== 'xiaoma-master') {
+        if (!agentsToResolve.includes(agent) && agent !== "xiaoma-master") {
           agentsToResolve.push(agent);
         }
       }
     }
 
     for (const agentId of agentsToResolve) {
-      if (agentId === 'xiaoma-orchestrator' || agentId === 'xiaoma-master') continue; // Already added or excluded
+      if (agentId === "xiaoma-orchestrator" || agentId === "xiaoma-master")
+        continue; // Already added or excluded
       const agentDeps = await this.resolveAgentDependencies(agentId);
       dependencies.agents.push(agentDeps.agent);
 
@@ -99,7 +106,7 @@ class DependencyResolver {
 
     // Resolve workflows
     for (const workflowId of teamConfig.workflows || []) {
-      const resource = await this.loadResource('workflows', workflowId);
+      const resource = await this.loadResource("workflows", workflowId);
       if (resource) dependencies.resources.set(resource.path, resource);
     }
 
@@ -122,12 +129,12 @@ class DependencyResolver {
       // First try xiaoma-core
       try {
         filePath = path.join(this.xiaomaCore, type, id);
-        content = await fs.readFile(filePath, 'utf8');
+        content = await fs.readFile(filePath, "utf8");
       } catch {
         // If not found in xiaoma-core, try common folder
         try {
           filePath = path.join(this.common, type, id);
-          content = await fs.readFile(filePath, 'utf8');
+          content = await fs.readFile(filePath, "utf8");
         } catch {
           // File not found in either location
         }
@@ -155,8 +162,10 @@ class DependencyResolver {
 
   async listAgents() {
     try {
-      const files = await fs.readdir(path.join(this.xiaomaCore, 'agents'));
-      return files.filter((f) => f.endsWith('.md')).map((f) => f.replace('.md', ''));
+      const files = await fs.readdir(path.join(this.xiaomaCore, "agents"));
+      return files
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => f.replace(".md", ""));
     } catch {
       return [];
     }
@@ -164,8 +173,10 @@ class DependencyResolver {
 
   async listTeams() {
     try {
-      const files = await fs.readdir(path.join(this.xiaomaCore, 'agent-teams'));
-      return files.filter((f) => f.endsWith('.yaml')).map((f) => f.replace('.yaml', ''));
+      const files = await fs.readdir(path.join(this.xiaomaCore, "agent-teams"));
+      return files
+        .filter((f) => f.endsWith(".yaml"))
+        .map((f) => f.replace(".yaml", ""));
     } catch {
       return [];
     }

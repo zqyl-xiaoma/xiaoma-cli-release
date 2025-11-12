@@ -90,7 +90,8 @@ real_time_dashboard:
 
       - widget: "resolution_progress"
         display: "Kanban Board"
-        columns: ["identified", "assigned", "in_progress", "validation", "resolved"]
+        columns:
+          ["identified", "assigned", "in_progress", "validation", "resolved"]
         drag_drop: false # 只读视图
 
       - widget: "sla_compliance"

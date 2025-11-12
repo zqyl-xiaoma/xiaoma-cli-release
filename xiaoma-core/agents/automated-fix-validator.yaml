@@ -263,7 +263,8 @@ regression_test_management:
   test_optimization:
     techniques:
       - technique: "test_prioritization"
-        criteria: ["failure_probability", "execution_time", "coverage_contribution"]
+        criteria:
+          ["failure_probability", "execution_time", "coverage_contribution"]
 
       - technique: "parallel_execution"
         strategy: "resource_aware_scheduling"

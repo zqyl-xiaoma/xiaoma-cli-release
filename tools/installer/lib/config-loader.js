@@ -1,11 +1,16 @@
-const fs = require('fs-extra');
-const path = require('node:path');
-const yaml = require('js-yaml');
-const { extractYamlFromAgent } = require('../../lib/yaml-utils');
+const fs = require("fs-extra");
+const path = require("node:path");
+const yaml = require("js-yaml");
+const { extractYamlFromAgent } = require("../../lib/yaml-utils");
 
 class ConfigLoader {
   constructor() {
-    this.configPath = path.join(__dirname, '..', 'config', 'install.config.yaml');
+    this.configPath = path.join(
+      __dirname,
+      "..",
+      "config",
+      "install.config.yaml",
+    );
     this.config = null;
   }
 
@@ -13,7 +18,7 @@ class ConfigLoader {
     if (this.config) return this.config;
 
     try {
-      const configContent = await fs.readFile(this.configPath, 'utf8');
+      const configContent = await fs.readFile(this.configPath, "utf8");
       this.config = yaml.load(configContent);
       return this.config;
     } catch (error) {
@@ -23,23 +28,23 @@ class ConfigLoader {
 
   async getInstallationOptions() {
     const config = await this.load();
-    return config['installation-options'] || {};
+    return config["installation-options"] || {};
   }
 
   async getAvailableAgents() {
-    const agentsDir = path.join(this.getBmadCorePath(), 'agents');
+    const agentsDir = path.join(this.getBmadCorePath(), "agents");
 
     try {
       const entries = await fs.readdir(agentsDir, { withFileTypes: true });
       const agents = [];
 
       for (const entry of entries) {
-        if (entry.isFile() && entry.name.endsWith('.md')) {
+        if (entry.isFile() && entry.name.endsWith(".md")) {
           const agentPath = path.join(agentsDir, entry.name);
-          const agentId = path.basename(entry.name, '.md');
+          const agentId = path.basename(entry.name, ".md");
 
           try {
-            const agentContent = await fs.readFile(agentPath, 'utf8');
+            const agentContent = await fs.readFile(agentPath, "utf8");
 
             // Extract YAML block from agent file
             const yamlContentText = extractYamlFromAgent(agentContent);
@@ -51,11 +56,14 @@ class ConfigLoader {
                 id: agentId,
                 name: agentConfig.title || agentConfig.name || agentId,
                 file: `xiaoma-core/agents/${entry.name}`,
-                description: agentConfig.whenToUse || 'No description available',
+                description:
+                  agentConfig.whenToUse || "No description available",
               });
             }
           } catch (error) {
-            console.warn(`Failed to read agent ${entry.name}: ${error.message}`);
+            console.warn(
+              `Failed to read agent ${entry.name}: ${error.message}`,
+            );
           }
         }
       }
@@ -71,31 +79,41 @@ class ConfigLoader {
   }
 
   async getAvailableExpansionPacks() {
-    const expansionPacksDir = path.join(this.getBmadCorePath(), '..', 'expansion-packs');
+    const expansionPacksDir = path.join(
+      this.getBmadCorePath(),
+      "..",
+      "expansion-packs",
+    );
 
     try {
-      const entries = await fs.readdir(expansionPacksDir, { withFileTypes: true });
+      const entries = await fs.readdir(expansionPacksDir, {
+        withFileTypes: true,
+      });
       const expansionPacks = [];
 
       for (const entry of entries) {
-        if (entry.isDirectory() && !entry.name.startsWith('.')) {
+        if (entry.isDirectory() && !entry.name.startsWith(".")) {
           const packPath = path.join(expansionPacksDir, entry.name);
-          const configPath = path.join(packPath, 'config.yaml');
+          const configPath = path.join(packPath, "config.yaml");
 
           try {
             // Read config.yaml
-            const configContent = await fs.readFile(configPath, 'utf8');
+            const configContent = await fs.readFile(configPath, "utf8");
             const config = yaml.load(configContent);
 
             expansionPacks.push({
               id: entry.name,
               name: config.name || entry.name,
               description:
-                config['short-title'] || config.description || 'No description available',
+                config["short-title"] ||
+                config.description ||
+                "No description available",
               fullDescription:
-                config.description || config['short-title'] || 'No description available',
-              version: config.version || '1.0.0',
-              author: config.author || 'XiaoMa Team',
+                config.description ||
+                config["short-title"] ||
+                "No description available",
+              version: config.version || "1.0.0",
+              author: config.author || "XiaoMa Team",
               packPath: packPath,
               dependencies: config.dependencies?.agents || [],
             });
@@ -107,17 +125,17 @@ class ConfigLoader {
 
             // Try to derive info from directory name as fallback
             const name = entry.name
-              .split('-')
+              .split("-")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' ');
+              .join(" ");
 
             expansionPacks.push({
               id: entry.name,
               name: name,
-              description: 'No description available',
-              fullDescription: 'No description available',
-              version: '1.0.0',
-              author: 'XiaoMa Team',
+              description: "No description available",
+              fullDescription: "No description available",
+              version: "1.0.0",
+              author: "XiaoMa Team",
               packPath: packPath,
               dependencies: [],
             });
@@ -127,15 +145,19 @@ class ConfigLoader {
 
       return expansionPacks;
     } catch (error) {
-      console.warn(`Failed to read expansion packs directory: ${error.message}`);
+      console.warn(
+        `Failed to read expansion packs directory: ${error.message}`,
+      );
       return [];
     }
   }
 
   async getAgentDependencies(agentId) {
     // Use DependencyResolver to dynamically parse agent dependencies
-    const DependencyResolver = require('../../lib/dependency-resolver');
-    const resolver = new DependencyResolver(path.join(__dirname, '..', '..', '..'));
+    const DependencyResolver = require("../../lib/dependency-resolver");
+    const resolver = new DependencyResolver(
+      path.join(__dirname, "..", "..", ".."),
+    );
 
     const agentDeps = await resolver.resolveAgentDependencies(agentId);
 
@@ -159,49 +181,52 @@ class ConfigLoader {
 
   async getIdeConfiguration(ide) {
     const config = await this.load();
-    const ideConfigs = config['ide-configurations'] || {};
+    const ideConfigs = config["ide-configurations"] || {};
     return ideConfigs[ide] || null;
   }
 
   getBmadCorePath() {
     // Get the path to xiaoma-core relative to the installer (now under tools)
-    return path.join(__dirname, '..', '..', '..', 'xiaoma-core');
+    return path.join(__dirname, "..", "..", "..", "xiaoma-core");
   }
 
   getDistPath() {
     // Get the path to dist directory relative to the installer
-    return path.join(__dirname, '..', '..', '..', 'dist');
+    return path.join(__dirname, "..", "..", "..", "dist");
   }
 
   getAgentPath(agentId) {
-    return path.join(this.getBmadCorePath(), 'agents', `${agentId}.md`);
+    return path.join(this.getBmadCorePath(), "agents", `${agentId}.md`);
   }
 
   async getAvailableTeams() {
-    const teamsDir = path.join(this.getBmadCorePath(), 'agent-teams');
+    const teamsDir = path.join(this.getBmadCorePath(), "agent-teams");
 
     try {
       const entries = await fs.readdir(teamsDir, { withFileTypes: true });
       const teams = [];
 
       for (const entry of entries) {
-        if (entry.isFile() && entry.name.endsWith('.yaml')) {
+        if (entry.isFile() && entry.name.endsWith(".yaml")) {
           const teamPath = path.join(teamsDir, entry.name);
 
           try {
-            const teamContent = await fs.readFile(teamPath, 'utf8');
+            const teamContent = await fs.readFile(teamPath, "utf8");
             const teamConfig = yaml.load(teamContent);
 
             if (teamConfig.bundle) {
               teams.push({
-                id: path.basename(entry.name, '.yaml'),
+                id: path.basename(entry.name, ".yaml"),
                 name: teamConfig.bundle.name || entry.name,
-                description: teamConfig.bundle.description || 'Team configuration',
-                icon: teamConfig.bundle.icon || '📋',
+                description:
+                  teamConfig.bundle.description || "Team configuration",
+                icon: teamConfig.bundle.icon || "📋",
               });
             }
           } catch (error) {
-            console.warn(`Warning: Could not load team config ${entry.name}: ${error.message}`);
+            console.warn(
+              `Warning: Could not load team config ${entry.name}: ${error.message}`,
+            );
           }
         }
       }
@@ -214,13 +239,15 @@ class ConfigLoader {
   }
 
   getTeamPath(teamId) {
-    return path.join(this.getBmadCorePath(), 'agent-teams', `${teamId}.yaml`);
+    return path.join(this.getBmadCorePath(), "agent-teams", `${teamId}.yaml`);
   }
 
   async getTeamDependencies(teamId) {
     // Use DependencyResolver to dynamically parse team dependencies
-    const DependencyResolver = require('../../lib/dependency-resolver');
-    const resolver = new DependencyResolver(path.join(__dirname, '..', '..', '..'));
+    const DependencyResolver = require("../../lib/dependency-resolver");
+    const resolver = new DependencyResolver(
+      path.join(__dirname, "..", "..", ".."),
+    );
 
     try {
       const teamDeps = await resolver.resolveTeamDependencies(teamId);
@@ -241,7 +268,7 @@ class ConfigLoader {
 
       // Add all resolved resources
       for (const resource of teamDeps.resources) {
-        const filePath = `.xiaoma-core/${resource.type}/${resource.id}.${resource.type === 'workflows' ? 'yaml' : 'md'}`;
+        const filePath = `.xiaoma-core/${resource.type}/${resource.id}.${resource.type === "workflows" ? "yaml" : "md"}`;
         if (!depPaths.includes(filePath)) {
           depPaths.push(filePath);
         }
@@ -249,7 +276,9 @@ class ConfigLoader {
 
       return depPaths;
     } catch (error) {
-      throw new Error(`Failed to resolve team dependencies for ${teamId}: ${error.message}`);
+      throw new Error(
+        `Failed to resolve team dependencies for ${teamId}: ${error.message}`,
+      );
     }
   }
 }

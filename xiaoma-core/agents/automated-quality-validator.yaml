@@ -113,7 +113,8 @@ layer_2_content_completeness_validation:
             required_columns: ["实体名称", "表名", "主要用途", "关键字段"]
             minimum_entities: 1
         - data_operations_completeness:
-            required_operations: ["查询操作", "插入操作", "更新操作", "删除操作"]
+            required_operations:
+              ["查询操作", "插入操作", "更新操作", "删除操作"]
             operation_descriptions: "DETAILED_AND_SPECIFIC"
         - business_rules_presence:
             minimum_rules: 3
@@ -125,7 +126,8 @@ layer_2_content_completeness_validation:
       description: "API规范完整性验证"
       checks:
         - api_endpoints_table_completeness:
-            required_columns: ["序号", "接口名称", "HTTP方法", "路径", "说明", "状态"]
+            required_columns:
+              ["序号", "接口名称", "HTTP方法", "路径", "说明", "状态"]
             minimum_endpoints: 1
         - api_detailed_design_completeness:
             required_elements:
@@ -160,7 +162,8 @@ layer_2_content_completeness_validation:
             integration_context: "COMPREHENSIVE"
             testing_context: "COMPREHENSIVE"
         - qa_results_completeness:
-            test_categories_coverage: ["数据库操作正确性", "API接口功能性", "性能测试结果"]
+            test_categories_coverage:
+              ["数据库操作正确性", "API接口功能性", "性能测试结果"]
             results_specificity: "QUANTITATIVE_WITH_METRICS"
       scoring_method: "IMPLEMENTATION_READINESS_SCORE"
       pass_criteria: "IMPLEMENTATION_SCORE_85_PLUS"
@@ -476,12 +479,14 @@ layer_7_final_integration_validation:
 # ========== 质量纠错和改进系统 ==========
 quality_correction_and_improvement_system:
   immediate_correction_triggers:
-    - critical_failures: ["syntax_errors", "missing_required_sections", "format_violations"]
+    - critical_failures:
+        ["syntax_errors", "missing_required_sections", "format_violations"]
       correction_action: "IMMEDIATE_AUTO_CORRECTION"
       retry_attempts: 3
       escalation: "MANUAL_INTERVENTION_IF_AUTO_CORRECTION_FAILS"
 
-    - quality_deficiencies: ["content_gaps", "clarity_issues", "consistency_problems"]
+    - quality_deficiencies:
+        ["content_gaps", "clarity_issues", "consistency_problems"]
       correction_action: "ITERATIVE_IMPROVEMENT"
       improvement_rounds: 2
       success_criteria: "QUALITY_THRESHOLD_ACHIEVED"

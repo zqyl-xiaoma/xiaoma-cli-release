@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const fs = require('node:fs/promises');
-const path = require('node:path');
-const zlib = require('node:zlib');
-const { Buffer } = require('node:buffer');
-const crypto = require('node:crypto');
-const cp = require('node:child_process');
+const fs = require("node:fs/promises");
+const path = require("node:path");
+const zlib = require("node:zlib");
+const { Buffer } = require("node:buffer");
+const crypto = require("node:crypto");
+const cp = require("node:child_process");
 
 const KB = 1024;
 const MB = 1024 * KB;
@@ -13,13 +13,17 @@ const MB = 1024 * KB;
 const formatSize = (bytes) => {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  if (bytes < 1024 * 1024 * 1024)
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
 };
 
 const percentile = (sorted, p) => {
   if (sorted.length === 0) return 0;
-  const idx = Math.min(sorted.length - 1, Math.max(0, Math.ceil((p / 100) * sorted.length) - 1));
+  const idx = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.ceil((p / 100) * sorted.length) - 1),
+  );
   return sorted[idx];
 };
 
@@ -34,10 +38,10 @@ async function enrichAllFiles(textFiles, binaryFiles) {
   const allFiles = [];
 
   async function enrich(file, isBinary) {
-    const ext = (path.extname(file.path) || '').toLowerCase();
-    const dir = path.dirname(file.path) || '.';
+    const ext = (path.extname(file.path) || "").toLowerCase();
+    const dir = path.dirname(file.path) || ".";
     const depth = file.path.split(path.sep).filter(Boolean).length;
-    const hidden = file.path.split(path.sep).some((seg) => seg.startsWith('.'));
+    const hidden = file.path.split(path.sep).some((seg) => seg.startsWith("."));
     let mtimeMs = 0;
     let isSymlink = false;
     try {
@@ -69,15 +73,19 @@ async function enrichAllFiles(textFiles, binaryFiles) {
 
 function buildHistogram(allFiles) {
   const buckets = [
-    [1 * KB, '0–1KB'],
-    [10 * KB, '1–10KB'],
-    [100 * KB, '10–100KB'],
-    [1 * MB, '100KB–1MB'],
-    [10 * MB, '1–10MB'],
-    [100 * MB, '10–100MB'],
-    [Infinity, '>=100MB'],
+    [1 * KB, "0–1KB"],
+    [10 * KB, "1–10KB"],
+    [100 * KB, "10–100KB"],
+    [1 * MB, "100KB–1MB"],
+    [10 * MB, "1–10MB"],
+    [100 * MB, "10–100MB"],
+    [Infinity, ">=100MB"],
   ];
-  const histogram = buckets.map(([_, label]) => ({ label, count: 0, bytes: 0 }));
+  const histogram = buckets.map(([_, label]) => ({
+    label,
+    count: 0,
+    bytes: 0,
+  }));
   for (const f of allFiles) {
     for (const [i, bucket] of buckets.entries()) {
       if (f.size < bucket[0]) {
@@ -93,7 +101,7 @@ function buildHistogram(allFiles) {
 function aggregateByExtension(allFiles) {
   const byExtension = new Map();
   for (const f of allFiles) {
-    const key = f.ext || '<none>';
+    const key = f.ext || "<none>";
     const v = byExtension.get(key) || { ext: key, count: 0, bytes: 0 };
     v.count++;
     v.bytes += f.size;
@@ -111,13 +119,13 @@ function aggregateByDirectory(allFiles) {
     byDirectory.set(dir, v);
   }
   for (const f of allFiles) {
-    const parts = f.dir === '.' ? [] : f.dir.split(path.sep);
-    let acc = '';
+    const parts = f.dir === "." ? [] : f.dir.split(path.sep);
+    let acc = "";
     for (let i = 0; i < parts.length; i++) {
       acc = i === 0 ? parts[0] : acc + path.sep + parts[i];
       addDirBytes(acc, f.size);
     }
-    if (parts.length === 0) addDirBytes('.', f.size);
+    if (parts.length === 0) addDirBytes(".", f.size);
   }
   return [...byDirectory.values()].sort((a, b) => b.bytes - a.bytes);
 }
@@ -141,15 +149,18 @@ function computeTemporal(allFiles, nowMs) {
   let oldest = null,
     newest = null;
   const ageBuckets = [
-    { label: '> 1 year', minDays: 365, maxDays: Infinity, count: 0, bytes: 0 },
-    { label: '6–12 months', minDays: 180, maxDays: 365, count: 0, bytes: 0 },
-    { label: '1–6 months', minDays: 30, maxDays: 180, count: 0, bytes: 0 },
-    { label: '7–30 days', minDays: 7, maxDays: 30, count: 0, bytes: 0 },
-    { label: '1–7 days', minDays: 1, maxDays: 7, count: 0, bytes: 0 },
-    { label: '< 1 day', minDays: 0, maxDays: 1, count: 0, bytes: 0 },
+    { label: "> 1 year", minDays: 365, maxDays: Infinity, count: 0, bytes: 0 },
+    { label: "6–12 months", minDays: 180, maxDays: 365, count: 0, bytes: 0 },
+    { label: "1–6 months", minDays: 30, maxDays: 180, count: 0, bytes: 0 },
+    { label: "7–30 days", minDays: 7, maxDays: 30, count: 0, bytes: 0 },
+    { label: "1–7 days", minDays: 1, maxDays: 7, count: 0, bytes: 0 },
+    { label: "< 1 day", minDays: 0, maxDays: 1, count: 0, bytes: 0 },
   ];
   for (const f of allFiles) {
-    const ageDays = Math.max(0, (nowMs - (f.mtimeMs || nowMs)) / (24 * 60 * 60 * 1000));
+    const ageDays = Math.max(
+      0,
+      (nowMs - (f.mtimeMs || nowMs)) / (24 * 60 * 60 * 1000),
+    );
     for (const b of ageBuckets) {
       if (ageDays >= b.minDays && ageDays < b.maxDays) {
         b.count++;
@@ -162,10 +173,16 @@ function computeTemporal(allFiles, nowMs) {
   }
   return {
     oldest: oldest
-      ? { path: oldest.path, mtime: oldest.mtimeMs ? new Date(oldest.mtimeMs).toISOString() : null }
+      ? {
+          path: oldest.path,
+          mtime: oldest.mtimeMs ? new Date(oldest.mtimeMs).toISOString() : null,
+        }
       : null,
     newest: newest
-      ? { path: newest.path, mtime: newest.mtimeMs ? new Date(newest.mtimeMs).toISOString() : null }
+      ? {
+          path: newest.path,
+          mtime: newest.mtimeMs ? new Date(newest.mtimeMs).toISOString() : null,
+        }
       : null,
     ageBuckets,
   };
@@ -180,8 +197,12 @@ function computeQuality(allFiles, textFiles) {
   const symlinks = allFiles.filter((f) => f.isSymlink).length;
   const largeThreshold = 50 * MB;
   const suspiciousThreshold = 100 * MB;
-  const largeFilesCount = allFiles.filter((f) => f.size >= largeThreshold).length;
-  const suspiciousLargeFilesCount = allFiles.filter((f) => f.size >= suspiciousThreshold).length;
+  const largeFilesCount = allFiles.filter(
+    (f) => f.size >= largeThreshold,
+  ).length;
+  const suspiciousLargeFilesCount = allFiles.filter(
+    (f) => f.size >= suspiciousThreshold,
+  ).length;
   return {
     zeroByteFiles,
     emptyTextFiles,
@@ -210,8 +231,8 @@ function computeDuplicates(allFiles, textFiles) {
     for (const tf of textGroup) {
       try {
         const src = textFiles.find((x) => x.absolutePath === tf.absolutePath);
-        const content = src ? src.content : '';
-        const h = crypto.createHash('sha1').update(content).digest('hex');
+        const content = src ? src.content : "";
+        const h = crypto.createHash("sha1").update(content).digest("hex");
         const g = contentHashGroups.get(h) || [];
         g.push(tf);
         contentHashGroups.set(h, g);
@@ -222,7 +243,7 @@ function computeDuplicates(allFiles, textFiles) {
     for (const [_h, g] of contentHashGroups.entries()) {
       if (g.length > 1)
         duplicateCandidates.push({
-          reason: 'same-size+text-hash',
+          reason: "same-size+text-hash",
           size: Number(sizeKey),
           count: g.length,
           files: g.map((f) => f.path),
@@ -230,7 +251,7 @@ function computeDuplicates(allFiles, textFiles) {
     }
     if (otherGroup.length > 1) {
       duplicateCandidates.push({
-        reason: 'same-size',
+        reason: "same-size",
         size: Number(sizeKey),
         count: otherGroup.length,
         files: otherGroup.map((f) => f.path),
@@ -248,7 +269,7 @@ function estimateCompressibility(textFiles) {
       const sampleLen = Math.min(256 * 1024, tf.size || 0);
       if (sampleLen <= 0) continue;
       const sample = tf.content.slice(0, sampleLen);
-      const gz = zlib.gzipSync(Buffer.from(sample, 'utf8'));
+      const gz = zlib.gzipSync(Buffer.from(sample, "utf8"));
       compSampleBytes += sampleLen;
       compCompressedBytes += gz.length;
     } catch {
@@ -270,19 +291,19 @@ function computeGitInfo(allFiles, rootDir, largeThreshold) {
   try {
     if (!rootDir) return info;
     const top = cp
-      .execFileSync('git', ['rev-parse', '--show-toplevel'], {
+      .execFileSync("git", ["rev-parse", "--show-toplevel"], {
         cwd: rootDir,
-        stdio: ['ignore', 'pipe', 'ignore'],
+        stdio: ["ignore", "pipe", "ignore"],
       })
       .toString()
       .trim();
     if (!top) return info;
     info.isRepo = true;
-    const out = cp.execFileSync('git', ['ls-files', '-z'], {
+    const out = cp.execFileSync("git", ["ls-files", "-z"], {
       cwd: rootDir,
-      stdio: ['ignore', 'pipe', 'ignore'],
+      stdio: ["ignore", "pipe", "ignore"],
     });
-    const tracked = new Set(out.toString().split('\0').filter(Boolean));
+    const tracked = new Set(out.toString().split("\0").filter(Boolean));
     let trackedBytes = 0,
       trackedCount = 0,
       untrackedBytes = 0,
@@ -293,7 +314,8 @@ function computeGitInfo(allFiles, rootDir, largeThreshold) {
       if (isTracked) {
         trackedCount++;
         trackedBytes += f.size;
-        if (f.size >= largeThreshold) lfsCandidates.push({ path: f.path, size: f.size });
+        if (f.size >= largeThreshold)
+          lfsCandidates.push({ path: f.path, size: f.size });
       } else {
         untrackedCount++;
         untrackedBytes += f.size;
@@ -303,7 +325,9 @@ function computeGitInfo(allFiles, rootDir, largeThreshold) {
     info.trackedBytes = trackedBytes;
     info.untrackedCount = untrackedCount;
     info.untrackedBytes = untrackedBytes;
-    info.lfsCandidates = lfsCandidates.sort((a, b) => b.size - a.size).slice(0, 50);
+    info.lfsCandidates = lfsCandidates
+      .sort((a, b) => b.size - a.size)
+      .slice(0, 50);
   } catch {
     /* git not available or not a repo, ignore */
   }
@@ -320,35 +344,40 @@ function computeLargestFiles(allFiles, totalBytes) {
       size: f.size,
       sizeFormatted: formatSize(f.size),
       percentOfTotal: toPct(f.size, totalBytes),
-      ext: f.ext || '',
+      ext: f.ext || "",
       isBinary: f.isBinary,
       mtime: f.mtimeMs ? new Date(f.mtimeMs).toISOString() : null,
     }));
 }
 
 function mdTable(rows, headers) {
-  const header = `| ${headers.join(' | ')} |`;
-  const sep = `| ${headers.map(() => '---').join(' | ')} |`;
-  const body = rows.map((r) => `| ${r.join(' | ')} |`).join('\n');
+  const header = `| ${headers.join(" | ")} |`;
+  const sep = `| ${headers.map(() => "---").join(" | ")} |`;
+  const body = rows.map((r) => `| ${r.join(" | ")} |`).join("\n");
   return `${header}\n${sep}\n${body}`;
 }
 
-function buildMarkdownReport(largestFiles, byExtensionArr, byDirectoryArr, totalBytes) {
+function buildMarkdownReport(
+  largestFiles,
+  byExtensionArr,
+  byDirectoryArr,
+  totalBytes,
+) {
   const toPct = (num, den) => (den === 0 ? 0 : (num / den) * 100);
   const md = [];
   md.push(
-    '\n### Top Largest Files (Top 50)\n',
+    "\n### Top Largest Files (Top 50)\n",
     mdTable(
       largestFiles.map((f) => [
         f.path,
         f.sizeFormatted,
         `${f.percentOfTotal.toFixed(2)}%`,
-        f.ext || '',
-        f.isBinary ? 'binary' : 'text',
+        f.ext || "",
+        f.isBinary ? "binary" : "text",
       ]),
-      ['Path', 'Size', '% of total', 'Ext', 'Type'],
+      ["Path", "Size", "% of total", "Ext", "Type"],
     ),
-    '\n\n### Top Extensions by Bytes (Top 20)\n',
+    "\n\n### Top Extensions by Bytes (Top 20)\n",
   );
   const topExtRows = byExtensionArr
     .slice(0, 20)
@@ -359,8 +388,8 @@ function buildMarkdownReport(largestFiles, byExtensionArr, byDirectoryArr, total
       `${toPct(e.bytes, totalBytes).toFixed(2)}%`,
     ]);
   md.push(
-    mdTable(topExtRows, ['Ext', 'Count', 'Bytes', '% of total']),
-    '\n\n### Top Directories by Bytes (Top 20)\n',
+    mdTable(topExtRows, ["Ext", "Count", "Bytes", "% of total"]),
+    "\n\n### Top Directories by Bytes (Top 20)\n",
   );
   const topDirRows = byDirectoryArr
     .slice(0, 20)
@@ -370,8 +399,8 @@ function buildMarkdownReport(largestFiles, byExtensionArr, byDirectoryArr, total
       formatSize(d.bytes),
       `${toPct(d.bytes, totalBytes).toFixed(2)}%`,
     ]);
-  md.push(mdTable(topDirRows, ['Directory', 'Files', 'Bytes', '% of total']));
-  return md.join('\n');
+  md.push(mdTable(topDirRows, ["Directory", "Files", "Bytes", "% of total"]));
+  return md.join("\n");
 }
 
 module.exports = {
