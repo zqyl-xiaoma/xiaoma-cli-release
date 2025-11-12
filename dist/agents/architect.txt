@@ -2140,17 +2140,83 @@ sections:
         columns: [类别, 技术, 版本, 用途, 选型理由]
         instruction: 根据所选框架和项目需求，填写适当的技术选型。
         rows:
-          - ["框架", "{{framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["UI 库", "{{ui_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["状态管理", "{{state_management}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["路由", "{{routing_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["构建工具", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["样式方案", "{{styling_solution}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["测试", "{{test_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["组件库", "{{component_lib}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["表单处理", "{{form_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["动画", "{{animation_lib}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["开发工具", "{{dev_tools}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "框架",
+              "{{framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "UI 库",
+              "{{ui_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "状态管理",
+              "{{state_management}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "路由",
+              "{{routing_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "构建工具",
+              "{{build_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "样式方案",
+              "{{styling_solution}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "测试",
+              "{{test_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "组件库",
+              "{{component_lib}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "表单处理",
+              "{{form_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "动画",
+              "{{animation_lib}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "开发工具",
+              "{{dev_tools}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
 
   - id: project-structure
     title: 项目结构
@@ -2431,27 +2497,147 @@ sections:
         type: table
         columns: [类别, 技术, 版本, 用途, 理由]
         rows:
-          - ["前端语言", "{{fe_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["前端框架", "{{fe_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["UI 组件库", "{{ui_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["状态管理", "{{state_mgmt}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端语言", "{{be_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端框架", "{{be_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["API 风格", "{{api_style}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["数据库", "{{database}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["缓存", "{{cache}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["文件存储", "{{storage}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "前端语言",
+              "{{fe_language}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "前端框架",
+              "{{fe_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "UI 组件库",
+              "{{ui_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "状态管理",
+              "{{state_mgmt}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端语言",
+              "{{be_language}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端框架",
+              "{{be_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "API 风格",
+              "{{api_style}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "数据库",
+              "{{database}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "缓存",
+              "{{cache}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "文件存储",
+              "{{storage}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
           - ["认证", "{{auth}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["前端测试", "{{fe_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端测试", "{{be_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["E2E 测试", "{{e2e_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["构建工具", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["打包工具", "{{bundler}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["IaC 工具", "{{iac_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["CI/CD", "{{cicd}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["监控", "{{monitoring}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["日志", "{{logging}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["CSS 框架", "{{css_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "前端测试",
+              "{{fe_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端测试",
+              "{{be_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "E2E 测试",
+              "{{e2e_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "构建工具",
+              "{{build_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "打包工具",
+              "{{bundler}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "IaC 工具",
+              "{{iac_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "CI/CD",
+              "{{cicd}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "监控",
+              "{{monitoring}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "日志",
+              "{{logging}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "CSS 框架",
+              "{{css_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
 
   - id: data-models
     title: 数据模型

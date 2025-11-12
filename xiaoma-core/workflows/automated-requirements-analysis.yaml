@@ -1448,6 +1448,198 @@ workflow:
             - 质量评分 ≥9/10
             - 可行性 ≥8/10
 
+        - step: shard_architecture_document
+          command: "*shard-doc"
+          description: "将架构文档按技术模块切分"
+          action: shard_architecture_by_modules
+          prompt_template: |
+            架构设计文档已完成，现在需要将其按技术模块切分为多个子文档，便于开发团队查阅和维护。
+
+            **源文档**：
+            docs/architecture/iteration-backend-design.md
+
+            **切分命令**：
+            请执行 shard-doc 命令，将架构文档切分到指定目录：
+
+            ```
+            shard-doc docs/architecture/iteration-backend-design.md docs/architecture
+            ```
+
+            **切分策略**：
+            请将架构文档按以下技术模块切分：
+
+            1. **数据库设计** (database-design.md)
+               - 从【第2节 新增数据模型设计】提取
+               - 包含：Entity 类设计、数据表 DDL、关联关系、数据迁移策略
+               - 切分标记：`## 2. 新增数据模型设计` 到 `## 3. API 设计` 之前
+
+            2. **API 设计** (api-design.md)
+               - 从【第3节 API 设计】提取
+               - 包含：RESTful API 端点、DTO 设计、API 版本策略、集成点
+               - 切分标记：`## 3. API 设计` 到 `## 4. 服务层设计` 之前
+
+            3. **服务集成** (service-integration.md)
+               - 从【第4节 服务层设计】提取
+               - 包含：Service 接口、业务逻辑流程、事务设计、服务交互
+               - 切分标记：`## 4. 服务层设计` 到 `## 5. 技术决策` 之前
+
+            4. **迁移计划** (migration-plan.md)
+               - 从【第6节 数据库变更脚本】和【第8.3节 部署注意事项】提取
+               - 包含：数据库迁移脚本、数据迁移策略、部署步骤、回滚方案
+               - 切分标记：`## 6. 数据库变更脚本` + `### 8.3 部署注意事项`
+
+            5. **编码规范** (coding-standards.md)
+               - 从【第1节 设计概述】和【第7节 技术风险和注意事项】提取
+               - 包含：设计原则、编码约定、技术约束、注意事项
+               - 切分标记：`## 1. 设计概述` + `## 7. 技术风险和注意事项`
+
+            6. **技术栈** (tech-stack.md)
+               - 从【第1节 设计概述 - 技术选型】和【第5节 技术决策】提取
+               - 包含：框架和依赖、新技术组件、性能优化、安全策略、缓存策略
+               - 切分标记：`### 1.3 技术选型` + `## 5. 技术决策`
+
+            7. **项目结构** (project-structure.md)
+               - 从【第1节 设计概述】和【第8.1节 开发顺序建议】提取
+               - 包含：包结构、模块组织、开发顺序、集成策略
+               - 切分标记：`### 1.2 设计原则` + `### 8.1 开发顺序建议`
+
+            **切分指令**：
+            请严格按照以下映射关系进行切分：
+
+            | 目标文件 | 源章节 | 内容范围 |
+            |---------|--------|---------|
+            | database-design.md | 第2节 | 完整的数据模型设计章节 |
+            | api-design.md | 第3节 | 完整的 API 设计章节 |
+            | service-integration.md | 第4节 | 完整的服务层设计章节 |
+            | migration-plan.md | 第6节 + 第8.3节 | 数据库变更脚本 + 部署注意事项 |
+            | coding-standards.md | 第1节 + 第7节 | 设计概述 + 技术风险和注意事项 |
+            | tech-stack.md | 第1.3节 + 第5节 | 技术选型 + 技术决策 |
+            | project-structure.md | 第1.2节 + 第8.1节 | 设计原则 + 开发顺序 |
+
+            **切分要求**：
+            1. 保持每个子文档的独立性和完整性
+            2. 保留原文档的所有内容（不丢失信息）
+            3. 在每个子文档开头添加元数据和来源说明
+            4. 保持 Markdown 格式的正确性
+            5. 保留代码块、表格、列表等格式
+            6. 为每个子文档添加适当的标题和说明
+
+            **子文档模板格式**：
+            ```markdown
+            # {模块名称}
+
+            > **来源**: iteration-backend-design.md - {对应章节}
+            > **最后更新**: {日期}
+            > **状态**: Validated
+
+            ## 概述
+            简要说明本文档的范围和用途
+
+            ## {具体内容章节}
+            （从源文档提取的内容）
+            ```
+
+            **执行确认**：
+            切分完成后，请确认：
+            1. ✓ 所有7个子文档已创建
+            2. ✓ 每个子文档内容完整
+            3. ✓ 没有内容丢失
+            4. ✓ 格式正确无误
+            5. ✓ 交叉引用已更新
+
+            请开始执行 shard-doc 命令。
+
+          execution_process:
+            phase_1: load_source_architecture_document
+            phase_2: identify_section_boundaries
+            phase_3: extract_content_by_modules
+            phase_4: create_individual_module_documents
+            phase_5: add_metadata_and_headers
+            phase_6: validate_content_completeness
+            phase_7: save_sharded_documents
+
+          output_files:
+            - "docs/architecture/database-design.md"
+            - "docs/architecture/api-design.md"
+            - "docs/architecture/service-integration.md"
+            - "docs/architecture/migration-plan.md"
+            - "docs/architecture/coding-standards.md"
+            - "docs/architecture/tech-stack.md"
+            - "docs/architecture/project-structure.md"
+
+          notes: |
+            架构文档切分步骤：
+            1. 使用 shard-doc 命令
+            2. 源文档：iteration-backend-design.md
+            3. 目标目录：docs/architecture/
+            4. 按技术模块切分为7个子文档
+            5. 保持内容完整性和格式正确性
+
+            切分后的好处：
+            - 开发人员可以快速找到特定模块的设计文档
+            - 每个子文档聚焦单一技术关注点
+            - 便于团队分工和并行开发
+            - 降低文档维护的复杂度
+            - 提高文档的可读性和可用性
+
+        - step: validate_sharded_documents
+          action: verify_sharding_quality
+          prompt_template: |
+            请验证架构文档切分的质量，确认：
+
+            **完整性检查**：
+            1. ✓ docs/architecture/database-design.md 已创建
+            2. ✓ docs/architecture/api-design.md 已创建
+            3. ✓ docs/architecture/service-integration.md 已创建
+            4. ✓ docs/architecture/migration-plan.md 已创建
+            5. ✓ docs/architecture/coding-standards.md 已创建
+            6. ✓ docs/architecture/tech-stack.md 已创建
+            7. ✓ docs/architecture/project-structure.md 已创建
+
+            **内容检查**：
+            8. ✓ 每个文档包含完整的相关内容
+            9. ✓ 没有内容丢失或重复
+            10. ✓ 格式正确（Markdown、代码块、表格）
+            11. ✓ 元数据已添加（来源、日期、状态）
+
+            **可用性检查**：
+            12. ✓ 每个文档独立可读
+            13. ✓ 交叉引用清晰
+            14. ✓ 技术细节完整
+            15. ✓ 适合开发团队使用
+
+            如有问题，请指出并修正。
+            如果所有检查项都通过，请确认切分质量合格。
+
+          validation_process:
+            step_1: check_all_files_exist
+            step_2: verify_content_completeness
+            step_3: validate_markdown_format
+            step_4: check_cross_references
+            step_5: ensure_usability
+
+          on_issues_found:
+            action: fix_sharding_issues
+            max_iterations: 1
+            notes: "修正切分中的问题"
+
+          on_all_checks_passed:
+            action: mark_sharding_validated
+            message: "✅ 架构文档切分完成并验证通过"
+
+          notes: |
+            验证切分后的架构文档：
+            - 确认所有7个子文档已创建
+            - 验证内容完整性
+            - 检查格式正确性
+            - 确保开发团队可用性
+
+            质量标准：
+            - 文件完整性 100%
+            - 内容完整性 100%
+            - 格式正确性 100%
+            - 可用性 ≥9/10
+
       validation_criteria:
         - architecture_design_complete
         - data_models_designed
@@ -1456,9 +1648,18 @@ workflow:
         - database_scripts_generated
         - risks_identified
         - quality_self_check_passed
+        - architecture_documents_sharded
+        - seven_module_documents_created
         - files_created:
             - "docs/architecture/iteration-backend-design.md"
             - "docs/architecture/db-migration-scripts.sql"
+            - "docs/architecture/database-design.md"
+            - "docs/architecture/api-design.md"
+            - "docs/architecture/service-integration.md"
+            - "docs/architecture/migration-plan.md"
+            - "docs/architecture/coding-standards.md"
+            - "docs/architecture/tech-stack.md"
+            - "docs/architecture/project-structure.md"
 
       on_failure:
         action: retry_architecture_design
@@ -1467,7 +1668,7 @@ workflow:
 
       on_success:
         action: finalize_requirements_analysis
-        message: "✅ 后端架构增量设计完成"
+        message: "✅ 后端架构增量设计完成，架构文档已按模块切分"
 
       notes: |
         Architect 后端架构增量设计的完整流程：
@@ -1483,16 +1684,23 @@ workflow:
            - 提供实施指导
         4. 自评审架构设计质量（18项检查）
         5. 输出架构设计文档和数据库脚本
+        6. 执行 shard-doc 切分架构文档
+           - 将 iteration-backend-design.md 按技术模块切分
+           - 生成7个子文档：database-design, api-design, service-integration,
+             migration-plan, coding-standards, tech-stack, project-structure
+        7. 验证切分质量（15项检查）
 
         关键输出：
         - iteration-backend-design.md：完整的架构设计文档
         - db-migration-scripts.sql：数据库变更脚本
+        - 7个技术模块子文档：便于开发团队查阅
 
         增量设计要点：
         - 基于现有架构扩展
         - 保持一致性和兼容性
         - 关注性能和安全
         - 提供清晰的实施路径
+        - 模块化文档便于团队协作
 
     # ================================
     # 完成：需求分析工作流结束
@@ -1516,6 +1724,14 @@ workflow:
               - Epic 文档清单: "docs/epics/史诗-*.md"
               - 架构设计文档: "docs/architecture/iteration-backend-design.md"
               - 数据库脚本: "docs/architecture/db-migration-scripts.sql"
+              - 架构模块文档:
+                  - 数据库设计: "docs/architecture/database-design.md"
+                  - API 设计: "docs/architecture/api-design.md"
+                  - 服务集成: "docs/architecture/service-integration.md"
+                  - 迁移计划: "docs/architecture/migration-plan.md"
+                  - 编码规范: "docs/architecture/coding-standards.md"
+                  - 技术栈: "docs/architecture/tech-stack.md"
+                  - 项目结构: "docs/architecture/project-structure.md"
 
             section_3_next_steps:
               - 下一阶段：用户故事创建和细化
@@ -1545,6 +1761,8 @@ workflow:
             4. Epic 史诗拆分（PM）
             5. 后端架构增量设计（Architect）
             6. 数据库迁移脚本生成
+            7. 架构文档按模块切分
+            8. 切分文档质量验证
 
             📄 生成的文档：
             - docs/requirements/requirements-analysis.md
@@ -1553,6 +1771,13 @@ workflow:
             - docs/epics/史诗-*.md ({epic_count} 个史诗)
             - docs/architecture/iteration-backend-design.md
             - docs/architecture/db-migration-scripts.sql
+            - docs/architecture/database-design.md (数据库设计)
+            - docs/architecture/api-design.md (API 设计)
+            - docs/architecture/service-integration.md (服务集成)
+            - docs/architecture/migration-plan.md (迁移计划)
+            - docs/architecture/coding-standards.md (编码规范)
+            - docs/architecture/tech-stack.md (技术栈)
+            - docs/architecture/project-structure.md (项目结构)
 
             🚀 下一步：
             可以启动 automated-story-development.yaml 工作流进行用户故事开发。
@@ -1640,6 +1865,24 @@ workflow:
         - 技术风险已识别
         - 可测试性已考虑
 
+    architecture_sharding:
+      required_files:
+        - docs/architecture/database-design.md
+        - docs/architecture/api-design.md
+        - docs/architecture/service-integration.md
+        - docs/architecture/migration-plan.md
+        - docs/architecture/coding-standards.md
+        - docs/architecture/tech-stack.md
+        - docs/architecture/project-structure.md
+      validation_rules:
+        - 所有7个模块文档已创建
+        - 内容完整性 100%（无内容丢失）
+        - 模块文档格式规范
+        - 章节边界准确识别
+        - 模块文档独立可读
+        - 交叉引用清晰标注
+        - 元数据标题包含源文档和日期
+
   # ================================
   # 错误处理和重试策略
   # ================================
@@ -1660,6 +1903,10 @@ workflow:
       max_retries: 2
       escalation: "架构设计失败，需要人工审查 PRD 和现有架构的兼容性"
 
+    architecture_sharding_failure:
+      max_retries: 1
+      escalation: "架构文档切分失败，需要检查 iteration-backend-design.md 的章节结构"
+
   # ================================
   # 进度追踪
   # ================================
@@ -1669,6 +1916,8 @@ workflow:
       - prd_created
       - epics_created_count
       - architecture_design_completed
+      - architecture_sharding_completed
+      - module_documents_count
       - total_duration
       - identified_tables_count
       - identified_apis_count
@@ -1721,7 +1970,13 @@ workflow:
         V -->|通过| X[架构设计完成]
 
         X --> Y[生成数据库迁移脚本]
-        Y --> Z[生成完成报告]
+        Y --> Y1[Architect: 切分架构文档]
+        Y1 --> Y2[执行 shard-doc 命令]
+        Y2 --> Y3{验证切分质量}
+        Y3 -->|有问题| Y4[调整切分]
+        Y4 --> Y3
+        Y3 -->|通过| Y5[切分完成: 7个模块文档]
+        Y5 --> Z[生成完成报告]
         Z --> AA[🎉 需求分析完成]
 
         style C fill:#E6E6FA
@@ -1729,6 +1984,7 @@ workflow:
         style G fill:#ADD8E6
         style M fill:#98FB98
         style T fill:#FFE4B5
+        style Y1 fill:#FFE4B5
         style AA fill:#90EE90
     ```
 
@@ -1755,6 +2011,14 @@ workflow:
       - Epic 史诗文档（多个）
       - 后端架构增量设计文档
       - 数据库迁移脚本
+      - 架构模块文档（7个）:
+          - 数据库设计
+          - API 设计
+          - 服务集成
+          - 迁移计划
+          - 编码规范
+          - 技术栈
+          - 项目结构
 
   # ================================
   # 流程交接提示
@@ -1772,6 +2036,10 @@ workflow:
     all_epics_created: "✅ 所有史诗创建完成"
     architecture_design_start: "Architect 开始后端架构增量设计..."
     architecture_design_complete: "✅ 后端架构增量设计完成"
+    architecture_sharding_start: "Architect 开始按模块切分架构文档..."
+    architecture_sharding_complete: "✅ 架构文档按模块切分完成"
+    sharding_validation_start: "开始验证切分文档质量..."
+    sharding_validation_complete: "✅ 切分文档质量验证通过"
     workflow_complete: "🎉 需求分析自动化工作流完成！可以启动用户故事开发流程。"
 
   # ================================
@@ -1862,8 +2130,17 @@ workflow:
       - consistency_score: ">=9/10"
       - feasibility_score: ">=8/10"
 
+    architecture_sharding:
+      - all_seven_modules_created
+      - content_completeness: "100%"
+      - no_information_loss
+      - module_documents_independently_readable
+      - cross_references_clear
+      - metadata_headers_present
+
     overall_workflow:
       - all_documents_generated
       - all_quality_gates_passed
+      - architecture_modules_sharded
       - ready_for_story_development: true
       - total_duration: "1.5-2.5 hours"

@@ -206,16 +206,16 @@ nfr_validation:
   _assessed: [security, performance, reliability, maintainability]
   security:
     status: CONCERNS
-    notes: 'No rate limiting on auth endpoints'
+    notes: "No rate limiting on auth endpoints"
   performance:
     status: PASS
-    notes: 'Response times < 200ms verified'
+    notes: "Response times < 200ms verified"
   reliability:
     status: PASS
-    notes: 'Error handling and retries implemented'
+    notes: "Error handling and retries implemented"
   maintainability:
     status: CONCERNS
-    notes: 'Test coverage at 65%, target is 80%'
+    notes: "Test coverage at 65%, target is 80%"
 ```
 
 ## Deterministic Status Rules
@@ -445,10 +445,10 @@ performance_deep_dive:
     p99: 350ms
   database:
     slow_queries: 2
-    missing_indexes: ['users.email', 'orders.user_id']
+    missing_indexes: ["users.email", "orders.user_id"]
   caching:
     hit_rate: 0%
-    recommendation: 'Add Redis for session data'
+    recommendation: "Add Redis for session data"
   load_test:
     max_rps: 150
     breaking_point: 200 rps
@@ -489,11 +489,11 @@ Slug rules:
 
 ```yaml
 schema: 1
-story: '{epic}.{story}'
+story: "{epic}.{story}"
 gate: PASS|CONCERNS|FAIL|WAIVED
-status_reason: '1-2 sentence explanation of gate decision'
-reviewer: 'Quinn'
-updated: '{ISO-8601 timestamp}'
+status_reason: "1-2 sentence explanation of gate decision"
+reviewer: "Quinn"
+updated: "{ISO-8601 timestamp}"
 top_issues: [] # Empty array if no issues
 waiver: { active: false } # Only set active: true if WAIVED
 ```
@@ -502,20 +502,20 @@ waiver: { active: false } # Only set active: true if WAIVED
 
 ```yaml
 schema: 1
-story: '1.3'
+story: "1.3"
 gate: CONCERNS
-status_reason: 'Missing rate limiting on auth endpoints poses security risk.'
-reviewer: 'Quinn'
-updated: '2025-01-12T10:15:00Z'
+status_reason: "Missing rate limiting on auth endpoints poses security risk."
+reviewer: "Quinn"
+updated: "2025-01-12T10:15:00Z"
 top_issues:
-  - id: 'SEC-001'
+  - id: "SEC-001"
     severity: high # ONLY: low|medium|high
-    finding: 'No rate limiting on login endpoint'
-    suggested_action: 'Add rate limiting middleware before production'
-  - id: 'TEST-001'
+    finding: "No rate limiting on login endpoint"
+    suggested_action: "Add rate limiting middleware before production"
+  - id: "TEST-001"
     severity: medium
-    finding: 'No integration tests for auth flow'
-    suggested_action: 'Add integration test coverage'
+    finding: "No integration tests for auth flow"
+    suggested_action: "Add integration test coverage"
 waiver: { active: false }
 ```
 
@@ -523,20 +523,20 @@ waiver: { active: false }
 
 ```yaml
 schema: 1
-story: '1.3'
+story: "1.3"
 gate: WAIVED
-status_reason: 'Known issues accepted for MVP release.'
-reviewer: 'Quinn'
-updated: '2025-01-12T10:15:00Z'
+status_reason: "Known issues accepted for MVP release."
+reviewer: "Quinn"
+updated: "2025-01-12T10:15:00Z"
 top_issues:
-  - id: 'PERF-001'
+  - id: "PERF-001"
     severity: low
-    finding: 'Dashboard loads slowly with 1000+ items'
-    suggested_action: 'Implement pagination in next sprint'
+    finding: "Dashboard loads slowly with 1000+ items"
+    suggested_action: "Implement pagination in next sprint"
 waiver:
   active: true
-  reason: 'MVP release - performance optimization deferred'
-  approved_by: 'Product Owner'
+  reason: "MVP release - performance optimization deferred"
+  approved_by: "Product Owner"
 ```
 
 ## Gate Decision Criteria
@@ -634,10 +634,10 @@ Perform a comprehensive test architecture review with quality gate decision. Thi
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: '{devStoryLocation}/{epic}.{story}.*.md' # Path from core-config.yaml
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "{devStoryLocation}/{epic}.{story}.*.md" # Path from core-config.yaml
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Prerequisites
@@ -819,19 +819,19 @@ Gate file structure:
 
 ```yaml
 schema: 1
-story: '{epic}.{story}'
-story_title: '{story title}'
+story: "{epic}.{story}"
+story_title: "{story title}"
 gate: PASS|CONCERNS|FAIL|WAIVED
-status_reason: '1-2 sentence explanation of gate decision'
-reviewer: 'Quinn (Test Architect)'
-updated: '{ISO-8601 timestamp}'
+status_reason: "1-2 sentence explanation of gate decision"
+reviewer: "Quinn (Test Architect)"
+updated: "{ISO-8601 timestamp}"
 
 top_issues: [] # Empty if no issues
 waiver: { active: false } # Set active: true only if WAIVED
 
 # Extended fields (optional but recommended):
 quality_score: 0-100 # 100 - (20*FAILs) - (10*CONCERNS) or use technical-preferences.md weights
-expires: '{ISO-8601 timestamp}' # Typically 2 weeks from review
+expires: "{ISO-8601 timestamp}" # Typically 2 weeks from review
 
 evidence:
   tests_reviewed: { count }
@@ -843,24 +843,24 @@ evidence:
 nfr_validation:
   security:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   performance:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   reliability:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   maintainability:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
 
 recommendations:
   immediate: # Must fix before production
-    - action: 'Add rate limiting'
-      refs: ['api/auth/login.ts']
+    - action: "Add rate limiting"
+      refs: ["api/auth/login.ts"]
   future: # Can be addressed later
-    - action: 'Consider caching'
-      refs: ['services/data.ts']
+    - action: "Consider caching"
+      refs: ["services/data.ts"]
 ```
 
 ### Gate Decision Criteria
@@ -953,10 +953,10 @@ Generate a comprehensive risk assessment matrix for a story implementation using
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: 'docs/stories/{epic}.{story}.*.md'
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "docs/stories/{epic}.{story}.*.md"
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Purpose
@@ -1026,14 +1026,14 @@ For each category, identify specific risks:
 
 ```yaml
 risk:
-  id: 'SEC-001' # Use prefixes: SEC, PERF, DATA, BUS, OPS, TECH
+  id: "SEC-001" # Use prefixes: SEC, PERF, DATA, BUS, OPS, TECH
   category: security
-  title: 'Insufficient input validation on user forms'
-  description: 'Form inputs not properly sanitized could lead to XSS attacks'
+  title: "Insufficient input validation on user forms"
+  description: "Form inputs not properly sanitized could lead to XSS attacks"
   affected_components:
-    - 'UserRegistrationForm'
-    - 'ProfileUpdateForm'
-  detection_method: 'Code review revealed missing validation'
+    - "UserRegistrationForm"
+    - "ProfileUpdateForm"
+  detection_method: "Code review revealed missing validation"
 ```
 
 ### 2. Risk Assessment
@@ -1080,20 +1080,20 @@ For each identified risk, provide mitigation:
 
 ```yaml
 mitigation:
-  risk_id: 'SEC-001'
-  strategy: 'preventive' # preventive|detective|corrective
+  risk_id: "SEC-001"
+  strategy: "preventive" # preventive|detective|corrective
   actions:
-    - 'Implement input validation library (e.g., validator.js)'
-    - 'Add CSP headers to prevent XSS execution'
-    - 'Sanitize all user inputs before storage'
-    - 'Escape all outputs in templates'
+    - "Implement input validation library (e.g., validator.js)"
+    - "Add CSP headers to prevent XSS execution"
+    - "Sanitize all user inputs before storage"
+    - "Escape all outputs in templates"
   testing_requirements:
-    - 'Security testing with OWASP ZAP'
-    - 'Manual penetration testing of forms'
-    - 'Unit tests for validation functions'
-  residual_risk: 'Low - Some zero-day vulnerabilities may remain'
-  owner: 'dev'
-  timeline: 'Before deployment'
+    - "Security testing with OWASP ZAP"
+    - "Manual penetration testing of forms"
+    - "Unit tests for validation functions"
+  residual_risk: "Low - Some zero-day vulnerabilities may remain"
+  owner: "dev"
+  timeline: "Before deployment"
 ```
 
 ## Outputs
@@ -1119,12 +1119,12 @@ risk_summary:
   highest:
     id: SEC-001
     score: 9
-    title: 'XSS on profile form'
+    title: "XSS on profile form"
   recommendations:
     must_fix:
-      - 'Add input sanitization & CSP'
+      - "Add input sanitization & CSP"
     monitor:
-      - 'Add security alerts for auth endpoints'
+      - "Add security alerts for auth endpoints"
 ```
 
 ### Output 2: Markdown Report
@@ -1311,10 +1311,10 @@ Create comprehensive test scenarios with appropriate test level recommendations 
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: '{devStoryLocation}/{epic}.{story}.*.md' # Path from core-config.yaml
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "{devStoryLocation}/{epic}.{story}.*.md" # Path from core-config.yaml
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Purpose
@@ -1367,13 +1367,13 @@ For each identified test need, create:
 
 ```yaml
 test_scenario:
-  id: '{epic}.{story}-{LEVEL}-{SEQ}'
-  requirement: 'AC reference'
+  id: "{epic}.{story}-{LEVEL}-{SEQ}"
+  requirement: "AC reference"
   priority: P0|P1|P2|P3
   level: unit|integration|e2e
-  description: 'What is being tested'
-  justification: 'Why this level was chosen'
-  mitigates_risks: ['RISK-001'] # If risk profile exists
+  description: "What is being tested"
+  justification: "Why this level was chosen"
+  mitigates_risks: ["RISK-001"] # If risk profile exists
 ```
 
 ### 5. Validate Coverage
@@ -1515,21 +1515,21 @@ Identify all testable requirements from:
 For each requirement, document which tests validate it. Use Given-When-Then to describe what the test validates (not how it's written):
 
 ```yaml
-requirement: 'AC1: User can login with valid credentials'
+requirement: "AC1: User can login with valid credentials"
 test_mappings:
-  - test_file: 'auth/login.test.ts'
-    test_case: 'should successfully login with valid email and password'
+  - test_file: "auth/login.test.ts"
+    test_case: "should successfully login with valid email and password"
     # Given-When-Then describes WHAT the test validates, not HOW it's coded
-    given: 'A registered user with valid credentials'
-    when: 'They submit the login form'
-    then: 'They are redirected to dashboard and session is created'
+    given: "A registered user with valid credentials"
+    when: "They submit the login form"
+    then: "They are redirected to dashboard and session is created"
     coverage: full
 
-  - test_file: 'e2e/auth-flow.test.ts'
-    test_case: 'complete login flow'
-    given: 'User on login page'
-    when: 'Entering valid credentials and submitting'
-    then: 'Dashboard loads with user data'
+  - test_file: "e2e/auth-flow.test.ts"
+    test_case: "complete login flow"
+    given: "User on login page"
+    when: "Entering valid credentials and submitting"
+    then: "Dashboard loads with user data"
     coverage: integration
 ```
 
@@ -1551,19 +1551,19 @@ Document any gaps found:
 
 ```yaml
 coverage_gaps:
-  - requirement: 'AC3: Password reset email sent within 60 seconds'
-    gap: 'No test for email delivery timing'
+  - requirement: "AC3: Password reset email sent within 60 seconds"
+    gap: "No test for email delivery timing"
     severity: medium
     suggested_test:
       type: integration
-      description: 'Test email service SLA compliance'
+      description: "Test email service SLA compliance"
 
-  - requirement: 'AC5: Support 1000 concurrent users'
-    gap: 'No load testing implemented'
+  - requirement: "AC5: Support 1000 concurrent users"
+    gap: "No load testing implemented"
     severity: high
     suggested_test:
       type: performance
-      description: 'Load test with 1000 concurrent connections'
+      description: "Load test with 1000 concurrent connections"
 ```
 
 ## Outputs
@@ -1579,11 +1579,11 @@ trace:
     full: Y
     partial: Z
     none: W
-  planning_ref: 'qa.qaLocation/assessments/{epic}.{story}-test-design-{YYYYMMDD}.md'
+  planning_ref: "qa.qaLocation/assessments/{epic}.{story}-test-design-{YYYYMMDD}.md"
   uncovered:
-    - ac: 'AC3'
-      reason: 'No test found for password reset timing'
-  notes: 'See qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md'
+    - ac: "AC3"
+      reason: "No test found for password reset timing"
+  notes: "See qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md"
 ```
 
 ### Output 2: Traceability Report

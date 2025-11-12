@@ -197,7 +197,7 @@ agent:
 
 ```yaml
 stage_1_analysis:
-  duration: '5-10 minutes'
+  duration: "5-10 minutes"
   activities:
     - prd_deep_analysis: 深度分析PRD文档结构
     - story_identification: 识别所有用户故事
@@ -214,7 +214,7 @@ stage_1_analysis:
 
 ```yaml
 stage_2_creation:
-  duration: '15-30 minutes'
+  duration: "15-30 minutes"
   activities:
     - parallel_story_generation: 并行生成所有用户故事
     - database_design_integration: 集成数据库设计
@@ -230,7 +230,7 @@ stage_2_creation:
 
 ```yaml
 stage_3_development:
-  duration: '主要时间消耗阶段'
+  duration: "主要时间消耗阶段"
   execution_mode: sequential
   activities:
     - pipeline_initialization: 初始化单条串行开发流水线
@@ -247,7 +247,7 @@ stage_3_development:
 
 ```yaml
 stage_4_integration:
-  duration: '10-20 minutes'
+  duration: "10-20 minutes"
   activities:
     - cross_module_integration: 跨模块集成测试
     - end_to_end_testing: 端到端业务流程测试
@@ -263,7 +263,7 @@ stage_4_integration:
 
 ```yaml
 stage_5_delivery:
-  duration: '5-10 minutes'
+  duration: "5-10 minutes"
   activities:
     - deliverable_packaging: 交付物打包
     - documentation_generation: 文档生成
@@ -302,18 +302,18 @@ parallel_scheduling:
 ```yaml
 pipeline_architecture:
   pipeline_1:
-    focus: '核心业务功能'
-    stories: ['用户注册', '用户登录', '权限管理']
+    focus: "核心业务功能"
+    stories: ["用户注册", "用户登录", "权限管理"]
     priority: high
 
   pipeline_2:
-    focus: '业务数据管理'
-    stories: ['数据录入', '数据查询', '数据导出']
+    focus: "业务数据管理"
+    stories: ["数据录入", "数据查询", "数据导出"]
     priority: medium
 
   pipeline_3:
-    focus: '系统支撑功能'
-    stories: ['系统配置', '日志监控', '备份恢复']
+    focus: "系统支撑功能"
+    stories: ["系统配置", "日志监控", "备份恢复"]
     priority: low
 ```
 

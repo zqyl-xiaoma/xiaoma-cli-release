@@ -301,22 +301,22 @@ error_handling:
 ```yaml
 agent_integration:
   sm:
-    commands: ['*draft-enhanced']
+    commands: ["*draft-enhanced"]
     input: epic_shards, database_design
     output: story.md
 
   po:
-    commands: ['*validate-story-draft']
+    commands: ["*validate-story-draft"]
     input: story.md
     output: validation_result, approved_story
 
   dev:
-    commands: ['*develop-story', '*run-tests']
+    commands: ["*develop-story", "*run-tests"]
     input: story.md, generated_code
     output: implementation_files, test_results
 
   qa:
-    commands: ['*review']
+    commands: ["*review"]
     input: story.md, implementation_files
     output: qa_report, approval_status
 ```

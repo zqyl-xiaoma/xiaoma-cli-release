@@ -51,7 +51,6 @@ agents:
   - automation-orchestrator # 自动化流程编排器
   - analyst
   - pm
-  - database-architect # 数据库架构师
   - ux-expert
   - architect
   - po
@@ -358,7 +357,7 @@ agent:
 
 ```yaml
 stage_1_analysis:
-  duration: '5-10 minutes'
+  duration: "5-10 minutes"
   activities:
     - prd_deep_analysis: 深度分析PRD文档结构
     - story_identification: 识别所有用户故事
@@ -375,7 +374,7 @@ stage_1_analysis:
 
 ```yaml
 stage_2_creation:
-  duration: '15-30 minutes'
+  duration: "15-30 minutes"
   activities:
     - parallel_story_generation: 并行生成所有用户故事
     - database_design_integration: 集成数据库设计
@@ -391,7 +390,7 @@ stage_2_creation:
 
 ```yaml
 stage_3_development:
-  duration: '主要时间消耗阶段'
+  duration: "主要时间消耗阶段"
   execution_mode: sequential
   activities:
     - pipeline_initialization: 初始化单条串行开发流水线
@@ -408,7 +407,7 @@ stage_3_development:
 
 ```yaml
 stage_4_integration:
-  duration: '10-20 minutes'
+  duration: "10-20 minutes"
   activities:
     - cross_module_integration: 跨模块集成测试
     - end_to_end_testing: 端到端业务流程测试
@@ -424,7 +423,7 @@ stage_4_integration:
 
 ```yaml
 stage_5_delivery:
-  duration: '5-10 minutes'
+  duration: "5-10 minutes"
   activities:
     - deliverable_packaging: 交付物打包
     - documentation_generation: 文档生成
@@ -463,18 +462,18 @@ parallel_scheduling:
 ```yaml
 pipeline_architecture:
   pipeline_1:
-    focus: '核心业务功能'
-    stories: ['用户注册', '用户登录', '权限管理']
+    focus: "核心业务功能"
+    stories: ["用户注册", "用户登录", "权限管理"]
     priority: high
 
   pipeline_2:
-    focus: '业务数据管理'
-    stories: ['数据录入', '数据查询', '数据导出']
+    focus: "业务数据管理"
+    stories: ["数据录入", "数据查询", "数据导出"]
     priority: medium
 
   pipeline_3:
-    focus: '系统支撑功能'
-    stories: ['系统配置', '日志监控', '备份恢复']
+    focus: "系统支撑功能"
+    stories: ["系统配置", "日志监控", "备份恢复"]
     priority: low
 ```
 
@@ -927,22 +926,22 @@ error_handling:
 ```yaml
 agent_integration:
   sm:
-    commands: ['*draft-enhanced']
+    commands: ["*draft-enhanced"]
     input: epic_shards, database_design
     output: story.md
 
   po:
-    commands: ['*validate-story-draft']
+    commands: ["*validate-story-draft"]
     input: story.md
     output: validation_result, approved_story
 
   dev:
-    commands: ['*develop-story', '*run-tests']
+    commands: ["*develop-story", "*run-tests"]
     input: story.md, generated_code
     output: implementation_files, test_results
 
   qa:
-    commands: ['*review']
+    commands: ["*review"]
     input: story.md, implementation_files
     output: qa_report, approval_status
 ```
@@ -1148,288 +1147,6 @@ dependencies:
     - prd-tmpl.yaml
 ```
 ==================== END: .xiaoma-core/agents/pm.md ====================
-
-==================== START: .xiaoma-core/agents/database-architect.md ====================
-# database-architect
-
-CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
-
-```yaml
-agent:
-  name: database-architect
-  id: database-architect
-  title: Database Design Architect
-  icon: 🗄️
-  role: 专业数据库架构师和数据建模专家
-  expertise: MySQL架构设计、数据建模、性能优化、代码生成
-  whenToUse: Use for database structure analysis, schema design, data modeling, MySQL operations
-```
-
-## Core Capabilities
-
-### 🔍 数据库分析能力
-
-- 通过MCP mysql-server服务连接现有数据库
-- 自动读取表结构、字段定义、索引、外键约束
-- 生成实体关系图（ER图）
-- 创建或更新数据库文档
-
-### 🏗️ 数据库设计能力
-
-- 基于PRD需求文档进行数据库设计
-- 实体识别和属性定义
-- 关系设计和约束定义
-- 性能优化和索引策略制定
-
-### ⚙️ 代码生成能力
-
-- 生成DDL脚本（建表语句）
-- 生成DML脚本（数据操作语句）
-- 生成Java实体类（POJO with Lombok）
-- 生成MyBatis Mapper接口和XML
-- 生成Service层代码
-- 生成Controller层RESTful API
-
-## Available Commands
-
-### 1. analyze-database
-
-**命令**: `*analyze-database`
-**功能**: 分析现有数据库结构
-**适用场景**: 现有项目项目，需要了解现有数据库
-**执行流程**:
-
-1. 通过MCP服务连接MySQL数据库
-2. 读取所有表结构和元数据
-3. 分析表间关系和约束
-4. 生成完整的数据库分析报告
-5. 创建ER图和关系文档
-
-**输出文件**: `docs/database/{project_name}-database.md`
-
-### 2. create-database-design
-
-**命令**: `*create-database-design`
-**功能**: 基于需求设计数据库架构
-**依赖**: 需要PRD文档
-**执行流程**:
-
-1. 分析PRD中的业务需求
-2. 识别核心业务实体
-3. 设计表结构和字段
-4. 定义实体关系和约束
-5. 制定索引和优化策略
-
-**输出文件**: `docs/database/database-design.md`
-
-### 3. generate-ddl
-
-**命令**: `*generate-ddl`
-**功能**: 生成数据库DDL脚本
-**依赖**: 数据库设计文档
-**执行流程**:
-
-1. 基于设计文档生成CREATE TABLE语句
-2. 生成索引创建语句
-3. 生成约束和外键语句
-4. 生成数据库初始化脚本
-
-**输出文件**: `docs/database/scripts/`目录下的SQL文件
-
-### 4. generate-dml
-
-**命令**: `*generate-dml`
-**功能**: 生成数据库DML脚本
-**执行流程**:
-
-1. 生成基础数据插入语句
-2. 创建常用查询示例
-3. 生成数据更新和删除模板
-
-### 5. generate-entities
-
-**命令**: `*generate-entities`
-**功能**: 生成Java实体类和DTO
-**执行流程**:
-
-1. 根据表结构生成POJO实体类
-2. 添加Lombok注解
-3. 生成DTO数据传输对象
-4. 生成查询条件类
-
-**输出目录**: `src/main/java/{package}/entity/`
-
-### 6. generate-mappers
-
-**命令**: `*generate-mappers`
-**功能**: 生成MyBatis Mapper
-**执行流程**:
-
-1. 生成Mapper接口
-2. 生成对应的XML映射文件
-3. 生成Service接口和实现类
-4. 生成Controller REST API
-
-**输出目录**:
-
-- `src/main/java/{package}/mapper/`
-- `src/main/resources/mapper/`
-- `src/main/java/{package}/service/`
-- `src/main/java/{package}/controller/`
-
-### 7. create-api-design
-
-**命令**: `*create-api-design`
-**功能**: 设计RESTful API接口
-**执行流程**:
-
-1. 基于实体设计API端点
-2. 定义请求和响应格式
-3. 设计统一的返回结构
-4. 添加Swagger文档注解
-
-### 8. optimize-schema
-
-**命令**: `*optimize-schema`
-**功能**: 数据库性能优化
-**执行流程**:
-
-1. 分析查询模式
-2. 优化索引策略
-3. 建议分区方案
-4. 提供缓存策略
-
-### 9. create-migration-plan
-
-**命令**: `*create-migration-plan`
-**功能**: 创建数据库迁移计划
-**适用场景**: 数据库结构变更
-**执行流程**:
-
-1. 分析现有和目标结构差异
-2. 生成增量迁移脚本
-3. 制定迁移时间计划
-4. 准备回滚方案
-
-## Integration Points
-
-### MCP MySQL Service
-
-需要在环境中配置MCP mysql-server服务：
-
-```json
-{
-  "mcpServers": {
-    "mysql-server": {
-      "command": "npx",
-      "args": ["@claudeai/mcp-server-mysql"],
-      "env": {
-        "MYSQL_HOST": "101.126.130.208",
-        "MYSQL_PORT": "3306",
-        "MYSQL_USER": "root",
-        "MYSQL_PASSWORD": "root",
-        "MYSQL_DATABASE": "api_db"
-      }
-    }
-  }
-}
-```
-
-### Framework Integration
-
-- **ORM**: MyBatis Plus
-- **Spring Boot**: 自动生成配置
-- **Lombok**: 减少样板代码
-- **Swagger**: API文档生成
-- **Validation**: 数据校验注解
-
-## Code Generation Templates
-
-### Entity Class Template
-
-```java
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("{table_name}")
-public class {EntityName} implements Serializable {
-    @TableId(type = IdType.AUTO)
-    private Long id;
-
-    @TableField("{field_name}")
-    private {FieldType} {fieldName};
-
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdAt;
-
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;
-
-    @TableLogic
-    private LocalDateTime deletedAt;
-}
-```
-
-### Mapper Interface Template
-
-```java
-@Mapper
-public interface {EntityName}Mapper extends BaseMapper<{EntityName}> {
-    List<{EntityName}> selectByQuery(@Param("query") {EntityName}Query query);
-    int insertBatch(@Param("list") List<{EntityName}> list);
-}
-```
-
-## Best Practices
-
-### 数据库设计原则
-
-1. **规范化**: 遵循三范式设计原则
-2. **性能**: 合理使用索引和分区
-3. **安全**: 实现软删除和乐观锁
-4. **扩展**: 预留扩展字段和表结构
-
-### 命名规范
-
-- **表名**: 小写下划线分隔 (user_profiles)
-- **字段名**: 小写下划线分隔 (created_at)
-- **Java类**: 大驼峰命名 (UserProfile)
-- **变量名**: 小驼峰命名 (createdAt)
-
-### 代码质量
-
-- 使用统一的异常处理
-- 实现分页和排序
-- 添加数据校验
-- 生成完整的API文档
-
-## Usage in Workflows
-
-Database Architect在增强型全栈工作流中的位置：
-
-1. **需求分析阶段** → 2. **数据库设计阶段** → 3. **架构设计阶段** → 4. **开发实现阶段**
-
-与其他Agent的协作：
-
-- **从PM接收**: PRD需求文档
-- **提供给Architect**: 数据库设计和生成的代码
-- **支持Dev**: 提供实体类和Mapper基础代码
-
-## Troubleshooting
-
-### 常见问题
-
-1. **无法连接数据库**: 检查MCP服务配置
-2. **生成代码不规范**: 确认包名和模板配置
-3. **关系识别错误**: 手动调整设计文档
-
-### 最佳实践建议
-
-- 始终先分析现有数据库
-- 设计阶段考虑扩展性
-- 生成代码后进行代码审查
-- 测试数据库连接和查询性能
-==================== END: .xiaoma-core/agents/database-architect.md ====================
 
 ==================== START: .xiaoma-core/agents/ux-expert.md ====================
 # ux-expert
@@ -4216,11 +3933,29 @@ sections:
         rows:
           - category: "核心功能"
             items:
-              - ["功能A", "{{status}}", "{{status}}", "{{status}}", "{{status}}"]
-              - ["功能B", "{{status}}", "{{status}}", "{{status}}", "{{status}}"]
+              - [
+                  "功能A",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                ]
+              - [
+                  "功能B",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                  "{{status}}",
+                ]
           - category: "用户体验"
             items:
-              - ["移动应用", "{{rating}}", "{{rating}}", "{{rating}}", "{{rating}}"]
+              - [
+                  "移动应用",
+                  "{{rating}}",
+                  "{{rating}}",
+                  "{{rating}}",
+                  "{{rating}}",
+                ]
               - ["上手时间", "{{time}}", "{{time}}", "{{time}}", "{{time}}"]
           - category: "集成与生态系统"
             items:
@@ -4231,11 +3966,23 @@ sections:
                   "{{availability}}",
                   "{{availability}}",
                 ]
-              - ["第三方集成", "{{number}}", "{{number}}", "{{number}}", "{{number}}"]
+              - [
+                  "第三方集成",
+                  "{{number}}",
+                  "{{number}}",
+                  "{{number}}",
+                  "{{number}}",
+                ]
           - category: "定价与计划"
             items:
               - ["起步价", "{{price}}", "{{price}}", "{{price}}", "{{price}}"]
-              - ["免费套餐", "{{yes_no}}", "{{yes_no}}", "{{yes_no}}", "{{yes_no}}"]
+              - [
+                  "免费套餐",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                  "{{yes_no}}",
+                ]
       - id: swot-comparison
         title: SWOT 对比
         instruction: 为你的解决方案与主要竞争对手创建 SWOT 分析
@@ -6959,7 +6706,12 @@ sections:
         rows:
           - ["移动端", "{{mobile_min}}", "{{mobile_max}}", "{{mobile_devices}}"]
           - ["平板", "{{tablet_min}}", "{{tablet_max}}", "{{tablet_devices}}"]
-          - ["桌面端", "{{desktop_min}}", "{{desktop_max}}", "{{desktop_devices}}"]
+          - [
+              "桌面端",
+              "{{desktop_min}}",
+              "{{desktop_max}}",
+              "{{desktop_devices}}",
+            ]
           - ["宽屏", "{{wide_min}}", "-", "{{wide_devices}}"]
       - id: adaptation-patterns
         title: 适配模式
@@ -8237,17 +7989,83 @@ sections:
         columns: [类别, 技术, 版本, 用途, 选型理由]
         instruction: 根据所选框架和项目需求，填写适当的技术选型。
         rows:
-          - ["框架", "{{framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["UI 库", "{{ui_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["状态管理", "{{state_management}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["路由", "{{routing_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["构建工具", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["样式方案", "{{styling_solution}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["测试", "{{test_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["组件库", "{{component_lib}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["表单处理", "{{form_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["动画", "{{animation_lib}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["开发工具", "{{dev_tools}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "框架",
+              "{{framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "UI 库",
+              "{{ui_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "状态管理",
+              "{{state_management}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "路由",
+              "{{routing_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "构建工具",
+              "{{build_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "样式方案",
+              "{{styling_solution}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "测试",
+              "{{test_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "组件库",
+              "{{component_lib}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "表单处理",
+              "{{form_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "动画",
+              "{{animation_lib}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "开发工具",
+              "{{dev_tools}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
 
   - id: project-structure
     title: 项目结构
@@ -8528,27 +8346,147 @@ sections:
         type: table
         columns: [类别, 技术, 版本, 用途, 理由]
         rows:
-          - ["前端语言", "{{fe_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["前端框架", "{{fe_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["UI 组件库", "{{ui_library}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["状态管理", "{{state_mgmt}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端语言", "{{be_language}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端框架", "{{be_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["API 风格", "{{api_style}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["数据库", "{{database}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["缓存", "{{cache}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["文件存储", "{{storage}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "前端语言",
+              "{{fe_language}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "前端框架",
+              "{{fe_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "UI 组件库",
+              "{{ui_library}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "状态管理",
+              "{{state_mgmt}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端语言",
+              "{{be_language}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端框架",
+              "{{be_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "API 风格",
+              "{{api_style}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "数据库",
+              "{{database}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "缓存",
+              "{{cache}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "文件存储",
+              "{{storage}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
           - ["认证", "{{auth}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["前端测试", "{{fe_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["后端测试", "{{be_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["E2E 测试", "{{e2e_test}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["构建工具", "{{build_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["打包工具", "{{bundler}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["IaC 工具", "{{iac_tool}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["CI/CD", "{{cicd}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["监控", "{{monitoring}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["日志", "{{logging}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
-          - ["CSS 框架", "{{css_framework}}", "{{version}}", "{{purpose}}", "{{why_chosen}}"]
+          - [
+              "前端测试",
+              "{{fe_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "后端测试",
+              "{{be_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "E2E 测试",
+              "{{e2e_test}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "构建工具",
+              "{{build_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "打包工具",
+              "{{bundler}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "IaC 工具",
+              "{{iac_tool}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "CI/CD",
+              "{{cicd}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "监控",
+              "{{monitoring}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "日志",
+              "{{logging}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
+          - [
+              "CSS 框架",
+              "{{css_framework}}",
+              "{{version}}",
+              "{{purpose}}",
+              "{{why_chosen}}",
+            ]
 
   - id: data-models
     title: 数据模型
@@ -10506,12 +10444,12 @@ ALWAYS cite source documents: `[Source: architecture/{filename}.md#{section}]`
 #### 2.1 基础信息填写
 
 ```yaml
-epic_num: '{{epic_number}}'
-story_num: '{{story_number}}'
-story_title_short: '{{story_title}}'
-role: '{{user_role}}'
-action: '{{user_action}}'
-benefit: '{{user_benefit}}'
+epic_num: "{{epic_number}}"
+story_num: "{{story_number}}"
+story_title_short: "{{story_title}}"
+role: "{{user_role}}"
+action: "{{user_action}}"
+benefit: "{{user_benefit}}"
 ```
 
 #### 2.2 数据库设计部分填写
@@ -12021,13 +11959,13 @@ Implement fixes based on QA results (gate and assessments) for a specific story.
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "2.2"
+  - story_id: "{epic}.{story}" # e.g., "2.2"
   - qa_root: from `xiaoma-core/core-config.yaml` key `qa.qaLocation` (e.g., `docs/project/qa`)
   - story_root: from `xiaoma-core/core-config.yaml` key `devStoryLocation` (e.g., `docs/project/stories`)
 
 optional:
-  - story_title: '{title}' # derive from story H1 if missing
-  - story_slug: '{slug}' # derive from title (lowercase, hyphenated) if missing
+  - story_title: "{title}" # derive from story H1 if missing
+  - story_slug: "{slug}" # derive from title (lowercase, hyphenated) if missing
 ```
 
 ## QA Sources to Read
@@ -12352,16 +12290,16 @@ nfr_validation:
   _assessed: [security, performance, reliability, maintainability]
   security:
     status: CONCERNS
-    notes: 'No rate limiting on auth endpoints'
+    notes: "No rate limiting on auth endpoints"
   performance:
     status: PASS
-    notes: 'Response times < 200ms verified'
+    notes: "Response times < 200ms verified"
   reliability:
     status: PASS
-    notes: 'Error handling and retries implemented'
+    notes: "Error handling and retries implemented"
   maintainability:
     status: CONCERNS
-    notes: 'Test coverage at 65%, target is 80%'
+    notes: "Test coverage at 65%, target is 80%"
 ```
 
 ## Deterministic Status Rules
@@ -12591,10 +12529,10 @@ performance_deep_dive:
     p99: 350ms
   database:
     slow_queries: 2
-    missing_indexes: ['users.email', 'orders.user_id']
+    missing_indexes: ["users.email", "orders.user_id"]
   caching:
     hit_rate: 0%
-    recommendation: 'Add Redis for session data'
+    recommendation: "Add Redis for session data"
   load_test:
     max_rps: 150
     breaking_point: 200 rps
@@ -12635,11 +12573,11 @@ Slug rules:
 
 ```yaml
 schema: 1
-story: '{epic}.{story}'
+story: "{epic}.{story}"
 gate: PASS|CONCERNS|FAIL|WAIVED
-status_reason: '1-2 sentence explanation of gate decision'
-reviewer: 'Quinn'
-updated: '{ISO-8601 timestamp}'
+status_reason: "1-2 sentence explanation of gate decision"
+reviewer: "Quinn"
+updated: "{ISO-8601 timestamp}"
 top_issues: [] # Empty array if no issues
 waiver: { active: false } # Only set active: true if WAIVED
 ```
@@ -12648,20 +12586,20 @@ waiver: { active: false } # Only set active: true if WAIVED
 
 ```yaml
 schema: 1
-story: '1.3'
+story: "1.3"
 gate: CONCERNS
-status_reason: 'Missing rate limiting on auth endpoints poses security risk.'
-reviewer: 'Quinn'
-updated: '2025-01-12T10:15:00Z'
+status_reason: "Missing rate limiting on auth endpoints poses security risk."
+reviewer: "Quinn"
+updated: "2025-01-12T10:15:00Z"
 top_issues:
-  - id: 'SEC-001'
+  - id: "SEC-001"
     severity: high # ONLY: low|medium|high
-    finding: 'No rate limiting on login endpoint'
-    suggested_action: 'Add rate limiting middleware before production'
-  - id: 'TEST-001'
+    finding: "No rate limiting on login endpoint"
+    suggested_action: "Add rate limiting middleware before production"
+  - id: "TEST-001"
     severity: medium
-    finding: 'No integration tests for auth flow'
-    suggested_action: 'Add integration test coverage'
+    finding: "No integration tests for auth flow"
+    suggested_action: "Add integration test coverage"
 waiver: { active: false }
 ```
 
@@ -12669,20 +12607,20 @@ waiver: { active: false }
 
 ```yaml
 schema: 1
-story: '1.3'
+story: "1.3"
 gate: WAIVED
-status_reason: 'Known issues accepted for MVP release.'
-reviewer: 'Quinn'
-updated: '2025-01-12T10:15:00Z'
+status_reason: "Known issues accepted for MVP release."
+reviewer: "Quinn"
+updated: "2025-01-12T10:15:00Z"
 top_issues:
-  - id: 'PERF-001'
+  - id: "PERF-001"
     severity: low
-    finding: 'Dashboard loads slowly with 1000+ items'
-    suggested_action: 'Implement pagination in next sprint'
+    finding: "Dashboard loads slowly with 1000+ items"
+    suggested_action: "Implement pagination in next sprint"
 waiver:
   active: true
-  reason: 'MVP release - performance optimization deferred'
-  approved_by: 'Product Owner'
+  reason: "MVP release - performance optimization deferred"
+  approved_by: "Product Owner"
 ```
 
 ## Gate Decision Criteria
@@ -12780,10 +12718,10 @@ Perform a comprehensive test architecture review with quality gate decision. Thi
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: '{devStoryLocation}/{epic}.{story}.*.md' # Path from core-config.yaml
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "{devStoryLocation}/{epic}.{story}.*.md" # Path from core-config.yaml
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Prerequisites
@@ -12965,19 +12903,19 @@ Gate file structure:
 
 ```yaml
 schema: 1
-story: '{epic}.{story}'
-story_title: '{story title}'
+story: "{epic}.{story}"
+story_title: "{story title}"
 gate: PASS|CONCERNS|FAIL|WAIVED
-status_reason: '1-2 sentence explanation of gate decision'
-reviewer: 'Quinn (Test Architect)'
-updated: '{ISO-8601 timestamp}'
+status_reason: "1-2 sentence explanation of gate decision"
+reviewer: "Quinn (Test Architect)"
+updated: "{ISO-8601 timestamp}"
 
 top_issues: [] # Empty if no issues
 waiver: { active: false } # Set active: true only if WAIVED
 
 # Extended fields (optional but recommended):
 quality_score: 0-100 # 100 - (20*FAILs) - (10*CONCERNS) or use technical-preferences.md weights
-expires: '{ISO-8601 timestamp}' # Typically 2 weeks from review
+expires: "{ISO-8601 timestamp}" # Typically 2 weeks from review
 
 evidence:
   tests_reviewed: { count }
@@ -12989,24 +12927,24 @@ evidence:
 nfr_validation:
   security:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   performance:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   reliability:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
   maintainability:
     status: PASS|CONCERNS|FAIL
-    notes: 'Specific findings'
+    notes: "Specific findings"
 
 recommendations:
   immediate: # Must fix before production
-    - action: 'Add rate limiting'
-      refs: ['api/auth/login.ts']
+    - action: "Add rate limiting"
+      refs: ["api/auth/login.ts"]
   future: # Can be addressed later
-    - action: 'Consider caching'
-      refs: ['services/data.ts']
+    - action: "Consider caching"
+      refs: ["services/data.ts"]
 ```
 
 ### Gate Decision Criteria
@@ -13099,10 +13037,10 @@ Generate a comprehensive risk assessment matrix for a story implementation using
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: 'docs/stories/{epic}.{story}.*.md'
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "docs/stories/{epic}.{story}.*.md"
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Purpose
@@ -13172,14 +13110,14 @@ For each category, identify specific risks:
 
 ```yaml
 risk:
-  id: 'SEC-001' # Use prefixes: SEC, PERF, DATA, BUS, OPS, TECH
+  id: "SEC-001" # Use prefixes: SEC, PERF, DATA, BUS, OPS, TECH
   category: security
-  title: 'Insufficient input validation on user forms'
-  description: 'Form inputs not properly sanitized could lead to XSS attacks'
+  title: "Insufficient input validation on user forms"
+  description: "Form inputs not properly sanitized could lead to XSS attacks"
   affected_components:
-    - 'UserRegistrationForm'
-    - 'ProfileUpdateForm'
-  detection_method: 'Code review revealed missing validation'
+    - "UserRegistrationForm"
+    - "ProfileUpdateForm"
+  detection_method: "Code review revealed missing validation"
 ```
 
 ### 2. Risk Assessment
@@ -13226,20 +13164,20 @@ For each identified risk, provide mitigation:
 
 ```yaml
 mitigation:
-  risk_id: 'SEC-001'
-  strategy: 'preventive' # preventive|detective|corrective
+  risk_id: "SEC-001"
+  strategy: "preventive" # preventive|detective|corrective
   actions:
-    - 'Implement input validation library (e.g., validator.js)'
-    - 'Add CSP headers to prevent XSS execution'
-    - 'Sanitize all user inputs before storage'
-    - 'Escape all outputs in templates'
+    - "Implement input validation library (e.g., validator.js)"
+    - "Add CSP headers to prevent XSS execution"
+    - "Sanitize all user inputs before storage"
+    - "Escape all outputs in templates"
   testing_requirements:
-    - 'Security testing with OWASP ZAP'
-    - 'Manual penetration testing of forms'
-    - 'Unit tests for validation functions'
-  residual_risk: 'Low - Some zero-day vulnerabilities may remain'
-  owner: 'dev'
-  timeline: 'Before deployment'
+    - "Security testing with OWASP ZAP"
+    - "Manual penetration testing of forms"
+    - "Unit tests for validation functions"
+  residual_risk: "Low - Some zero-day vulnerabilities may remain"
+  owner: "dev"
+  timeline: "Before deployment"
 ```
 
 ## Outputs
@@ -13265,12 +13203,12 @@ risk_summary:
   highest:
     id: SEC-001
     score: 9
-    title: 'XSS on profile form'
+    title: "XSS on profile form"
   recommendations:
     must_fix:
-      - 'Add input sanitization & CSP'
+      - "Add input sanitization & CSP"
     monitor:
-      - 'Add security alerts for auth endpoints'
+      - "Add security alerts for auth endpoints"
 ```
 
 ### Output 2: Markdown Report
@@ -13457,10 +13395,10 @@ Create comprehensive test scenarios with appropriate test level recommendations 
 
 ```yaml
 required:
-  - story_id: '{epic}.{story}' # e.g., "1.3"
-  - story_path: '{devStoryLocation}/{epic}.{story}.*.md' # Path from core-config.yaml
-  - story_title: '{title}' # If missing, derive from story file H1
-  - story_slug: '{slug}' # If missing, derive from title (lowercase, hyphenated)
+  - story_id: "{epic}.{story}" # e.g., "1.3"
+  - story_path: "{devStoryLocation}/{epic}.{story}.*.md" # Path from core-config.yaml
+  - story_title: "{title}" # If missing, derive from story file H1
+  - story_slug: "{slug}" # If missing, derive from title (lowercase, hyphenated)
 ```
 
 ## Purpose
@@ -13513,13 +13451,13 @@ For each identified test need, create:
 
 ```yaml
 test_scenario:
-  id: '{epic}.{story}-{LEVEL}-{SEQ}'
-  requirement: 'AC reference'
+  id: "{epic}.{story}-{LEVEL}-{SEQ}"
+  requirement: "AC reference"
   priority: P0|P1|P2|P3
   level: unit|integration|e2e
-  description: 'What is being tested'
-  justification: 'Why this level was chosen'
-  mitigates_risks: ['RISK-001'] # If risk profile exists
+  description: "What is being tested"
+  justification: "Why this level was chosen"
+  mitigates_risks: ["RISK-001"] # If risk profile exists
 ```
 
 ### 5. Validate Coverage
@@ -13661,21 +13599,21 @@ Identify all testable requirements from:
 For each requirement, document which tests validate it. Use Given-When-Then to describe what the test validates (not how it's written):
 
 ```yaml
-requirement: 'AC1: User can login with valid credentials'
+requirement: "AC1: User can login with valid credentials"
 test_mappings:
-  - test_file: 'auth/login.test.ts'
-    test_case: 'should successfully login with valid email and password'
+  - test_file: "auth/login.test.ts"
+    test_case: "should successfully login with valid email and password"
     # Given-When-Then describes WHAT the test validates, not HOW it's coded
-    given: 'A registered user with valid credentials'
-    when: 'They submit the login form'
-    then: 'They are redirected to dashboard and session is created'
+    given: "A registered user with valid credentials"
+    when: "They submit the login form"
+    then: "They are redirected to dashboard and session is created"
     coverage: full
 
-  - test_file: 'e2e/auth-flow.test.ts'
-    test_case: 'complete login flow'
-    given: 'User on login page'
-    when: 'Entering valid credentials and submitting'
-    then: 'Dashboard loads with user data'
+  - test_file: "e2e/auth-flow.test.ts"
+    test_case: "complete login flow"
+    given: "User on login page"
+    when: "Entering valid credentials and submitting"
+    then: "Dashboard loads with user data"
     coverage: integration
 ```
 
@@ -13697,19 +13635,19 @@ Document any gaps found:
 
 ```yaml
 coverage_gaps:
-  - requirement: 'AC3: Password reset email sent within 60 seconds'
-    gap: 'No test for email delivery timing'
+  - requirement: "AC3: Password reset email sent within 60 seconds"
+    gap: "No test for email delivery timing"
     severity: medium
     suggested_test:
       type: integration
-      description: 'Test email service SLA compliance'
+      description: "Test email service SLA compliance"
 
-  - requirement: 'AC5: Support 1000 concurrent users'
-    gap: 'No load testing implemented'
+  - requirement: "AC5: Support 1000 concurrent users"
+    gap: "No load testing implemented"
     severity: high
     suggested_test:
       type: performance
-      description: 'Load test with 1000 concurrent connections'
+      description: "Load test with 1000 concurrent connections"
 ```
 
 ## Outputs
@@ -13725,11 +13663,11 @@ trace:
     full: Y
     partial: Z
     none: W
-  planning_ref: 'qa.qaLocation/assessments/{epic}.{story}-test-design-{YYYYMMDD}.md'
+  planning_ref: "qa.qaLocation/assessments/{epic}.{story}-test-design-{YYYYMMDD}.md"
   uncovered:
-    - ac: 'AC3'
-      reason: 'No test found for password reset timing'
-  notes: 'See qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md'
+    - ac: "AC3"
+      reason: "No test found for password reset timing"
+  notes: "See qa.qaLocation/assessments/{epic}.{story}-trace-{YYYYMMDD}.md"
 ```
 
 ### Output 2: Traceability Report

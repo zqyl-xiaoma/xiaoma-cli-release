@@ -623,7 +623,12 @@ sections:
         rows:
           - ["移动端", "{{mobile_min}}", "{{mobile_max}}", "{{mobile_devices}}"]
           - ["平板", "{{tablet_min}}", "{{tablet_max}}", "{{tablet_devices}}"]
-          - ["桌面端", "{{desktop_min}}", "{{desktop_max}}", "{{desktop_devices}}"]
+          - [
+              "桌面端",
+              "{{desktop_min}}",
+              "{{desktop_max}}",
+              "{{desktop_devices}}",
+            ]
           - ["宽屏", "{{wide_min}}", "-", "{{wide_devices}}"]
       - id: adaptation-patterns
         title: 适配模式
