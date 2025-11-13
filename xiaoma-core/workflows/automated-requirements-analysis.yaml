@@ -1273,7 +1273,11 @@ workflow:
             - 考虑可测试性
             - 所有设计决策都要有理由说明
 
-            请执行设计并生成文档。
+            **输出文件**：
+            - 架构设计文档: docs/architecture/iteration-backend-design.md
+            - 数据库脚本: docs/architecture/db-migration-scripts.sql
+
+            请执行设计并将架构文档保存到 docs/architecture/iteration-backend-design.md。
 
           execution_process:
             phase_1: analyze_prd_and_epics
@@ -1458,15 +1462,14 @@ workflow:
             **源文档**：
             docs/architecture/iteration-backend-design.md
 
-            **切分命令**：
-            请执行 shard-doc 命令，将架构文档切分到指定目录：
+            **切分方法**：
 
-            ```
-            shard-doc docs/architecture/iteration-backend-design.md docs/architecture
-            ```
+            方法一（推荐）：使用 *shard-doc 命令自动切分
+            首先，请确认源文档 docs/architecture/iteration-backend-design.md 已经存在。
+            然后执行：*shard-doc docs/architecture/iteration-backend-design.md docs/architecture
 
-            **切分策略**：
-            请将架构文档按以下技术模块切分：
+            方法二（如果自动切分不满足需求）：手动按照以下策略切分
+            如果自动切分生成的文档与期望的7个模块文档不匹配，请手动创建以下文档：
 
             1. **数据库设计** (database-design.md)
                - 从【第2节 新增数据模型设计】提取
