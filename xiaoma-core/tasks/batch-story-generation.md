@@ -58,7 +58,7 @@ story_identification:
 
   story_sizing_guidelines:
     - small_story_preference: 优先小故事(1-3天)
-    - epic_breakdown: 大史诗分解策略
+    - epic_breakdown: 大模块分解策略
     - dependency_minimization: 依赖最小化
 ```
 

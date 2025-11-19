@@ -367,7 +367,7 @@ section_2_outputs:
   - 需求分析报告: "docs/requirements/requirements-analysis.md"
   - 架构分析报告: "docs/architecture/current-architecture-analysis.md"
   - PRD 文档: "docs/prd/brownfield-iteration-prd.md"
-  - Epic 文档清单: "docs/epics/史诗-*.md"
+  - Epic 文档清单: "docs/epics/Epic-*.md"
   - 架构设计文档: "docs/architecture/iteration-backend-design.md"
   - 数据库脚本: "docs/architecture/db-migration-scripts.sql"
   - 架构模块文档: # 新增
@@ -392,7 +392,7 @@ section_2_outputs:
     1. 需求分析和澄清（Analyst）
     2. 现有架构分析（Architect）
     3. Brownfield PRD 创建（PM）
-    4. Epic 史诗拆分（PM）
+    4. Epic 模块拆分（PM）
     5. 后端架构增量设计（Architect）
     6. 数据库迁移脚本生成
     7. 架构文档模块化切分（新增）
@@ -401,7 +401,7 @@ section_2_outputs:
     - docs/requirements/requirements-analysis.md
     - docs/architecture/current-architecture-analysis.md
     - docs/prd/brownfield-iteration-prd.md
-    - docs/epics/史诗-*.md ({epic_count} 个史诗)
+    - docs/epics/Epic-*.md ({epic_count} 个模块)
     - docs/architecture/iteration-backend-design.md
     - docs/architecture/db-migration-scripts.sql
     - docs/architecture/database-design.md（新增）
@@ -497,7 +497,7 @@ success_criteria:
       - 需求分析报告
       - 现有架构分析报告
       - Brownfield PRD 文档
-      - Epic 史诗文档（多个）
+      - Epic 模块文档（多个）
       - 后端架构增量设计文档
       - 数据库迁移脚本
       - 架构模块文档（7个）：  # 新增

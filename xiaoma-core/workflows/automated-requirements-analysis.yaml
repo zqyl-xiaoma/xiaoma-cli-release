@@ -615,8 +615,8 @@ workflow:
                - 性能验收标准
                - 质量验收标准
 
-            9. 实施计划（史诗拆分建议）
-               - 建议的史诗划分
+            9. 实施计划（模块拆分建议）
+               - 建议的模块划分
                - 优先级排序
                - 依赖关系说明
                - 预估工作量
@@ -686,7 +686,7 @@ workflow:
                 - 质量验收标准
 
               section_9_implementation_plan:
-                - 史诗拆分建议
+                - 模块拆分建议
                 - 优先级排序
                 - 依赖关系
 
@@ -717,7 +717,7 @@ workflow:
             4. 定义数据库变更（DDL）
             5. 设计 API 规范（RESTful）
             6. 定义可测试的验收标准
-            7. 建议史诗拆分方案
+            7. 建议模块拆分方案
             8. 生成结构化的 PRD 文档
 
             特别关注：
@@ -737,7 +737,7 @@ workflow:
             4. ✓ 数据库变更已明确定义（表名、字段、类型、约束）
             5. ✓ API 接口需求清晰（端点、方法、参数、响应）
             6. ✓ 验收标准可测试（具体、可量化）
-            7. ✓ 史诗拆分建议合理（规模适当、依赖清晰）
+            7. ✓ 模块拆分建议合理（规模适当、依赖清晰）
 
             **质量检查**：
             8. ✓ 用户价值明确
@@ -775,7 +775,7 @@ workflow:
 
           on_all_checks_passed:
             action: mark_prd_as_validated
-            message: "✅ PRD 质量检查通过，准备拆分史诗"
+            message: "✅ PRD 质量检查通过，准备拆分模块"
 
           notes: |
             PM 自检 PRD 质量：
@@ -808,7 +808,7 @@ workflow:
 
       on_success:
         action: proceed_to_epic_sharding
-        message: "✅ Brownfield PRD 创建完成，准备拆分史诗"
+        message: "✅ Brownfield PRD 创建完成，准备拆分模块"
 
       notes: |
         PM 创建 Brownfield PRD 的完整流程：
@@ -819,7 +819,7 @@ workflow:
            - 结合技术约束
            - 定义功能模块、数据变更、API 规范
            - 制定验收标准
-           - 建议史诗拆分
+           - 建议模块拆分
         4. 自检 PRD 质量（16项检查）
         5. 输出到 docs/prd/brownfield-iteration-prd.md
 
@@ -827,62 +827,62 @@ workflow:
         - 结构化的 PRD 文档
         - 数据库变更清单
         - API 接口规范
-        - 史诗拆分建议
+        - 模块拆分建议
 
     # ================================
-    # 第3步：PM 拆分史诗（循环）
+    # 第3步：PM 拆分模块（循环）
     # ================================
     - step: epic_sharding_cycle
       action: create_epics_from_prd
       requires:
         - docs/prd/brownfield-iteration-prd.md
       condition: has_epics_to_create
-      notes: "根据 PRD 中的史诗拆分建议，循环创建每个史诗文档"
+      notes: "根据 PRD 中的模块拆分建议，循环创建每个模块文档"
 
       epic_creation_loop:
         - step: identify_next_epic
           action: determine_next_epic_to_create
           source: "docs/prd/brownfield-iteration-prd.md"
           extraction_logic: |
-            从 PRD 的"实施计划（史诗拆分建议）"部分提取：
-            - 史诗清单
-            - 已创建的史诗（检查 docs/epics/ 目录）
-            - 确定下一个待创建的史诗
+            从 PRD 的"实施计划（模块拆分建议）"部分提取：
+            - 模块清单
+            - 已创建的模块（检查 docs/epics/ 目录）
+            - 确定下一个待创建的模块
 
           decision_logic: |
-            IF 还有未创建的史诗 THEN
-              继续创建下一个史诗
+            IF 还有未创建的模块 THEN
+              继续创建下一个模块
             ELSE
-              史诗拆分完成，进入下一阶段
+              模块拆分完成，进入下一阶段
             END IF
 
-          notes: "按照 PRD 建议的优先级和依赖关系顺序创建史诗"
+          notes: "按照 PRD 建议的优先级和依赖关系顺序创建模块"
 
         - step: create_single_epic
           agent: pm
           action: create_epic_document
           command: "*create-epic"
           prompt_template: |
-            基于刚才创建的 PRD，我需要创建史诗。
+            基于刚才创建的 PRD，我需要创建模块。
 
-            **史诗拆分建议**：
-            根据 PRD 的功能模块，建议拆分为以下史诗：
-            {从 PRD 中提取的史诗清单}
+            **模块拆分建议**：
+            根据 PRD 的功能模块，建议拆分为以下模块：
+            {从 PRD 中提取的模块清单}
 
             **当前任务**：
-            请为第 {epic_index} 个史诗"{epic_name}"创建史诗文档。
+            请为第 {epic_index} 个模块"{epic_name}"创建模块文档。
 
-            **史诗信息**：
-            - 史诗名称：{epic_name}
-            - 史诗编号：Epic-{epic_index:02d}
-            - 功能范围：{从 PRD 中提取此史诗的功能描述}
+            **模块信息**：
+            - 模块名称：{epic_name}
+            - 模块编号：Epic-{epic_index:02d}
+            - 功能范围：{从 PRD 中提取此模块的功能描述}
             - 业务价值：{业务价值说明}
             - 优先级：高/中/低（从 PRD 建议中获取）
-            - 依赖关系：{是否依赖其他史诗，从 PRD 中获取}
+            - 依赖关系：{是否依赖其他模块，从 PRD 中获取}
 
-            **史诗文档要求**：
-            1. 史诗级别的目标和价值
-               - 史诗的业务目标
+            **模块文档要求**：
+            1. 模块级别的目标和价值
+               - 模块的业务目标
                - 为用户/业务带来的价值
                - 成功标准
 
@@ -892,23 +892,23 @@ workflow:
                - 故事优先级
                - 故事间依赖关系
 
-            3. 技术设计概要（针对此史诗）
+            3. 技术设计概要（针对此模块）
                - 涉及的技术组件
                - 架构设计要点
                - 技术方案概要
 
-            4. 数据库变更（针对此史诗）
+            4. 数据库变更（针对此模块）
                - 新增的数据表
                - 修改的现有表
                - 数据迁移需求
 
-            5. API 接口清单（针对此史诗）
+            5. API 接口清单（针对此模块）
                - 新增的 API 端点
                - 修改的现有 API
                - API 版本策略
 
-            6. 验收标准（史诗级别）
-               - 史诗完成的验收标准
+            6. 验收标准（模块级别）
+               - 模块完成的验收标准
                - 关键功能验证点
                - 质量标准
 
@@ -939,14 +939,14 @@ workflow:
           epic_structure_template:
             metadata:
               - epic_id: "Epic-{index:02d}"
-              - epic_name: "史诗名称"
+              - epic_name: "模块名称"
               - status: "Planned"
               - priority: "高/中/低"
               - created_date: "创建日期"
 
             sections:
               section_1_overview:
-                - 史诗目标
+                - 模块目标
                 - 业务价值
                 - 成功标准
 
@@ -970,7 +970,7 @@ workflow:
                 - 接口概要
 
               section_6_acceptance_criteria:
-                - 史诗验收标准
+                - 模块验收标准
                 - 质量标准
 
               section_7_estimation:
@@ -992,28 +992,28 @@ workflow:
             - risks_identified
 
           output:
-            file: "docs/epics/史诗-{epic_name}.md"
+            file: "docs/epics/Epic{epic_name}.md"
             format: "structured_markdown"
             status: "Planned"
 
           notes: |
-            使用 *create-epic 命令创建单个史诗：
+            使用 *create-epic 命令创建单个模块：
 
             输入来源：
-            - PRD 文档中的史诗拆分建议
+            - PRD 文档中的模块拆分建议
             - PRD 中对应模块的详细需求
 
             创建流程：
-            1. 从 PRD 提取史诗范围和功能描述
+            1. 从 PRD 提取模块范围和功能描述
             2. 初步识别用户故事清单
             3. 定义技术设计概要
-            4. 提取此史诗相关的数据库变更
-            5. 提取此史诗相关的 API 端点
-            6. 定义史诗级别的验收标准
+            4. 提取此模块相关的数据库变更
+            5. 提取此模块相关的 API 端点
+            6. 定义模块级别的验收标准
             7. 估算工作量和识别风险
-            8. 生成结构化的史诗文档
+            8. 生成结构化的模块文档
 
-            每个史诗是一个独立的功能模块：
+            每个模块是一个独立的功能模块：
             - 规模适中（2-4周完成）
             - 业务价值独立
             - 包含多个用户故事
@@ -1022,7 +1022,7 @@ workflow:
         - step: validate_epic_quality
           action: quick_epic_validation
           validation_checks:
-            - epic_scope_appropriate: "史诗规模适中"
+            - epic_scope_appropriate: "模块规模适中"
             - user_stories_count_reasonable: "故事数量合理（5-15个）"
             - technical_design_consistent: "技术设计与架构一致"
             - database_changes_isolated: "数据库变更相对独立"
@@ -1030,53 +1030,53 @@ workflow:
 
           on_issues_found:
             action: fix_epic_issues
-            notes: "PM 调整史诗范围或细节"
+            notes: "PM 调整模块范围或细节"
 
           on_validation_passed:
             action: mark_epic_created
-            message: "✅ 史诗 {epic_name} 创建完成"
+            message: "✅ 模块 {epic_name} 创建完成"
 
-          notes: "快速验证史诗质量，确保范围和内容合理"
+          notes: "快速验证模块质量，确保范围和内容合理"
 
         - step: loop_check
-          description: "检查是否还有更多史诗需要创建"
+          description: "检查是否还有更多模块需要创建"
           decision_logic: |
-            IF 所有史诗都已创建 THEN
+            IF 所有模块都已创建 THEN
               退出循环，进入架构设计阶段
             ELSE
-              返回 identify_next_epic 步骤，创建下一个史诗
+              返回 identify_next_epic 步骤，创建下一个模块
             END IF
 
       validation_criteria:
         - all_suggested_epics_created
-        - epic_files_exist: "docs/epics/史诗-*.md"
+        - epic_files_exist: "docs/epics/Epic-*.md"
         - each_epic_validated
 
       on_failure:
         action: retry_epic_creation
         max_retries: 2
-        escalation: "史诗创建失败，需要审查 PRD 的史诗拆分建议"
+        escalation: "模块创建失败，需要审查 PRD 的模块拆分建议"
 
       on_success:
         action: proceed_to_architecture_design
-        message: "✅ 所有史诗创建完成，准备进行技术架构设计"
+        message: "✅ 所有模块创建完成，准备进行技术架构设计"
 
       detailed_notes: |
-        PM 拆分史诗的完整流程：
+        PM 拆分模块的完整流程：
         1. 保持 PM Agent 激活状态
-        2. 从 PRD 的"实施计划"部分提取史诗清单
-        3. 循环创建每个史诗：
-           a. 识别下一个待创建的史诗
+        2. 从 PRD 的"实施计划"部分提取模块清单
+        3. 循环创建每个模块：
+           a. 识别下一个待创建的模块
            b. 执行 *create-epic 命令
            c. 从 PRD 提取相关内容
            d. 初步识别用户故事
            e. 定义技术设计概要和数据库/API 变更
-           f. 快速验证史诗质量
-           g. 保存史诗文档
-        4. 所有史诗创建完成后，进入下一阶段
+           f. 快速验证模块质量
+           g. 保存模块文档
+        4. 所有模块创建完成后，进入下一阶段
 
-        史诗拆分原则：
-        - 每个史诗是一个独立的功能模块
+        模块拆分原则：
+        - 每个模块是一个独立的功能模块
         - 规模适中（2-4周，5-15个用户故事）
         - 业务价值独立可验收
         - 技术上相对内聚
@@ -1090,7 +1090,7 @@ workflow:
       action: create_incremental_architecture_design
       requires:
         - docs/prd/brownfield-iteration-prd.md
-        - docs/epics/史诗-*.md
+        - docs/epics/Epic-*.md
         - docs/architecture/current-architecture-analysis.md
       duration: 30-40m
       detailed_steps:
@@ -1112,8 +1112,8 @@ workflow:
             **新需求概述**：
             当前项目的 docs/prd/brownfield-iteration-prd.md 中功能需求摘要
 
-            **史诗清单**：
-            {列出所有已创建的史诗文件和简要描述}
+            **模块清单**：
+            {列出所有已创建的模块文件和简要描述}
 
             **设计任务**：
             请基于 *create-backend-architecture 命令，但聚焦于增量设计，包括：
@@ -1724,7 +1724,7 @@ workflow:
               - 需求分析报告: "docs/requirements/requirements-analysis.md"
               - 架构分析报告: "docs/architecture/current-architecture-analysis.md"
               - PRD 文档: "docs/prd/brownfield-iteration-prd.md"
-              - Epic 文档清单: "docs/epics/史诗-*.md"
+              - Epic 文档清单: "docs/epics/Epic-*.md"
               - 架构设计文档: "docs/architecture/iteration-backend-design.md"
               - 数据库脚本: "docs/architecture/db-migration-scripts.sql"
               - 架构模块文档:
@@ -1761,7 +1761,7 @@ workflow:
             1. 需求分析和澄清（Analyst）
             2. 现有架构分析（Architect）
             3. Brownfield PRD 创建（PM）
-            4. Epic 史诗拆分（PM）
+            4. Epic 模块拆分（PM）
             5. 后端架构增量设计（Architect）
             6. 数据库迁移脚本生成
             7. 架构文档按模块切分
@@ -1771,7 +1771,7 @@ workflow:
             - docs/requirements/requirements-analysis.md
             - docs/architecture/current-architecture-analysis.md
             - docs/prd/brownfield-iteration-prd.md
-            - docs/epics/史诗-*.md ({epic_count} 个史诗)
+            - docs/epics/Epic-*.md ({epic_count} 个模块)
             - docs/architecture/iteration-backend-design.md
             - docs/architecture/db-migration-scripts.sql
             - docs/architecture/database-design.md (数据库设计)
@@ -1835,18 +1835,18 @@ workflow:
         - 数据需求
         - API 需求
         - 验收标准
-        - 实施计划（史诗拆分建议）
+        - 实施计划（模块拆分建议）
       validation_rules:
         - 所有需求已覆盖（对照 req.txt）
         - 技术约束与架构一致
         - 数据库变更明确
         - API 接口清晰
         - 验收标准可测试
-        - 史诗拆分合理
+        - 模块拆分合理
 
     epic_sharding:
       validation_rules:
-        - 史诗范围适中（2-4周）
+        - 模块范围适中（2-4周）
         - 用户故事数量合理（5-15个）
         - 技术设计一致
         - 数据库变更相对独立
@@ -1900,7 +1900,7 @@ workflow:
 
     epic_sharding_failure:
       max_retries: 2
-      escalation: "Epic 拆分失败，需要审查 PRD 的史诗拆分建议"
+      escalation: "Epic 拆分失败，需要审查 PRD 的模块拆分建议"
 
     architecture_design_failure:
       max_retries: 2
@@ -1953,17 +1953,17 @@ workflow:
         J --> I
         I -->|通过| K[PRD 创建完成]
 
-        K --> L{识别史诗清单}
-        L --> M[循环: 创建每个史诗]
+        K --> L{识别模块清单}
+        L --> M[循环: 创建每个模块]
         M --> N[执行 *create-epic]
-        N --> O{史诗质量验证}
-        O -->|有问题| P[调整史诗]
+        N --> O{模块质量验证}
+        O -->|有问题| P[调整模块]
         P --> O
-        O -->|通过| Q[史诗创建完成]
+        O -->|通过| Q[模块创建完成]
 
-        Q --> R{还有史诗?}
+        Q --> R{还有模块?}
         R -->|是| M
-        R -->|否| S[所有史诗创建完成]
+        R -->|否| S[所有模块创建完成]
 
         S --> T[Architect: 后端架构增量设计]
         T --> U[执行 *create-backend-architecture]
@@ -2011,7 +2011,7 @@ workflow:
       - 需求分析报告
       - 现有架构分析报告
       - Brownfield PRD 文档
-      - Epic 史诗文档（多个）
+      - Epic 模块文档（多个）
       - 后端架构增量设计文档
       - 数据库迁移脚本
       - 架构模块文档（7个）:
@@ -2034,9 +2034,9 @@ workflow:
     architecture_analysis_complete: "✅ 现有架构分析完成"
     prd_creation_start: "PM 开始创建 Brownfield PRD..."
     prd_created: "✅ Brownfield PRD 创建完成"
-    epic_sharding_start: "PM 开始拆分史诗..."
-    epic_created: "✅ 史诗 {epic_name} 创建完成"
-    all_epics_created: "✅ 所有史诗创建完成"
+    epic_sharding_start: "PM 开始拆分模块..."
+    epic_created: "✅ 模块 {epic_name} 创建完成"
+    all_epics_created: "✅ 所有模块创建完成"
     architecture_design_start: "Architect 开始后端架构增量设计..."
     architecture_design_complete: "✅ 后端架构增量设计完成"
     architecture_sharding_start: "Architect 开始按模块切分架构文档..."
@@ -2089,7 +2089,7 @@ workflow:
           workflow_file: "automated-story-development.yaml"
           prerequisites_provided:
             - requirements_analysis: "docs/requirements/requirements-analysis.md"
-            - epic_documents: "docs/epics/史诗-*.md"
+            - epic_documents: "docs/epics/Epic-*.md"
             - database_design: "docs/architecture/iteration-backend-design.md"
             - architecture_analysis: "docs/architecture/current-architecture-analysis.md"
           notes: "无缝衔接到用户故事自动化开发流程"

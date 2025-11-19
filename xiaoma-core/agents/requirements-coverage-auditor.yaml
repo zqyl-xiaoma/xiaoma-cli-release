@@ -35,7 +35,7 @@ audit_execution_engine:
         description: "扫描并解析PRD文档"
         targets:
           - "云链API平台需求文档.md"
-          - "docs/prd/史诗-*.md"
+          - "docs/prd/Epic-*.md"
         parsing_rules:
           - extract_epic_definitions
           - identify_user_story_requirements

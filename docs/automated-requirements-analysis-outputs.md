@@ -216,9 +216,9 @@
   - 性能验收标准
   - 质量验收标准
 
-  ## 9. 实施计划（史诗拆分建议）
+  ## 9. 实施计划（模块拆分建议）
 
-  - 建议的史诗划分
+  - 建议的模块划分
   - 优先级排序
   - 依赖关系说明
   - 预估工作量
@@ -228,26 +228,26 @@
 
 ### 4. Epic 拆分阶段（PM 智能体）
 
-#### 4.1 史诗文档集合 ⭐
+#### 4.1 模块文档集合 ⭐
 
-- **文件路径**: `docs/epics/史诗-{epic_name}.md`（多个文件）
+- **文件路径**: `docs/epics/Epic{epic_name}.md`（多个文件）
 - **生成智能体**: PM
 - **生成时机**: 第3步 - Epic 拆分循环
-- **生成数量**: 根据 PRD 建议，通常 3-8 个史诗
-- **每个史诗文档内容**:
+- **生成数量**: 根据 PRD 建议，通常 3-8 个模块
+- **每个模块文档内容**:
 
   ```markdown
-  # 史诗元数据
+  # 模块元数据
 
   - epic_id: Epic-01, Epic-02, ...
-  - epic_name: 史诗名称
+  - epic_name: 模块名称
   - status: Planned
   - priority: 高/中/低
   - created_date: 创建日期
 
-  ## 1. 史诗概述
+  ## 1. 模块概述
 
-  - 史诗目标
+  - 模块目标
   - 业务价值
   - 成功标准
 
@@ -257,26 +257,26 @@
   - 故事优先级
   - 故事依赖关系
 
-  ## 3. 技术设计概要（针对此史诗）
+  ## 3. 技术设计概要（针对此模块）
 
   - 技术组件
   - 架构设计
   - 技术方案
 
-  ## 4. 数据库变更（针对此史诗）
+  ## 4. 数据库变更（针对此模块）
 
   - 新增表
   - 修改表
   - 数据迁移
 
-  ## 5. API 接口清单（针对此史诗）
+  ## 5. API 接口清单（针对此模块）
 
   - API 端点清单
   - 接口概要
 
-  ## 6. 验收标准（史诗级别）
+  ## 6. 验收标准（模块级别）
 
-  - 史诗验收标准
+  - 模块验收标准
   - 质量标准
 
   ## 7. 估算工作量
@@ -304,7 +304,7 @@
 - **生成时机**: 第4步 - 后端架构增量设计
 - **输入来源**:
   - `docs/prd/brownfield-iteration-prd.md`
-  - `docs/epics/史诗-*.md`
+  - `docs/epics/Epic-*.md`
   - `docs/architecture/current-architecture-analysis.md`
 - **文档内容**（最详细的架构设计）:
 
@@ -583,7 +583,7 @@
   - 需求分析报告: docs/requirements/requirements-analysis.md
   - 架构分析报告: docs/architecture/current-architecture-analysis.md
   - PRD 文档: docs/prd/brownfield-iteration-prd.md
-  - Epic 文档: docs/epics/史诗-\*.md ({count} 个)
+  - Epic 文档: docs/epics/Epic\*.md ({count} 个)
   - 架构设计文档: docs/architecture/iteration-backend-design.md
   - 数据库脚本: docs/architecture/db-migration-scripts.sql
 
@@ -617,7 +617,7 @@ graph TD
     B --> D[docs/prd/<br/>brownfield-iteration-prd.md<br/>Brownfield PRD]
     C --> D
 
-    D --> E[docs/epics/<br/>史诗-*.md<br/>史诗文档集合]
+    D --> E[docs/epics/<br/>Epic-*.md<br/>模块文档集合]
 
     D --> F[docs/architecture/<br/>iteration-backend-design.md<br/>迭代架构设计]
     E --> F
@@ -705,15 +705,15 @@ graph TD
 - 定义所有功能需求
 - 定义非功能需求
 - 定义验收标准
-- 建议史诗拆分
+- 建议模块拆分
 
-#### 5. `史诗-*.md` - 史诗文档集合
+#### 5. `Epic-*.md` - 模块文档集合
 
 **作用**:
 
 - 功能模块划分
 - 初步识别用户故事
-- 史诗级别的技术概要
+- 模块级别的技术概要
 - 工作量估算
 
 ### ⭐ 分析和规划文档
@@ -750,10 +750,10 @@ sequenceDiagram
     PM->>PM: 结合需求和架构
     PM-->>U: brownfield-iteration-prd.md
 
-    U->>PM: 拆分史诗
-    loop 每个史诗
-        PM->>PM: 创建史诗文档
-        PM-->>U: 史诗-{name}.md
+    U->>PM: 拆分模块
+    loop 每个模块
+        PM->>PM: 创建模块文档
+        PM-->>U: Epic{name}.md
     end
 
     U->>Arc: 设计架构
@@ -788,8 +788,8 @@ sequenceDiagram
    - ✅ 技术对齐度 100%
    - ✅ 可测试性 ≥9/10
 
-4. **史诗-\*.md**:
-   - ✅ 史诗规模适中（2-4周）
+4. **Epic\*.md**:
+   - ✅ 模块规模适中（2-4周）
    - ✅ 故事数量合理（5-15个）
    - ✅ 技术设计一致
    - ✅ 数据库变更相对独立
@@ -848,7 +848,7 @@ SHOW CREATE TABLE new_table_name;
 - **开发时**: 主要看 `iteration-backend-design.md`
 - **需要业务背景**: 查看 `brownfield-iteration-prd.md`
 - **需要技术规范**: 查看 `current-architecture-analysis.md`
-- **需要功能拆分**: 查看 `史诗-*.md`
+- **需要功能拆分**: 查看 `Epic-*.md`
 
 ### 3. 与下游工作流的衔接
 
@@ -869,7 +869,7 @@ SHOW CREATE TABLE new_table_name;
 | 需求分析     | 1-2个      | ⭐         |
 | 架构分析     | 1个        | ⭐⭐       |
 | PRD          | 1个        | ⭐⭐       |
-| 史诗         | 3-8个      | ⭐⭐       |
+| 模块         | 3-8个      | ⭐⭐       |
 | **架构设计** | **2个**    | **⭐⭐⭐** |
 | 完成报告     | 1个        | ⭐         |
 | **总计**     | **9-15个** | -          |

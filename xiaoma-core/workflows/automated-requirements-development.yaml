@@ -83,14 +83,14 @@ workflow:
           output: "docs/prd/brownfield-iteration-prd.md"
           notes: "PM 基于需求分析和架构约束创建 Brownfield PRD"
 
-        # 步骤 4: PM 拆分史诗
+        # 步骤 4: PM 拆分模块
         - step: epic_sharding_cycle
           agent: pm
           action: create_epics_from_prd
-          duration: "变动，取决于史诗数量"
+          duration: "变动，取决于模块数量"
           command: "*create-epic"
-          output: "docs/epics/史诗-*.md"
-          notes: "PM 循环创建每个史诗文档"
+          output: "docs/epics/Epic-*.md"
+          notes: "PM 循环创建每个模块文档"
 
         # 步骤 5: Architect 架构设计
         - step: design_incremental_backend_architecture
@@ -139,7 +139,7 @@ workflow:
       action: validate_story_development_prerequisites
       duration: 1m
       checks:
-        - epic_documents_exist: "docs/epics/史诗-*.md"
+        - epic_documents_exist: "docs/epics/Epic-*.md"
         - database_design_exists: "docs/architecture/iteration-backend-design.md"
         - architecture_analysis_exists: "docs/architecture/current-architecture-analysis.md"
         - stories_directory_created: "docs/stories/"
@@ -313,7 +313,7 @@ workflow:
           - 需求分析报告: "docs/requirements/requirements-analysis.md"
           - 架构分析报告: "docs/architecture/current-architecture-analysis.md"
           - PRD 文档: "docs/prd/brownfield-iteration-prd.md"
-          - Epic 文档清单: "docs/epics/史诗-*.md ({epic_count} 个)"
+          - Epic 文档清单: "docs/epics/Epic-*.md ({epic_count} 个)"
           - 架构设计文档: "docs/architecture/iteration-backend-design.md"
           - 数据库脚本: "docs/architecture/db-migration-scripts.sql"
           - 架构模块文档: "7个技术模块子文档"
@@ -354,7 +354,7 @@ workflow:
         - 需求分析和澄清
         - 现有架构分析
         - Brownfield PRD 创建
-        - Epic 史诗拆分（{epic_count} 个史诗）
+        - Epic 模块拆分（{epic_count} 个模块）
         - 后端架构增量设计
         - 架构文档模块化切分（7个模块）
 
@@ -416,7 +416,7 @@ workflow:
 
       epic_sharding:
         validation_rules:
-          - 史诗范围适中
+          - 模块范围适中
           - 用户故事数量合理
           - 技术设计一致
 
@@ -560,7 +560,7 @@ workflow:
 
         P1S1 --> P1S2[Architect: 架构分析]
         P1S2 --> P1S3[PM: 创建 PRD]
-        P1S3 --> P1S4[PM: 拆分史诗]
+        P1S3 --> P1S4[PM: 拆分模块]
         P1S4 --> P1S5[Architect: 架构设计]
         P1S5 --> P1S6[生成需求分析报告]
 
@@ -650,7 +650,7 @@ workflow:
     phase_1_step_1: "Analyst 需求分析中..."
     phase_1_step_2: "Architect 架构分析中..."
     phase_1_step_3: "PM 创建 PRD 中..."
-    phase_1_step_4: "PM 拆分史诗中..."
+    phase_1_step_4: "PM 拆分模块中..."
     phase_1_step_5: "Architect 架构设计中..."
     phase_1_complete: "✅ 阶段 1/2 完成: 需求分析阶段（{duration}）"
 

@@ -169,7 +169,7 @@ workflow:
       wait_for_previous_completion: true
       timeout: 1800
       retry: 3
-      notes: "串行创建增强用户故事 - 每个史诗依次完成"
+      notes: "串行创建增强用户故事 - 每个模块依次完成"
 
     - agent: dev
       action: implement_story

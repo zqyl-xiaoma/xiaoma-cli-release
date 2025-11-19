@@ -25,7 +25,7 @@ description: |
 
   📋 **需求转化检查**:
   - PRD文档需求是否完全转化为用户故事
-  - 史诗级需求的用户故事覆盖度
+  - 模块级需求的用户故事覆盖度
   - 需求优先级和实施状态匹配度
 
   ✅ **用户故事完整性检查**:
@@ -51,7 +51,7 @@ execution:
         description: "加载PRD文档"
         actions:
           - "读取主PRD文档"
-          - "扫描docs/prd/目录下的史诗文件"
+          - "扫描docs/prd/目录下的模块文件"
           - "提取所有需求和用户故事定义"
           - "构建需求层次结构"
         output: "requirements_inventory.json"
@@ -59,7 +59,7 @@ execution:
       - step: "extract_requirements_matrix"
         description: "提取需求矩阵"
         actions:
-          - "识别所有史诗和用户故事"
+          - "识别所有模块和用户故事"
           - "提取验收标准和功能点"
           - "分析需求优先级"
           - "构建需求依赖关系"
@@ -204,7 +204,7 @@ report_structure:
     sections:
       - requirements_coverage_matrix:
           title: "需求覆盖度矩阵"
-          content: "史诗-用户故事映射表"
+          content: "模块-用户故事映射表"
       - story_completeness_analysis:
           title: "用户故事完整性分析"
           content: "每个故事的完整性评分"
@@ -322,8 +322,8 @@ usage_examples:
     *requirements-coverage-audit
 
   focused_audit: |
-    # 专注于特定史诗的审计
-    *coverage-audit --epic=史诗-1基础设施与核心文档展示
+    # 专注于特定模块的审计
+    *coverage-audit --epic=模块-1基础设施与核心文档展示
 
   status_verification: |
     # 验证用户故事状态准确性

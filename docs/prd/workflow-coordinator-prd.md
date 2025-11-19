@@ -934,7 +934,7 @@ node src/index.js start requirements-analysis
 # → 自动进入下一步骤...
 # ✅ 步骤 3/6: PM 创建 PRD (预计20-30分钟)
 # → 自动进入下一步骤...
-# ✅ 步骤 4/6: PM 拆分史诗 (预计变动)
+# ✅ 步骤 4/6: PM 拆分模块 (预计变动)
 # → 自动进入下一步骤...
 # ✅ 步骤 5/6: Architect 架构设计 (预计30-40分钟)
 # → 自动进入下一步骤...
@@ -1077,7 +1077,7 @@ node src/index.js start requirements-analysis
   - docs/requirements/requirements-analysis.md
   - docs/architecture/current-architecture-analysis.md
   - docs/prd/brownfield-iteration-prd.md
-  - docs/epics/史诗-*.md
+  - docs/epics/Epic-*.md
   - docs/architecture/iteration-backend-design.md
   - docs/architecture/db-migration-scripts.sql
 - ✅ 总耗时 ≤ 3小时

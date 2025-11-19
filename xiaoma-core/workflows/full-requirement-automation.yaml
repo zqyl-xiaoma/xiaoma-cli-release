@@ -398,7 +398,7 @@ ultimate_sequence:
             - ai_guided_improvement
         timeout: 3600
         retry: 3
-        notes: "企业级增强用户故事创建 - 每个史诗依次完成"
+        notes: "企业级增强用户故事创建 - 每个模块依次完成"
 
       # 3.3 串行开发实现
       - step: sequential_development
