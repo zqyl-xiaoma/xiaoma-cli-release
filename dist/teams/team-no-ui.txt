@@ -359,6 +359,7 @@ commands:
   - execute-checklist {checklist}: 运行任务 execute-checklist (默认为->architect-checklist)
   - research {topic}: 执行任务 create-deep-research-prompt
   - shard-prd: 为提供的 architecture.md 运行任务 shard-doc.md (如果未找到则询问)
+  - shard-doc: 执行任务 shard-doc.md 切分大型文档到多个小文档
   - yolo: 切换 Yolo 模式
   - exit: 作为架构师道别，然后放弃扮演此角色
 dependencies:
@@ -371,6 +372,7 @@ dependencies:
     - create-doc.md
     - document-project.md
     - execute-checklist.md
+    - shard-doc.md
   templates:
     - architecture-tmpl.yaml
     - brownfield-architecture-tmpl.yaml

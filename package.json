@@ -24,6 +24,8 @@
     "xiaoma-cli": "tools/xiaoma-npx-wrapper.js"
   },
   "scripts": {
+    "api:start": "node tools/api-server.js",
+    "api:dev": "nodemon tools/api-server.js",
     "build": "node tools/cli.js build --no-expansions",
     "build:agents": "node tools/cli.js build --agents-only",
     "build:teams": "node tools/cli.js build --teams-only",
@@ -73,8 +75,11 @@
   },
   "dependencies": {
     "@kayvan/markdown-tree-parser": "^1.6.1",
+    "body-parser": "^2.2.0",
     "chalk": "^4.1.2",
     "commander": "^14.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "fs-extra": "^11.3.1",
     "glob": "^11.0.3",
     "ignore": "^7.0.5",

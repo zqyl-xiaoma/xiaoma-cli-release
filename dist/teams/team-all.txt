@@ -296,6 +296,7 @@ commands:
   - execute-checklist {checklist}: 运行任务 execute-checklist (默认为->architect-checklist)
   - research {topic}: 执行任务 create-deep-research-prompt
   - shard-prd: 为提供的 architecture.md 运行任务 shard-doc.md (如果未找到则询问)
+  - shard-doc: 执行任务 shard-doc.md 切分大型文档到多个小文档
   - yolo: 切换 Yolo 模式
   - exit: 作为架构师道别，然后放弃扮演此角色
 dependencies:
@@ -308,6 +309,7 @@ dependencies:
     - create-doc.md
     - document-project.md
     - execute-checklist.md
+    - shard-doc.md
   templates:
     - architecture-tmpl.yaml
     - brownfield-architecture-tmpl.yaml
@@ -1526,6 +1528,7 @@ commands:
   - help: 显示以下命令的编号列表以供选择
   - run-requirements-analysis: 🔥 自动化需求分析工作流（完全自动执行，不暂停）- 加载 automated-requirements-analysis.yaml 并连续执行所有 6 个步骤，从 req.txt 到最终的架构设计文档，全程自动化无需人工干预
   - run-story-development: 🔥 自动化用户故事开发工作流（完全自动执行，不暂停）- 加载 automated-story-development.yaml 并循环执行所有用户故事的 SM→PO→Dev→QA 完整开发周期，全程自动化无需人工干预
+  - run-requirements-development: '🔥🔥🔥 端到端全自动化工作流（完全自动执行，不暂停）- 加载 automated-requirements-development.yaml 并连续执行从需求分析到用户故事开发完成的完整流程 （阶段1: 需求分析 6步 + 阶段2: 用户故事开发循环）， 实现从 req.txt 到所有代码完成的端到端自动化'
   - status: 显示当前工作流执行状态和进度
   - validate-prerequisites: 验证工作流执行的前置条件
   - resume-workflow: 从上次中断的位置恢复工作流执行（同样会自动连续执行剩余步骤）
@@ -1535,6 +1538,7 @@ dependencies:
   workflows:
     - automated-requirements-analysis.yaml
     - automated-story-development.yaml
+    - automated-requirements-development.yaml
 ```
 
 ---
@@ -1648,7 +1652,77 @@ workflow_stages:
 
 ---
 
-### 2. 自动化用户故事开发工作流
+### 2. 🔥🔥🔥 端到端全自动化工作流 (新增)
+
+**命令**: `*run-requirements-development`
+
+**功能**: 执行从需求分析到用户故事开发完成的完整端到端自动化流程
+
+**工作流文件**: `xiaoma-core/workflows/automated-requirements-development.yaml`
+
+**核心价值**:
+- ✅ **一键启动**: 只需执行一个命令，完成从 req.txt 到所有代码的端到端开发
+- ✅ **无缝衔接**: 需求分析阶段自动衔接用户故事开发阶段，无需人工干预
+- ✅ **全程自动化**: 整合了两个子工作流的所有优势，实现完整的自动化流程
+- ✅ **质量保证**: 两个阶段的所有质量门控都会自动执行
+
+**执行流程**:
+
+```yaml
+端到端工作流结构:
+
+阶段 1: 需求分析阶段 (1.5-2.5小时)
+  ├─ 步骤 0/6: 前置环境验证
+  ├─ 步骤 1/6: Analyst 需求分析
+  ├─ 步骤 2/6: Architect 架构分析
+  ├─ 步骤 3/6: PM 创建 PRD
+  ├─ 步骤 4/6: PM 拆分史诗
+  ├─ 步骤 5/6: Architect 架构设计
+  └─ 步骤 6/6: 生成需求分析报告
+      ↓
+  阶段间验证（无缝衔接）
+      ↓
+阶段 2: 用户故事开发阶段 (40-70分钟/故事)
+  循环执行（直到所有用户故事完成）:
+    ├─ 步骤 1: SM 创建用户故事
+    ├─ 步骤 1.5: 快速构建验证
+    ├─ 步骤 2: PO 验证故事
+    ├─ 步骤 2.5: 预开发构建检查
+    ├─ 步骤 3: Dev 开发故事
+    ├─ 步骤 4: QA 测试验证
+    └─ 步骤 5: 质量门控决策
+      ↓
+  生成端到端完成报告
+```
+
+**总耗时**:
+- 阶段 1（需求分析）: 约 1.5-2.5 小时
+- 阶段 2（用户故事开发）: 约 40-70 分钟 × 用户故事数量
+- **典型小型项目（5-10个故事）**: 4-8 小时
+- **典型中型项目（10-20个故事）**: 8-16 小时
+
+**成功标准**:
+
+阶段 1 成功标准:
+- ✅ 所有需求分析文档生成完成
+- ✅ PRD 和 Epic 文档创建完成
+- ✅ 架构设计和数据库脚本生成完成
+- ✅ 所有质量门控通过
+
+阶段 2 成功标准:
+- ✅ 所有用户故事状态为 Done
+- ✅ 所有测试通过（覆盖率 ≥80%）
+- ✅ 所有 QA 质量门控通过
+- ✅ 代码质量达标
+
+整体成功标准:
+- ✅ 两个阶段全部完成
+- ✅ 完整的文档和代码生成
+- ✅ 准备就绪进入集成测试和部署阶段
+
+---
+
+### 3. 自动化用户故事开发工作流
 
 **命令**: `*run-story-development`
 
@@ -1833,6 +1907,84 @@ quality_gates:
 ---
 
 ## 📊 使用示例
+
+### 🔥🔥🔥 执行端到端全自动化工作流（推荐）
+
+```bash
+# 1. 准备工作
+# 确保 docs/req.txt 文件存在且包含 PM 提供的需求
+
+# 2. 激活工作流执行器
+/workflow-executor
+
+# 3. 执行端到端全自动化工作流（完全自动化，一键到底）
+*run-requirements-development
+
+# ⚡ 核心优势：一个命令完成从需求分析到代码实现的全部工作！
+# ⚠️ 重要提示：工作流执行器会自动连续执行两个阶段的所有步骤，不会在中间暂停
+# 如果工作流在某个步骤停止，说明遇到了错误或质量门控失败，请查看错误信息
+
+# 工作流执行器将自动完成以下所有工作（典型小项目 4-8 小时）：
+#
+# 【阶段 1: 需求分析】（约 1.5-2.5 小时）
+# ✓ 步骤 0/6: 前置环境验证
+# ✓ 步骤 1/6: Analyst 需求分析 → 生成需求分析报告
+# ✓ 步骤 2/6: Architect 架构分析 → 生成架构分析报告
+# ✓ 步骤 3/6: PM 创建 PRD → 生成 Brownfield PRD
+# ✓ 步骤 4/6: PM 拆分史诗 → 生成 Epic 文档
+# ✓ 步骤 5/6: Architect 架构设计 → 生成架构设计和数据库脚本
+# ✓ 步骤 6/6: 生成需求分析完成报告
+#      ↓
+# ✓ 阶段间无缝衔接验证
+#      ↓
+# 【阶段 2: 用户故事开发】（约 40-70 分钟 × 故事数量）
+# 对每个用户故事循环执行：
+#   ✓ SM 创建用户故事 → 快速构建验证
+#   ✓ PO 验证故事（10步验证）
+#   ✓ 预开发构建检查
+#   ✓ Dev 开发实现 + 自测
+#   ✓ QA 测试验证（真实数据测试）
+#   ✓ 质量门控决策 → Done
+# 直到所有用户故事完成
+#      ↓
+# ✓ 生成端到端完成报告
+
+# 4. 工作流完成后检查所有输出
+# 阶段 1 输出:
+# - docs/requirements/requirements-analysis.md
+# - docs/architecture/current-architecture-analysis.md
+# - docs/prd/brownfield-iteration-prd.md
+# - docs/epics/史诗-*.md
+# - docs/architecture/iteration-backend-design.md
+# - docs/architecture/db-migration-scripts.sql
+# - docs/architecture/*.md (7个模块文档)
+#
+# 阶段 2 输出:
+# - docs/stories/epic{X}-story{Y}.md (所有故事状态: Done)
+# - src/ 目录下的实现代码
+# - 测试报告
+# - QA gate 文件
+#
+# 完成报告:
+# - docs/end-to-end-completion-report.md
+```
+
+**🌟 端到端工作流的特殊优势**:
+
+- ✅ **一键到底**: 只需一个命令，无需在两个阶段间手动切换
+- ✅ **无缝衔接**: 阶段1完成后自动验证并进入阶段2，完全自动化
+- ✅ **全程监控**: 统一的进度追踪和质量控制
+- ✅ **完整报告**: 生成包含两个阶段的综合完成报告
+- ✅ **节省时间**: 避免手动操作和阶段间切换的开销
+- ⚠️ **执行时长**: 适合有充足时间的场景（典型小项目 4-8 小时）
+
+**🔥 适用场景**:
+- 从零开始的新需求迭代
+- 需要完整的需求分析和代码实现
+- 有充足的执行时间（半天到一天）
+- 希望最小化人工干预
+
+---
 
 ### 执行需求分析工作流
 
@@ -2320,6 +2472,59 @@ completion_report:
 
 祝你使用愉快！工作流执行器将协调所有智能体，像流水线一样自动完成从需求分析到代码实现的完整流程。🎉
 ==================== END: .xiaoma-core/agents/workflow-executor.md ====================
+
+==================== START: .xiaoma-core/agents/workflow-helper.md ====================
+# agent
+
+CRITICAL: Read the full YAML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
+
+```yaml
+on_failure:
+  max_retries: 3
+  escalation: 请检查架构模板完整性
+```
+
+## 调试
+
+### 启用详细日志
+
+在协调器启动时查看详细日志:
+```bash
+DEBUG=* node src/index.js start automated-requirements-analysis
+```
+
+### 查看状态文件
+
+工作流状态保存在:`.xiaoma-core/.coordinator-state.json`
+
+查看:
+```bash
+cat .xiaoma-core/.coordinator-state.json
+```
+
+## 使用提示
+
+1. **先启动协调器**:在Claude Code中启动工作流前,确保协调器已运行
+2. **保持终端开启**:协调器需要持续运行,不要关闭终端
+3. **监控日志**:协调器日志会显示详细的执行进度和问题
+4. **状态恢复**:如果中断,状态文件允许从中断点恢复
+5. **工作流定义**:所有工作流定义在`xiaoma-core/workflows/`目录
+
+## 与workflow-executor的区别
+
+**workflow-executor**(旧方案):
+- 完全由AI驱动,基于AI判断决定下一步
+- 会在关键点暂停询问用户
+- 无法完全自动化
+
+**workflow-helper + Coordinator**(新方案):
+- 程序化流程控制,消除AI决策延迟
+- 完全自动执行,无需人工确认
+- 状态持久化,支持恢复
+- 质量门控,自动验证输出
+
+workflow-helper专注于"执行层",协调器负责"控制层",实现关注点分离和更可靠的自动化。
+==================== END: .xiaoma-core/agents/workflow-helper.md ====================
 
 ==================== START: .xiaoma-core/tasks/advanced-elicitation.md ====================
 <!-- Powered by XiaoMa™ Core -->
@@ -5554,6 +5759,196 @@ The LLM will:
 - Present a final report with pass/fail rates and key findings
 - Offer to provide detailed analysis of any section, especially those with warnings or failures
 ==================== END: .xiaoma-core/tasks/execute-checklist.md ====================
+
+==================== START: .xiaoma-core/tasks/shard-doc.md ====================
+<!-- Powered by XiaoMa™ Core -->
+
+# Document Sharding Task
+
+## Purpose
+
+- Split a large document into multiple smaller documents based on level 2 sections
+- Create a folder structure to organize the sharded documents
+- Maintain all content integrity including code blocks, diagrams, and markdown formatting
+
+## Primary Method: Automatic with markdown-tree
+
+[[LLM: First, check if markdownExploder is set to true in .xiaoma-core/core-config.yaml. If it is, attempt to run the command: `md-tree explode {input file} {output path}`.
+
+If the command succeeds, inform the user that the document has been sharded successfully and STOP - do not proceed further.
+
+If the command fails (especially with an error indicating the command is not found or not available), inform the user: "The markdownExploder setting is enabled but the md-tree command is not available. Please either:
+
+1. Install @kayvan/markdown-tree-parser globally with: `npm install -g @kayvan/markdown-tree-parser`
+2. Or set markdownExploder to false in .xiaoma-core/core-config.yaml
+
+**IMPORTANT: STOP HERE - do not proceed with manual sharding until one of the above actions is taken.**"
+
+If markdownExploder is set to false, inform the user: "The markdownExploder setting is currently false. For better performance and reliability, you should:
+
+1. Set markdownExploder to true in .xiaoma-core/core-config.yaml
+2. Install @kayvan/markdown-tree-parser globally with: `npm install -g @kayvan/markdown-tree-parser`
+
+I will now proceed with the manual sharding process."
+
+Then proceed with the manual method below ONLY if markdownExploder is false.]]
+
+### Installation and Usage
+
+1. **Install globally**:
+
+   ```bash
+   npm install -g @kayvan/markdown-tree-parser
+   ```
+
+2. **Use the explode command**:
+
+   ```bash
+   # For PRD
+   md-tree explode docs/prd.md docs/prd
+
+   # For Architecture
+   md-tree explode docs/architecture.md docs/architecture
+
+   # For any document
+   md-tree explode [source-document] [destination-folder]
+   ```
+
+3. **What it does**:
+   - Automatically splits the document by level 2 sections
+   - Creates properly named files
+   - Adjusts heading levels appropriately
+   - Handles all edge cases with code blocks and special markdown
+
+If the user has @kayvan/markdown-tree-parser installed, use it and skip the manual process below.
+
+---
+
+## Manual Method (if @kayvan/markdown-tree-parser is not available or user indicated manual method)
+
+### Task Instructions
+
+1. Identify Document and Target Location
+
+- Determine which document to shard (user-provided path)
+- Create a new folder under `docs/` with the same name as the document (without extension)
+- Example: `docs/prd.md` → create folder `docs/prd/`
+
+2. Parse and Extract Sections
+
+CRITICAL AEGNT SHARDING RULES:
+
+1. Read the entire document content
+2. Identify all level 2 sections (## headings)
+3. For each level 2 section:
+   - Extract the section heading and ALL content until the next level 2 section
+   - Include all subsections, code blocks, diagrams, lists, tables, etc.
+   - Be extremely careful with:
+     - Fenced code blocks (```) - ensure you capture the full block including closing backticks and account for potential misleading level 2's that are actually part of a fenced section example
+     - Mermaid diagrams - preserve the complete diagram syntax
+     - Nested markdown elements
+     - Multi-line content that might contain ## inside code blocks
+
+CRITICAL: Use proper parsing that understands markdown context. A ## inside a code block is NOT a section header.]]
+
+### 3. Create Individual Files
+
+For each extracted section:
+
+1. **Generate filename**: Convert the section heading to lowercase-dash-case
+   - Remove special characters
+   - Replace spaces with dashes
+   - Example: "## Tech Stack" → `tech-stack.md`
+
+2. **Adjust heading levels**:
+   - The level 2 heading becomes level 1 (# instead of ##) in the sharded new document
+   - All subsection levels decrease by 1:
+
+   ```txt
+     - ### → ##
+     - #### → ###
+     - ##### → ####
+     - etc.
+   ```
+
+3. **Write content**: Save the adjusted content to the new file
+
+### 4. Create Index File
+
+Create an `index.md` file in the sharded folder that:
+
+1. Contains the original level 1 heading and any content before the first level 2 section
+2. Lists all the sharded files with links:
+
+```markdown
+# Original Document Title
+
+[Original introduction content if any]
+
+## Sections
+
+- [Section Name 1](./section-name-1.md)
+- [Section Name 2](./section-name-2.md)
+- [Section Name 3](./section-name-3.md)
+  ...
+```
+
+### 5. Preserve Special Content
+
+1. **Code blocks**: Must capture complete blocks including:
+
+   ```language
+   content
+   ```
+
+2. **Mermaid diagrams**: Preserve complete syntax:
+
+   ```mermaid
+   graph TD
+   ...
+   ```
+
+3. **Tables**: Maintain proper markdown table formatting
+
+4. **Lists**: Preserve indentation and nesting
+
+5. **Inline code**: Preserve backticks
+
+6. **Links and references**: Keep all markdown links intact
+
+7. **Template markup**: If documents contain {{placeholders}} ,preserve exactly
+
+### 6. Validation
+
+After sharding:
+
+1. Verify all sections were extracted
+2. Check that no content was lost
+3. Ensure heading levels were properly adjusted
+4. Confirm all files were created successfully
+
+### 7. Report Results
+
+Provide a summary:
+
+```text
+Document sharded successfully:
+- Source: [original document path]
+- Destination: docs/[folder-name]/
+- Files created: [count]
+- Sections:
+  - section-name-1.md: "Section Title 1"
+  - section-name-2.md: "Section Title 2"
+  ...
+```
+
+## Important Notes
+
+- Never modify the actual content, only adjust heading levels
+- Preserve ALL formatting, including whitespace where significant
+- Handle edge cases like sections with code blocks containing ## symbols
+- Ensure the sharding is reversible (could reconstruct the original from shards)
+==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/templates/architecture-tmpl.yaml ====================
 template:
@@ -9123,196 +9518,6 @@ The story creation is successful when:
   - Specific, clearly drafted proposed edits for all affected project artifacts.
 - **Implicit:** An annotated change-checklist (or the record of its completion) reflecting the discussions, findings, and decisions made during the process.
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
-
-==================== START: .xiaoma-core/tasks/shard-doc.md ====================
-<!-- Powered by XiaoMa™ Core -->
-
-# Document Sharding Task
-
-## Purpose
-
-- Split a large document into multiple smaller documents based on level 2 sections
-- Create a folder structure to organize the sharded documents
-- Maintain all content integrity including code blocks, diagrams, and markdown formatting
-
-## Primary Method: Automatic with markdown-tree
-
-[[LLM: First, check if markdownExploder is set to true in .xiaoma-core/core-config.yaml. If it is, attempt to run the command: `md-tree explode {input file} {output path}`.
-
-If the command succeeds, inform the user that the document has been sharded successfully and STOP - do not proceed further.
-
-If the command fails (especially with an error indicating the command is not found or not available), inform the user: "The markdownExploder setting is enabled but the md-tree command is not available. Please either:
-
-1. Install @kayvan/markdown-tree-parser globally with: `npm install -g @kayvan/markdown-tree-parser`
-2. Or set markdownExploder to false in .xiaoma-core/core-config.yaml
-
-**IMPORTANT: STOP HERE - do not proceed with manual sharding until one of the above actions is taken.**"
-
-If markdownExploder is set to false, inform the user: "The markdownExploder setting is currently false. For better performance and reliability, you should:
-
-1. Set markdownExploder to true in .xiaoma-core/core-config.yaml
-2. Install @kayvan/markdown-tree-parser globally with: `npm install -g @kayvan/markdown-tree-parser`
-
-I will now proceed with the manual sharding process."
-
-Then proceed with the manual method below ONLY if markdownExploder is false.]]
-
-### Installation and Usage
-
-1. **Install globally**:
-
-   ```bash
-   npm install -g @kayvan/markdown-tree-parser
-   ```
-
-2. **Use the explode command**:
-
-   ```bash
-   # For PRD
-   md-tree explode docs/prd.md docs/prd
-
-   # For Architecture
-   md-tree explode docs/architecture.md docs/architecture
-
-   # For any document
-   md-tree explode [source-document] [destination-folder]
-   ```
-
-3. **What it does**:
-   - Automatically splits the document by level 2 sections
-   - Creates properly named files
-   - Adjusts heading levels appropriately
-   - Handles all edge cases with code blocks and special markdown
-
-If the user has @kayvan/markdown-tree-parser installed, use it and skip the manual process below.
-
----
-
-## Manual Method (if @kayvan/markdown-tree-parser is not available or user indicated manual method)
-
-### Task Instructions
-
-1. Identify Document and Target Location
-
-- Determine which document to shard (user-provided path)
-- Create a new folder under `docs/` with the same name as the document (without extension)
-- Example: `docs/prd.md` → create folder `docs/prd/`
-
-2. Parse and Extract Sections
-
-CRITICAL AEGNT SHARDING RULES:
-
-1. Read the entire document content
-2. Identify all level 2 sections (## headings)
-3. For each level 2 section:
-   - Extract the section heading and ALL content until the next level 2 section
-   - Include all subsections, code blocks, diagrams, lists, tables, etc.
-   - Be extremely careful with:
-     - Fenced code blocks (```) - ensure you capture the full block including closing backticks and account for potential misleading level 2's that are actually part of a fenced section example
-     - Mermaid diagrams - preserve the complete diagram syntax
-     - Nested markdown elements
-     - Multi-line content that might contain ## inside code blocks
-
-CRITICAL: Use proper parsing that understands markdown context. A ## inside a code block is NOT a section header.]]
-
-### 3. Create Individual Files
-
-For each extracted section:
-
-1. **Generate filename**: Convert the section heading to lowercase-dash-case
-   - Remove special characters
-   - Replace spaces with dashes
-   - Example: "## Tech Stack" → `tech-stack.md`
-
-2. **Adjust heading levels**:
-   - The level 2 heading becomes level 1 (# instead of ##) in the sharded new document
-   - All subsection levels decrease by 1:
-
-   ```txt
-     - ### → ##
-     - #### → ###
-     - ##### → ####
-     - etc.
-   ```
-
-3. **Write content**: Save the adjusted content to the new file
-
-### 4. Create Index File
-
-Create an `index.md` file in the sharded folder that:
-
-1. Contains the original level 1 heading and any content before the first level 2 section
-2. Lists all the sharded files with links:
-
-```markdown
-# Original Document Title
-
-[Original introduction content if any]
-
-## Sections
-
-- [Section Name 1](./section-name-1.md)
-- [Section Name 2](./section-name-2.md)
-- [Section Name 3](./section-name-3.md)
-  ...
-```
-
-### 5. Preserve Special Content
-
-1. **Code blocks**: Must capture complete blocks including:
-
-   ```language
-   content
-   ```
-
-2. **Mermaid diagrams**: Preserve complete syntax:
-
-   ```mermaid
-   graph TD
-   ...
-   ```
-
-3. **Tables**: Maintain proper markdown table formatting
-
-4. **Lists**: Preserve indentation and nesting
-
-5. **Inline code**: Preserve backticks
-
-6. **Links and references**: Keep all markdown links intact
-
-7. **Template markup**: If documents contain {{placeholders}} ,preserve exactly
-
-### 6. Validation
-
-After sharding:
-
-1. Verify all sections were extracted
-2. Check that no content was lost
-3. Ensure heading levels were properly adjusted
-4. Confirm all files were created successfully
-
-### 7. Report Results
-
-Provide a summary:
-
-```text
-Document sharded successfully:
-- Source: [original document path]
-- Destination: docs/[folder-name]/
-- Files created: [count]
-- Sections:
-  - section-name-1.md: "Section Title 1"
-  - section-name-2.md: "Section Title 2"
-  ...
-```
-
-## Important Notes
-
-- Never modify the actual content, only adjust heading levels
-- Preserve ALL formatting, including whitespace where significant
-- Handle edge cases like sections with code blocks containing ## symbols
-- Ensure the sharding is reversible (could reconstruct the original from shards)
-==================== END: .xiaoma-core/tasks/shard-doc.md ====================
 
 ==================== START: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
 template:

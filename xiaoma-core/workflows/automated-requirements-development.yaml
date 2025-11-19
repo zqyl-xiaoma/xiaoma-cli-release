@@ -1,0 +1,739 @@
+# <!-- Powered by XIAOMA™ Core -->
+workflow:
+  id: automated-requirements-development
+  name: 自动化需求分析到开发完成的端到端流程
+  description: >-
+    完全自动化的端到端工作流，从 req.txt 需求文档到用户故事开发完成的全流程自动化。
+    整合了 automated-requirements-analysis 和 automated-story-development 两个工作流，
+    实现从需求分析 → PRD → Epic → 架构设计 → 用户故事开发 → 测试完成的完整自动化流程。
+    适用于现有 Java 后端项目的迭代需求开发（Brownfield 项目）。
+  type: end-to-end-automation
+  project_types:
+    - java-backend
+    - brownfield-project
+    - enterprise-app
+    - api-first
+
+  # 工作流增强特性（继承两个子工作流的优势）
+  optimizations:
+    # 来自 requirements-analysis
+    - existing_architecture_analysis: true
+    - brownfield_prd_creation: true
+    - automatic_epic_sharding: true
+    - incremental_architecture_design: true
+    - quality_self_validation: true
+    # 来自 story-development
+    - pre_development_build_check: true
+    - progressive_validation: true
+    - fast_feedback_loops: true
+    - error_prevention_protocols: true
+    - enhanced_quality_gates: true
+    # 端到端特有
+    - seamless_workflow_transition: true
+    - unified_progress_tracking: true
+    - comprehensive_quality_control: true
+
+  # 🎯 完整的端到端执行序列
+  sequence:
+    # ================================
+    # 阶段 1: 需求分析工作流
+    # ================================
+    - phase: requirements_analysis
+      workflow_reference: automated-requirements-analysis.yaml
+      description: "执行完整的需求分析工作流（6个步骤）"
+      duration: "1.5-2.5 hours"
+
+      steps:
+        # 步骤 0: 前置环境验证
+        - step: pre_workflow_validation
+          action: validate_environment_and_dependencies
+          duration: 1m
+          checks:
+            - req_file_exists: "docs/req.txt"
+            - project_structure_valid: "Java Maven项目"
+            - xiaoma_core_installed: ".xiaoma-core/"
+            - required_directories_exist_or_created
+          on_success:
+            message: "✅ 环境验证通过，开始需求分析阶段"
+          on_failure:
+            action: halt_with_instructions
+
+        # 步骤 1: Analyst 需求分析
+        - step: requirements_analysis_and_elicitation
+          agent: analyst
+          action: analyze_and_clarify_requirements
+          duration: 15-25m
+          output: "docs/requirements/requirements-analysis.md"
+          notes: "Analyst 深度分析 req.txt，生成结构化需求分析报告"
+
+        # 步骤 2: Architect 架构分析
+        - step: analyze_existing_architecture
+          agent: architect
+          action: analyze_current_system_architecture
+          duration: 10-20m
+          output: "docs/architecture/current-architecture-analysis.md"
+          notes: "Architect 扫描现有代码，识别技术栈和架构模式"
+
+        # 步骤 3: PM 创建 PRD
+        - step: create_brownfield_prd
+          agent: pm
+          action: create_product_requirements_document
+          duration: 20-30m
+          command: "*create-brownfield-prd"
+          output: "docs/prd/brownfield-iteration-prd.md"
+          notes: "PM 基于需求分析和架构约束创建 Brownfield PRD"
+
+        # 步骤 4: PM 拆分史诗
+        - step: epic_sharding_cycle
+          agent: pm
+          action: create_epics_from_prd
+          duration: "变动，取决于史诗数量"
+          command: "*create-epic"
+          output: "docs/epics/史诗-*.md"
+          notes: "PM 循环创建每个史诗文档"
+
+        # 步骤 5: Architect 架构设计
+        - step: design_incremental_backend_architecture
+          agent: architect
+          action: create_incremental_architecture_design
+          duration: 30-40m
+          command: "*create-backend-architecture"
+          outputs:
+            - "docs/architecture/iteration-backend-design.md"
+            - "docs/architecture/db-migration-scripts.sql"
+            - "docs/architecture/database-design.md"
+            - "docs/architecture/api-design.md"
+            - "docs/architecture/service-integration.md"
+            - "docs/architecture/migration-plan.md"
+            - "docs/architecture/coding-standards.md"
+            - "docs/architecture/tech-stack.md"
+            - "docs/architecture/project-structure.md"
+          notes: "Architect 设计增量架构并切分为模块文档"
+
+        # 步骤 6: 生成完成报告
+        - step: finalize_requirements_analysis_workflow
+          action: generate_completion_report
+          output: "docs/requirements-analysis-completion-report.md"
+          notes: "生成需求分析阶段完成报告"
+
+      validation_criteria:
+        - all_requirements_analyzed
+        - architecture_documented
+        - prd_created_and_validated
+        - all_epics_created
+        - architecture_design_complete
+        - architecture_sharding_complete
+
+      on_success:
+        action: proceed_to_story_development
+        message: "✅ 需求分析阶段完成，准备进入用户故事开发阶段"
+
+      on_failure:
+        action: halt_and_review
+        escalation: "需求分析阶段失败，需要人工审查"
+
+    # ================================
+    # 🔄 阶段间无缝衔接
+    # ================================
+    - step: phase_transition_validation
+      action: validate_story_development_prerequisites
+      duration: 1m
+      checks:
+        - epic_documents_exist: "docs/epics/史诗-*.md"
+        - database_design_exists: "docs/architecture/iteration-backend-design.md"
+        - architecture_analysis_exists: "docs/architecture/current-architecture-analysis.md"
+        - stories_directory_created: "docs/stories/"
+      on_success:
+        message: "✅ 前置条件满足，自动进入用户故事开发阶段"
+      on_failure:
+        action: halt_workflow
+        message: "❌ 用户故事开发前置条件不满足"
+
+    # ================================
+    # 阶段 2: 用户故事开发工作流
+    # ================================
+    - phase: story_development
+      workflow_reference: automated-story-development.yaml
+      description: "循环执行用户故事开发（SM → PO → Dev → QA）"
+      duration: "40-70分钟 × 用户故事数量"
+
+      cycle:
+        condition: has_pending_stories
+        description: "重复执行直到所有用户故事完成"
+
+        cycle_steps:
+          # 步骤 1: SM 创建用户故事
+          - step: sm_create_story
+            agent: sm
+            action: create_next_story
+            duration: 5-10m
+            command: "*draft"
+            output: "docs/stories/epic{X}-story{Y}.md"
+            status_change: "null → Draft"
+            notes: "SM 从 Epic 识别下一个待开发故事并创建"
+
+          # 步骤 1.5: 快速构建验证
+          - step: quick_build_validation
+            agent: automation
+            action: quick_build_validation
+            duration: 30s
+            validation_criteria:
+              - template_compliance
+              - api_specs_completeness
+              - database_mapping_validity
+            notes: "快速验证防止后续构建问题"
+
+          # 步骤 2: PO 验证用户故事
+          - step: po_validate_story
+            agent: po
+            action: validate_story_draft
+            duration: 3-5m
+            command: "*validate-story-draft {story_file}"
+            validation_steps:
+              - template_completeness_validation
+              - file_structure_validation
+              - ui_frontend_completeness
+              - acceptance_criteria_satisfaction
+              - validation_testing_instructions
+              - security_considerations
+              - tasks_subtasks_sequence
+              - anti_hallucination_verification
+              - dev_agent_implementation_readiness
+              - generate_validation_report
+            decision: "GO/NO-GO"
+            on_approved:
+              status_change: "Draft → Approved"
+            on_rejected:
+              action: return_to_sm_for_fixes
+            notes: "PO 10步验证流程确保故事质量"
+
+          # 步骤 2.5: 预开发构建检查
+          - step: pre_development_build_check
+            agent: automation
+            action: pre_development_build_check
+            duration: 2m
+            validation_criteria:
+              - maven_compilation_success
+              - dependency_analysis_pass
+              - lombok_configuration_valid
+              - java_version_compatible
+            notes: "预开发构建验证，确保环境就绪"
+
+          # 步骤 3: Dev 开发用户故事
+          - step: dev_develop_story
+            agent: dev
+            action: develop_story
+            duration: 20-40m
+            commands:
+              - "*develop-story {story_file}"
+              - "*run-tests"
+            implementation_tasks:
+              - implement_database_layer
+              - implement_business_logic
+              - implement_api_endpoints
+              - write_unit_tests
+            self_test_validation:
+              - maven_clean_compile
+              - all_tests_passing
+              - code_coverage_target: ">=80%"
+              - no_critical_issues
+            status_change: "Approved → InProgress → Review"
+            notes: "Dev 完整实现用户故事并通过自测"
+
+          # 步骤 4: QA 测试验证
+          - step: qa_review_story
+            agent: qa
+            action: review_story_implementation
+            duration: 10-15m
+            command: "*review {story_file}"
+
+            # ⚠️ 核心测试原则：真实数据测试
+            testing_principles:
+              real_data_testing: "所有测试必须使用真实数据库数据，禁止mock"
+              functional_testing_focus: "以功能测试为主（HIGHEST）"
+
+            test_sequence:
+              1: "功能需求验证（所有验收标准）"
+              2: "真实数据库操作测试（CRUD验证）"
+              3: "API契约测试（真实请求/响应）"
+              4: "业务流程端到端测试"
+              5: "边界条件和异常场景测试"
+              6: "数据完整性和一致性验证"
+
+            gate_decision: "PASS/CONCERNS/FAIL/WAIVED"
+
+            on_pass:
+              status_change: "Review → Done"
+              message: "✅ 用户故事完成，进入下一个故事"
+
+            on_fail:
+              action: return_to_dev_for_fixes
+              command: "*review-qa {story_file}"
+              status_change: "Review → InProgress"
+              notes: "Dev 应用 QA 修复建议并重新测试"
+
+            notes: "QA 全面功能测试和质量审查（真实数据验证）"
+
+          # 步骤 5: 质量门控决策
+          - step: quality_gate_decision
+            action: evaluate_story_completion
+            criteria:
+              - qa_gate_pass
+              - all_ac_satisfied
+              - no_blocking_issues
+            decision: "Done → 进入下一个故事"
+
+      validation_criteria:
+        - all_stories_completed
+        - all_qa_gates_passed
+        - no_blocking_issues
+
+      on_success:
+        action: finalize_development
+        message: "✅ 所有用户故事开发完成"
+
+      on_failure:
+        action: identify_blocking_stories
+        escalation: "用户故事开发遇到阻塞"
+
+    # ================================
+    # 完成：端到端工作流结束
+    # ================================
+    - step: finalize_end_to_end_workflow
+      action: generate_comprehensive_completion_report
+      output_file: "docs/end-to-end-completion-report.md"
+
+      report_structure:
+        section_1_executive_summary:
+          - 工作流执行概况
+          - 总耗时（需求分析 + 用户故事开发）
+          - 成功完成的阶段和步骤
+
+        section_2_requirements_analysis_outputs:
+          - 需求分析报告: "docs/requirements/requirements-analysis.md"
+          - 架构分析报告: "docs/architecture/current-architecture-analysis.md"
+          - PRD 文档: "docs/prd/brownfield-iteration-prd.md"
+          - Epic 文档清单: "docs/epics/史诗-*.md ({epic_count} 个)"
+          - 架构设计文档: "docs/architecture/iteration-backend-design.md"
+          - 数据库脚本: "docs/architecture/db-migration-scripts.sql"
+          - 架构模块文档: "7个技术模块子文档"
+
+        section_3_story_development_outputs:
+          - 已完成的用户故事: "docs/stories/epic{X}-story{Y}.md (status: Done)"
+          - 实现代码: "src/ 目录下的完整实现"
+          - 测试代码: "单元测试 + 集成测试"
+          - QA 测试报告: "qa.qaLocation/gates/ 目录下的 gate 文件"
+
+        section_4_metrics:
+          - 识别的 Epic 数量
+          - 完成的用户故事数量
+          - 识别的数据表数量
+          - 识别的 API 端点数量
+          - 代码测试覆盖率
+          - QA 通过率
+
+        section_5_quality_assessment:
+          - 需求分析质量评分
+          - 架构设计质量评分
+          - 代码质量评分
+          - 测试覆盖率达标情况
+          - QA 质量门控通过情况
+
+        section_6_next_steps:
+          - 建议：准备进入集成测试和部署阶段
+          - 数据库迁移脚本已就绪
+          - 所有验收标准已满足
+          - 代码质量达标
+
+      notification_message: |
+        🎉🎉🎉 端到端自动化工作流完成！
+
+        📊 工作流执行摘要：
+        ==========================================
+        【阶段 1: 需求分析】（✅ 完成）
+        - 需求分析和澄清
+        - 现有架构分析
+        - Brownfield PRD 创建
+        - Epic 史诗拆分（{epic_count} 个史诗）
+        - 后端架构增量设计
+        - 架构文档模块化切分（7个模块）
+
+        【阶段 2: 用户故事开发】（✅ 完成）
+        - 用户故事创建和验证（{story_count} 个故事）
+        - 代码开发和自测（所有故事）
+        - QA 测试和验收（所有故事）
+        - 质量门控决策（全部通过）
+
+        📄 生成的关键文档：
+        ==========================================
+        需求分析文档: {requirements_analysis_count} 个
+        架构设计文档: {architecture_design_count} 个
+        Epic 文档: {epic_count} 个
+        用户故事: {story_count} 个 (状态: Done)
+        QA Gate 文件: {gate_count} 个
+
+        📈 质量指标：
+        ==========================================
+        需求覆盖率: 100%
+        测试覆盖率: {average_coverage}%
+        QA 通过率: {qa_pass_rate}%
+        代码质量评分: {code_quality_score}/10
+
+        🚀 下一步建议：
+        ==========================================
+        ✅ 所有功能已开发完成并通过测试
+        ✅ 数据库迁移脚本已准备就绪
+        ✅ 所有验收标准已满足
+        ✅ 代码质量达标
+
+        👉 可以进入集成测试和部署准备阶段
+
+        📁 详细报告：docs/end-to-end-completion-report.md
+
+      on_success:
+        message: "✅ 端到端工作流成功完成"
+
+  # ================================
+  # 质量门控（继承并增强）
+  # ================================
+  quality_gates:
+    # 需求分析阶段质量门控
+    requirements_analysis_phase:
+      architecture_analysis:
+        required_content:
+          - 技术栈清单
+          - 数据库实体清单
+          - API 模块清单
+          - 架构模式说明
+
+      prd_creation:
+        validation_rules:
+          - 所有需求已覆盖
+          - 技术约束与架构一致
+          - 数据库变更明确
+          - API 接口清晰
+          - 验收标准可测试
+
+      epic_sharding:
+        validation_rules:
+          - 史诗范围适中
+          - 用户故事数量合理
+          - 技术设计一致
+
+      architecture_design:
+        validation_rules:
+          - 与现有架构一致
+          - 数据模型合理
+          - API 设计符合规范
+          - 技术风险已识别
+
+    # 用户故事开发阶段质量门控
+    story_development_phase:
+      pre_development:
+        checks:
+          - maven_clean_compile
+          - dependency_analysis
+          - lombok_processor_config
+
+      story_creation:
+        validation_rules:
+          - 所有必填字段完整
+          - API 规范完整
+          - 数据库实体映射正确
+          - 验收标准可测试
+
+      po_validation:
+        criteria:
+          - business_alignment
+          - technical_feasibility
+          - testability
+          - no_hallucination
+
+      development_completion:
+        criteria:
+          - functionality_implemented
+          - all_tests_passing
+          - code_coverage_target: ">=80%"
+          - build_validation_passed
+
+      qa_approval:
+        criteria:
+          - acceptance_criteria_met
+          - real_data_testing_passed
+          - functional_requirements_met
+          - performance_acceptable
+
+  # ================================
+  # 错误处理和重试策略
+  # ================================
+  error_handling:
+    # 需求分析阶段错误处理
+    requirements_analysis_failures:
+      requirements_analysis_failure:
+        max_retries: 2
+        escalation: "需求分析失败，需要人工审查 req.txt"
+
+      prd_creation_failure:
+        max_retries: 2
+        escalation: "PRD 创建失败，需要审查需求分析质量"
+
+      epic_sharding_failure:
+        max_retries: 2
+        escalation: "Epic 拆分失败，需要审查 PRD"
+
+      architecture_design_failure:
+        max_retries: 2
+        escalation: "架构设计失败，需要人工审查兼容性"
+
+    # 用户故事开发阶段错误处理
+    story_development_failures:
+      compilation_failure:
+        action: block_and_fix
+        max_retries: 2
+        escalation: "技术负责人介入"
+
+      story_creation_failure:
+        max_retries: 3
+        escalation: "通知项目经理"
+
+      validation_failure:
+        action: "返回 SM 修正故事"
+        tracking: "记录问题详情"
+
+      development_failure:
+        action: "开发者自行修复"
+        max_attempts: 5
+        escalation: "超过尝试次数通知架构师"
+
+      qa_failure:
+        action: "返回开发者修复"
+        impact_analysis: "评估对其他故事的影响"
+
+  # ================================
+  # 进度追踪
+  # ================================
+  progress_tracking:
+    phase_1_metrics:
+      - architecture_analysis_completed
+      - prd_created
+      - epics_created_count
+      - architecture_design_completed
+      - architecture_sharding_completed
+
+    phase_2_metrics:
+      - stories_created
+      - stories_approved
+      - stories_in_development
+      - stories_in_review
+      - stories_completed
+      - cycle_time_per_story
+
+    overall_metrics:
+      - total_duration
+      - phase_1_duration
+      - phase_2_duration
+      - identified_tables_count
+      - identified_apis_count
+      - implemented_stories_count
+      - test_coverage_average
+      - qa_pass_rate
+
+    reporting:
+      frequency: "每个主要步骤完成后 + 阶段完成后"
+      format: "markdown报告"
+      locations:
+        - "docs/requirements-analysis-completion-report.md"
+        - "docs/story-development-progress-report.md"
+        - "docs/end-to-end-completion-report.md"
+
+  # ================================
+  # 自动化流程图
+  # ================================
+  flow_diagram: |
+    ```mermaid
+    graph TD
+        START[🚀 开始: 端到端自动化] --> PHASE1[📋 阶段1: 需求分析]
+
+        PHASE1 --> P1S0{前置验证}
+        P1S0 -->|失败| P1HALT[提示缺失依赖]
+        P1S0 -->|通过| P1S1[Analyst: 需求分析]
+
+        P1S1 --> P1S2[Architect: 架构分析]
+        P1S2 --> P1S3[PM: 创建 PRD]
+        P1S3 --> P1S4[PM: 拆分史诗]
+        P1S4 --> P1S5[Architect: 架构设计]
+        P1S5 --> P1S6[生成需求分析报告]
+
+        P1S6 --> TRANSITION{阶段间验证}
+        TRANSITION -->|失败| THALT[阻塞工作流]
+        TRANSITION -->|通过| PHASE2[💻 阶段2: 用户故事开发]
+
+        PHASE2 --> P2LOOP{有待开发故事?}
+
+        P2LOOP -->|是| P2S1[SM: 创建用户故事]
+        P2S1 --> P2S1_5[快速构建验证]
+        P2S1_5 --> P2S2[PO: 验证故事]
+
+        P2S2 --> P2V{验证结果}
+        P2V -->|拒绝| P2FIX1[修复故事]
+        P2FIX1 --> P2S2
+        P2V -->|批准| P2S2_5[预开发构建检查]
+
+        P2S2_5 --> P2S3[Dev: 开发故事]
+        P2S3 --> P2S3T[Dev: 运行自测]
+
+        P2S3T --> P2T{自测结果}
+        P2T -->|失败| P2FIX2[修复代码]
+        P2FIX2 --> P2S3T
+        P2T -->|通过| P2S4[QA: 测试验证]
+
+        P2S4 --> P2QA{QA 结果}
+        P2QA -->|失败| P2FIX3[应用 QA 修复]
+        P2FIX3 --> P2S3T
+        P2QA -->|通过| P2DONE[故事状态: Done]
+
+        P2DONE --> P2LOOP
+
+        P2LOOP -->|否| FINAL[📊 生成完成报告]
+        FINAL --> END[🎉 端到端工作流完成]
+
+        style PHASE1 fill:#E6E6FA
+        style PHASE2 fill:#98FB98
+        style TRANSITION fill:#FFE4B5
+        style END fill:#90EE90
+    ```
+
+  # ================================
+  # 决策指导
+  # ================================
+  decision_guidance:
+    when_to_use:
+      - "🎯 需要从 req.txt 到代码完成的完整自动化"
+      - "🎯 现有 Java 后端项目的迭代需求开发"
+      - "🎯 需要标准化的端到端开发流程"
+      - "🎯 团队希望最小化人工干预"
+      - "🎯 需要高质量的需求分析和代码实现"
+
+    when_not_to_use:
+      - "❌ 需求文档不清晰或不完整"
+      - "❌ 项目不是 Java 后端项目"
+      - "❌ 需要频繁的人工决策和干预"
+      - "❌ 测试环境未准备就绪"
+
+    prerequisites:
+      - "✅ 现有的 Java 项目代码库"
+      - "✅ req.txt 需求文档（由 PM 提供）"
+      - "✅ xiaoma-core 已安装"
+      - "✅ 项目基本目录结构存在"
+      - "✅ 数据库环境已配置（用于 QA 真实数据测试）"
+
+    expected_outcomes:
+      - "📄 完整的需求分析和架构设计文档"
+      - "📄 所有 Epic 和用户故事文档"
+      - "💻 所有用户故事的完整代码实现"
+      - "✅ 所有测试通过，代码质量达标"
+      - "📊 详细的执行报告和质量指标"
+
+    estimated_duration:
+      phase_1_requirements_analysis: "1.5-2.5 小时"
+      phase_2_story_development: "40-70 分钟 × 用户故事数量"
+      typical_total_for_small_project: "4-8 小时（假设 5-10 个用户故事）"
+      typical_total_for_medium_project: "8-16 小时（假设 10-20 个用户故事）"
+
+  # ================================
+  # 流程交接提示
+  # ================================
+  handoff_prompts:
+    workflow_start: "🚀 开始端到端自动化工作流..."
+
+    phase_1_start: "📋 阶段 1/2: 需求分析阶段开始..."
+    phase_1_step_1: "Analyst 需求分析中..."
+    phase_1_step_2: "Architect 架构分析中..."
+    phase_1_step_3: "PM 创建 PRD 中..."
+    phase_1_step_4: "PM 拆分史诗中..."
+    phase_1_step_5: "Architect 架构设计中..."
+    phase_1_complete: "✅ 阶段 1/2 完成: 需求分析阶段（{duration}）"
+
+    phase_transition: "🔄 阶段间验证通过，自动进入用户故事开发阶段..."
+
+    phase_2_start: "💻 阶段 2/2: 用户故事开发阶段开始..."
+    phase_2_story_start: "开始开发用户故事 {story_index}/{total_stories}..."
+    phase_2_story_sm: "SM 创建用户故事..."
+    phase_2_story_po: "PO 验证用户故事..."
+    phase_2_story_dev: "Dev 开发用户故事..."
+    phase_2_story_qa: "QA 测试用户故事..."
+    phase_2_story_done: "✅ 用户故事 {story_index}/{total_stories} 完成"
+    phase_2_complete: "✅ 阶段 2/2 完成: 用户故事开发阶段（{story_count} 个故事，{duration}）"
+
+    workflow_complete: |
+      🎉🎉🎉 端到端自动化工作流完成！
+
+      总耗时: {total_duration}
+      - 阶段 1 (需求分析): {phase_1_duration}
+      - 阶段 2 (用户故事开发): {phase_2_duration}
+
+      完成成果:
+      - {epic_count} 个 Epic
+      - {story_count} 个用户故事（全部 Done）
+      - {table_count} 个数据表设计
+      - {api_count} 个 API 端点
+      - 平均测试覆盖率: {coverage}%
+      - QA 通过率: {qa_pass_rate}%
+
+      📁 详细报告: docs/end-to-end-completion-report.md
+
+  # ================================
+  # 最佳实践和注意事项
+  # ================================
+  best_practices:
+    before_starting:
+      - "✅ 确保 req.txt 文件内容完整清晰"
+      - "✅ 确保项目是有效的 Java 项目"
+      - "✅ 安装 xiaoma-core 到项目"
+      - "✅ 配置数据库环境（用于 QA 真实数据测试）"
+      - "✅ 预留足够的执行时间（建议半天到一天）"
+
+    during_execution:
+      - "✅ 信任自动化流程，避免不必要的中断"
+      - "✅ 监控每个阶段的质量门控结果"
+      - "✅ 关注错误和警告信息"
+      - "✅ 允许自动化工作流自我修正和优化"
+
+    quality_focus:
+      - "✅ 需求分析阶段：关注需求完整性和架构一致性"
+      - "✅ 用户故事开发阶段：关注代码质量和测试覆盖率"
+      - "✅ QA 阶段：确保真实数据测试，严禁 mock 数据"
+      - "✅ 全流程：严格执行质量门控，不跳过验证步骤"
+
+    after_completion:
+      - "✅ 审查端到端完成报告"
+      - "✅ 验证所有生成的文档和代码"
+      - "✅ 确认数据库迁移脚本的正确性"
+      - "✅ 准备进入集成测试和部署阶段"
+
+  # ================================
+  # 成功标准
+  # ================================
+  success_criteria:
+    phase_1_success:
+      - all_requirements_analyzed
+      - architecture_documented
+      - prd_created_and_validated
+      - all_epics_created
+      - architecture_design_complete
+      - all_quality_gates_passed
+
+    phase_2_success:
+      - all_stories_created_and_approved
+      - all_stories_developed_and_tested
+      - all_qa_gates_passed
+      - test_coverage_target_met: ">=80%"
+      - no_blocking_issues
+
+    overall_success:
+      - both_phases_completed
+      - comprehensive_documentation_generated
+      - high_quality_code_implemented
+      - all_acceptance_criteria_met
+      - ready_for_integration_testing
+      - total_duration_within_estimate
