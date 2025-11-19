@@ -1230,7 +1230,7 @@ commands:
   - create-brownfield-epic: 运行任务 brownfield-create-epic.md
   - create-brownfield-prd: 使用模板 brownfield-prd-tmpl.yaml 运行任务 create-doc.md
   - create-brownfield-story: 运行任务 brownfield-create-story.md
-  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建模块 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
@@ -1294,7 +1294,7 @@ persona:
 commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行 correct-course 任务
-  - create-epic: 为现有项目项目创建史诗 (任务 brownfield-create-epic)
+  - create-epic: 为现有项目项目创建模块 (任务 brownfield-create-epic)
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
   - execute-checklist-po: 运行任务 execute-checklist (清单 po-master-checklist)
@@ -1402,7 +1402,7 @@ agent:
   id: sm
   title: Scrum Master
   icon: 🏃
-  whenToUse: 用于创建故事、史诗管理、在派对模式下进行回顾以及敏捷流程指导
+  whenToUse: 用于创建故事、模块管理、在派对模式下进行回顾以及敏捷流程指导
   customization: null
 persona:
   role: 技术 Scrum Master - 故事准备专家
@@ -1523,7 +1523,7 @@ persona:
     - 自动切换智能体：根据工作流定义，自动使用 /analyst、/architect、/pm、/po、/sm、/dev、/qa 等命令切换到相应的智能体角色
     - 连续执行模式：完成一个步骤后，立即显示简短进度（1-2行）并**无需任何确认**直接进入下一个步骤，直到整个工作流完成或遇到真正的技术错误
     - 🚫 严禁中断询问：不要问'是否继续'、'请选择'、'您希望'等问题。用户启动工作流就是明确要求自动执行到底。唯一允许暂停的情况：文件不存在、执行报错、质量门控失败。
-    - '✅ 正确的进度报告格式：简短报告 + 立即继续，例如：''✅ 步骤 3/6 完成: PM 创建 PRD → 立即开始步骤 4/6: PM 拆分史诗...'''
+    - '✅ 正确的进度报告格式：简短报告 + 立即继续，例如：''✅ 步骤 3/6 完成: PM 创建 PRD → 立即开始步骤 4/6: PM 拆分模块...'''
 commands:
   - help: 显示以下命令的编号列表以供选择
   - run-requirements-analysis: 🔥 自动化需求分析工作流（完全自动执行，不暂停）- 加载 automated-requirements-analysis.yaml 并连续执行所有 6 个步骤，从 req.txt 到最终的架构设计文档，全程自动化无需人工干预
@@ -1603,7 +1603,7 @@ workflow_stages:
     tasks:
       - 创建 Brownfield 项目迭代需求的 PRD 文档
       - 定义功能模块、数据变更、API 规范
-      - 制定验收标准和史诗拆分建议
+      - 制定验收标准和模块拆分建议
       - 自检 PRD 质量（16项检查）
     outputs:
       - docs/prd/brownfield-iteration-prd.md
@@ -1611,15 +1611,15 @@ workflow_stages:
   stage_4_pm_epics:
     agent: pm
     command: "*create-epic"
-    duration: "变动，取决于史诗数量"
+    duration: "变动，取决于模块数量"
     tasks:
-      - 从 PRD 提取史诗清单
-      - 循环创建每个史诗文档
+      - 从 PRD 提取模块清单
+      - 循环创建每个模块文档
       - 初步识别用户故事
       - 定义技术设计概要和数据库/API 变更
-      - 验证史诗质量
+      - 验证模块质量
     outputs:
-      - docs/epics/史诗-*.md (多个史诗文件)
+      - docs/epics/Epic-*.md (多个模块文件)
 
   stage_5_architect_design:
     agent: architect
@@ -1628,7 +1628,7 @@ workflow_stages:
     duration: "30-40分钟"
     inputs:
       - docs/prd/brownfield-iteration-prd.md
-      - docs/epics/史诗-*.md
+      - docs/epics/Epic-*.md
       - docs/architecture/current-architecture-analysis.md
     tasks:
       - 设计新增数据模型（Entity + DDL）
@@ -1676,7 +1676,7 @@ workflow_stages:
   ├─ 步骤 1/6: Analyst 需求分析
   ├─ 步骤 2/6: Architect 架构分析
   ├─ 步骤 3/6: PM 创建 PRD
-  ├─ 步骤 4/6: PM 拆分史诗
+  ├─ 步骤 4/6: PM 拆分模块
   ├─ 步骤 5/6: Architect 架构设计
   └─ 步骤 6/6: 生成需求分析报告
       ↓
@@ -1931,7 +1931,7 @@ quality_gates:
 # ✓ 步骤 1/6: Analyst 需求分析 → 生成需求分析报告
 # ✓ 步骤 2/6: Architect 架构分析 → 生成架构分析报告
 # ✓ 步骤 3/6: PM 创建 PRD → 生成 Brownfield PRD
-# ✓ 步骤 4/6: PM 拆分史诗 → 生成 Epic 文档
+# ✓ 步骤 4/6: PM 拆分模块 → 生成 Epic 文档
 # ✓ 步骤 5/6: Architect 架构设计 → 生成架构设计和数据库脚本
 # ✓ 步骤 6/6: 生成需求分析完成报告
 #      ↓
@@ -1954,7 +1954,7 @@ quality_gates:
 # - docs/requirements/requirements-analysis.md
 # - docs/architecture/current-architecture-analysis.md
 # - docs/prd/brownfield-iteration-prd.md
-# - docs/epics/史诗-*.md
+# - docs/epics/Epic-*.md
 # - docs/architecture/iteration-backend-design.md
 # - docs/architecture/db-migration-scripts.sql
 # - docs/architecture/*.md (7个模块文档)
@@ -2006,7 +2006,7 @@ quality_gates:
 # ✓ 步骤 1/6: 切换到 Analyst 进行需求分析（15-25分钟）
 # ✓ 步骤 2/6: 切换到 Architect 分析现有架构（10-20分钟）
 # ✓ 步骤 3/6: 切换到 PM 创建 Brownfield PRD（20-30分钟）
-# ✓ 步骤 4/6: 切换到 PM 拆分史诗（取决于史诗数量）
+# ✓ 步骤 4/6: 切换到 PM 拆分模块（取决于模块数量）
 # ✓ 步骤 5/6: 切换到 Architect 设计增量架构（30-40分钟）
 # ✓ 步骤 6/6: 生成完成报告
 
@@ -2014,7 +2014,7 @@ quality_gates:
 # - docs/requirements/requirements-analysis.md
 # - docs/architecture/current-architecture-analysis.md
 # - docs/prd/brownfield-iteration-prd.md
-# - docs/epics/史诗-*.md
+# - docs/epics/Epic-*.md
 # - docs/architecture/iteration-backend-design.md
 # - docs/architecture/db-migration-scripts.sql
 ```
@@ -2064,7 +2064,7 @@ quality_gates:
 
 # 输出示例：
 # 当前工作流: automated-requirements-analysis
-# 当前阶段: stage_4_pm_epics (PM 拆分史诗)
+# 当前阶段: stage_4_pm_epics (PM 拆分模块)
 # 进度: 60% (3/5 步骤完成)
 # 当前智能体: pm
 # 已完成步骤:
@@ -2073,7 +2073,7 @@ quality_gates:
 #   ✓ stage_2_architect - 架构分析
 #   ✓ stage_3_pm_prd - PRD 创建
 # 进行中步骤:
-#   ⏳ stage_4_pm_epics - 史诗拆分 (2/4 史诗已创建)
+#   ⏳ stage_4_pm_epics - 模块拆分 (2/4 模块已创建)
 # 待执行步骤:
 #   ⏸ stage_5_architect_design - 架构设计
 ```
@@ -2175,7 +2175,7 @@ escalation_protocol:
 *validate-prerequisites
 
 # 检查项目：
-# ✓ Epic 文档存在 (docs/epics/史诗-*.md)
+# ✓ Epic 文档存在 (docs/epics/Epic-*.md)
 # ✓ 数据库设计文档存在 (docs/architecture/iteration-backend-design.md)
 # ✓ 架构分析文档存在 (docs/architecture/current-architecture-analysis.md)
 # ✓ 代码生成器配置完成 (如使用 MyBatis-Plus Generator)
@@ -2203,7 +2203,7 @@ escalation_protocol:
 # 示例输出：
 # 检测到未完成的工作流: automated-requirements-analysis
 # 最后完成的步骤: stage_3_pm_prd (PRD 创建)
-# 准备从步骤 stage_4_pm_epics (史诗拆分) 恢复执行
+# 准备从步骤 stage_4_pm_epics (模块拆分) 恢复执行
 #
 # 验证前序输出:
 # ✓ docs/requirements/requirements-analysis.md
@@ -2383,7 +2383,7 @@ completion_report:
 # ✅ 步骤 1/6: Analyst 需求分析 → 立即开始步骤 2/6...
 # ✅ 步骤 2/6: Architect 架构分析 → 立即开始步骤 3/6...
 # ✅ 步骤 3/6: PM 创建 PRD → 立即开始步骤 4/6...
-# ✅ 步骤 4/6: PM 拆分史诗 → 立即开始步骤 5/6...
+# ✅ 步骤 4/6: PM 拆分模块 → 立即开始步骤 5/6...
 # ✅ 步骤 5/6: Architect 架构设计 → 立即开始步骤 6/6...
 # ✅ 步骤 6/6: 生成完成报告 → 🎉 工作流完成！
 
@@ -2419,9 +2419,9 @@ completion_report:
 [20-30分钟后]
 ✅ 步骤 3/6 完成: 已生成 docs/prd/brownfield-iteration-prd.md
 
-正在执行步骤 4/6: PM 拆分史诗...
-[根据史诗数量]
-✅ 步骤 4/6 完成: 已生成 4 个史诗文档
+正在执行步骤 4/6: PM 拆分模块...
+[根据模块数量]
+✅ 步骤 4/6 完成: 已生成 4 个模块文档
 
 正在执行步骤 5/6: Architect 设计增量架构...
 [30-40分钟后]
@@ -2437,7 +2437,7 @@ completion_report:
 - docs/requirements/requirements-analysis.md
 - docs/architecture/current-architecture-analysis.md
 - docs/prd/brownfield-iteration-prd.md
-- docs/epics/史诗-*.md (4个)
+- docs/epics/Epic-*.md (4个)
 - docs/architecture/iteration-backend-design.md
 - docs/architecture/db-migration-scripts.sql
 
@@ -7700,7 +7700,7 @@ sections:
       1. 如果是 REST API, 创建一个 OpenAPI 3.0 规范
       2. 如果是 GraphQL, 提供 GraphQL 模式
       3. 如果是 tRPC, 展示路由定义
-      4. 包括来自史诗/故事的所有端点
+      4. 包括来自模块/故事的所有端点
       5. 基于数据模型定义请求/响应模式
       6. 记录认证要求
       7. 包括请求/响应示例
@@ -9878,7 +9878,7 @@ sections:
         title: 关键交互范式
       - id: core-screens
         title: 核心屏幕与视图
-        instruction: 从产品角度看，为实现 PRD 的价值和目标，最关键的屏幕或视图是什么？这旨在提供概念性的高层概览，以驱动粗略的史诗或用户故事。
+        instruction: 从产品角度看，为实现 PRD 的价值和目标，最关键的屏幕或视图是什么？这旨在提供概念性的高层概览，以驱动粗略的模块或用户故事。
         examples:
           - "登录屏幕"
           - "主仪表盘"
@@ -9928,38 +9928,38 @@ sections:
         instruction: 在起草本文档的整个过程中，如果提出或发现任何其他适合架构师的技术假设，请在此处作为额外的项目符号添加。
 
   - id: epic-list
-    title: 史诗列表
+    title: 模块列表
     instruction: |
-      向用户呈现一份高层次的史诗列表以供批准。每个史诗应有一个标题和一个简短的（1句话）目标陈述。这使用户能在深入细节之前审阅整体结构。
+      向用户呈现一份高层次的模块列表以供批准。每个模块应有一个标题和一个简短的（1句话）目标陈述。这使用户能在深入细节之前审阅整体结构。
 
-      关键：史诗必须遵循敏捷最佳实践，保持逻辑上的顺序：
+      关键：模块必须遵循敏捷最佳实践，保持逻辑上的顺序：
 
-      - 每个史诗都应交付一个重要的、端到端的、完全可部署且可测试的功能增量。
-      - 史诗 1 必须建立基础项目设施（应用设置、Git、CI/CD、核心服务），除非我们是向现有应用添加新功能。同时，它还应交付一个初始功能，即使只是一个健康检查路由或一个简单的金丝雀页面显示——在为第一个史诗编写用户故事时要记住这一点！
-      - 每个后续的史诗都在之前史诗功能的基础上构建，交付主要的功能模块，这些模块在部署时能为用户或业务提供切实的价值。
-      - 并非每个项目都需要多个史诗，一个史诗需要交付价值。例如，一个已完成的 API 即使 UI 尚未完成并计划在另一个史诗中实现，也可以交付价值。
-      - 倾向于设置较少的史诗，但要告知用户你的理由，并提供拆分选项，如果某些史诗看起来太大或关注点分散的话。
-      - 横切关注点应该贯穿于史诗和用户故事中，而不是作为最后的用户故事。例如，在一个史诗的最后一个故事中添加日志框架，或者在项目结束时作为最后一个史诗或故事来做，这将非常糟糕，因为我们从一开始就没有日志记录。
+      - 每个模块都应交付一个重要的、端到端的、完全可部署且可测试的功能增量。
+      - 模块 1 必须建立基础项目设施（应用设置、Git、CI/CD、核心服务），除非我们是向现有应用添加新功能。同时，它还应交付一个初始功能，即使只是一个健康检查路由或一个简单的金丝雀页面显示——在为第一个模块编写用户故事时要记住这一点！
+      - 每个后续的模块都在之前模块功能的基础上构建，交付主要的功能模块，这些模块在部署时能为用户或业务提供切实的价值。
+      - 并非每个项目都需要多个模块，一个模块需要交付价值。例如，一个已完成的 API 即使 UI 尚未完成并计划在另一个模块中实现，也可以交付价值。
+      - 倾向于设置较少的模块，但要告知用户你的理由，并提供拆分选项，如果某些模块看起来太大或关注点分散的话。
+      - 横切关注点应该贯穿于模块和用户故事中，而不是作为最后的用户故事。例如，在一个模块的最后一个故事中添加日志框架，或者在项目结束时作为最后一个模块或故事来做，这将非常糟糕，因为我们从一开始就没有日志记录。
     elicit: true
     examples:
-      - "史诗 1：基础与核心设施：建立项目设置、认证和基本用户管理"
-      - "史诗 2：核心业务实体：创建和管理主要领域对象的 CRUD 操作"
-      - "史诗 3：用户工作流与交互：实现关键用户旅程和业务流程"
-      - "史诗 4：报告与分析：为用户提供洞察和数据可视化"
+      - "模块 1：基础与核心设施：建立项目设置、认证和基本用户管理"
+      - "模块 2：核心业务实体：创建和管理主要领域对象的 CRUD 操作"
+      - "模块 3：用户工作流与交互：实现关键用户旅程和业务流程"
+      - "模块 4：报告与分析：为用户提供洞察和数据可视化"
 
   - id: epic-details
-    title: 史诗 {{epic_number}} {{epic_title}}
+    title: 模块 {{epic_number}} {{epic_title}}
     repeatable: true
     instruction: |
-      在史诗列表被批准后，将每个史诗及其所有的用户故事和验收标准作为一个完整的审查单元呈现。
+      在模块列表被批准后，将每个模块及其所有的用户故事和验收标准作为一个完整的审查单元呈现。
 
-      为每个史诗提供扩展的目标（2-3 句话描述所有故事将实现的目标和价值）。
+      为每个模块提供扩展的目标（2-3 句话描述所有故事将实现的目标和价值）。
 
       关键的用户故事排序要求：
 
-      - 每个史诗中的用户故事必须在逻辑上是顺序的。
+      - 每个模块中的用户故事必须在逻辑上是顺序的。
       - 每个故事都应该是一个“垂直切片”，交付完整的功能，除了项目基础的早期使能型故事。
-      - 任何故事都不应依赖于后续故事或史诗的工作。
+      - 任何故事都不应依赖于后续故事或模块的工作。
       - 识别并注明任何直接的前置故事。
       - 关注“做什么”和“为什么”，而不是“怎么做”（将技术实现留给架构师），但要足够精确以支持故事之间逻辑上顺序的操作。
       - 确保每个故事都交付明确的用户或业务价值，尽量避免使能型故事，而是将它们构建到交付价值的故事中。

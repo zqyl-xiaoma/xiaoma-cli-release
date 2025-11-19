@@ -78,7 +78,7 @@ persona:
     - 自动切换智能体：根据工作流定义，自动使用 /analyst、/architect、/pm、/po、/sm、/dev、/qa 等命令切换到相应的智能体角色
     - 连续执行模式：完成一个步骤后，立即显示简短进度（1-2行）并**无需任何确认**直接进入下一个步骤，直到整个工作流完成或遇到真正的技术错误
     - 🚫 严禁中断询问：不要问'是否继续'、'请选择'、'您希望'等问题。用户启动工作流就是明确要求自动执行到底。唯一允许暂停的情况：文件不存在、执行报错、质量门控失败。
-    - '✅ 正确的进度报告格式：简短报告 + 立即继续，例如：''✅ 步骤 3/6 完成: PM 创建 PRD → 立即开始步骤 4/6: PM 拆分史诗...'''
+    - '✅ 正确的进度报告格式：简短报告 + 立即继续，例如：''✅ 步骤 3/6 完成: PM 创建 PRD → 立即开始步骤 4/6: PM 拆分模块...'''
 commands:
   - help: 显示以下命令的编号列表以供选择
   - run-requirements-analysis: 🔥 自动化需求分析工作流（完全自动执行，不暂停）- 加载 automated-requirements-analysis.yaml 并连续执行所有 6 个步骤，从 req.txt 到最终的架构设计文档，全程自动化无需人工干预
@@ -158,7 +158,7 @@ workflow_stages:
     tasks:
       - 创建 Brownfield 项目迭代需求的 PRD 文档
       - 定义功能模块、数据变更、API 规范
-      - 制定验收标准和史诗拆分建议
+      - 制定验收标准和模块拆分建议
       - 自检 PRD 质量（16项检查）
     outputs:
       - docs/prd/brownfield-iteration-prd.md
@@ -166,15 +166,15 @@ workflow_stages:
   stage_4_pm_epics:
     agent: pm
     command: "*create-epic"
-    duration: "变动，取决于史诗数量"
+    duration: "变动，取决于模块数量"
     tasks:
-      - 从 PRD 提取史诗清单
-      - 循环创建每个史诗文档
+      - 从 PRD 提取模块清单
+      - 循环创建每个模块文档
       - 初步识别用户故事
       - 定义技术设计概要和数据库/API 变更
-      - 验证史诗质量
+      - 验证模块质量
     outputs:
-      - docs/epics/史诗-*.md (多个史诗文件)
+      - docs/epics/Epic-*.md (多个模块文件)
 
   stage_5_architect_design:
     agent: architect
@@ -183,7 +183,7 @@ workflow_stages:
     duration: "30-40分钟"
     inputs:
       - docs/prd/brownfield-iteration-prd.md
-      - docs/epics/史诗-*.md
+      - docs/epics/Epic-*.md
       - docs/architecture/current-architecture-analysis.md
     tasks:
       - 设计新增数据模型（Entity + DDL）
@@ -231,7 +231,7 @@ workflow_stages:
   ├─ 步骤 1/6: Analyst 需求分析
   ├─ 步骤 2/6: Architect 架构分析
   ├─ 步骤 3/6: PM 创建 PRD
-  ├─ 步骤 4/6: PM 拆分史诗
+  ├─ 步骤 4/6: PM 拆分模块
   ├─ 步骤 5/6: Architect 架构设计
   └─ 步骤 6/6: 生成需求分析报告
       ↓
@@ -486,7 +486,7 @@ quality_gates:
 # ✓ 步骤 1/6: Analyst 需求分析 → 生成需求分析报告
 # ✓ 步骤 2/6: Architect 架构分析 → 生成架构分析报告
 # ✓ 步骤 3/6: PM 创建 PRD → 生成 Brownfield PRD
-# ✓ 步骤 4/6: PM 拆分史诗 → 生成 Epic 文档
+# ✓ 步骤 4/6: PM 拆分模块 → 生成 Epic 文档
 # ✓ 步骤 5/6: Architect 架构设计 → 生成架构设计和数据库脚本
 # ✓ 步骤 6/6: 生成需求分析完成报告
 #      ↓
@@ -509,7 +509,7 @@ quality_gates:
 # - docs/requirements/requirements-analysis.md
 # - docs/architecture/current-architecture-analysis.md
 # - docs/prd/brownfield-iteration-prd.md
-# - docs/epics/史诗-*.md
+# - docs/epics/Epic-*.md
 # - docs/architecture/iteration-backend-design.md
 # - docs/architecture/db-migration-scripts.sql
 # - docs/architecture/*.md (7个模块文档)
@@ -561,7 +561,7 @@ quality_gates:
 # ✓ 步骤 1/6: 切换到 Analyst 进行需求分析（15-25分钟）
 # ✓ 步骤 2/6: 切换到 Architect 分析现有架构（10-20分钟）
 # ✓ 步骤 3/6: 切换到 PM 创建 Brownfield PRD（20-30分钟）
-# ✓ 步骤 4/6: 切换到 PM 拆分史诗（取决于史诗数量）
+# ✓ 步骤 4/6: 切换到 PM 拆分模块（取决于模块数量）
 # ✓ 步骤 5/6: 切换到 Architect 设计增量架构（30-40分钟）
 # ✓ 步骤 6/6: 生成完成报告
 
@@ -569,7 +569,7 @@ quality_gates:
 # - docs/requirements/requirements-analysis.md
 # - docs/architecture/current-architecture-analysis.md
 # - docs/prd/brownfield-iteration-prd.md
-# - docs/epics/史诗-*.md
+# - docs/epics/Epic-*.md
 # - docs/architecture/iteration-backend-design.md
 # - docs/architecture/db-migration-scripts.sql
 ```
@@ -619,7 +619,7 @@ quality_gates:
 
 # 输出示例：
 # 当前工作流: automated-requirements-analysis
-# 当前阶段: stage_4_pm_epics (PM 拆分史诗)
+# 当前阶段: stage_4_pm_epics (PM 拆分模块)
 # 进度: 60% (3/5 步骤完成)
 # 当前智能体: pm
 # 已完成步骤:
@@ -628,7 +628,7 @@ quality_gates:
 #   ✓ stage_2_architect - 架构分析
 #   ✓ stage_3_pm_prd - PRD 创建
 # 进行中步骤:
-#   ⏳ stage_4_pm_epics - 史诗拆分 (2/4 史诗已创建)
+#   ⏳ stage_4_pm_epics - 模块拆分 (2/4 模块已创建)
 # 待执行步骤:
 #   ⏸ stage_5_architect_design - 架构设计
 ```
@@ -730,7 +730,7 @@ escalation_protocol:
 *validate-prerequisites
 
 # 检查项目：
-# ✓ Epic 文档存在 (docs/epics/史诗-*.md)
+# ✓ Epic 文档存在 (docs/epics/Epic-*.md)
 # ✓ 数据库设计文档存在 (docs/architecture/iteration-backend-design.md)
 # ✓ 架构分析文档存在 (docs/architecture/current-architecture-analysis.md)
 # ✓ 代码生成器配置完成 (如使用 MyBatis-Plus Generator)
@@ -758,7 +758,7 @@ escalation_protocol:
 # 示例输出：
 # 检测到未完成的工作流: automated-requirements-analysis
 # 最后完成的步骤: stage_3_pm_prd (PRD 创建)
-# 准备从步骤 stage_4_pm_epics (史诗拆分) 恢复执行
+# 准备从步骤 stage_4_pm_epics (模块拆分) 恢复执行
 #
 # 验证前序输出:
 # ✓ docs/requirements/requirements-analysis.md
@@ -938,7 +938,7 @@ completion_report:
 # ✅ 步骤 1/6: Analyst 需求分析 → 立即开始步骤 2/6...
 # ✅ 步骤 2/6: Architect 架构分析 → 立即开始步骤 3/6...
 # ✅ 步骤 3/6: PM 创建 PRD → 立即开始步骤 4/6...
-# ✅ 步骤 4/6: PM 拆分史诗 → 立即开始步骤 5/6...
+# ✅ 步骤 4/6: PM 拆分模块 → 立即开始步骤 5/6...
 # ✅ 步骤 5/6: Architect 架构设计 → 立即开始步骤 6/6...
 # ✅ 步骤 6/6: 生成完成报告 → 🎉 工作流完成！
 
@@ -974,9 +974,9 @@ completion_report:
 [20-30分钟后]
 ✅ 步骤 3/6 完成: 已生成 docs/prd/brownfield-iteration-prd.md
 
-正在执行步骤 4/6: PM 拆分史诗...
-[根据史诗数量]
-✅ 步骤 4/6 完成: 已生成 4 个史诗文档
+正在执行步骤 4/6: PM 拆分模块...
+[根据模块数量]
+✅ 步骤 4/6 完成: 已生成 4 个模块文档
 
 正在执行步骤 5/6: Architect 设计增量架构...
 [30-40分钟后]
@@ -992,7 +992,7 @@ completion_report:
 - docs/requirements/requirements-analysis.md
 - docs/architecture/current-architecture-analysis.md
 - docs/prd/brownfield-iteration-prd.md
-- docs/epics/史诗-*.md (4个)
+- docs/epics/Epic-*.md (4个)
 - docs/architecture/iteration-backend-design.md
 - docs/architecture/db-migration-scripts.sql
 
