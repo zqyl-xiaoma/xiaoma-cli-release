@@ -1,0 +1,371 @@
+template:
+  id: rag-questions-template-v1
+  name: 知识库问题生成模板
+  version: 1.0
+  description: 基于需求文档(req.txt)生成知识库MCP查询问题
+  output:
+    format: markdown
+    filename: docs/rag-questions.md
+    title: "知识库查询问题清单"
+
+workflow:
+  mode: interactive
+  phases:
+    - 需求解析
+    - 问题生成
+    - 问题确认
+    - 知识库查询
+    - 知识落地
+
+sections:
+  - id: requirement-parsing
+    title: 第一阶段：需求文档解析
+    instruction: |
+      读取并深度分析 req.txt 文档，提取以下要素：
+
+      1. **业务领域识别**
+         - 这个需求属于什么业务领域？(如：订单管理、用户管理、支付系统等)
+         - 涉及哪些子领域或模块？
+
+      2. **功能点提取**
+         - 需求描述了哪些具体功能？
+         - 每个功能的输入、处理、输出是什么？
+
+      3. **用户角色识别**
+         - 涉及哪些用户角色？(如：管理员、普通用户、访客)
+         - 每个角色在此需求中的操作是什么？
+
+      4. **数据实体识别**
+         - 涉及哪些数据对象？(如：订单、商品、用户)
+         - 数据之间的关系是什么？
+
+      5. **业务流程识别**
+         - 描述了什么业务流程？
+         - 流程的起点、终点、关键步骤是什么？
+
+      6. **模糊点标记**
+         - 哪些描述不够清晰？
+         - 哪些内容有多种理解方式？
+    output:
+      format: yaml
+      template: |
+        需求解析结果:
+          业务领域: {{domain}}
+          子领域: [{{sub_domains}}]
+
+          功能点:
+            {{#each features}}
+            - 名称: {{name}}
+              描述: {{description}}
+              输入: {{input}}
+              输出: {{output}}
+            {{/each}}
+
+          用户角色:
+            {{#each roles}}
+            - 角色: {{name}}
+              操作: [{{actions}}]
+            {{/each}}
+
+          数据实体:
+            {{#each entities}}
+            - 实体: {{name}}
+              属性: [{{attributes}}]
+              关系: {{relationships}}
+            {{/each}}
+
+          业务流程:
+            {{#each processes}}
+            - 流程: {{name}}
+              步骤: [{{steps}}]
+            {{/each}}
+
+          模糊点:
+            {{#each ambiguities}}
+            - 位置: {{location}}
+              内容: {{content}}
+              可能理解: [{{interpretations}}]
+            {{/each}}
+
+  - id: question-generation
+    title: 第二阶段：问题生成
+    instruction: |
+      基于解析结果，为每个要素生成具体的知识库查询问题。
+
+      **问题生成原则**：
+      1. 每个问题必须具体、可回答
+      2. 优先生成阻塞性问题（缺失会导致无法继续）
+      3. 问题应覆盖：业务、技术、历史、约束 四个维度
+      4. 避免开放性过强的问题
+    sections:
+      - id: business-questions
+        title: A. 业务知识问题
+        instruction: |
+          针对业务领域和流程生成问题，重点关注：
+          - 业务规则和约束
+          - 业务流程细节
+          - 边界情况处理
+          - 用户权限和角色
+        question_templates:
+          - category: A1-业务规则
+            templates:
+              - "[{entity}]有哪些业务规则？如：状态流转、必填约束、取值范围"
+              - "[{process}]流程中，[{step}]步骤的具体业务规则是什么？"
+              - "[{role}]角色在[{operation}]操作上有什么权限限制？"
+              - "[{entity}]和[{related_entity}]之间的业务关联规则是什么？"
+
+          - category: A2-业务流程
+            templates:
+              - "[{process}]的完整流程是什么？包括正常流程和异常流程"
+              - "触发[{process}]的条件有哪些？"
+              - "[{process}]流程中有哪些人工审批或确认节点？"
+              - "[{process}]失败后的补偿或回退机制是什么？"
+
+          - category: A3-边界情况
+            templates:
+              - "[{operation}]操作在什么情况下会失败？失败后如何处理？"
+              - "[{entity}]存在并发操作时，系统如何处理冲突？"
+              - "[{data}]数据量很大时，有什么限制或分页规则？"
+              - "[{scenario}]场景下的异常处理逻辑是什么？"
+
+      - id: technical-questions
+        title: B. 技术知识问题
+        instruction: |
+          针对技术实现生成问题，重点关注：
+          - 现有系统架构
+          - 数据模型设计
+          - 接口规范
+          - 代码实现模式
+        question_templates:
+          - category: B1-系统架构
+            templates:
+              - "[{module}]模块的技术架构是什么？与其他模块如何交互？"
+              - "系统中有哪些公共服务或组件可以复用于[{feature}]？"
+              - "[{functionality}]功能应该放在哪个服务/模块中实现？"
+              - "系统的缓存策略是什么？[{data}]数据需要缓存吗？"
+
+          - category: B2-数据模型
+            templates:
+              - "[{entity}]在数据库中的表结构是什么？包含哪些字段？"
+              - "[{entity_a}]和[{entity_b}]的数据库关系是怎样的？外键设计？"
+              - "与[{domain}]相关的枚举值或字典表有哪些？"
+              - "[{entity}]的历史记录/审计日志如何存储？"
+
+          - category: B3-接口规范
+            templates:
+              - "现有的[{module}]模块提供了哪些API接口？"
+              - "[{operation}]操作的接口入参和出参规范是什么？"
+              - "系统的统一错误码和响应格式是什么？"
+              - "[{external_system}]的集成接口协议和数据格式是什么？"
+
+          - category: B4-代码实现
+            templates:
+              - "类似[{feature}]的功能在现有代码中是如何实现的？"
+              - "系统中处理[{technical_concern}]的通用模式是什么？"
+              - "[{framework}]框架在项目中的使用规范和最佳实践是什么？"
+              - "现有代码中有哪些工具类或辅助方法可以用于[{task}]？"
+
+      - id: history-questions
+        title: C. 历史追溯问题
+        instruction: |
+          针对历史需求和决策生成问题，重点关注：
+          - 相关历史需求
+          - 技术决策记录
+          - 已知问题和债务
+        question_templates:
+          - category: C1-历史需求
+            templates:
+              - "之前有没有类似[{feature}]的需求？实现情况如何？"
+              - "[{module}]模块最近有什么变更？变更原因是什么？"
+              - "[{feature}]功能的历史版本迭代情况是什么？"
+
+          - category: C2-决策记录
+            templates:
+              - "[{technical_choice}]为什么选择当前的实现方式？"
+              - "[{architecture_decision}]的架构决策背景是什么？"
+              - "有没有被否决的[{alternative}]方案？为什么被否决？"
+
+          - category: C3-已知问题
+            templates:
+              - "[{module}]模块有哪些已知的问题或技术债务？"
+              - "[{feature}]功能有没有用户反馈的问题或改进建议？"
+              - "与[{domain}]相关的性能或稳定性问题有哪些？"
+
+      - id: constraint-questions
+        title: D. 约束条件问题
+        instruction: |
+          针对项目和技术约束生成问题，重点关注：
+          - 技术栈限制
+          - 安全合规要求
+          - 性能要求
+          - 团队规范
+        question_templates:
+          - category: D1-技术约束
+            templates:
+              - "项目的技术栈限制有哪些？必须使用什么框架/库？"
+              - "[{technical_approach}]方案在当前技术栈下是否可行？"
+              - "项目对[{resource}]资源的使用有什么限制？"
+
+          - category: D2-安全合规
+            templates:
+              - "[{data_type}]数据的安全存储和传输要求是什么？"
+              - "[{operation}]操作需要哪些权限验证？"
+              - "项目需要满足哪些合规要求？（如GDPR、等保）"
+
+          - category: D3-性能要求
+            templates:
+              - "[{interface}]接口的响应时间要求是什么？"
+              - "[{process}]流程的并发处理能力要求是多少？"
+              - "系统的可用性SLA要求是什么？"
+
+          - category: D4-团队规范
+            templates:
+              - "团队的代码规范和风格指南是什么？"
+              - "代码审查的标准和流程是什么？"
+              - "测试覆盖率和测试类型的要求是什么？"
+
+  - id: question-prioritization
+    title: 第三阶段：问题优先级排序
+    instruction: |
+      对生成的问题进行优先级排序：
+
+      **P0 - 阻塞级**（必须回答）
+      - 缺失会导致完全无法理解需求
+      - 涉及核心业务规则
+      - 影响架构决策
+
+      **P1 - 重要级**（强烈建议回答）
+      - 影响需求完整性
+      - 涉及边界情况处理
+      - 影响实现方案选择
+
+      **P2 - 补充级**（可选回答）
+      - 有助于优化实现
+      - 提供额外上下文
+      - 历史参考信息
+    output:
+      format: markdown
+      template: |
+        # 知识库查询问题清单
+
+        ## 元信息
+        - 源文档: req.txt
+        - 生成时间: {{timestamp}}
+        - 总问题数: {{total_count}}
+        - P0问题: {{p0_count}} | P1问题: {{p1_count}} | P2问题: {{p2_count}}
+
+        ---
+
+        ## P0 阻塞级问题（必须回答）
+
+        ### 业务知识
+        {{#each p0_business}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+           - 预期答案: {{expected_answer_type}}
+        {{/each}}
+
+        ### 技术知识
+        {{#each p0_technical}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+           - 预期答案: {{expected_answer_type}}
+        {{/each}}
+
+        ---
+
+        ## P1 重要级问题（强烈建议回答）
+
+        ### 业务知识
+        {{#each p1_business}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ### 技术知识
+        {{#each p1_technical}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ### 历史追溯
+        {{#each p1_history}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ---
+
+        ## P2 补充级问题（可选回答）
+
+        {{#each p2_questions}}
+        {{index}}. [{{id}}] {{question}}
+        {{/each}}
+
+  - id: knowledge-landing
+    title: 第四阶段：知识落地规范
+    instruction: |
+      知识库返回的内容应按以下结构存储到 docs/rag/ 目录：
+    output:
+      structure: |
+        docs/rag/
+        ├── _index.md                 # 知识索引（自动生成）
+        ├── _questions.md             # 问题清单（本模板输出）
+        │
+        ├── business/                 # 业务知识
+        │   ├── domain-{{domain}}.md # 领域知识
+        │   ├── rules-{{topic}}.md   # 业务规则
+        │   ├── process-{{name}}.md  # 业务流程
+        │   └── roles.md             # 角色权限
+        │
+        ├── technical/                # 技术知识
+        │   ├── architecture.md      # 系统架构
+        │   ├── data-model.md        # 数据模型
+        │   ├── api-{{module}}.md    # 接口规范
+        │   └── patterns.md          # 代码模式
+        │
+        ├── history/                  # 历史信息
+        │   ├── related-features.md  # 相关功能
+        │   └── decisions.md         # 决策记录
+        │
+        └── constraints/              # 约束条件
+            ├── technical.md         # 技术约束
+            ├── security.md          # 安全要求
+            └── performance.md       # 性能要求
+
+      file_template: |
+        # {{title}}
+
+        ## 元信息
+        - 查询问题: {{question}}
+        - 问题ID: {{question_id}}
+        - 查询时间: {{timestamp}}
+        - 数据来源: 知识库MCP
+
+        ## 内容摘要
+        {{summary}}
+
+        ## 详细内容
+        {{content}}
+
+        ## 需求关联
+        - 关联需求点: {{related_requirement}}
+        - 影响分析: {{impact_analysis}}
+
+        ## 衍生问题
+        {{#if follow_up_questions}}
+        {{#each follow_up_questions}}
+        - {{this}}
+        {{/each}}
+        {{else}}
+        无
+        {{/if}}
+
+elicitation:
+  after_each_phase: true
+  options:
+    - "调整问题优先级"
+    - "添加更多问题"
+    - "删除不相关问题"
+    - "修改问题措辞"
+    - "进入下一阶段"

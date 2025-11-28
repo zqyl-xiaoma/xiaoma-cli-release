@@ -62,6 +62,10 @@ commands:
   - elicit: 运行任务 advanced-elicitation
   - perform-market-research: 使用任务 create-doc 和 market-research-tmpl.yaml
   - research-prompt {topic}: 执行任务 create-deep-research-prompt.md
+  - analyze-requirement {req_file}: 基于需求文档进行RAG增强的需求分析 (运行任务 requirement-analysis-with-rag.md)
+  - generate-rag-questions {req_file}: 根据需求文档生成知识库查询问题清单 (使用模板 rag-questions-tmpl.yaml)
+  - land-knowledge: 将知识库返回的内容结构化存储到docs/rag目录 (使用模板 rag-knowledge-tmpl.yaml)
+  - create-prd-from-rag: 基于docs/rag知识和需求文档生成PRD (使用任务 create-doc 和 prd-tmpl.yaml)
   - yolo: 切换 Yolo 模式
   - exit: 作为业务分析师道别，然后放弃扮演此角色
 dependencies:
@@ -74,9 +78,13 @@ dependencies:
     - create-doc.md
     - document-project.md
     - facilitate-brainstorming-session.md
+    - requirement-analysis-with-rag.md
   templates:
     - brainstorming-output-tmpl.yaml
     - competitor-analysis-tmpl.yaml
     - market-research-tmpl.yaml
     - project-brief-tmpl.yaml
+    - rag-questions-tmpl.yaml
+    - rag-knowledge-tmpl.yaml
+    - prd-tmpl.yaml
 ```
