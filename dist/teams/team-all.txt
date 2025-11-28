@@ -231,6 +231,10 @@ commands:
   - elicit: 运行任务 advanced-elicitation
   - perform-market-research: 使用任务 create-doc 和 market-research-tmpl.yaml
   - research-prompt {topic}: 执行任务 create-deep-research-prompt.md
+  - analyze-requirement {req_file}: 基于需求文档进行RAG增强的需求分析 (运行任务 requirement-analysis-with-rag.md)
+  - generate-rag-questions {req_file}: 根据需求文档生成知识库查询问题清单 (使用模板 rag-questions-tmpl.yaml)
+  - land-knowledge: 将知识库返回的内容结构化存储到docs/rag目录 (使用模板 rag-knowledge-tmpl.yaml)
+  - create-prd-from-rag: 基于docs/rag知识和需求文档生成PRD (使用任务 create-doc 和 prd-tmpl.yaml)
   - yolo: 切换 Yolo 模式
   - exit: 作为业务分析师道别，然后放弃扮演此角色
 dependencies:
@@ -243,11 +247,15 @@ dependencies:
     - create-doc.md
     - document-project.md
     - facilitate-brainstorming-session.md
+    - requirement-analysis-with-rag.md
   templates:
     - brainstorming-output-tmpl.yaml
     - competitor-analysis-tmpl.yaml
     - market-research-tmpl.yaml
     - project-brief-tmpl.yaml
+    - rag-questions-tmpl.yaml
+    - rag-knowledge-tmpl.yaml
+    - prd-tmpl.yaml
 ```
 ==================== END: .xiaoma-core/agents/analyst.md ====================
 
@@ -4651,6 +4659,361 @@ Generate structured document with these sections:
 - Respect their process and timing
 ==================== END: .xiaoma-core/tasks/facilitate-brainstorming-session.md ====================
 
+==================== START: .xiaoma-core/tasks/requirement-analysis-with-rag.md ====================
+<!-- Powered by XiaoMa™ Core -->
+
+# 基于知识库的需求分析任务
+
+## Purpose
+
+通过结合外部需求文档(req.txt)和知识库(RAG/MCP)进行深度需求分析，生成高质量的PRD文档。
+
+## Workflow Overview
+
+```
+req.txt → 问题生成 → 知识库查询 → 知识落地(docs/rag/) → 需求分析 → PRD生成
+```
+
+## Phase 1: 需求文档解析与问题生成
+
+### 1.1 需求文档初步解析
+
+首先读取并分析 req.txt 文档，识别以下关键信息：
+
+```yaml
+解析维度:
+  业务领域: 识别需求所属的业务领域和子领域
+  核心功能: 提取需求描述的主要功能点
+  用户角色: 识别涉及的用户类型和角色
+  业务流程: 提取隐含或显式的业务流程
+  数据实体: 识别涉及的数据对象和关系
+  集成点: 识别与外部系统的交互需求
+  约束条件: 提取技术、业务、时间等约束
+  模糊点: 标记需要澄清的不明确内容
+```
+
+### 1.2 知识库问题生成框架
+
+基于解析结果，生成以下类别的问题向知识库查询：
+
+---
+
+## Phase 2: 知识库提问清单模板
+
+### 类别 A: 业务知识查询
+
+#### A1. 业务领域背景
+```
+问题模板:
+- "关于[业务领域]，现有系统中有哪些相关的业务规则和约束？"
+- "[业务流程名称]的完整流程是什么？包括哪些步骤和参与者？"
+- "在[业务场景]中，有哪些已知的边界情况和异常处理逻辑？"
+- "[业务概念A]和[业务概念B]之间的关系是什么？"
+```
+
+#### A2. 现有功能调研
+```
+问题模板:
+- "系统中是否已存在类似[功能描述]的功能？如果有，实现方式是什么？"
+- "[模块名称]目前支持哪些操作？有什么限制？"
+- "用户当前如何完成[业务目标]？现有流程有什么痛点？"
+```
+
+#### A3. 业务规则确认
+```
+问题模板:
+- "[数据实体]的业务规则有哪些？例如：必填字段、取值范围、状态流转规则"
+- "[操作A]在什么条件下可以执行？有哪些前置条件？"
+- "不同[用户角色]在[功能]上的权限差异是什么？"
+```
+
+---
+
+### 类别 B: 技术知识查询
+
+#### B1. 系统架构
+```
+问题模板:
+- "现有系统的技术架构是什么？使用了哪些核心框架和技术栈？"
+- "[模块名称]的代码结构和目录组织是怎样的？"
+- "系统的数据库设计采用什么模式？主要的数据表有哪些？"
+- "系统中有哪些公共组件和工具类可以复用？"
+```
+
+#### B2. 接口与集成
+```
+问题模板:
+- "与[外部系统]的集成接口是什么？数据格式和协议是什么？"
+- "系统提供了哪些API接口？[功能相关]的接口规范是什么？"
+- "现有的消息队列/事件机制是如何设计的？"
+```
+
+#### B3. 数据模型
+```
+问题模板:
+- "[数据实体]在数据库中的表结构是什么？包含哪些字段？"
+- "[实体A]和[实体B]之间的数据库关系是怎样的？"
+- "系统中有哪些枚举值或字典表与[业务领域]相关？"
+```
+
+#### B4. 代码实现参考
+```
+问题模板:
+- "类似[功能]的实现在代码中是如何组织的？请提供示例代码位置"
+- "[技术方案]在现有代码中有没有参考实现？"
+- "系统中处理[技术问题]的通用模式是什么？"
+```
+
+---
+
+### 类别 C: 历史需求与变更
+
+#### C1. 相关需求追溯
+```
+问题模板:
+- "之前有没有类似[需求描述]的需求？实现情况如何？"
+- "[功能模块]的历史变更记录有哪些？最近的改动是什么？"
+- "有没有与[需求]相关的已知问题或技术债务？"
+```
+
+#### C2. 决策记录
+```
+问题模板:
+- "[技术方案]为什么选择了当前的实现方式？有什么历史背景？"
+- "[设计决策]有没有相关的ADR(架构决策记录)？"
+```
+
+---
+
+### 类别 D: 上下文与约束
+
+#### D1. 项目约束
+```
+问题模板:
+- "项目的技术栈限制有哪些？必须遵循的技术规范是什么？"
+- "项目的安全合规要求有哪些？"
+- "项目的性能要求和SLA标准是什么？"
+```
+
+#### D2. 团队规范
+```
+问题模板:
+- "团队的代码规范和开发流程是什么？"
+- "团队的测试要求和代码审查标准是什么？"
+- "项目的部署流程和环境配置是怎样的？"
+```
+
+---
+
+## Phase 3: 问题生成执行流程
+
+### 3.1 智能问题生成
+
+```yaml
+执行步骤:
+  步骤1_解析需求:
+    输入: req.txt
+    动作: 提取关键实体、流程、约束
+    输出: 需求要素清单
+
+  步骤2_映射问题类别:
+    输入: 需求要素清单
+    动作: 将每个要素映射到问题类别(A/B/C/D)
+    输出: 问题类别映射表
+
+  步骤3_生成具体问题:
+    输入: 问题类别映射表 + 问题模板
+    动作: 用具体内容填充模板生成问题
+    输出: 知识库查询问题清单
+
+  步骤4_问题优先级排序:
+    优先级规则:
+      P0_阻塞级: 缺失会导致无法理解需求的核心问题
+      P1_重要级: 影响需求完整性的问题
+      P2_补充级: 有助于优化实现的问题
+```
+
+### 3.2 问题清单输出格式
+
+```markdown
+# 知识库查询问题清单
+
+## 基本信息
+- 需求文档: req.txt
+- 生成时间: {{timestamp}}
+- 问题总数: {{total_count}}
+
+## P0 阻塞级问题 (必须回答)
+
+### 业务知识
+1. [A1-001] {{具体问题}}
+   - 关联需求点: {{需求中的相关描述}}
+   - 预期答案类型: {{期望获得的信息类型}}
+
+### 技术知识
+2. [B1-001] {{具体问题}}
+   - 关联需求点: {{需求中的相关描述}}
+   - 预期答案类型: {{期望获得的信息类型}}
+
+## P1 重要级问题 (建议回答)
+...
+
+## P2 补充级问题 (可选回答)
+...
+```
+
+---
+
+## Phase 4: 知识落地与组织
+
+### 4.1 知识存储结构
+
+```
+docs/rag/
+├── _index.md                    # 知识索引文件
+├── business/                    # 业务知识
+│   ├── domain-rules.md         # 业务规则
+│   ├── processes.md            # 业务流程
+│   └── entities.md             # 业务实体
+├── technical/                   # 技术知识
+│   ├── architecture.md         # 系统架构
+│   ├── data-model.md          # 数据模型
+│   ├── apis.md                 # 接口规范
+│   └── code-patterns.md        # 代码模式
+├── history/                     # 历史信息
+│   ├── related-requirements.md # 相关需求
+│   └── decisions.md            # 决策记录
+└── constraints/                 # 约束条件
+    ├── technical.md            # 技术约束
+    └── compliance.md           # 合规要求
+```
+
+### 4.2 知识文档格式
+
+```markdown
+# {{知识标题}}
+
+## 元信息
+- 来源: 知识库MCP查询
+- 查询问题: {{原始问题}}
+- 查询时间: {{timestamp}}
+- 置信度: {{high/medium/low}}
+
+## 内容摘要
+{{一句话总结}}
+
+## 详细内容
+{{知识库返回的完整内容}}
+
+## 与需求的关联
+- 关联需求点: {{req.txt中的相关内容}}
+- 影响分析: {{这个知识如何影响需求实现}}
+
+## 后续问题
+{{基于此知识产生的新问题(如有)}}
+```
+
+---
+
+## Phase 5: 需求分析与PRD生成
+
+### 5.1 分析输入整合
+
+```yaml
+分析输入:
+  主要输入:
+    - req.txt: 原始需求文档
+    - docs/rag/*: 知识库查询结果
+  辅助输入:
+    - 项目简报(如存在): docs/brief.md
+    - 技术偏好(如存在): data/technical-preferences.yaml
+```
+
+### 5.2 需求分析维度
+
+```yaml
+分析维度:
+  功能分析:
+    - 核心功能拆解
+    - 功能优先级排序
+    - 功能依赖关系
+
+  用户分析:
+    - 用户角色定义
+    - 用户旅程映射
+    - 用户价值主张
+
+  技术分析:
+    - 技术可行性评估
+    - 与现有系统的兼容性
+    - 技术风险识别
+
+  业务分析:
+    - 业务规则验证
+    - 业务流程优化机会
+    - 业务价值量化
+
+  差距分析:
+    - 现有能力 vs 需求能力
+    - 需要新增/修改的功能
+    - 需要新增/修改的数据
+```
+
+### 5.3 PRD生成流程
+
+```yaml
+PRD生成:
+  步骤1:
+    动作: 整合所有知识输入
+    输出: 知识上下文汇总
+
+  步骤2:
+    动作: 执行需求分析(5.2维度)
+    输出: 需求分析报告
+
+  步骤3:
+    动作: 套用PRD模板(prd-tmpl.yaml)
+    输出: PRD草稿
+
+  步骤4:
+    动作: 启发式验证(advanced-elicitation)
+    输出: 优化后的PRD
+
+  步骤5:
+    动作: 输出最终PRD到指定位置
+    输出: docs/prd.md
+```
+
+---
+
+## 使用说明
+
+### 智能体激活命令
+
+```
+*analyze-requirement {req_file}
+```
+
+### 执行参数
+
+```yaml
+参数:
+  req_file: 需求文档路径 (默认: req.txt)
+  rag_output: 知识输出路径 (默认: docs/rag/)
+  prd_output: PRD输出路径 (默认: docs/prd.md)
+  skip_rag: 跳过知识库查询 (默认: false)
+  interactive: 交互模式 (默认: true)
+```
+
+### 交互模式流程
+
+1. **解析阶段**: 展示需求解析结果，请用户确认
+2. **提问阶段**: 展示问题清单，请用户确认或调整
+3. **查询阶段**: 依次查询知识库，展示返回结果
+4. **分析阶段**: 展示分析结论，请用户确认
+5. **生成阶段**: 生成PRD草稿，启用启发式优化
+==================== END: .xiaoma-core/tasks/requirement-analysis-with-rag.md ====================
+
 ==================== START: .xiaoma-core/templates/brainstorming-output-tmpl.yaml ====================
 template:
   id: brainstorming-output-template-v2
@@ -5627,6 +5990,1157 @@ sections:
         content: |
           这份项目简报为 {{project_name}} 提供了完整的背景信息。请启动‘PRD 生成模式’，彻底审阅此简报，并与用户合作，按照模板指示逐节创建 PRD，同时请求任何必要的澄清或提出改进建议。
 ==================== END: .xiaoma-core/templates/project-brief-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/rag-questions-tmpl.yaml ====================
+template:
+  id: rag-questions-template-v1
+  name: 知识库问题生成模板
+  version: 1.0
+  description: 基于需求文档(req.txt)生成知识库MCP查询问题
+  output:
+    format: markdown
+    filename: docs/rag-questions.md
+    title: "知识库查询问题清单"
+
+workflow:
+  mode: interactive
+  phases:
+    - 需求解析
+    - 问题生成
+    - 问题确认
+    - 知识库查询
+    - 知识落地
+
+sections:
+  - id: requirement-parsing
+    title: 第一阶段：需求文档解析
+    instruction: |
+      读取并深度分析 req.txt 文档，提取以下要素：
+
+      1. **业务领域识别**
+         - 这个需求属于什么业务领域？(如：订单管理、用户管理、支付系统等)
+         - 涉及哪些子领域或模块？
+
+      2. **功能点提取**
+         - 需求描述了哪些具体功能？
+         - 每个功能的输入、处理、输出是什么？
+
+      3. **用户角色识别**
+         - 涉及哪些用户角色？(如：管理员、普通用户、访客)
+         - 每个角色在此需求中的操作是什么？
+
+      4. **数据实体识别**
+         - 涉及哪些数据对象？(如：订单、商品、用户)
+         - 数据之间的关系是什么？
+
+      5. **业务流程识别**
+         - 描述了什么业务流程？
+         - 流程的起点、终点、关键步骤是什么？
+
+      6. **模糊点标记**
+         - 哪些描述不够清晰？
+         - 哪些内容有多种理解方式？
+    output:
+      format: yaml
+      template: |
+        需求解析结果:
+          业务领域: {{domain}}
+          子领域: [{{sub_domains}}]
+
+          功能点:
+            {{#each features}}
+            - 名称: {{name}}
+              描述: {{description}}
+              输入: {{input}}
+              输出: {{output}}
+            {{/each}}
+
+          用户角色:
+            {{#each roles}}
+            - 角色: {{name}}
+              操作: [{{actions}}]
+            {{/each}}
+
+          数据实体:
+            {{#each entities}}
+            - 实体: {{name}}
+              属性: [{{attributes}}]
+              关系: {{relationships}}
+            {{/each}}
+
+          业务流程:
+            {{#each processes}}
+            - 流程: {{name}}
+              步骤: [{{steps}}]
+            {{/each}}
+
+          模糊点:
+            {{#each ambiguities}}
+            - 位置: {{location}}
+              内容: {{content}}
+              可能理解: [{{interpretations}}]
+            {{/each}}
+
+  - id: question-generation
+    title: 第二阶段：问题生成
+    instruction: |
+      基于解析结果，为每个要素生成具体的知识库查询问题。
+
+      **问题生成原则**：
+      1. 每个问题必须具体、可回答
+      2. 优先生成阻塞性问题（缺失会导致无法继续）
+      3. 问题应覆盖：业务、技术、历史、约束 四个维度
+      4. 避免开放性过强的问题
+    sections:
+      - id: business-questions
+        title: A. 业务知识问题
+        instruction: |
+          针对业务领域和流程生成问题，重点关注：
+          - 业务规则和约束
+          - 业务流程细节
+          - 边界情况处理
+          - 用户权限和角色
+        question_templates:
+          - category: A1-业务规则
+            templates:
+              - "[{entity}]有哪些业务规则？如：状态流转、必填约束、取值范围"
+              - "[{process}]流程中，[{step}]步骤的具体业务规则是什么？"
+              - "[{role}]角色在[{operation}]操作上有什么权限限制？"
+              - "[{entity}]和[{related_entity}]之间的业务关联规则是什么？"
+
+          - category: A2-业务流程
+            templates:
+              - "[{process}]的完整流程是什么？包括正常流程和异常流程"
+              - "触发[{process}]的条件有哪些？"
+              - "[{process}]流程中有哪些人工审批或确认节点？"
+              - "[{process}]失败后的补偿或回退机制是什么？"
+
+          - category: A3-边界情况
+            templates:
+              - "[{operation}]操作在什么情况下会失败？失败后如何处理？"
+              - "[{entity}]存在并发操作时，系统如何处理冲突？"
+              - "[{data}]数据量很大时，有什么限制或分页规则？"
+              - "[{scenario}]场景下的异常处理逻辑是什么？"
+
+      - id: technical-questions
+        title: B. 技术知识问题
+        instruction: |
+          针对技术实现生成问题，重点关注：
+          - 现有系统架构
+          - 数据模型设计
+          - 接口规范
+          - 代码实现模式
+        question_templates:
+          - category: B1-系统架构
+            templates:
+              - "[{module}]模块的技术架构是什么？与其他模块如何交互？"
+              - "系统中有哪些公共服务或组件可以复用于[{feature}]？"
+              - "[{functionality}]功能应该放在哪个服务/模块中实现？"
+              - "系统的缓存策略是什么？[{data}]数据需要缓存吗？"
+
+          - category: B2-数据模型
+            templates:
+              - "[{entity}]在数据库中的表结构是什么？包含哪些字段？"
+              - "[{entity_a}]和[{entity_b}]的数据库关系是怎样的？外键设计？"
+              - "与[{domain}]相关的枚举值或字典表有哪些？"
+              - "[{entity}]的历史记录/审计日志如何存储？"
+
+          - category: B3-接口规范
+            templates:
+              - "现有的[{module}]模块提供了哪些API接口？"
+              - "[{operation}]操作的接口入参和出参规范是什么？"
+              - "系统的统一错误码和响应格式是什么？"
+              - "[{external_system}]的集成接口协议和数据格式是什么？"
+
+          - category: B4-代码实现
+            templates:
+              - "类似[{feature}]的功能在现有代码中是如何实现的？"
+              - "系统中处理[{technical_concern}]的通用模式是什么？"
+              - "[{framework}]框架在项目中的使用规范和最佳实践是什么？"
+              - "现有代码中有哪些工具类或辅助方法可以用于[{task}]？"
+
+      - id: history-questions
+        title: C. 历史追溯问题
+        instruction: |
+          针对历史需求和决策生成问题，重点关注：
+          - 相关历史需求
+          - 技术决策记录
+          - 已知问题和债务
+        question_templates:
+          - category: C1-历史需求
+            templates:
+              - "之前有没有类似[{feature}]的需求？实现情况如何？"
+              - "[{module}]模块最近有什么变更？变更原因是什么？"
+              - "[{feature}]功能的历史版本迭代情况是什么？"
+
+          - category: C2-决策记录
+            templates:
+              - "[{technical_choice}]为什么选择当前的实现方式？"
+              - "[{architecture_decision}]的架构决策背景是什么？"
+              - "有没有被否决的[{alternative}]方案？为什么被否决？"
+
+          - category: C3-已知问题
+            templates:
+              - "[{module}]模块有哪些已知的问题或技术债务？"
+              - "[{feature}]功能有没有用户反馈的问题或改进建议？"
+              - "与[{domain}]相关的性能或稳定性问题有哪些？"
+
+      - id: constraint-questions
+        title: D. 约束条件问题
+        instruction: |
+          针对项目和技术约束生成问题，重点关注：
+          - 技术栈限制
+          - 安全合规要求
+          - 性能要求
+          - 团队规范
+        question_templates:
+          - category: D1-技术约束
+            templates:
+              - "项目的技术栈限制有哪些？必须使用什么框架/库？"
+              - "[{technical_approach}]方案在当前技术栈下是否可行？"
+              - "项目对[{resource}]资源的使用有什么限制？"
+
+          - category: D2-安全合规
+            templates:
+              - "[{data_type}]数据的安全存储和传输要求是什么？"
+              - "[{operation}]操作需要哪些权限验证？"
+              - "项目需要满足哪些合规要求？（如GDPR、等保）"
+
+          - category: D3-性能要求
+            templates:
+              - "[{interface}]接口的响应时间要求是什么？"
+              - "[{process}]流程的并发处理能力要求是多少？"
+              - "系统的可用性SLA要求是什么？"
+
+          - category: D4-团队规范
+            templates:
+              - "团队的代码规范和风格指南是什么？"
+              - "代码审查的标准和流程是什么？"
+              - "测试覆盖率和测试类型的要求是什么？"
+
+  - id: question-prioritization
+    title: 第三阶段：问题优先级排序
+    instruction: |
+      对生成的问题进行优先级排序：
+
+      **P0 - 阻塞级**（必须回答）
+      - 缺失会导致完全无法理解需求
+      - 涉及核心业务规则
+      - 影响架构决策
+
+      **P1 - 重要级**（强烈建议回答）
+      - 影响需求完整性
+      - 涉及边界情况处理
+      - 影响实现方案选择
+
+      **P2 - 补充级**（可选回答）
+      - 有助于优化实现
+      - 提供额外上下文
+      - 历史参考信息
+    output:
+      format: markdown
+      template: |
+        # 知识库查询问题清单
+
+        ## 元信息
+        - 源文档: req.txt
+        - 生成时间: {{timestamp}}
+        - 总问题数: {{total_count}}
+        - P0问题: {{p0_count}} | P1问题: {{p1_count}} | P2问题: {{p2_count}}
+
+        ---
+
+        ## P0 阻塞级问题（必须回答）
+
+        ### 业务知识
+        {{#each p0_business}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+           - 预期答案: {{expected_answer_type}}
+        {{/each}}
+
+        ### 技术知识
+        {{#each p0_technical}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+           - 预期答案: {{expected_answer_type}}
+        {{/each}}
+
+        ---
+
+        ## P1 重要级问题（强烈建议回答）
+
+        ### 业务知识
+        {{#each p1_business}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ### 技术知识
+        {{#each p1_technical}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ### 历史追溯
+        {{#each p1_history}}
+        {{index}}. [{{id}}] {{question}}
+           - 关联需求: "{{related_requirement}}"
+        {{/each}}
+
+        ---
+
+        ## P2 补充级问题（可选回答）
+
+        {{#each p2_questions}}
+        {{index}}. [{{id}}] {{question}}
+        {{/each}}
+
+  - id: knowledge-landing
+    title: 第四阶段：知识落地规范
+    instruction: |
+      知识库返回的内容应按以下结构存储到 docs/rag/ 目录：
+    output:
+      structure: |
+        docs/rag/
+        ├── _index.md                 # 知识索引（自动生成）
+        ├── _questions.md             # 问题清单（本模板输出）
+        │
+        ├── business/                 # 业务知识
+        │   ├── domain-{{domain}}.md # 领域知识
+        │   ├── rules-{{topic}}.md   # 业务规则
+        │   ├── process-{{name}}.md  # 业务流程
+        │   └── roles.md             # 角色权限
+        │
+        ├── technical/                # 技术知识
+        │   ├── architecture.md      # 系统架构
+        │   ├── data-model.md        # 数据模型
+        │   ├── api-{{module}}.md    # 接口规范
+        │   └── patterns.md          # 代码模式
+        │
+        ├── history/                  # 历史信息
+        │   ├── related-features.md  # 相关功能
+        │   └── decisions.md         # 决策记录
+        │
+        └── constraints/              # 约束条件
+            ├── technical.md         # 技术约束
+            ├── security.md          # 安全要求
+            └── performance.md       # 性能要求
+
+      file_template: |
+        # {{title}}
+
+        ## 元信息
+        - 查询问题: {{question}}
+        - 问题ID: {{question_id}}
+        - 查询时间: {{timestamp}}
+        - 数据来源: 知识库MCP
+
+        ## 内容摘要
+        {{summary}}
+
+        ## 详细内容
+        {{content}}
+
+        ## 需求关联
+        - 关联需求点: {{related_requirement}}
+        - 影响分析: {{impact_analysis}}
+
+        ## 衍生问题
+        {{#if follow_up_questions}}
+        {{#each follow_up_questions}}
+        - {{this}}
+        {{/each}}
+        {{else}}
+        无
+        {{/if}}
+
+elicitation:
+  after_each_phase: true
+  options:
+    - "调整问题优先级"
+    - "添加更多问题"
+    - "删除不相关问题"
+    - "修改问题措辞"
+    - "进入下一阶段"
+==================== END: .xiaoma-core/templates/rag-questions-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/rag-knowledge-tmpl.yaml ====================
+template:
+  id: rag-knowledge-template-v1
+  name: RAG知识落地模板
+  version: 1.0
+  description: 将知识库MCP返回的知识内容结构化存储到docs/rag目录
+  output:
+    format: markdown
+    base_path: docs/rag/
+
+sections:
+  - id: index-template
+    title: 知识索引模板
+    filename: _index.md
+    template: |
+      # RAG知识库索引
+
+      ## 概览
+      - 需求文档: {{requirement_file}}
+      - 创建时间: {{created_at}}
+      - 最后更新: {{updated_at}}
+      - 知识条目数: {{total_entries}}
+
+      ## 知识分类统计
+
+      | 分类 | 条目数 | 覆盖率 |
+      |------|--------|--------|
+      | 业务知识 | {{business_count}} | {{business_coverage}}% |
+      | 技术知识 | {{technical_count}} | {{technical_coverage}}% |
+      | 历史信息 | {{history_count}} | {{history_coverage}}% |
+      | 约束条件 | {{constraints_count}} | {{constraints_coverage}}% |
+
+      ## 知识目录
+
+      ### 业务知识 (business/)
+      {{#each business_files}}
+      - [{{title}}](business/{{filename}}) - {{summary}}
+      {{/each}}
+
+      ### 技术知识 (technical/)
+      {{#each technical_files}}
+      - [{{title}}](technical/{{filename}}) - {{summary}}
+      {{/each}}
+
+      ### 历史信息 (history/)
+      {{#each history_files}}
+      - [{{title}}](history/{{filename}}) - {{summary}}
+      {{/each}}
+
+      ### 约束条件 (constraints/)
+      {{#each constraints_files}}
+      - [{{title}}](constraints/{{filename}}) - {{summary}}
+      {{/each}}
+
+      ## 未回答问题
+      {{#if unanswered_questions}}
+      以下问题未能从知识库获得答案：
+      {{#each unanswered_questions}}
+      - [{{id}}] {{question}}
+      {{/each}}
+      {{else}}
+      所有问题均已获得回答。
+      {{/if}}
+
+      ## 后续行动
+      {{#each follow_up_actions}}
+      - [ ] {{action}}
+      {{/each}}
+
+  - id: business-knowledge
+    title: 业务知识模板
+    path: business/
+    variants:
+      - id: domain-knowledge
+        filename_pattern: "domain-{{domain_name}}.md"
+        template: |
+          # {{domain_name}} 领域知识
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 领域概述
+          {{domain_overview}}
+
+          ## 核心概念
+
+          {{#each concepts}}
+          ### {{name}}
+          - **定义**: {{definition}}
+          - **业务含义**: {{business_meaning}}
+          - **相关实体**: {{related_entities}}
+          {{/each}}
+
+          ## 业务规则
+
+          {{#each rules}}
+          ### 规则{{index}}: {{name}}
+          - **描述**: {{description}}
+          - **触发条件**: {{trigger}}
+          - **执行逻辑**: {{logic}}
+          - **异常处理**: {{exception}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+      - id: process-knowledge
+        filename_pattern: "process-{{process_name}}.md"
+        template: |
+          # {{process_name}} 业务流程
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 流程概述
+          {{process_overview}}
+
+          ## 流程步骤
+
+          ```mermaid
+          {{mermaid_diagram}}
+          ```
+
+          ### 详细步骤
+
+          {{#each steps}}
+          #### 步骤{{index}}: {{name}}
+          - **执行者**: {{actor}}
+          - **输入**: {{input}}
+          - **处理**: {{processing}}
+          - **输出**: {{output}}
+          - **后置条件**: {{postcondition}}
+          {{/each}}
+
+          ## 异常流程
+
+          {{#each exceptions}}
+          ### {{name}}
+          - **触发条件**: {{trigger}}
+          - **处理方式**: {{handling}}
+          - **恢复机制**: {{recovery}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+      - id: roles-knowledge
+        filename_pattern: "roles.md"
+        template: |
+          # 用户角色与权限
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 角色定义
+
+          {{#each roles}}
+          ### {{name}}
+          - **描述**: {{description}}
+          - **职责**: {{responsibilities}}
+          - **权限范围**: {{permissions}}
+
+          #### 可执行操作
+          {{#each operations}}
+          - {{name}}: {{description}} ({{permission_level}})
+          {{/each}}
+          {{/each}}
+
+          ## 权限矩阵
+
+          | 操作 | {{#each roles}}{{name}} | {{/each}}
+          |------|{{#each roles}}--------|{{/each}}
+          {{#each operations}}
+          | {{name}} | {{#each role_permissions}}{{this}} | {{/each}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+  - id: technical-knowledge
+    title: 技术知识模板
+    path: technical/
+    variants:
+      - id: architecture
+        filename_pattern: "architecture.md"
+        template: |
+          # 系统架构
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 架构概览
+          {{architecture_overview}}
+
+          ## 技术栈
+          | 层级 | 技术 | 版本 | 说明 |
+          |------|------|------|------|
+          {{#each tech_stack}}
+          | {{layer}} | {{technology}} | {{version}} | {{description}} |
+          {{/each}}
+
+          ## 模块结构
+
+          ```
+          {{module_structure}}
+          ```
+
+          ## 模块说明
+
+          {{#each modules}}
+          ### {{name}}
+          - **职责**: {{responsibility}}
+          - **依赖**: {{dependencies}}
+          - **对外接口**: {{interfaces}}
+          {{/each}}
+
+          ## 与需求的关联
+          - **建议实现位置**: {{suggested_location}}
+          - **需要修改的模块**: {{affected_modules}}
+          - **需要新增的模块**: {{new_modules}}
+
+      - id: data-model
+        filename_pattern: "data-model.md"
+        template: |
+          # 数据模型
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 数据库概览
+          - **数据库类型**: {{database_type}}
+          - **数据库版本**: {{database_version}}
+          - **ORM框架**: {{orm_framework}}
+
+          ## 相关数据表
+
+          {{#each tables}}
+          ### {{table_name}}
+
+          **说明**: {{description}}
+
+          | 字段名 | 类型 | 约束 | 说明 |
+          |--------|------|------|------|
+          {{#each columns}}
+          | {{name}} | {{type}} | {{constraints}} | {{description}} |
+          {{/each}}
+
+          **索引**:
+          {{#each indexes}}
+          - {{name}}: {{columns}} ({{type}})
+          {{/each}}
+
+          {{/each}}
+
+          ## 表关系
+
+          ```mermaid
+          erDiagram
+          {{er_diagram}}
+          ```
+
+          ## 与需求的关联
+          - **需要新增的表**: {{new_tables}}
+          - **需要修改的表**: {{modified_tables}}
+          - **数据迁移需求**: {{migration_needs}}
+
+      - id: api-spec
+        filename_pattern: "api-{{module}}.md"
+        template: |
+          # {{module}} 接口规范
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 接口概览
+          - **基础路径**: {{base_path}}
+          - **认证方式**: {{auth_method}}
+          - **响应格式**: {{response_format}}
+
+          ## 接口列表
+
+          {{#each apis}}
+          ### {{method}} {{path}}
+
+          **说明**: {{description}}
+
+          **请求参数**:
+          | 参数名 | 位置 | 类型 | 必填 | 说明 |
+          |--------|------|------|------|------|
+          {{#each parameters}}
+          | {{name}} | {{in}} | {{type}} | {{required}} | {{description}} |
+          {{/each}}
+
+          **请求体**:
+          ```json
+          {{request_body}}
+          ```
+
+          **响应**:
+          ```json
+          {{response_body}}
+          ```
+
+          **错误码**:
+          | 错误码 | 说明 |
+          |--------|------|
+          {{#each error_codes}}
+          | {{code}} | {{message}} |
+          {{/each}}
+
+          ---
+          {{/each}}
+
+          ## 与需求的关联
+          - **可复用的接口**: {{reusable_apis}}
+          - **需要新增的接口**: {{new_apis}}
+          - **需要修改的接口**: {{modified_apis}}
+
+      - id: code-patterns
+        filename_pattern: "patterns.md"
+        template: |
+          # 代码模式与最佳实践
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 项目结构规范
+          ```
+          {{project_structure}}
+          ```
+
+          ## 代码规范
+          {{#each coding_standards}}
+          ### {{category}}
+          {{description}}
+
+          **示例**:
+          ```{{language}}
+          {{example}}
+          ```
+          {{/each}}
+
+          ## 常用模式
+
+          {{#each patterns}}
+          ### {{name}}
+          - **使用场景**: {{use_case}}
+          - **实现示例**: {{example_location}}
+          - **注意事项**: {{notes}}
+          {{/each}}
+
+          ## 可复用组件
+
+          {{#each reusable_components}}
+          ### {{name}}
+          - **位置**: {{location}}
+          - **功能**: {{functionality}}
+          - **使用方法**: {{usage}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+  - id: history-knowledge
+    title: 历史信息模板
+    path: history/
+    variants:
+      - id: related-features
+        filename_pattern: "related-features.md"
+        template: |
+          # 相关历史功能
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 相关功能列表
+
+          {{#each features}}
+          ### {{name}}
+          - **实现时间**: {{implemented_at}}
+          - **当前状态**: {{status}}
+          - **功能描述**: {{description}}
+          - **实现位置**: {{location}}
+
+          **与当前需求的关系**:
+          {{relation_to_current}}
+
+          **可借鉴点**:
+          {{lessons_learned}}
+
+          ---
+          {{/each}}
+
+          ## 建议
+          {{recommendations}}
+
+      - id: decisions
+        filename_pattern: "decisions.md"
+        template: |
+          # 架构决策记录
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 相关决策
+
+          {{#each decisions}}
+          ### ADR-{{id}}: {{title}}
+
+          **状态**: {{status}}
+          **日期**: {{date}}
+
+          **背景**:
+          {{context}}
+
+          **决策**:
+          {{decision}}
+
+          **理由**:
+          {{rationale}}
+
+          **影响**:
+          {{consequences}}
+
+          **与当前需求的关联**:
+          {{relation_to_current}}
+
+          ---
+          {{/each}}
+
+  - id: constraints-knowledge
+    title: 约束条件模板
+    path: constraints/
+    variants:
+      - id: technical-constraints
+        filename_pattern: "technical.md"
+        template: |
+          # 技术约束
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 技术栈约束
+
+          {{#each tech_constraints}}
+          ### {{category}}
+          - **约束**: {{constraint}}
+          - **原因**: {{reason}}
+          - **影响**: {{impact}}
+          {{/each}}
+
+          ## 依赖约束
+
+          {{#each dependency_constraints}}
+          - **{{name}}**: {{constraint}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+      - id: security-constraints
+        filename_pattern: "security.md"
+        template: |
+          # 安全合规要求
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 安全要求
+
+          {{#each security_requirements}}
+          ### {{name}}
+          - **描述**: {{description}}
+          - **适用范围**: {{scope}}
+          - **实现方式**: {{implementation}}
+          {{/each}}
+
+          ## 合规要求
+
+          {{#each compliance_requirements}}
+          ### {{standard}}
+          - **要求**: {{requirement}}
+          - **检查点**: {{checkpoints}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+      - id: performance-constraints
+        filename_pattern: "performance.md"
+        template: |
+          # 性能要求
+
+          ## 元信息
+          - 查询问题ID: {{question_ids}}
+          - 来源: 知识库MCP
+          - 更新时间: {{timestamp}}
+
+          ## 性能指标
+
+          | 指标 | 目标值 | 当前值 | 说明 |
+          |------|--------|--------|------|
+          {{#each metrics}}
+          | {{name}} | {{target}} | {{current}} | {{description}} |
+          {{/each}}
+
+          ## SLA要求
+          {{#each sla_requirements}}
+          - **{{name}}**: {{value}}
+          {{/each}}
+
+          ## 与需求的关联
+          {{requirement_mapping}}
+
+workflow:
+  knowledge_landing_process:
+    step1:
+      name: "创建目录结构"
+      action: |
+        确保 docs/rag/ 目录结构存在:
+        - docs/rag/business/
+        - docs/rag/technical/
+        - docs/rag/history/
+        - docs/rag/constraints/
+
+    step2:
+      name: "分类知识内容"
+      action: |
+        根据问题类别(A/B/C/D)将知识库返回内容分类:
+        - A类 → business/
+        - B类 → technical/
+        - C类 → history/
+        - D类 → constraints/
+
+    step3:
+      name: "应用模板生成文件"
+      action: |
+        为每条知识选择合适的模板变体，填充内容并生成markdown文件
+
+    step4:
+      name: "生成索引文件"
+      action: |
+        更新 docs/rag/_index.md 索引文件，统计所有知识条目
+
+    step5:
+      name: "标记未答问题"
+      action: |
+        将无法从知识库获得答案的问题记录到索引文件的"未回答问题"部分
+==================== END: .xiaoma-core/templates/rag-knowledge-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/prd-tmpl.yaml ====================
+template:
+  id: prd-template-v2
+  name: 产品需求文档
+  version: 2.0
+  output:
+    format: markdown
+    filename: docs/prd.md
+    title: "{{project_name}} Product Requirements Document (PRD)"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: goals-context
+    title: 目标与背景上下文
+    instruction: |
+      询问“项目简报”文档是否可用。如果不存在“项目简报”，强烈建议首先使用 project-brief-tmpl 创建一个（它提供了必要的基础：问题陈述、目标用户、成功指标、MVP 范围、约束条件）。如果用户坚持在没有简报的情况下编写 PRD，请在“目标”部分收集这些信息。如果“项目简报”存在，请审阅并用它来填充“目标”（期望成果的项目符号列表）和“背景上下文”（1-2 段关于此项目解决什么问题及其原因的说明），以便我们能确定 PRD MVP 的范围内外事项。无论哪种方式，这对于确定需求都至关重要。请包含“变更日志”表格。
+    sections:
+      - id: goals
+        title: 目标
+        type: bullet-list
+        instruction: 以项目符号列表形式，每行一个，列出 PRD 成功后将交付的预期成果——用户和项目的期望。
+      - id: background
+        title: 背景上下文
+        type: paragraphs
+        instruction: 用 1-2 个简短段落总结背景上下文，例如我们在项目简报中学到了什么（避免与目标重复），这个项目解决什么问题以及为什么，当前的行业状况或需求是什么。
+      - id: changelog
+        title: 变更日志
+        type: table
+        columns: [日期, 版本, 描述, 作者]
+        instruction: 跟踪文档版本和变更
+
+  - id: requirements
+    title: 需求
+    instruction: 在两个子部分下起草功能性和非功能性需求列表。
+    elicit: true
+    sections:
+      - id: functional
+        title: 功能性需求
+        type: numbered-list
+        prefix: FR
+        instruction: 每个需求将是一个 Markdown 项目符号，并带有一个以 FR 开头的标识符序列。
+        examples:
+          - "FR6: 待办事项列表使用 AI 检测并警告措辞不同但可能重复的待办事项。"
+      - id: non-functional
+        title: 非功能性需求
+        type: numbered-list
+        prefix: NFR
+        instruction: 每个需求将是一个 Markdown 项目符号，并带有一个以 NFR 开头的标识符序列。
+        examples:
+          - "NFR1: 在可行的情况下，AWS 服务的使用必须力求保持在免费套餐限制内。"
+
+  - id: ui-goals
+    title: 用户界面设计目标
+    condition: PRD 包含 UX/UI 需求时
+    instruction: |
+      捕获高层次的 UI/UX 愿景，以指导设计架构师并为创建用户故事提供信息。步骤：
+
+      1. 基于项目上下文，用有根据的猜测预先填充所有子部分。
+      2. 将渲染后的完整部分呈现给用户。
+      3. 清晰地告知用户哪些地方做了假设。
+      4. 针对不清晰/缺失的元素或需要更具体说明的领域提出有针对性的问题。
+      5. 这不是详细的 UI 规范——重点关注产品愿景和用户目标。
+    elicit: true
+    choices:
+      accessibility: [无, WCAG AA, WCAG AAA]
+      platforms: [响应式网页, 仅移动端, 仅桌面端, 跨平台]
+    sections:
+      - id: ux-vision
+        title: 整体 UX 愿景
+      - id: interaction-paradigms
+        title: 关键交互范式
+      - id: core-screens
+        title: 核心屏幕与视图
+        instruction: 从产品角度看，为实现 PRD 的价值和目标，最关键的屏幕或视图是什么？这旨在提供概念性的高层概览，以驱动粗略的模块或用户故事。
+        examples:
+          - "登录屏幕"
+          - "主仪表盘"
+          - "项目详情页"
+          - "设置页面"
+      - id: accessibility
+        title: "无障碍性: {无|WCAG AA|WCAG AAA|自定义要求}"
+      - id: branding
+        title: 品牌
+        instruction: 是否有任何已知的品牌元素或风格指南必须被整合进来？
+        examples:
+          - "复制 20 世纪初黑白电影的观感，包括在页面或状态转换期间模拟胶片损坏或投影仪故障的动画效果。"
+          - "附件是我司品牌的全套调色板和设计元素。"
+      - id: target-platforms
+        title: "目标设备与平台: {响应式网页|仅移动端|仅桌面端|跨平台}"
+        examples:
+          - "响应式网页，以及所有移动平台"
+          - "仅限 iPhone"
+          - "ASCII 码 Windows 桌面"
+
+  - id: technical-assumptions
+    title: 技术假设
+    instruction: |
+      收集将指导架构师的技术决策。步骤：
+
+      1. 检查 .xiaoma-core/data/technical-preferences.yaml 或附加的技术偏好文件是否存在——用它来预填充选项。
+      2. 询问用户关于：语言、框架、启动模板、库、API、部署目标。
+      3. 对于未知项，根据项目目标和 MVP 范围提供指导。
+      4. 记录所有技术选择及其理由（为什么这个选择适合该项目）。
+      5. 这些将成为架构师的约束条件——务必具体和完整。
+    elicit: true
+    choices:
+      repository: [Monorepo, Polyrepo]
+      architecture: [Monolith, Microservices, Serverless]
+      testing: [仅单元测试, 单元+集成测试, 完整测试金字塔]
+    sections:
+      - id: repository-structure
+        title: "代码仓库结构: {Monorepo|Polyrepo|Multi-repo}"
+      - id: service-architecture
+        title: 服务架构
+        instruction: "关键决策 - 记录高层服务架构（例如，Monolith, Microservices, Monorepo 内的 Serverless 函数）。"
+      - id: testing-requirements
+        title: 测试要求
+        instruction: "关键决策 - 记录测试要求（仅单元测试、集成测试、e2e 测试、手动测试，以及是否需要方便手动测试的方法）。"
+      - id: additional-assumptions
+        title: 其他技术假设与请求
+        instruction: 在起草本文档的整个过程中，如果提出或发现任何其他适合架构师的技术假设，请在此处作为额外的项目符号添加。
+
+  - id: epic-list
+    title: 模块列表
+    instruction: |
+      向用户呈现一份高层次的模块列表以供批准。每个模块应有一个标题和一个简短的（1句话）目标陈述。这使用户能在深入细节之前审阅整体结构。
+
+      关键：模块必须遵循敏捷最佳实践，保持逻辑上的顺序：
+
+      - 每个模块都应交付一个重要的、端到端的、完全可部署且可测试的功能增量。
+      - 模块 1 必须建立基础项目设施（应用设置、Git、CI/CD、核心服务），除非我们是向现有应用添加新功能。同时，它还应交付一个初始功能，即使只是一个健康检查路由或一个简单的金丝雀页面显示——在为第一个模块编写用户故事时要记住这一点！
+      - 每个后续的模块都在之前模块功能的基础上构建，交付主要的功能模块，这些模块在部署时能为用户或业务提供切实的价值。
+      - 并非每个项目都需要多个模块，一个模块需要交付价值。例如，一个已完成的 API 即使 UI 尚未完成并计划在另一个模块中实现，也可以交付价值。
+      - 倾向于设置较少的模块，但要告知用户你的理由，并提供拆分选项，如果某些模块看起来太大或关注点分散的话。
+      - 横切关注点应该贯穿于模块和用户故事中，而不是作为最后的用户故事。例如，在一个模块的最后一个故事中添加日志框架，或者在项目结束时作为最后一个模块或故事来做，这将非常糟糕，因为我们从一开始就没有日志记录。
+    elicit: true
+    examples:
+      - "模块 1：基础与核心设施：建立项目设置、认证和基本用户管理"
+      - "模块 2：核心业务实体：创建和管理主要领域对象的 CRUD 操作"
+      - "模块 3：用户工作流与交互：实现关键用户旅程和业务流程"
+      - "模块 4：报告与分析：为用户提供洞察和数据可视化"
+
+  - id: epic-details
+    title: 模块 {{epic_number}} {{epic_title}}
+    repeatable: true
+    instruction: |
+      在模块列表被批准后，将每个模块及其所有的用户故事和验收标准作为一个完整的审查单元呈现。
+
+      为每个模块提供扩展的目标（2-3 句话描述所有故事将实现的目标和价值）。
+
+      关键的用户故事排序要求：
+
+      - 每个模块中的用户故事必须在逻辑上是顺序的。
+      - 每个故事都应该是一个“垂直切片”，交付完整的功能，除了项目基础的早期使能型故事。
+      - 任何故事都不应依赖于后续故事或模块的工作。
+      - 识别并注明任何直接的前置故事。
+      - 关注“做什么”和“为什么”，而不是“怎么做”（将技术实现留给架构师），但要足够精确以支持故事之间逻辑上顺序的操作。
+      - 确保每个故事都交付明确的用户或业务价值，尽量避免使能型故事，而是将它们构建到交付价值的故事中。
+      - 为 AI 代理执行调整故事的大小：每个故事必须能由单个 AI 代理在一次专注的会话中完成，而不会出现上下文溢出。
+      - 想象一个“初级开发人员工作 2-4 小时”的场景——故事必须是小型的、专注的、自包含的。
+      - 如果一个故事看起来很复杂，只要它能交付一个垂直切片，就应进一步拆分。
+    elicit: true
+    template: "{{epic_goal}}"
+    sections:
+      - id: story
+        title: 用户故事 {{epic_number}}.{{story_number}} {{story_title}}
+        repeatable: true
+        template: |
+          作为一名 {{user_type}}，
+          我想要 {{action}}，
+          以便 {{benefit}}。
+        sections:
+          - id: acceptance-criteria
+            title: 验收标准
+            type: numbered-list
+            item_template: "{{criterion_number}}: {{criteria}}"
+            repeatable: true
+            instruction: |
+              定义清晰、全面且可测试的验收标准，这些标准应：
+
+              - 从功能角度精确定义“完成”的含义。
+              - 明确无歧义，并作为验证的基础。
+              - 包括来自 PRD 的任何关键非功能性需求。
+              - 考虑后端/数据组件的本地可测试性。
+              - 在适用时，指定 UI/UX 需求和框架遵循情况。
+              - 避免应放在其他故事或 PRD 部分的横切关注点。
+
+  - id: checklist-results
+    title: 检查清单结果报告
+    instruction: 在运行检查清单和起草提示之前，提议输出更新后的完整 PRD。如果输出，请与用户确认你将继续运行检查清单并生成报告。一旦用户确认，执行 pm-checklist 并在此部分填充结果。
+
+  - id: next-steps
+    title: 后续步骤
+    sections:
+      - id: ux-expert-prompt
+        title: UX 专家提示
+        instruction: 此部分将包含给 UX 专家的提示，保持简短扼要，以启动使用本文档作为输入的架构创建模式。
+      - id: architect-prompt
+        title: 架构师提示
+        instruction: 此部分将包含给架构师的提示，保持简短扼要，以启动使用本文档作为输入的架构创建模式。
+==================== END: .xiaoma-core/templates/prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/data/brainstorming-techniques.md ====================
 <!-- Powered by XiaoMa™ Core -->
@@ -9801,211 +11315,6 @@ sections:
               - template: "IV2: {{integration_point_verification}}"
               - template: "IV3: {{performance_impact_verification}}"
 ==================== END: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
-
-==================== START: .xiaoma-core/templates/prd-tmpl.yaml ====================
-template:
-  id: prd-template-v2
-  name: 产品需求文档
-  version: 2.0
-  output:
-    format: markdown
-    filename: docs/prd.md
-    title: "{{project_name}} Product Requirements Document (PRD)"
-
-workflow:
-  mode: interactive
-  elicitation: advanced-elicitation
-
-sections:
-  - id: goals-context
-    title: 目标与背景上下文
-    instruction: |
-      询问“项目简报”文档是否可用。如果不存在“项目简报”，强烈建议首先使用 project-brief-tmpl 创建一个（它提供了必要的基础：问题陈述、目标用户、成功指标、MVP 范围、约束条件）。如果用户坚持在没有简报的情况下编写 PRD，请在“目标”部分收集这些信息。如果“项目简报”存在，请审阅并用它来填充“目标”（期望成果的项目符号列表）和“背景上下文”（1-2 段关于此项目解决什么问题及其原因的说明），以便我们能确定 PRD MVP 的范围内外事项。无论哪种方式，这对于确定需求都至关重要。请包含“变更日志”表格。
-    sections:
-      - id: goals
-        title: 目标
-        type: bullet-list
-        instruction: 以项目符号列表形式，每行一个，列出 PRD 成功后将交付的预期成果——用户和项目的期望。
-      - id: background
-        title: 背景上下文
-        type: paragraphs
-        instruction: 用 1-2 个简短段落总结背景上下文，例如我们在项目简报中学到了什么（避免与目标重复），这个项目解决什么问题以及为什么，当前的行业状况或需求是什么。
-      - id: changelog
-        title: 变更日志
-        type: table
-        columns: [日期, 版本, 描述, 作者]
-        instruction: 跟踪文档版本和变更
-
-  - id: requirements
-    title: 需求
-    instruction: 在两个子部分下起草功能性和非功能性需求列表。
-    elicit: true
-    sections:
-      - id: functional
-        title: 功能性需求
-        type: numbered-list
-        prefix: FR
-        instruction: 每个需求将是一个 Markdown 项目符号，并带有一个以 FR 开头的标识符序列。
-        examples:
-          - "FR6: 待办事项列表使用 AI 检测并警告措辞不同但可能重复的待办事项。"
-      - id: non-functional
-        title: 非功能性需求
-        type: numbered-list
-        prefix: NFR
-        instruction: 每个需求将是一个 Markdown 项目符号，并带有一个以 NFR 开头的标识符序列。
-        examples:
-          - "NFR1: 在可行的情况下，AWS 服务的使用必须力求保持在免费套餐限制内。"
-
-  - id: ui-goals
-    title: 用户界面设计目标
-    condition: PRD 包含 UX/UI 需求时
-    instruction: |
-      捕获高层次的 UI/UX 愿景，以指导设计架构师并为创建用户故事提供信息。步骤：
-
-      1. 基于项目上下文，用有根据的猜测预先填充所有子部分。
-      2. 将渲染后的完整部分呈现给用户。
-      3. 清晰地告知用户哪些地方做了假设。
-      4. 针对不清晰/缺失的元素或需要更具体说明的领域提出有针对性的问题。
-      5. 这不是详细的 UI 规范——重点关注产品愿景和用户目标。
-    elicit: true
-    choices:
-      accessibility: [无, WCAG AA, WCAG AAA]
-      platforms: [响应式网页, 仅移动端, 仅桌面端, 跨平台]
-    sections:
-      - id: ux-vision
-        title: 整体 UX 愿景
-      - id: interaction-paradigms
-        title: 关键交互范式
-      - id: core-screens
-        title: 核心屏幕与视图
-        instruction: 从产品角度看，为实现 PRD 的价值和目标，最关键的屏幕或视图是什么？这旨在提供概念性的高层概览，以驱动粗略的模块或用户故事。
-        examples:
-          - "登录屏幕"
-          - "主仪表盘"
-          - "项目详情页"
-          - "设置页面"
-      - id: accessibility
-        title: "无障碍性: {无|WCAG AA|WCAG AAA|自定义要求}"
-      - id: branding
-        title: 品牌
-        instruction: 是否有任何已知的品牌元素或风格指南必须被整合进来？
-        examples:
-          - "复制 20 世纪初黑白电影的观感，包括在页面或状态转换期间模拟胶片损坏或投影仪故障的动画效果。"
-          - "附件是我司品牌的全套调色板和设计元素。"
-      - id: target-platforms
-        title: "目标设备与平台: {响应式网页|仅移动端|仅桌面端|跨平台}"
-        examples:
-          - "响应式网页，以及所有移动平台"
-          - "仅限 iPhone"
-          - "ASCII 码 Windows 桌面"
-
-  - id: technical-assumptions
-    title: 技术假设
-    instruction: |
-      收集将指导架构师的技术决策。步骤：
-
-      1. 检查 .xiaoma-core/data/technical-preferences.yaml 或附加的技术偏好文件是否存在——用它来预填充选项。
-      2. 询问用户关于：语言、框架、启动模板、库、API、部署目标。
-      3. 对于未知项，根据项目目标和 MVP 范围提供指导。
-      4. 记录所有技术选择及其理由（为什么这个选择适合该项目）。
-      5. 这些将成为架构师的约束条件——务必具体和完整。
-    elicit: true
-    choices:
-      repository: [Monorepo, Polyrepo]
-      architecture: [Monolith, Microservices, Serverless]
-      testing: [仅单元测试, 单元+集成测试, 完整测试金字塔]
-    sections:
-      - id: repository-structure
-        title: "代码仓库结构: {Monorepo|Polyrepo|Multi-repo}"
-      - id: service-architecture
-        title: 服务架构
-        instruction: "关键决策 - 记录高层服务架构（例如，Monolith, Microservices, Monorepo 内的 Serverless 函数）。"
-      - id: testing-requirements
-        title: 测试要求
-        instruction: "关键决策 - 记录测试要求（仅单元测试、集成测试、e2e 测试、手动测试，以及是否需要方便手动测试的方法）。"
-      - id: additional-assumptions
-        title: 其他技术假设与请求
-        instruction: 在起草本文档的整个过程中，如果提出或发现任何其他适合架构师的技术假设，请在此处作为额外的项目符号添加。
-
-  - id: epic-list
-    title: 模块列表
-    instruction: |
-      向用户呈现一份高层次的模块列表以供批准。每个模块应有一个标题和一个简短的（1句话）目标陈述。这使用户能在深入细节之前审阅整体结构。
-
-      关键：模块必须遵循敏捷最佳实践，保持逻辑上的顺序：
-
-      - 每个模块都应交付一个重要的、端到端的、完全可部署且可测试的功能增量。
-      - 模块 1 必须建立基础项目设施（应用设置、Git、CI/CD、核心服务），除非我们是向现有应用添加新功能。同时，它还应交付一个初始功能，即使只是一个健康检查路由或一个简单的金丝雀页面显示——在为第一个模块编写用户故事时要记住这一点！
-      - 每个后续的模块都在之前模块功能的基础上构建，交付主要的功能模块，这些模块在部署时能为用户或业务提供切实的价值。
-      - 并非每个项目都需要多个模块，一个模块需要交付价值。例如，一个已完成的 API 即使 UI 尚未完成并计划在另一个模块中实现，也可以交付价值。
-      - 倾向于设置较少的模块，但要告知用户你的理由，并提供拆分选项，如果某些模块看起来太大或关注点分散的话。
-      - 横切关注点应该贯穿于模块和用户故事中，而不是作为最后的用户故事。例如，在一个模块的最后一个故事中添加日志框架，或者在项目结束时作为最后一个模块或故事来做，这将非常糟糕，因为我们从一开始就没有日志记录。
-    elicit: true
-    examples:
-      - "模块 1：基础与核心设施：建立项目设置、认证和基本用户管理"
-      - "模块 2：核心业务实体：创建和管理主要领域对象的 CRUD 操作"
-      - "模块 3：用户工作流与交互：实现关键用户旅程和业务流程"
-      - "模块 4：报告与分析：为用户提供洞察和数据可视化"
-
-  - id: epic-details
-    title: 模块 {{epic_number}} {{epic_title}}
-    repeatable: true
-    instruction: |
-      在模块列表被批准后，将每个模块及其所有的用户故事和验收标准作为一个完整的审查单元呈现。
-
-      为每个模块提供扩展的目标（2-3 句话描述所有故事将实现的目标和价值）。
-
-      关键的用户故事排序要求：
-
-      - 每个模块中的用户故事必须在逻辑上是顺序的。
-      - 每个故事都应该是一个“垂直切片”，交付完整的功能，除了项目基础的早期使能型故事。
-      - 任何故事都不应依赖于后续故事或模块的工作。
-      - 识别并注明任何直接的前置故事。
-      - 关注“做什么”和“为什么”，而不是“怎么做”（将技术实现留给架构师），但要足够精确以支持故事之间逻辑上顺序的操作。
-      - 确保每个故事都交付明确的用户或业务价值，尽量避免使能型故事，而是将它们构建到交付价值的故事中。
-      - 为 AI 代理执行调整故事的大小：每个故事必须能由单个 AI 代理在一次专注的会话中完成，而不会出现上下文溢出。
-      - 想象一个“初级开发人员工作 2-4 小时”的场景——故事必须是小型的、专注的、自包含的。
-      - 如果一个故事看起来很复杂，只要它能交付一个垂直切片，就应进一步拆分。
-    elicit: true
-    template: "{{epic_goal}}"
-    sections:
-      - id: story
-        title: 用户故事 {{epic_number}}.{{story_number}} {{story_title}}
-        repeatable: true
-        template: |
-          作为一名 {{user_type}}，
-          我想要 {{action}}，
-          以便 {{benefit}}。
-        sections:
-          - id: acceptance-criteria
-            title: 验收标准
-            type: numbered-list
-            item_template: "{{criterion_number}}: {{criteria}}"
-            repeatable: true
-            instruction: |
-              定义清晰、全面且可测试的验收标准，这些标准应：
-
-              - 从功能角度精确定义“完成”的含义。
-              - 明确无歧义，并作为验证的基础。
-              - 包括来自 PRD 的任何关键非功能性需求。
-              - 考虑后端/数据组件的本地可测试性。
-              - 在适用时，指定 UI/UX 需求和框架遵循情况。
-              - 避免应放在其他故事或 PRD 部分的横切关注点。
-
-  - id: checklist-results
-    title: 检查清单结果报告
-    instruction: 在运行检查清单和起草提示之前，提议输出更新后的完整 PRD。如果输出，请与用户确认你将继续运行检查清单并生成报告。一旦用户确认，执行 pm-checklist 并在此部分填充结果。
-
-  - id: next-steps
-    title: 后续步骤
-    sections:
-      - id: ux-expert-prompt
-        title: UX 专家提示
-        instruction: 此部分将包含给 UX 专家的提示，保持简短扼要，以启动使用本文档作为输入的架构创建模式。
-      - id: architect-prompt
-        title: 架构师提示
-        instruction: 此部分将包含给架构师的提示，保持简短扼要，以启动使用本文档作为输入的架构创建模式。
-==================== END: .xiaoma-core/templates/prd-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/change-checklist.md ====================
 <!-- Powered by XiaoMa™ Core -->
