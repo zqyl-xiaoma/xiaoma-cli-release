@@ -4963,10 +4963,10 @@ sections:
 
 ==================== START: .xiaoma-core/templates/rag-questions-tmpl.yaml ====================
 template:
-  id: rag-questions-template-v1
+  id: rag-questions-template-v2
   name: 知识库问题生成模板
-  version: 1.0
-  description: 基于需求文档(req.txt)生成知识库MCP查询问题
+  version: 2.0
+  description: 基于需求文档(req.txt)生成知识库MCP查询问题，包含详细的技术架构、编码规范、中间件、业务流程等维度
   output:
     format: markdown
     filename: docs/rag-questions.md
@@ -4983,7 +4983,7 @@ workflow:
 
 sections:
   - id: requirement-parsing
-    title: 第一阶段：需求文档解析
+    title: 第一阶段：需求文档深度解析
     instruction: |
       读取并深度分析 req.txt 文档，提取以下要素：
 
@@ -5001,13 +5001,18 @@ sections:
 
       4. **数据实体识别**
          - 涉及哪些数据对象？(如：订单、商品、用户)
-         - 数据之间的关系是什么？
+         - 数据之间的关系是什么？(一对一、一对多、多对多)
 
       5. **业务流程识别**
          - 描述了什么业务流程？
          - 流程的起点、终点、关键步骤是什么？
+         - 每个步骤之间的触发条件和数据传递是什么？
 
-      6. **模糊点标记**
+      6. **技术关键词识别**
+         - 需求中提及了哪些技术组件？(如：消息队列、缓存、定时任务)
+         - 涉及哪些外部系统集成？
+
+      7. **模糊点标记**
          - 哪些描述不够清晰？
          - 哪些内容有多种理解方式？
     output:
@@ -5023,25 +5028,50 @@ sections:
               描述: {{description}}
               输入: {{input}}
               输出: {{output}}
+              涉及实体: [{{entities}}]
             {{/each}}
 
           用户角色:
             {{#each roles}}
             - 角色: {{name}}
               操作: [{{actions}}]
+              权限级别: {{permission_level}}
             {{/each}}
 
           数据实体:
             {{#each entities}}
             - 实体: {{name}}
               属性: [{{attributes}}]
-              关系: {{relationships}}
+              关系:
+                {{#each relationships}}
+                - 目标实体: {{target}}
+                  关系类型: {{type}}  # 一对一/一对多/多对一/多对多
+                  关联字段: {{field}}
+                {{/each}}
             {{/each}}
 
           业务流程:
             {{#each processes}}
-            - 流程: {{name}}
-              步骤: [{{steps}}]
+            - 流程名称: {{name}}
+              触发条件: {{trigger}}
+              步骤:
+                {{#each steps}}
+                - 序号: {{index}}
+                  名称: {{name}}
+                  执行者: {{actor}}
+                  前置步骤: {{previous_step}}
+                  触发条件: {{trigger_from_previous}}
+                  输入数据: {{input_data}}
+                  输出数据: {{output_data}}
+                  数据变更: {{data_changes}}
+                {{/each}}
+              异常分支: [{{exception_branches}}]
+            {{/each}}
+
+          技术组件:
+            {{#each tech_components}}
+            - 组件: {{name}}
+              用途: {{purpose}}
             {{/each}}
 
           模糊点:
@@ -5061,74 +5091,501 @@ sections:
       2. 优先生成阻塞性问题（缺失会导致无法继续）
       3. 问题应覆盖：业务、技术、历史、约束 四个维度
       4. 避免开放性过强的问题
+      5. 技术问题需要求提供代码示例
+      6. 业务流程问题需要追问每个节点的详细信息
     sections:
+
+      # ==================== A. 业务知识问题（增强版）====================
       - id: business-questions
         title: A. 业务知识问题
         instruction: |
           针对业务领域和流程生成问题，重点关注：
-          - 业务规则和约束
-          - 业务流程细节
-          - 边界情况处理
+          - 业务规则和约束的完整定义
+          - 业务流程的每个步骤详情
+          - 步骤间的关联关系和数据流转
+          - 数据实体间的关联关系
+          - 边界情况和异常处理
           - 用户权限和角色
         question_templates:
-          - category: A1-业务规则
-            templates:
-              - "[{entity}]有哪些业务规则？如：状态流转、必填约束、取值范围"
-              - "[{process}]流程中，[{step}]步骤的具体业务规则是什么？"
-              - "[{role}]角色在[{operation}]操作上有什么权限限制？"
-              - "[{entity}]和[{related_entity}]之间的业务关联规则是什么？"
 
-          - category: A2-业务流程
+          - category: A1-业务规则详解
+            priority: P0
+            description: 深入了解业务规则的完整定义
             templates:
-              - "[{process}]的完整流程是什么？包括正常流程和异常流程"
-              - "触发[{process}]的条件有哪些？"
-              - "[{process}]流程中有哪些人工审批或确认节点？"
-              - "[{process}]失败后的补偿或回退机制是什么？"
+              - question: "[{entity}]实体有哪些业务规则？请详细说明："
+                sub_questions:
+                  - "状态有哪些？状态流转规则是什么？哪些状态可以互相转换？"
+                  - "必填字段有哪些？每个必填字段的校验规则是什么？"
+                  - "字段的取值范围和格式要求是什么？"
+                  - "是否有唯一性约束？唯一性的范围是什么（全局/租户/用户）？"
+                  - "是否有软删除？软删除的业务规则是什么？"
+                  - "创建/修改/删除操作的前置条件是什么？"
 
-          - category: A3-边界情况
+              - question: "[{entity}]和[{related_entity}]之间的业务关联规则是什么？"
+                sub_questions:
+                  - "关联关系的业务含义是什么？"
+                  - "关联是否必须存在？可以为空吗？"
+                  - "删除主实体时，关联实体如何处理？（级联删除/置空/禁止删除）"
+                  - "关联实体的生命周期如何与主实体绑定？"
+
+              - question: "[{role}]角色在[{operation}]操作上的权限规则是什么？"
+                sub_questions:
+                  - "该角色可以操作哪些数据范围？（全部/本部门/本人）"
+                  - "操作需要哪些前置审批或确认？"
+                  - "操作是否有时间窗口限制？"
+                  - "操作失败时的提示信息应该是什么？"
+
+          - category: A2-业务流程详解
+            priority: P0
+            description: 深入了解业务流程的每个步骤和节点间关系
             templates:
-              - "[{operation}]操作在什么情况下会失败？失败后如何处理？"
-              - "[{entity}]存在并发操作时，系统如何处理冲突？"
-              - "[{data}]数据量很大时，有什么限制或分页规则？"
-              - "[{scenario}]场景下的异常处理逻辑是什么？"
+              - question: "[{process}]业务流程的完整定义是什么？"
+                sub_questions:
+                  - "流程的触发条件是什么？由谁/什么事件触发？"
+                  - "流程的正常结束条件是什么？"
+                  - "流程的异常结束条件有哪些？"
+                  - "流程是否支持取消/撤销？取消后如何回滚？"
+                  - "流程的超时处理机制是什么？"
 
+              - question: "[{process}]流程中，步骤[{step_a}]到步骤[{step_b}]的详细信息？"
+                sub_questions:
+                  - "从[{step_a}]到[{step_b}]的触发条件是什么？"
+                  - "[{step_a}]完成后，需要传递哪些数据给[{step_b}]？"
+                  - "数据传递的格式和校验规则是什么？"
+                  - "[{step_a}]失败时，是否阻塞[{step_b}]？还是走其他分支？"
+                  - "这两个步骤之间是否有时间约束？（如必须在N分钟内完成）"
+
+              - question: "[{process}]流程的第[{n}]个步骤[{step_name}]的详细执行逻辑是什么？"
+                sub_questions:
+                  - "该步骤的执行者是谁？（系统自动/人工操作/外部系统）"
+                  - "该步骤的输入数据有哪些？数据来源是什么？"
+                  - "该步骤的处理逻辑是什么？涉及哪些业务规则？"
+                  - "该步骤会产生/修改哪些数据？"
+                  - "该步骤完成的标志是什么？如何判定成功/失败？"
+                  - "该步骤失败后的重试机制是什么？"
+                  - "该步骤是否需要记录日志/审计？记录哪些信息？"
+
+              - question: "[{process}]流程中有哪些并行/分支节点？"
+                sub_questions:
+                  - "哪些步骤可以并行执行？并行执行的条件是什么？"
+                  - "并行步骤的汇合点在哪里？汇合的条件是什么（全部完成/任一完成）？"
+                  - "有哪些条件分支？每个分支的触发条件是什么？"
+                  - "分支是否会重新汇合？汇合点在哪里？"
+
+              - question: "[{process}]流程的异常处理机制是什么？"
+                sub_questions:
+                  - "每个步骤可能出现的异常有哪些？"
+                  - "异常发生后的处理策略是什么？（重试/跳过/终止/人工处理）"
+                  - "异常是否需要通知？通知谁？通知方式是什么？"
+                  - "流程中断后如何恢复？是否支持断点续传？"
+
+          - category: A3-数据关联关系详解
+            priority: P0
+            description: 深入了解数据实体间的关联关系
+            templates:
+              - question: "[{entity_a}]和[{entity_b}]的数据关联关系详情？"
+                sub_questions:
+                  - "关联类型是什么？（一对一/一对多/多对一/多对多）"
+                  - "关联是通过什么字段建立的？外键在哪一方？"
+                  - "关联是否必须？能否存在孤立记录？"
+                  - "关联的建立时机是什么？创建时/后续关联？"
+                  - "关联可以修改吗？修改的业务场景是什么？"
+                  - "解除关联的条件是什么？解除后数据如何处理？"
+
+              - question: "[{entity}]的一对多关联详情？"
+                sub_questions:
+                  - "一个[{entity}]最多可以关联多少个[{related_entity}]？"
+                  - "是否有最小关联数量要求？"
+                  - "关联顺序是否重要？如何维护顺序？"
+                  - "批量添加/删除关联的业务规则是什么？"
+
+              - question: "[{entity}]涉及的多对多关联详情？"
+                sub_questions:
+                  - "多对多关联是否有中间表？中间表存储哪些额外信息？"
+                  - "关联的创建和删除权限由谁控制？"
+                  - "关联是否有时效性？过期如何处理？"
+
+          - category: A4-边界情况与异常处理
+            priority: P1
+            description: 深入了解边界情况的处理逻辑
+            templates:
+              - question: "[{operation}]操作的边界情况有哪些？"
+                sub_questions:
+                  - "并发执行时如何处理？是否需要加锁？锁的粒度是什么？"
+                  - "数据不存在时如何处理？"
+                  - "数据已被其他操作锁定时如何处理？"
+                  - "操作超时时如何处理？"
+                  - "部分成功时如何处理？是否支持事务回滚？"
+
+              - question: "[{entity}]数据量很大时的处理规则？"
+                sub_questions:
+                  - "列表查询的分页规则是什么？默认每页多少条？最大每页多少条？"
+                  - "是否支持批量操作？批量操作的最大数量是多少？"
+                  - "大数据量导出的限制是什么？是否需要异步处理？"
+                  - "历史数据的归档策略是什么？"
+
+      # ==================== B. 技术知识问题（增强版）====================
       - id: technical-questions
         title: B. 技术知识问题
         instruction: |
           针对技术实现生成问题，重点关注：
-          - 现有系统架构
+          - 整体项目技术架构
+          - 中间件使用规范和代码示例
+          - Java编码规范
+          - SQL规范
           - 数据模型设计
           - 接口规范
           - 代码实现模式
         question_templates:
-          - category: B1-系统架构
-            templates:
-              - "[{module}]模块的技术架构是什么？与其他模块如何交互？"
-              - "系统中有哪些公共服务或组件可以复用于[{feature}]？"
-              - "[{functionality}]功能应该放在哪个服务/模块中实现？"
-              - "系统的缓存策略是什么？[{data}]数据需要缓存吗？"
 
-          - category: B2-数据模型
+          - category: B1-整体项目技术架构
+            priority: P0
+            description: 了解项目的整体技术架构和技术栈
             templates:
-              - "[{entity}]在数据库中的表结构是什么？包含哪些字段？"
-              - "[{entity_a}]和[{entity_b}]的数据库关系是怎样的？外键设计？"
-              - "与[{domain}]相关的枚举值或字典表有哪些？"
-              - "[{entity}]的历史记录/审计日志如何存储？"
+              - question: "项目的整体技术架构是什么？"
+                sub_questions:
+                  - "项目采用什么架构模式？（单体/微服务/SOA/DDD）"
+                  - "系统分为哪些层次？每层的职责是什么？"
+                  - "各层之间如何交互？调用方式是什么？"
+                  - "请提供架构图或架构说明文档"
 
-          - category: B3-接口规范
+              - question: "项目的技术栈详情是什么？"
+                sub_questions:
+                  - "后端框架：使用什么框架？版本是多少？（如Spring Boot版本）"
+                  - "数据库：使用什么数据库？版本是多少？是否有读写分离？"
+                  - "缓存：使用什么缓存？（Redis/Memcached等）版本是多少？"
+                  - "消息队列：使用什么MQ？（RabbitMQ/Kafka/RocketMQ等）版本是多少？"
+                  - "搜索引擎：是否使用？使用什么？（Elasticsearch等）"
+                  - "文件存储：使用什么存储？（本地/OSS/MinIO等）"
+                  - "日志系统：使用什么日志框架和日志收集系统？"
+                  - "监控系统：使用什么监控？（Prometheus/Grafana等）"
+
+              - question: "项目的模块划分是什么？"
+                sub_questions:
+                  - "项目包含哪些Maven/Gradle模块？各模块的职责是什么？"
+                  - "模块之间的依赖关系是什么？"
+                  - "公共模块有哪些？提供什么能力？"
+                  - "请提供模块结构图或模块说明"
+
+              - question: "项目的包结构规范是什么？"
+                sub_questions:
+                  - "Controller层的包路径和命名规范？"
+                  - "Service层的包路径和命名规范？"
+                  - "DAO/Repository层的包路径和命名规范？"
+                  - "Entity/Model层的包路径和命名规范？"
+                  - "DTO/VO层的包路径和命名规范？"
+                  - "工具类的包路径和命名规范？"
+                  - "配置类的包路径和命名规范？"
+                  - "请提供包结构示例"
+
+          - category: B2-中间件使用规范
+            priority: P0
+            description: 了解各中间件的使用规范和代码示例
             templates:
-              - "现有的[{module}]模块提供了哪些API接口？"
-              - "[{operation}]操作的接口入参和出参规范是什么？"
-              - "系统的统一错误码和响应格式是什么？"
-              - "[{external_system}]的集成接口协议和数据格式是什么？"
+              - question: "项目中Redis的使用规范是什么？"
+                sub_questions:
+                  - "Redis的连接配置在哪里？如何获取RedisTemplate？"
+                  - "Key的命名规范是什么？前缀规则是什么？"
+                  - "不同业务场景使用哪种数据结构？（String/Hash/List/Set/ZSet）"
+                  - "缓存的过期时间策略是什么？"
+                  - "如何处理缓存穿透、缓存击穿、缓存雪崩？"
+                  - "分布式锁如何实现？使用什么工具？（Redisson等）"
+                  - "请提供Redis操作的代码示例，包括："
+                  - "  - 字符串缓存的存取示例"
+                  - "  - Hash结构的存取示例"
+                  - "  - 分布式锁的使用示例"
+                  - "  - 缓存注解(@Cacheable等)的使用示例"
 
-          - category: B4-代码实现
+              - question: "项目中消息队列的使用规范是什么？"
+                sub_questions:
+                  - "使用什么消息队列？配置在哪里？"
+                  - "Exchange/Topic的命名规范是什么？"
+                  - "Queue的命名规范是什么？"
+                  - "消息体的格式规范是什么？（JSON结构定义）"
+                  - "消息的可靠性如何保证？（确认机制、持久化、重试）"
+                  - "消费者的幂等性如何保证？"
+                  - "死信队列如何处理？"
+                  - "请提供消息队列的代码示例，包括："
+                  - "  - 生产者发送消息的示例"
+                  - "  - 消费者接收消息的示例"
+                  - "  - 延迟消息的发送示例"
+                  - "  - 消息确认和重试的示例"
+
+              - question: "项目中定时任务的使用规范是什么？"
+                sub_questions:
+                  - "使用什么定时任务框架？（Spring @Scheduled/XXL-Job/Quartz等）"
+                  - "定时任务的配置在哪里？"
+                  - "分布式环境下如何保证任务只执行一次？"
+                  - "任务执行失败如何处理？是否有重试机制？"
+                  - "任务执行日志如何记录？"
+                  - "请提供定时任务的代码示例，包括："
+                  - "  - 简单定时任务的定义示例"
+                  - "  - 带参数定时任务的示例"
+                  - "  - 分布式锁定时任务的示例"
+
+              - question: "项目中Elasticsearch的使用规范是什么？（如果使用）"
+                sub_questions:
+                  - "ES的连接配置在哪里？"
+                  - "索引的命名规范是什么？"
+                  - "Mapping的定义规范是什么？"
+                  - "数据同步策略是什么？（同步/异步/Canal等）"
+                  - "请提供ES操作的代码示例，包括："
+                  - "  - 索引创建的示例"
+                  - "  - 文档的CRUD示例"
+                  - "  - 复杂查询的示例"
+
+              - question: "项目中文件存储的使用规范是什么？"
+                sub_questions:
+                  - "使用什么文件存储？配置在哪里？"
+                  - "文件路径/Key的命名规范是什么？"
+                  - "文件大小限制是什么？"
+                  - "支持哪些文件类型？"
+                  - "文件访问权限如何控制？"
+                  - "请提供文件上传/下载的代码示例"
+
+              - question: "项目中是否使用其他中间件？使用规范是什么？"
+                sub_questions:
+                  - "是否使用分布式配置中心？（Nacos/Apollo等）如何使用？"
+                  - "是否使用服务注册发现？如何使用？"
+                  - "是否使用链路追踪？如何使用？"
+                  - "是否使用限流熔断？（Sentinel等）如何使用？"
+                  - "请提供相关代码示例"
+
+          - category: B3-Java编码规范
+            priority: P0
+            description: 了解项目的Java编码规范和最佳实践
             templates:
-              - "类似[{feature}]的功能在现有代码中是如何实现的？"
-              - "系统中处理[{technical_concern}]的通用模式是什么？"
-              - "[{framework}]框架在项目中的使用规范和最佳实践是什么？"
-              - "现有代码中有哪些工具类或辅助方法可以用于[{task}]？"
+              - question: "项目的Java编码规范是什么？"
+                sub_questions:
+                  - "遵循什么编码规范？（阿里巴巴规范/Google规范/自定义）"
+                  - "是否有规范文档？请提供链接或内容"
 
+              - question: "类和接口的命名规范是什么？"
+                sub_questions:
+                  - "Controller类的命名规范？后缀是什么？"
+                  - "Service接口和实现类的命名规范？"
+                  - "DAO/Mapper/Repository的命名规范？"
+                  - "Entity/PO的命名规范？"
+                  - "DTO的命名规范？请求和响应如何区分？"
+                  - "VO的命名规范？"
+                  - "枚举类的命名规范？"
+                  - "常量类的命名规范？"
+                  - "工具类的命名规范？"
+                  - "异常类的命名规范？"
+                  - "请提供各类型的命名示例"
+
+              - question: "方法的命名规范是什么？"
+                sub_questions:
+                  - "查询单个对象的方法命名？（get/find/query/select）"
+                  - "查询列表的方法命名？"
+                  - "查询分页的方法命名？"
+                  - "新增的方法命名？（add/insert/create/save）"
+                  - "修改的方法命名？（update/modify/edit）"
+                  - "删除的方法命名？（delete/remove）"
+                  - "批量操作的方法命名？"
+                  - "布尔判断的方法命名？（is/has/can/should）"
+                  - "请提供方法命名示例"
+
+              - question: "注释规范是什么？"
+                sub_questions:
+                  - "类注释的格式要求？必须包含哪些内容？"
+                  - "方法注释的格式要求？参数和返回值如何描述？"
+                  - "字段注释的格式要求？"
+                  - "是否使用Swagger注解？格式要求是什么？"
+                  - "TODO/FIXME注释的格式要求？"
+                  - "请提供注释示例"
+
+              - question: "异常处理规范是什么？"
+                sub_questions:
+                  - "项目有哪些自定义异常类？何时使用？"
+                  - "异常应该在哪一层捕获和处理？"
+                  - "业务异常和系统异常如何区分？"
+                  - "异常信息如何记录日志？"
+                  - "全局异常处理器是如何实现的？"
+                  - "请提供异常处理的代码示例"
+
+              - question: "日志打印规范是什么？"
+                sub_questions:
+                  - "使用什么日志框架？（SLF4J+Logback等）"
+                  - "不同级别日志（DEBUG/INFO/WARN/ERROR）的使用场景？"
+                  - "日志内容应该包含哪些信息？"
+                  - "敏感信息如何脱敏？"
+                  - "请求入参出参如何记录？"
+                  - "请提供日志打印的代码示例"
+
+              - question: "Controller层的编码规范是什么？"
+                sub_questions:
+                  - "URL路径的命名规范？RESTful还是其他风格？"
+                  - "请求方法的使用规范？（GET/POST/PUT/DELETE）"
+                  - "参数接收方式的规范？（@RequestParam/@RequestBody/@PathVariable）"
+                  - "响应格式的统一规范？"
+                  - "参数校验如何实现？使用什么注解？"
+                  - "请提供Controller的代码模板"
+
+              - question: "Service层的编码规范是什么？"
+                sub_questions:
+                  - "是否必须定义接口？接口和实现类的关系？"
+                  - "事务注解如何使用？事务传播行为如何选择？"
+                  - "Service之间如何调用？是否允许循环依赖？"
+                  - "复杂业务逻辑如何拆分？"
+                  - "请提供Service的代码模板"
+
+              - question: "DAO层的编码规范是什么？"
+                sub_questions:
+                  - "使用什么ORM框架？（MyBatis/MyBatis-Plus/JPA等）"
+                  - "Mapper接口的编写规范？"
+                  - "XML文件还是注解方式？"
+                  - "动态SQL的编写规范？"
+                  - "请提供DAO的代码模板"
+
+          - category: B4-SQL规范
+            priority: P0
+            description: 了解项目的SQL编写规范
+            templates:
+              - question: "项目的SQL编写规范是什么？"
+                sub_questions:
+                  - "是否有SQL规范文档？请提供链接或内容"
+
+              - question: "表设计规范是什么？"
+                sub_questions:
+                  - "表名的命名规范？前缀规则？"
+                  - "字段名的命名规范？（驼峰/下划线）"
+                  - "主键的设计规范？（自增/UUID/雪花ID）"
+                  - "是否必须有创建时间/更新时间/创建人/更新人字段？"
+                  - "是否必须有逻辑删除字段？"
+                  - "是否必须有版本号字段（乐观锁）？"
+                  - "字段类型的选择规范？"
+                  - "字段长度的设计规范？"
+                  - "索引的命名和设计规范？"
+                  - "请提供建表语句的模板"
+
+              - question: "SQL查询规范是什么？"
+                sub_questions:
+                  - "SELECT是否禁止使用*？"
+                  - "WHERE条件的编写规范？"
+                  - "JOIN的使用规范？最多允许关联几张表？"
+                  - "子查询的使用规范？"
+                  - "ORDER BY的使用规范？"
+                  - "LIMIT的使用规范？深分页如何处理？"
+                  - "请提供查询SQL的示例"
+
+              - question: "SQL更新规范是什么？"
+                sub_questions:
+                  - "UPDATE是否必须带WHERE条件？"
+                  - "批量更新的写法规范？"
+                  - "是否使用乐观锁？如何使用？"
+                  - "请提供更新SQL的示例"
+
+              - question: "SQL性能规范是什么？"
+                sub_questions:
+                  - "索引的使用规范？如何避免索引失效？"
+                  - "大表查询的规范？"
+                  - "慢SQL的定义标准？如何优化？"
+                  - "EXPLAIN的使用规范？"
+                  - "请提供SQL优化的示例"
+
+          - category: B5-数据模型
+            priority: P0
+            description: 了解数据库表结构和数据模型
+            templates:
+              - question: "[{entity}]对应的数据库表结构是什么？"
+                sub_questions:
+                  - "表名是什么？"
+                  - "包含哪些字段？每个字段的类型、长度、约束？"
+                  - "主键是什么？主键生成策略是什么？"
+                  - "有哪些索引？索引类型是什么？"
+                  - "有哪些外键约束？（如果有）"
+                  - "请提供完整的DDL语句"
+
+              - question: "[{entity_a}]和[{entity_b}]的数据库关联设计是什么？"
+                sub_questions:
+                  - "关联类型是什么？（一对一/一对多/多对多）"
+                  - "外键在哪张表？外键字段名是什么？"
+                  - "是否有中间表？中间表结构是什么？"
+                  - "关联查询的SQL怎么写？"
+                  - "请提供关联查询的示例SQL"
+
+              - question: "[{domain}]领域的ER图是什么？"
+                sub_questions:
+                  - "涉及哪些表？"
+                  - "表之间的关系是什么？"
+                  - "请提供ER图或表关系说明"
+
+          - category: B6-接口规范
+            priority: P1
+            description: 了解API接口设计规范
+            templates:
+              - question: "项目的API接口规范是什么？"
+                sub_questions:
+                  - "API风格是什么？（RESTful/RPC/GraphQL）"
+                  - "URL设计规范是什么？"
+                  - "版本控制如何实现？"
+                  - "认证授权如何实现？"
+                  - "请提供API设计规范文档"
+
+              - question: "接口请求规范是什么？"
+                sub_questions:
+                  - "请求头的规范？必须包含哪些Header？"
+                  - "请求体的格式？（JSON/Form）"
+                  - "分页参数的规范？参数名是什么？"
+                  - "排序参数的规范？"
+                  - "请提供请求示例"
+
+              - question: "接口响应规范是什么？"
+                sub_questions:
+                  - "统一响应格式是什么？包含哪些字段？"
+                  - "成功响应的格式？"
+                  - "错误响应的格式？"
+                  - "分页响应的格式？"
+                  - "错误码的设计规范？"
+                  - "请提供响应示例"
+
+              - question: "现有的[{module}]模块提供了哪些API接口？"
+                sub_questions:
+                  - "接口列表是什么？"
+                  - "每个接口的URL、方法、参数、响应是什么？"
+                  - "请提供Swagger文档或接口文档链接"
+
+          - category: B7-代码实现模式
+            priority: P1
+            description: 了解项目中的通用代码实现模式
+            templates:
+              - question: "项目中通用的CRUD实现模式是什么？"
+                sub_questions:
+                  - "是否有通用的BaseController/BaseService？"
+                  - "是否使用代码生成器？如何使用？"
+                  - "请提供标准CRUD的代码示例"
+
+              - question: "项目中分页查询的实现模式是什么？"
+                sub_questions:
+                  - "使用什么分页插件？（PageHelper/MyBatis-Plus等）"
+                  - "分页参数如何接收？"
+                  - "分页结果如何封装？"
+                  - "请提供分页查询的代码示例"
+
+              - question: "项目中复杂查询的实现模式是什么？"
+                sub_questions:
+                  - "多条件动态查询如何实现？"
+                  - "多表关联查询如何实现？"
+                  - "请提供复杂查询的代码示例"
+
+              - question: "项目中事务处理的实现模式是什么？"
+                sub_questions:
+                  - "本地事务如何使用？"
+                  - "分布式事务如何处理？使用什么方案？"
+                  - "请提供事务处理的代码示例"
+
+              - question: "项目中有哪些通用工具类？"
+                sub_questions:
+                  - "日期时间处理工具类？"
+                  - "字符串处理工具类？"
+                  - "JSON处理工具类？"
+                  - "加密解密工具类？"
+                  - "文件处理工具类？"
+                  - "HTTP请求工具类？"
+                  - "请提供工具类的使用示例"
+
+      # ==================== C. 历史追溯问题 ====================
       - id: history-questions
         title: C. 历史追溯问题
         instruction: |
@@ -5138,23 +5595,42 @@ sections:
           - 已知问题和债务
         question_templates:
           - category: C1-历史需求
+            priority: P1
             templates:
-              - "之前有没有类似[{feature}]的需求？实现情况如何？"
-              - "[{module}]模块最近有什么变更？变更原因是什么？"
-              - "[{feature}]功能的历史版本迭代情况是什么？"
+              - question: "之前有没有类似[{feature}]的需求？"
+                sub_questions:
+                  - "实现情况如何？是否上线？"
+                  - "实现过程中遇到了什么问题？"
+                  - "有什么经验教训可以借鉴？"
+                  - "相关代码在哪里？"
+
+              - question: "[{module}]模块最近有什么变更？"
+                sub_questions:
+                  - "变更的内容是什么？"
+                  - "变更的原因是什么？"
+                  - "变更后是否有问题？"
 
           - category: C2-决策记录
+            priority: P2
             templates:
-              - "[{technical_choice}]为什么选择当前的实现方式？"
-              - "[{architecture_decision}]的架构决策背景是什么？"
-              - "有没有被否决的[{alternative}]方案？为什么被否决？"
+              - question: "[{technical_choice}]为什么选择当前的实现方式？"
+                sub_questions:
+                  - "决策的背景是什么？"
+                  - "考虑过哪些备选方案？"
+                  - "选择当前方案的理由是什么？"
+                  - "这个决策有什么限制或trade-off？"
 
           - category: C3-已知问题
+            priority: P1
             templates:
-              - "[{module}]模块有哪些已知的问题或技术债务？"
-              - "[{feature}]功能有没有用户反馈的问题或改进建议？"
-              - "与[{domain}]相关的性能或稳定性问题有哪些？"
+              - question: "[{module}]模块有哪些已知的问题或技术债务？"
+                sub_questions:
+                  - "问题的具体描述是什么？"
+                  - "问题的影响范围是什么？"
+                  - "是否有计划修复？"
+                  - "新功能开发需要注意什么？"
 
+      # ==================== D. 约束条件问题 ====================
       - id: constraint-questions
         title: D. 约束条件问题
         instruction: |
@@ -5165,28 +5641,79 @@ sections:
           - 团队规范
         question_templates:
           - category: D1-技术约束
+            priority: P1
             templates:
-              - "项目的技术栈限制有哪些？必须使用什么框架/库？"
-              - "[{technical_approach}]方案在当前技术栈下是否可行？"
-              - "项目对[{resource}]资源的使用有什么限制？"
+              - question: "项目的技术栈限制有哪些？"
+                sub_questions:
+                  - "必须使用什么框架/库？不能使用什么？"
+                  - "JDK版本要求是什么？"
+                  - "是否有第三方库的版本要求？"
+                  - "是否有禁止使用的技术或方案？"
+
+              - question: "[{technical_approach}]方案在当前技术栈下是否可行？"
+                sub_questions:
+                  - "是否与现有技术兼容？"
+                  - "是否需要引入新的依赖？"
+                  - "团队是否有相关经验？"
 
           - category: D2-安全合规
+            priority: P0
             templates:
-              - "[{data_type}]数据的安全存储和传输要求是什么？"
-              - "[{operation}]操作需要哪些权限验证？"
-              - "项目需要满足哪些合规要求？（如GDPR、等保）"
+              - question: "[{data_type}]数据的安全要求是什么？"
+                sub_questions:
+                  - "数据的敏感级别是什么？"
+                  - "存储时是否需要加密？用什么算法？"
+                  - "传输时是否需要加密？"
+                  - "是否需要脱敏？脱敏规则是什么？"
+                  - "数据的访问权限如何控制？"
+                  - "数据的保留期限是多久？"
+
+              - question: "项目的安全规范是什么？"
+                sub_questions:
+                  - "SQL注入如何防范？"
+                  - "XSS如何防范？"
+                  - "CSRF如何防范？"
+                  - "接口防刷如何实现？"
+                  - "敏感操作是否需要二次确认？"
+
+              - question: "项目需要满足哪些合规要求？"
+                sub_questions:
+                  - "是否需要满足等保要求？什么级别？"
+                  - "是否涉及个人隐私数据？需要满足什么要求？"
+                  - "是否有审计日志要求？记录哪些内容？"
 
           - category: D3-性能要求
+            priority: P1
             templates:
-              - "[{interface}]接口的响应时间要求是什么？"
-              - "[{process}]流程的并发处理能力要求是多少？"
-              - "系统的可用性SLA要求是什么？"
+              - question: "项目的性能要求是什么？"
+                sub_questions:
+                  - "接口响应时间要求？P99要求？"
+                  - "并发量要求？峰值并发是多少？"
+                  - "吞吐量要求？"
+                  - "可用性要求？99.9%还是99.99%？"
+
+              - question: "[{interface}]接口的性能要求是什么？"
+                sub_questions:
+                  - "响应时间要求是多少？"
+                  - "预期的调用频率是多少？"
+                  - "是否需要限流？限流规则是什么？"
 
           - category: D4-团队规范
+            priority: P2
             templates:
-              - "团队的代码规范和风格指南是什么？"
-              - "代码审查的标准和流程是什么？"
-              - "测试覆盖率和测试类型的要求是什么？"
+              - question: "团队的开发流程是什么？"
+                sub_questions:
+                  - "分支管理策略是什么？（GitFlow等）"
+                  - "代码审查流程是什么？"
+                  - "上线流程是什么？"
+                  - "环境有哪些？（dev/test/staging/prod）"
+
+              - question: "团队的测试要求是什么？"
+                sub_questions:
+                  - "单元测试覆盖率要求？"
+                  - "是否需要集成测试？"
+                  - "是否需要性能测试？"
+                  - "测试用例的编写规范？"
 
   - id: question-prioritization
     title: 第三阶段：问题优先级排序
@@ -5197,11 +5724,13 @@ sections:
       - 缺失会导致完全无法理解需求
       - 涉及核心业务规则
       - 影响架构决策
+      - 涉及安全合规
 
       **P1 - 重要级**（强烈建议回答）
       - 影响需求完整性
       - 涉及边界情况处理
       - 影响实现方案选择
+      - 涉及性能要求
 
       **P2 - 补充级**（可选回答）
       - 有助于优化实现
@@ -5222,40 +5751,57 @@ sections:
 
         ## P0 阻塞级问题（必须回答）
 
-        ### 业务知识
+        ### A. 业务知识
         {{#each p0_business}}
-        {{index}}. [{{id}}] {{question}}
-           - 关联需求: "{{related_requirement}}"
-           - 预期答案: {{expected_answer_type}}
+        #### {{index}}. [{{id}}] {{question}}
+        - 关联需求: "{{related_requirement}}"
+        - 预期答案类型: {{expected_answer_type}}
+        - 子问题:
+        {{#each sub_questions}}
+          - {{this}}
+        {{/each}}
         {{/each}}
 
-        ### 技术知识
+        ### B. 技术知识
         {{#each p0_technical}}
-        {{index}}. [{{id}}] {{question}}
-           - 关联需求: "{{related_requirement}}"
-           - 预期答案: {{expected_answer_type}}
+        #### {{index}}. [{{id}}] {{question}}
+        - 关联需求: "{{related_requirement}}"
+        - 预期答案类型: {{expected_answer_type}}
+        - 子问题:
+        {{#each sub_questions}}
+          - {{this}}
+        {{/each}}
+        - **注意**: 请提供相关代码示例
         {{/each}}
 
         ---
 
         ## P1 重要级问题（强烈建议回答）
 
-        ### 业务知识
+        ### A. 业务知识
         {{#each p1_business}}
-        {{index}}. [{{id}}] {{question}}
-           - 关联需求: "{{related_requirement}}"
+        #### {{index}}. [{{id}}] {{question}}
+        - 关联需求: "{{related_requirement}}"
+        - 子问题:
+        {{#each sub_questions}}
+          - {{this}}
+        {{/each}}
         {{/each}}
 
-        ### 技术知识
+        ### B. 技术知识
         {{#each p1_technical}}
-        {{index}}. [{{id}}] {{question}}
-           - 关联需求: "{{related_requirement}}"
+        #### {{index}}. [{{id}}] {{question}}
+        - 关联需求: "{{related_requirement}}"
+        - 子问题:
+        {{#each sub_questions}}
+          - {{this}}
+        {{/each}}
         {{/each}}
 
-        ### 历史追溯
+        ### C. 历史追溯
         {{#each p1_history}}
-        {{index}}. [{{id}}] {{question}}
-           - 关联需求: "{{related_requirement}}"
+        #### {{index}}. [{{id}}] {{question}}
+        - 关联需求: "{{related_requirement}}"
         {{/each}}
 
         ---
@@ -5263,7 +5809,7 @@ sections:
         ## P2 补充级问题（可选回答）
 
         {{#each p2_questions}}
-        {{index}}. [{{id}}] {{question}}
+        #### {{index}}. [{{id}}] {{question}}
         {{/each}}
 
   - id: knowledge-landing
@@ -5273,29 +5819,48 @@ sections:
     output:
       structure: |
         docs/rag/
-        ├── _index.md                 # 知识索引（自动生成）
-        ├── _questions.md             # 问题清单（本模板输出）
+        ├── _index.md                    # 知识索引（自动生成）
+        ├── _questions.md                # 问题清单（本模板输出）
         │
-        ├── business/                 # 业务知识
-        │   ├── domain-{{domain}}.md # 领域知识
-        │   ├── rules-{{topic}}.md   # 业务规则
-        │   ├── process-{{name}}.md  # 业务流程
-        │   └── roles.md             # 角色权限
+        ├── business/                    # 业务知识
+        │   ├── domain-{{domain}}.md    # 领域知识
+        │   ├── rules-{{topic}}.md      # 业务规则
+        │   ├── process-{{name}}.md     # 业务流程（含详细步骤和关联关系）
+        │   ├── data-relations.md       # 数据关联关系
+        │   └── roles.md                # 角色权限
         │
-        ├── technical/                # 技术知识
-        │   ├── architecture.md      # 系统架构
-        │   ├── data-model.md        # 数据模型
-        │   ├── api-{{module}}.md    # 接口规范
-        │   └── patterns.md          # 代码模式
+        ├── technical/                   # 技术知识
+        │   ├── architecture.md         # 整体技术架构
+        │   ├── tech-stack.md           # 技术栈详情
+        │   ├── module-structure.md     # 模块结构
+        │   ├── middleware/             # 中间件规范
+        │   │   ├── redis.md            # Redis使用规范和代码示例
+        │   │   ├── mq.md               # 消息队列规范和代码示例
+        │   │   ├── scheduler.md        # 定时任务规范和代码示例
+        │   │   ├── elasticsearch.md    # ES规范和代码示例
+        │   │   └── file-storage.md     # 文件存储规范
+        │   ├── coding-standards/       # 编码规范
+        │   │   ├── java-naming.md      # Java命名规范
+        │   │   ├── java-coding.md      # Java编码规范
+        │   │   ├── exception.md        # 异常处理规范
+        │   │   ├── logging.md          # 日志规范
+        │   │   └── layer-standards.md  # 分层规范（Controller/Service/DAO）
+        │   ├── sql-standards/          # SQL规范
+        │   │   ├── table-design.md     # 表设计规范
+        │   │   ├── query-standards.md  # 查询规范
+        │   │   └── performance.md      # SQL性能规范
+        │   ├── data-model.md           # 数据模型（表结构）
+        │   ├── api-{{module}}.md       # 接口规范
+        │   └── patterns.md             # 代码模式和示例
         │
-        ├── history/                  # 历史信息
-        │   ├── related-features.md  # 相关功能
-        │   └── decisions.md         # 决策记录
+        ├── history/                     # 历史信息
+        │   ├── related-features.md     # 相关功能
+        │   └── decisions.md            # 决策记录
         │
-        └── constraints/              # 约束条件
-            ├── technical.md         # 技术约束
-            ├── security.md          # 安全要求
-            └── performance.md       # 性能要求
+        └── constraints/                 # 约束条件
+            ├── technical.md            # 技术约束
+            ├── security.md             # 安全要求
+            └── performance.md          # 性能要求
 
       file_template: |
         # {{title}}
@@ -5311,6 +5876,17 @@ sections:
 
         ## 详细内容
         {{content}}
+
+        ## 代码示例（如适用）
+        {{#if code_examples}}
+        {{#each code_examples}}
+        ### {{title}}
+        ```{{language}}
+        {{code}}
+        ```
+        **说明**: {{description}}
+        {{/each}}
+        {{/if}}
 
         ## 需求关联
         - 关联需求点: {{related_requirement}}
@@ -5332,6 +5908,8 @@ elicitation:
     - "添加更多问题"
     - "删除不相关问题"
     - "修改问题措辞"
+    - "添加子问题"
+    - "要求提供代码示例"
     - "进入下一阶段"
 ==================== END: .xiaoma-core/templates/rag-questions-tmpl.yaml ====================
 
