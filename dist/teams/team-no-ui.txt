@@ -298,6 +298,7 @@ commands:
   - create-brownfield-story: 运行任务 brownfield-create-story.md
   - create-epic: 为现有项目项目创建模块 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
+  - create-prd-from-rag: 基于Analyst需求分析产出物生成PRD (任务 create-prd-from-rag.md，模板 prd-from-rag-tmpl.yaml)
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
   - shard-prd: 为提供的 prd.md 运行任务 shard-doc.md (如果未找到则询问)
@@ -315,11 +316,13 @@ dependencies:
     - correct-course.md
     - create-deep-research-prompt.md
     - create-doc.md
+    - create-prd-from-rag.md
     - execute-checklist.md
     - shard-doc.md
   templates:
     - brownfield-prd-tmpl.yaml
     - prd-tmpl.yaml
+    - prd-from-rag-tmpl.yaml
 ```
 ==================== END: .xiaoma-core/agents/pm.md ====================
 
@@ -363,6 +366,7 @@ commands:
   - create-brownfield-architecture: 使用 create-doc 和 brownfield-architecture-tmpl.yaml
   - create-front-end-architecture: 使用 create-doc 和 front-end-architecture-tmpl.yaml
   - create-full-stack-architecture: 使用 create-doc 和 fullstack-architecture-tmpl.yaml
+  - create-incremental-architecture: 基于知识库和PRD进行架构增量设计 (任务 create-incremental-architecture.md，模板 incremental-architecture-tmpl.yaml)
   - doc-out: 将完整文档输出到当前目标文件
   - document-project: 执行任务 document-project.md
   - execute-checklist {checklist}: 运行任务 execute-checklist (默认为->architect-checklist)
@@ -379,6 +383,7 @@ dependencies:
   tasks:
     - create-deep-research-prompt.md
     - create-doc.md
+    - create-incremental-architecture.md
     - document-project.md
     - execute-checklist.md
     - shard-doc.md
@@ -387,6 +392,7 @@ dependencies:
     - brownfield-architecture-tmpl.yaml
     - front-end-architecture-tmpl.yaml
     - fullstack-architecture-tmpl.yaml
+    - incremental-architecture-tmpl.yaml
 ```
 ==================== END: .xiaoma-core/agents/architect.md ====================
 
@@ -7349,6 +7355,444 @@ The story creation is successful when:
 - **Implicit:** An annotated change-checklist (or the record of its completion) reflecting the discussions, findings, and decisions made during the process.
 ==================== END: .xiaoma-core/tasks/correct-course.md ====================
 
+==================== START: .xiaoma-core/tasks/create-prd-from-rag.md ====================
+# 基于需求分析创建PRD任务
+
+## Purpose
+
+基于 Analyst 智能体的需求分析产出物（`docs/rag/` 目录），结合原始需求文档，生成高质量的 PRD 或 Epic 文档。本任务是 Analyst 智能体的下游任务，承接需求分析报告并转化为可执行的产品文档。
+
+## 上游交接物
+
+```yaml
+必需输入:
+  - docs/rag/_analysis-report.md      # 需求分析报告（核心输入）
+  - docs/rag/_requirement-parsing.yaml # 需求解析结果
+  - req.txt                            # 原始需求文档
+
+可选输入:
+  - docs/rag/_questions.md            # 问题清单
+  - docs/rag/_index.md                # 知识索引
+  - docs/rag/business/                # 业务知识
+  - docs/rag/technical/               # 技术知识
+  - docs/rag/constraints/             # 约束条件
+```
+
+## Workflow Overview
+
+```
+Analyst产出物 → 输入验证 → 复杂度评估 → 文档类型选择 → 文档生成 → 质量检查
+```
+
+---
+
+## Phase 1: 输入验证与上下文加载
+
+### 1.1 验证上游交接物
+
+```yaml
+执行步骤:
+  步骤1_检查必需文件:
+    动作: 检查 docs/rag/ 目录是否存在以下文件
+    必需文件:
+      - _analysis-report.md
+      - _requirement-parsing.yaml
+    缺失处理: |
+      如果缺失必需文件，提示用户：
+      "未找到需求分析报告。请先执行 Analyst 智能体的 *analyze-requirement 命令完成需求分析。"
+
+  步骤2_加载分析报告:
+    动作: 读取并解析 _analysis-report.md
+    提取内容:
+      - 需求概述（背景、目标、范围）
+      - 功能分析（功能清单、优先级、依赖关系）
+      - 用户分析（角色、旅程）
+      - 数据分析（实体、关系）
+      - 技术分析（可行性、兼容性）
+      - 业务规则汇总
+      - 差距分析
+      - 风险分析
+      - 待澄清事项
+
+  步骤3_加载原始需求:
+    动作: 读取 req.txt 原始需求文档
+    目的: 确保不遗漏原始需求中的细节
+
+  步骤4_加载知识上下文:
+    动作: 扫描 docs/rag/ 子目录，加载相关知识文件
+    加载顺序:
+      - technical/architecture.md      # 技术架构
+      - technical/coding-standards/    # 编码规范
+      - technical/data-model.md        # 数据模型
+      - business/                      # 业务知识
+      - constraints/                   # 约束条件
+```
+
+### 1.2 上下文整合
+
+```yaml
+整合输出:
+  项目上下文:
+    - 项目背景与目标
+    - 技术栈与架构约束
+    - 现有系统兼容性要求
+
+  需求上下文:
+    - 功能清单与优先级
+    - 用户角色与权限
+    - 数据实体与关系
+    - 业务规则
+
+  约束上下文:
+    - 技术约束
+    - 安全合规要求
+    - 性能要求
+
+  风险上下文:
+    - 已识别风险
+    - 待澄清事项
+```
+
+---
+
+## Phase 2: 复杂度评估与文档类型选择
+
+### 2.1 复杂度评估矩阵
+
+```yaml
+评估维度:
+  功能复杂度:
+    低: 功能点 <= 3，无复杂业务流程
+    中: 功能点 4-8，存在中等复杂度业务流程
+    高: 功能点 > 8，存在复杂业务流程或多系统集成
+
+  技术复杂度:
+    低: 遵循现有模式，无架构变更
+    中: 部分新技术引入，小范围架构调整
+    高: 重大技术决策，架构级变更
+
+  集成复杂度:
+    低: 单一系统，无外部集成
+    中: 2-3个系统集成
+    高: 多系统集成，复杂数据流
+
+  风险等级:
+    低: 风险清单中无高风险项
+    中: 存在1-2个中等风险项
+    高: 存在高风险项或多个中等风险项
+```
+
+### 2.2 文档类型选择规则
+
+```yaml
+选择规则:
+  生成完整PRD:
+    条件:
+      - 功能复杂度 >= 中 OR
+      - 技术复杂度 >= 中 OR
+      - 需要架构设计 OR
+      - 涉及多个Epic
+    输出: docs/prd.md
+    模板: prd-from-rag-tmpl.yaml
+
+  生成单Epic:
+    条件:
+      - 功能复杂度 = 低
+      - 技术复杂度 = 低
+      - 可在1-3个Story内完成
+      - 无重大架构变更
+    输出: docs/epic-{name}.md
+    模板: epic-from-rag-tmpl.yaml
+
+  需要澄清:
+    条件:
+      - 待澄清事项 > 5 OR
+      - 存在阻塞性待澄清项
+    动作: 暂停生成，先与用户澄清关键问题
+```
+
+### 2.3 交互确认
+
+```yaml
+确认点:
+  展示内容:
+    - 复杂度评估结果
+    - 建议的文档类型
+    - 预计的Epic/Story数量
+    - 关键风险提示
+
+  用户选项:
+    - 确认并继续
+    - 调整文档类型
+    - 先澄清待定事项
+```
+
+---
+
+## Phase 3: PRD文档生成
+
+### 3.1 PRD结构映射
+
+将分析报告内容映射到PRD结构：
+
+```yaml
+映射规则:
+  目标与背景:
+    来源: 分析报告.需求概述
+    映射:
+      - 需求背景 → PRD.背景上下文
+      - 核心目标 → PRD.目标
+      - 范围边界 → PRD.范围定义
+
+  需求章节:
+    来源: 分析报告.功能分析 + 业务规则汇总
+    映射:
+      - 功能清单 → PRD.功能性需求 (FR)
+      - 业务规则 → PRD.功能性需求 (补充)
+      - 技术分析.性能要求 → PRD.非功能性需求 (NFR)
+      - 约束条件 → PRD.非功能性需求 (NFR)
+
+  UI设计目标:
+    来源: 分析报告.用户分析
+    映射:
+      - 用户角色 → PRD.用户角色定义
+      - 用户旅程 → PRD.关键交互范式
+      - 功能清单中的UI相关项 → PRD.核心屏幕与视图
+
+  技术假设:
+    来源: docs/rag/technical/ + 分析报告.技术分析
+    映射:
+      - architecture.md → PRD.服务架构
+      - coding-standards/ → PRD.编码规范约束
+      - 技术可行性评估 → PRD.技术假设
+
+  Epic结构:
+    来源: 分析报告.功能分析
+    映射:
+      - 功能清单(按优先级分组) → Epic列表
+      - 功能依赖关系 → Story顺序
+      - P0功能 → Epic 1 (核心功能)
+      - P1功能 → Epic 2+ (增强功能)
+
+  风险与待办:
+    来源: 分析报告.风险分析 + 待澄清事项
+    映射:
+      - 风险清单 → PRD.风险评估
+      - 待澄清事项 → PRD.开放问题
+```
+
+### 3.2 Epic/Story 生成规则
+
+```yaml
+Epic生成规则:
+  分组策略:
+    - 按功能模块分组
+    - 每个Epic交付独立可测试的功能增量
+    - Epic 1 优先包含P0功能
+    - 后续Epic按优先级和依赖关系排列
+
+  Epic结构:
+    - Epic标题
+    - Epic目标 (2-3句话)
+    - 包含的功能点
+    - 技术实现要点（来自技术知识）
+    - Story列表
+
+Story生成规则:
+  拆分策略:
+    - 每个Story是垂直切片
+    - 单个AI Agent会话可完成（2-4小时工作量）
+    - 明确的输入输出边界
+
+  Story结构:
+    - Story标题
+    - 用户故事格式 (As a... I want... So that...)
+    - 验收标准 (基于分析报告中的业务规则)
+    - 技术实现提示（来自技术知识）
+    - 集成验证点（来自数据关系分析）
+
+  排序规则:
+    - 基础设施优先
+    - 数据模型优先于业务逻辑
+    - 核心流程优先于边缘场景
+    - 遵循功能依赖关系图
+```
+
+### 3.3 知识融合
+
+```yaml
+知识融合点:
+  业务规则融合:
+    来源: docs/rag/business/rules-*.md
+    融合到: 验收标准、业务逻辑描述
+
+  数据模型融合:
+    来源: docs/rag/technical/data-model.md
+    融合到: 数据实体定义、关联关系说明
+
+  编码规范融合:
+    来源: docs/rag/technical/coding-standards/
+    融合到: 技术实现提示、代码示例引用
+
+  中间件规范融合:
+    来源: docs/rag/technical/middleware/
+    融合到: 技术假设、实现约束
+
+  安全要求融合:
+    来源: docs/rag/constraints/security.md
+    融合到: 非功能性需求、验收标准
+```
+
+---
+
+## Phase 4: 质量检查与输出
+
+### 4.1 PRD质量检查清单
+
+```yaml
+完整性检查:
+  - [ ] 所有P0功能已覆盖
+  - [ ] 所有P1功能已覆盖或标记为后续迭代
+  - [ ] 所有已识别的业务规则已融入
+  - [ ] 所有数据实体已定义
+  - [ ] 所有用户角色已覆盖
+
+一致性检查:
+  - [ ] 功能需求与分析报告一致
+  - [ ] 技术假设与知识库一致
+  - [ ] Epic/Story顺序符合依赖关系
+  - [ ] 验收标准可测试
+
+可执行性检查:
+  - [ ] 每个Story大小适合AI Agent执行
+  - [ ] Story之间无循环依赖
+  - [ ] 技术实现路径清晰
+  - [ ] 风险缓解措施具体
+
+交接完整性检查:
+  - [ ] 包含UX专家提示
+  - [ ] 包含架构师提示
+  - [ ] 待澄清事项已列出
+```
+
+### 4.2 输出文件
+
+```yaml
+主输出:
+  PRD文档:
+    路径: docs/prd.md
+    格式: Markdown
+
+  或 Epic文档:
+    路径: docs/epic-{name}.md
+    格式: Markdown
+
+辅助输出:
+  知识引用索引:
+    路径: docs/prd-knowledge-refs.md
+    内容: PRD中引用的知识文件清单
+
+  待澄清事项:
+    路径: docs/prd-open-questions.md
+    内容: 需要进一步确认的问题
+```
+
+---
+
+## Phase 5: 下游交接
+
+### 5.1 交接给UX专家
+
+```yaml
+UX专家交接:
+  必读文件:
+    - docs/prd.md (UI设计目标章节)
+    - docs/rag/_analysis-report.md (用户分析章节)
+
+  关注点:
+    - 用户角色与权限
+    - 核心屏幕与视图
+    - 关键用户旅程
+    - 无障碍性要求
+
+  建议命令: "*create-ux-design docs/prd.md"
+```
+
+### 5.2 交接给架构师
+
+```yaml
+架构师交接:
+  必读文件:
+    - docs/prd.md (技术假设章节)
+    - docs/rag/technical/ (技术知识目录)
+    - docs/rag/_analysis-report.md (技术分析章节)
+
+  关注点:
+    - 技术栈与架构约束
+    - 数据模型与关系
+    - 集成点与接口
+    - 性能与安全要求
+
+  建议命令: "*create-architecture docs/prd.md"
+```
+
+---
+
+## 使用说明
+
+### 激活命令
+
+```
+*create-prd-from-rag [rag_path]
+```
+
+### 执行参数
+
+```yaml
+参数:
+  rag_path: RAG知识目录路径 (默认: docs/rag/)
+  output_path: PRD输出路径 (默认: docs/prd.md)
+  doc_type: 文档类型 (auto|prd|epic, 默认: auto)
+  interactive: 交互模式 (默认: true)
+```
+
+### 交互模式流程
+
+1. **验证阶段**: 检查上游交接物完整性
+2. **评估阶段**: 展示复杂度评估结果，确认文档类型
+3. **生成阶段**: 逐章节生成PRD，关键节点请求确认
+4. **检查阶段**: 执行质量检查清单
+5. **输出阶段**: 生成最终文档，提示下游交接
+
+### YOLO模式
+
+通过 `*yolo` 命令切换YOLO模式，一次性完成所有步骤，跳过中间确认环节。
+
+---
+
+## 任务完成标志
+
+```yaml
+完成条件:
+  必要输出:
+    - docs/prd.md 或 docs/epic-{name}.md
+
+  完成提示: |
+    ✅ PRD/Epic 文档生成完成！
+
+    📄 输出文件: {output_path}
+    📊 Epic数量: {epic_count}
+    📝 Story数量: {story_count}
+
+    🔄 下一步建议:
+    - UX设计: *create-ux-design docs/prd.md
+    - 架构设计: *create-architecture docs/prd.md
+
+    ⚠️ 待澄清事项: {open_questions_count} 项
+    请在开发前确认这些问题。
+```
+==================== END: .xiaoma-core/tasks/create-prd-from-rag.md ====================
+
 ==================== START: .xiaoma-core/tasks/execute-checklist.md ====================
 <!-- Powered by XIAOMA™ Core -->
 
@@ -7912,6 +8356,419 @@ sections:
               - template: "IV2: {{integration_point_verification}}"
               - template: "IV3: {{performance_impact_verification}}"
 ==================== END: .xiaoma-core/templates/brownfield-prd-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/prd-from-rag-tmpl.yaml ====================
+template:
+  id: prd-from-rag-template-v1
+  name: 基于需求分析的PRD文档
+  version: 1.0
+  description: 基于Analyst智能体的需求分析产出物生成PRD
+  output:
+    format: markdown
+    filename: docs/prd.md
+    title: "{{project_name}} 产品需求文档 (PRD)"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  upstream:
+    agent: analyst
+    required_files:
+      - docs/rag/_analysis-report.md
+      - docs/rag/_requirement-parsing.yaml
+    optional_files:
+      - docs/rag/_questions.md
+      - docs/rag/_index.md
+      - docs/rag/business/*
+      - docs/rag/technical/*
+      - docs/rag/constraints/*
+
+sections:
+  - id: input-validation
+    title: 输入验证
+    internal: true
+    instruction: |
+      在开始生成PRD之前，执行以下验证：
+
+      1. **检查必需文件**：
+         - docs/rag/_analysis-report.md 是否存在
+         - docs/rag/_requirement-parsing.yaml 是否存在
+         - req.txt 原始需求文档是否存在
+
+      2. **加载分析报告**：
+         - 读取并解析 _analysis-report.md 的所有章节
+         - 提取关键信息：功能清单、用户角色、数据实体、风险、待澄清事项
+
+      3. **加载知识上下文**：
+         - 扫描 docs/rag/technical/ 获取技术约束
+         - 扫描 docs/rag/business/ 获取业务规则
+         - 扫描 docs/rag/constraints/ 获取约束条件
+
+      如果缺少必需文件，提示：
+      "⚠️ 未找到需求分析报告。请先执行 Analyst 智能体完成需求分析：*analyze-requirement req.txt"
+
+  - id: complexity-assessment
+    title: 复杂度评估
+    instruction: |
+      基于分析报告内容，评估项目复杂度并推荐文档类型。
+
+      **评估维度**：
+      1. 功能复杂度：基于功能清单数量和依赖关系
+      2. 技术复杂度：基于技术可行性评估
+      3. 集成复杂度：基于数据关系和外部依赖
+      4. 风险等级：基于风险清单
+
+      **推荐文档类型**：
+      - 完整PRD：复杂度 >= 中等，或涉及多个Epic
+      - 单Epic：复杂度低，可在1-3个Story内完成
+
+      展示评估结果并请用户确认文档类型。
+    elicit: true
+    sections:
+      - id: assessment-result
+        title: 评估结果
+        type: table
+        columns: [评估维度, 等级, 依据]
+      - id: recommendation
+        title: 推荐方案
+        instruction: 基于评估结果给出文档类型推荐和理由
+
+  - id: goals-context
+    title: 目标与背景
+    instruction: |
+      从分析报告的"需求概述"章节提取内容，映射到PRD结构。
+
+      **映射规则**：
+      - 分析报告.需求背景 → 背景上下文
+      - 分析报告.核心目标 → 目标
+      - 分析报告.范围边界 → 范围定义
+
+      如果分析报告中信息不足，参考 req.txt 原始需求补充。
+    sections:
+      - id: goals
+        title: 目标
+        type: bullet-list
+        instruction: |
+          从分析报告提取核心目标，转换为PRD目标格式。
+          每个目标应该是：
+          - 可衡量的成果
+          - 用户或业务价值
+          - 与原始需求对应
+      - id: background
+        title: 背景上下文
+        type: paragraphs
+        instruction: |
+          综合以下来源生成背景描述：
+          - 分析报告.需求背景
+          - 分析报告.业务分析
+          - 原始需求文档中的背景信息
+      - id: scope
+        title: 范围定义
+        instruction: 从分析报告.范围边界提取，明确包含和不包含的内容
+        sections:
+          - id: in-scope
+            title: 范围内
+            type: bullet-list
+          - id: out-of-scope
+            title: 范围外
+            type: bullet-list
+      - id: changelog
+        title: 变更日志
+        type: table
+        columns: [日期, 版本, 描述, 作者]
+
+  - id: requirements
+    title: 需求
+    instruction: |
+      从分析报告的"功能分析"和"业务规则汇总"章节提取需求。
+
+      **功能性需求来源**：
+      - 分析报告.功能清单 → FR列表
+      - 分析报告.业务规则 → FR补充说明
+      - docs/rag/business/rules-*.md → 详细规则
+
+      **非功能性需求来源**：
+      - 分析报告.技术分析.性能要求
+      - docs/rag/constraints/security.md
+      - docs/rag/constraints/performance.md
+
+      确保每个需求都可追溯到分析报告或知识库文档。
+    elicit: true
+    sections:
+      - id: functional
+        title: 功能性需求
+        type: numbered-list
+        prefix: FR
+        instruction: |
+          按优先级排列功能性需求：
+          - P0功能优先列出
+          - 每个FR包含：需求描述 + 来源标注
+          - 复杂业务规则单独标注参考文档
+
+          格式示例：
+          FR1: [P0] 用户可以创建订单 (来源: 分析报告.功能清单.F001)
+        examples:
+          - "FR1: [P0] 系统支持用户通过手机号注册账户 (来源: _analysis-report.md#功能清单)"
+          - "FR2: [P0] 订单状态流转遵循：待支付→已支付→已发货→已完成 (来源: business/rules-order.md)"
+      - id: non-functional
+        title: 非功能性需求
+        type: numbered-list
+        prefix: NFR
+        instruction: |
+          从约束条件和技术分析中提取非功能性需求。
+          包括：性能、安全、可用性、兼容性等。
+        examples:
+          - "NFR1: 接口响应时间P99 < 500ms (来源: constraints/performance.md)"
+          - "NFR2: 敏感数据传输必须使用HTTPS加密 (来源: constraints/security.md)"
+
+  - id: data-model
+    title: 数据模型
+    instruction: |
+      从分析报告的"数据分析"章节和技术知识中提取数据模型。
+
+      **来源**：
+      - 分析报告.数据实体清单
+      - 分析报告.数据关系图
+      - docs/rag/technical/data-model.md
+    sections:
+      - id: entities
+        title: 数据实体
+        type: table
+        columns: [实体名称, 描述, 核心属性, 来源]
+        instruction: 列出所有数据实体及其核心属性
+      - id: relationships
+        title: 数据关系
+        instruction: |
+          描述实体间的关系，使用Mermaid ER图表示。
+          从分析报告.数据关系图提取，补充详细说明。
+        examples:
+          - |
+            ```mermaid
+            erDiagram
+                User ||--o{ Order : creates
+                Order ||--|{ OrderItem : contains
+            ```
+
+  - id: technical-constraints
+    title: 技术约束
+    instruction: |
+      整合技术知识库中的约束条件，指导后续架构设计。
+
+      **来源**：
+      - docs/rag/technical/architecture.md
+      - docs/rag/technical/tech-stack.md
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/middleware/
+      - 分析报告.技术分析.与现有系统兼容性
+    elicit: true
+    sections:
+      - id: tech-stack
+        title: 技术栈约束
+        instruction: |
+          从技术知识库提取技术栈要求：
+          - 后端框架和版本
+          - 数据库类型和版本
+          - 中间件要求
+        template: |
+          **后端**: {{backend_framework}}
+          **数据库**: {{database}}
+          **缓存**: {{cache}}
+          **消息队列**: {{mq}}
+      - id: architecture-constraints
+        title: 架构约束
+        instruction: 从 architecture.md 提取架构模式和约束
+      - id: coding-standards
+        title: 编码规范约束
+        instruction: |
+          从 coding-standards/ 目录提取关键规范：
+          - 命名规范
+          - 分层规范
+          - 异常处理规范
+      - id: integration-constraints
+        title: 集成约束
+        instruction: 从分析报告.技术分析提取集成相关约束
+
+  - id: epic-list
+    title: 模块列表
+    instruction: |
+      基于分析报告的功能分析，规划Epic结构。
+
+      **规划原则**：
+      - 按功能优先级分组：P0功能 → Epic 1
+      - 遵循功能依赖关系
+      - 每个Epic交付独立可测试的功能增量
+
+      **Epic分组策略**：
+      1. 从分析报告.功能清单提取所有功能
+      2. 按优先级排序：P0 > P1 > P2
+      3. 分析依赖关系，确定Epic边界
+      4. 每个Epic包含相关联的功能集
+
+      展示Epic列表，请用户确认分组是否合理。
+    elicit: true
+    sections:
+      - id: epic-overview
+        title: Epic概览
+        type: table
+        columns: [Epic, 标题, 包含功能, 优先级, Story数量(预估)]
+        instruction: 展示所有Epic的概览表格
+
+  - id: epic-details
+    title: "Epic {{epic_number}}: {{epic_title}}"
+    repeatable: true
+    instruction: |
+      为每个Epic生成详细内容，包含所有Story和验收标准。
+
+      **Epic内容来源**：
+      - 分析报告.功能清单 (对应功能)
+      - 分析报告.业务规则 (相关规则)
+      - docs/rag/business/ (详细业务知识)
+      - docs/rag/technical/ (技术实现参考)
+
+      **Story生成规则**：
+      - 每个Story是垂直切片
+      - 单个AI Agent会话可完成（2-4小时）
+      - 验收标准来源于分析报告中的业务规则
+      - 包含技术实现提示（来自技术知识）
+
+      **Story排序**：
+      - 遵循分析报告.功能依赖关系
+      - 基础设施和数据模型优先
+      - 核心流程优先于边缘场景
+    elicit: true
+    template: |
+      **Epic目标**: {{epic_goal}}
+
+      **包含功能**:
+      {{功能列表，来源于分析报告}}
+
+      **技术要点**:
+      {{技术实现要点，来源于技术知识库}}
+    sections:
+      - id: story
+        title: "Story {{epic_number}}.{{story_number}}: {{story_title}}"
+        repeatable: true
+        template: |
+          作为一名 {{user_type}}，
+          我想要 {{action}}，
+          以便 {{benefit}}。
+        sections:
+          - id: acceptance-criteria
+            title: 验收标准
+            type: numbered-list
+            instruction: |
+              从以下来源生成验收标准：
+              - 分析报告.业务规则 (对应规则)
+              - docs/rag/business/rules-*.md (详细规则)
+              - 分析报告.数据分析 (数据约束)
+
+              每个标准必须：
+              - 可测试、可验证
+              - 明确无歧义
+              - 包含边界条件
+            item_template: "AC{{criterion_number}}: {{criteria}} (来源: {{source}})"
+          - id: technical-hints
+            title: 技术实现提示
+            instruction: |
+              从技术知识库提取实现提示：
+              - 相关编码规范
+              - 中间件使用示例
+              - 数据模型参考
+            type: bullet-list
+          - id: knowledge-refs
+            title: 知识引用
+            instruction: 列出Story实现时需要参考的知识文档
+            type: bullet-list
+
+  - id: risks-and-open-items
+    title: 风险与待澄清事项
+    instruction: |
+      从分析报告直接提取风险和待澄清事项。
+
+      **来源**：
+      - 分析报告.风险分析
+      - 分析报告.待澄清事项
+    sections:
+      - id: risks
+        title: 风险清单
+        type: table
+        columns: [风险ID, 风险描述, 等级, 缓解措施]
+        instruction: 从分析报告.风险清单直接映射
+      - id: open-questions
+        title: 待澄清事项
+        type: table
+        columns: [序号, 问题, 上下文, 建议选项, 状态]
+        instruction: |
+          从分析报告.待澄清事项提取。
+          标注状态：待确认/已确认/已关闭
+          在PRD评审时需要逐一确认这些问题。
+
+  - id: knowledge-index
+    title: 知识引用索引
+    instruction: |
+      列出本PRD引用的所有知识文档，便于追溯和维护。
+    sections:
+      - id: analysis-refs
+        title: 分析报告引用
+        type: table
+        columns: [章节, 引用位置, 用途]
+      - id: knowledge-refs
+        title: 知识库引用
+        type: table
+        columns: [文件路径, 引用位置, 用途]
+
+  - id: next-steps
+    title: 后续步骤
+    sections:
+      - id: ux-expert-prompt
+        title: UX专家交接
+        instruction: |
+          生成给UX专家的交接提示，包含：
+          - 需要关注的用户角色
+          - 核心屏幕和交互
+          - 品牌和无障碍要求
+          - 相关知识文档路径
+        template: |
+          **交接给UX专家**
+
+          请基于本PRD的用户分析部分设计UI/UX方案：
+
+          **关键输入**：
+          - PRD文档: docs/prd.md
+          - 用户分析: docs/rag/_analysis-report.md#用户分析
+          - 用户角色: {{user_roles}}
+          - 核心屏幕: {{core_screens}}
+
+          **设计重点**：
+          {{design_focus}}
+
+          **执行命令**: *create-ux-design docs/prd.md
+      - id: architect-prompt
+        title: 架构师交接
+        instruction: |
+          生成给架构师的交接提示，包含：
+          - 技术栈约束
+          - 数据模型要点
+          - 集成需求
+          - 相关知识文档路径
+        template: |
+          **交接给架构师**
+
+          请基于本PRD和技术知识库设计系统架构：
+
+          **关键输入**：
+          - PRD文档: docs/prd.md
+          - 技术分析: docs/rag/_analysis-report.md#技术分析
+          - 技术知识: docs/rag/technical/
+          - 数据模型: docs/rag/technical/data-model.md
+
+          **架构重点**：
+          - 技术栈: {{tech_stack}}
+          - 关键集成点: {{integration_points}}
+          - 性能要求: {{performance_requirements}}
+
+          **执行命令**: *create-architecture docs/prd.md
+==================== END: .xiaoma-core/templates/prd-from-rag-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/change-checklist.md ====================
 <!-- Powered by XiaoMa™ Core -->
@@ -8482,6 +9339,534 @@ After presenting the report, ask if the user wants:
 
 None Listed
 ==================== END: .xiaoma-core/data/technical-preferences.md ====================
+
+==================== START: .xiaoma-core/tasks/create-incremental-architecture.md ====================
+# 基于知识库的架构增量设计任务
+
+## Purpose
+
+基于 Analyst 智能体的技术知识库产出（`docs/rag/technical/`）和 PM 智能体生成的 PRD/Epic 文档，进行架构增量设计。通过对比现有技术架构与新需求，识别技术变动点，生成架构增量设计文档。
+
+## 上游交接物
+
+```yaml
+必需输入:
+  PRD/Epic文档:
+    - docs/prd.md                       # PM生成的PRD文档
+    - 或 docs/epic-{name}.md            # PM生成的Epic文档
+
+  技术知识库:
+    - docs/rag/technical/architecture.md       # 现有技术架构
+    - docs/rag/technical/tech-stack.md         # 技术栈详情
+    - docs/rag/technical/module-structure.md   # 模块结构
+    - docs/rag/technical/data-model.md         # 数据模型
+
+可选输入:
+  分析报告:
+    - docs/rag/_analysis-report.md      # 需求分析报告（技术分析章节）
+
+  编码规范:
+    - docs/rag/technical/coding-standards/    # 编码规范目录
+    - docs/rag/technical/middleware/          # 中间件规范目录
+
+  约束条件:
+    - docs/rag/constraints/security.md        # 安全要求
+    - docs/rag/constraints/performance.md     # 性能要求
+```
+
+## Workflow Overview
+
+```
+技术知识库 + PRD → 架构差异分析 → 变动点识别 → 增量设计 → 影响评估 → 架构增量文档
+```
+
+---
+
+## Phase 1: 输入验证与上下文加载
+
+### 1.1 验证上游交接物
+
+```yaml
+执行步骤:
+  步骤1_检查PRD文档:
+    动作: 检查 docs/prd.md 或 docs/epic-{name}.md 是否存在
+    缺失处理: |
+      如果缺失PRD文档，提示用户：
+      "未找到PRD文档。请先执行 PM 智能体的 *create-prd-from-rag 命令生成PRD。"
+
+  步骤2_检查技术知识库:
+    动作: 检查 docs/rag/technical/ 目录是否存在核心文件
+    核心文件:
+      - architecture.md (现有架构)
+      - data-model.md (数据模型)
+    缺失处理: |
+      如果技术知识库不完整，提示用户：
+      "技术知识库不完整。建议先执行 Analyst 智能体完善技术知识：
+      - 缺少 architecture.md：需要补充整体技术架构信息
+      - 缺少 data-model.md：需要补充现有数据模型信息"
+
+  步骤3_加载现有架构:
+    动作: 读取并解析技术知识库
+    提取内容:
+      - 整体架构模式（单体/微服务/DDD等）
+      - 技术栈详情（框架、数据库、中间件）
+      - 模块结构（包结构、分层规范）
+      - 现有数据模型（表结构、实体关系）
+      - 编码规范（命名、注释、异常处理）
+      - 中间件使用方式（Redis、MQ、ES等）
+
+  步骤4_加载PRD需求:
+    动作: 读取并解析PRD文档
+    提取内容:
+      - 功能性需求（FR列表）
+      - 非功能性需求（NFR列表）
+      - 数据实体与关系
+      - 技术约束
+      - Epic/Story结构
+```
+
+### 1.2 上下文整合视图
+
+```yaml
+整合输出:
+  现有架构视图:
+    架构模式: {从architecture.md提取}
+    技术栈:
+      后端: {框架、版本}
+      数据库: {类型、版本}
+      缓存: {类型、用途}
+      消息队列: {类型、用途}
+    模块结构: {包结构、分层}
+    数据模型: {现有实体、关系}
+
+  新需求视图:
+    功能需求: {FR列表}
+    数据需求: {新增/修改实体}
+    性能需求: {NFR中的性能要求}
+    安全需求: {NFR中的安全要求}
+```
+
+---
+
+## Phase 2: 架构差异分析
+
+### 2.1 技术变动检测
+
+```yaml
+检测维度:
+  架构层面变动:
+    检测项:
+      - 是否需要新增模块/服务
+      - 是否需要调整分层结构
+      - 是否需要引入新的架构模式
+    判定标准:
+      无变动: 完全遵循现有模块结构
+      小变动: 在现有模块内新增包/类
+      中变动: 新增独立模块
+      大变动: 需要调整整体架构
+
+  技术栈变动:
+    检测项:
+      - 是否需要引入新框架/库
+      - 是否需要升级现有依赖版本
+      - 是否需要新增中间件
+    判定标准:
+      无变动: 使用现有技术栈
+      小变动: 新增工具类库
+      中变动: 引入新中间件
+      大变动: 核心框架变更
+
+  数据模型变动:
+    检测项:
+      - 新增数据实体
+      - 修改现有实体（字段增减）
+      - 新增实体关系
+      - 索引变更
+    判定标准:
+      无变动: 完全使用现有表结构
+      小变动: 现有表新增字段
+      中变动: 新增表/修改关联关系
+      大变动: 数据模型重构
+
+  接口变动:
+    检测项:
+      - 新增API端点
+      - 修改现有API
+      - 新增外部系统集成
+    判定标准:
+      无变动: 无接口变更
+      小变动: 新增内部API
+      中变动: 修改公开API/新增集成
+      大变动: API版本升级
+
+  中间件变动:
+    检测项:
+      - Redis使用变化（新增key类型、缓存策略）
+      - MQ使用变化（新增Topic/Queue）
+      - 定时任务变化
+      - ES索引变化
+    判定标准:
+      无变动: 遵循现有使用方式
+      小变动: 新增使用场景
+      中变动: 新增配置/调整策略
+      大变动: 中间件架构调整
+```
+
+### 2.2 变动分析报告
+
+```yaml
+分析输出格式:
+  变动总览:
+    总体变动等级: 无/小/中/大
+    主要变动领域: [列表]
+    风险等级: 低/中/高
+
+  详细变动清单:
+    - 变动ID: CHG-001
+      领域: 数据模型
+      类型: 新增
+      描述: 新增订单实体
+      影响范围: order模块
+      关联需求: FR1, FR2
+      风险等级: 低
+
+  兼容性分析:
+    向后兼容: 是/否
+    需要迁移: 是/否
+    影响范围: [受影响的模块/服务]
+```
+
+---
+
+## Phase 3: 架构增量设计
+
+### 3.1 设计原则
+
+```yaml
+设计原则:
+  最小变动原则:
+    - 优先在现有架构内扩展
+    - 避免不必要的重构
+    - 保持与现有代码风格一致
+
+  渐进演进原则:
+    - 设计可分阶段实施的方案
+    - 支持增量部署和回滚
+    - 考虑向后兼容性
+
+  知识复用原则:
+    - 复用知识库中的编码规范
+    - 遵循现有中间件使用模式
+    - 参考已有代码示例
+```
+
+### 3.2 增量设计内容
+
+```yaml
+设计内容:
+  模块增量设计:
+    新增模块:
+      - 模块名称
+      - 职责描述
+      - 包结构（遵循现有规范）
+      - 与现有模块的关系
+    修改模块:
+      - 模块名称
+      - 修改内容
+      - 修改理由
+      - 影响评估
+
+  数据模型增量设计:
+    新增实体:
+      - 实体名称
+      - 表名（遵循命名规范）
+      - 字段定义（遵循字段规范）
+      - 索引设计
+      - DDL语句
+    修改实体:
+      - 实体名称
+      - 修改字段
+      - 迁移脚本
+      - 兼容性说明
+
+  接口增量设计:
+    新增API:
+      - 接口路径（遵循URL规范）
+      - 请求方法
+      - 请求参数（遵循参数规范）
+      - 响应格式（遵循响应规范）
+      - 错误码定义
+    修改API:
+      - 接口路径
+      - 变更内容
+      - 版本策略
+      - 兼容性说明
+
+  中间件增量设计:
+    Redis:
+      - 新增Key定义（遵循Key命名规范）
+      - 数据结构选择
+      - 过期策略
+      - 代码示例（参考知识库）
+    MQ:
+      - 新增Topic/Queue
+      - 消息格式
+      - 消费者配置
+      - 代码示例（参考知识库）
+    定时任务:
+      - 任务名称
+      - 执行周期
+      - 实现方式
+      - 代码示例（参考知识库）
+```
+
+### 3.3 知识库规范引用
+
+```yaml
+规范引用:
+  编码规范引用:
+    来源: docs/rag/technical/coding-standards/
+    引用内容:
+      - 命名规范 → 类/方法/变量命名
+      - 分层规范 → Controller/Service/DAO实现
+      - 异常处理 → 错误处理方式
+      - 日志规范 → 日志打印方式
+
+  中间件规范引用:
+    来源: docs/rag/technical/middleware/
+    引用内容:
+      - Redis规范 → 缓存实现参考
+      - MQ规范 → 消息处理参考
+      - 定时任务规范 → 任务实现参考
+
+  SQL规范引用:
+    来源: docs/rag/technical/sql-standards/
+    引用内容:
+      - 表设计规范 → DDL编写
+      - 查询规范 → SQL编写
+      - 性能规范 → 索引设计
+```
+
+---
+
+## Phase 4: 影响评估与风险分析
+
+### 4.1 影响评估
+
+```yaml
+评估维度:
+  代码影响:
+    - 新增代码量估算
+    - 修改代码范围
+    - 测试代码需求
+
+  数据影响:
+    - 数据迁移需求
+    - 数据一致性风险
+    - 备份恢复策略
+
+  性能影响:
+    - 新增负载评估
+    - 资源需求变化
+    - 性能测试要求
+
+  部署影响:
+    - 部署步骤变更
+    - 配置变更
+    - 回滚方案
+```
+
+### 4.2 风险分析
+
+```yaml
+风险分析:
+  技术风险:
+    - 新技术引入风险
+    - 兼容性风险
+    - 性能风险
+
+  业务风险:
+    - 功能影响范围
+    - 数据安全风险
+    - 服务可用性风险
+
+  实施风险:
+    - 实施复杂度
+    - 团队技能匹配
+    - 时间约束
+
+  缓解措施:
+    - 每个风险的缓解方案
+    - 监控和告警策略
+    - 应急预案
+```
+
+---
+
+## Phase 5: 输出架构增量文档
+
+### 5.1 文档结构
+
+```yaml
+文档结构:
+  元信息:
+    - 文档版本
+    - 生成时间
+    - 关联PRD
+    - 关联知识库版本
+
+  变动总览:
+    - 变动等级
+    - 主要变动领域
+    - 风险等级
+
+  详细设计:
+    - 模块增量设计
+    - 数据模型增量设计
+    - 接口增量设计
+    - 中间件增量设计
+
+  实施指南:
+    - 实施顺序
+    - 依赖关系
+    - 检查点
+
+  知识引用:
+    - 引用的规范文档
+    - 代码示例来源
+
+  下游交接:
+    - 开发者交接
+    - QA交接
+```
+
+### 5.2 输出文件
+
+```yaml
+主输出:
+  架构增量文档:
+    路径: docs/architecture-increment.md
+    格式: Markdown
+
+辅助输出:
+  变动清单:
+    路径: docs/architecture-changes.yaml
+    格式: YAML
+    内容: 结构化的变动清单，便于追踪
+
+  DDL脚本:
+    路径: docs/ddl/
+    格式: SQL
+    内容: 数据库变更脚本
+
+  知识引用索引:
+    路径: docs/architecture-knowledge-refs.md
+    内容: 设计中引用的知识库文档清单
+```
+
+---
+
+## Phase 6: 下游交接
+
+### 6.1 交接给开发者
+
+```yaml
+开发者交接:
+  必读文件:
+    - docs/architecture-increment.md    # 架构增量设计
+    - docs/prd.md                       # PRD文档
+    - docs/rag/technical/coding-standards/  # 编码规范
+
+  关注点:
+    - 新增模块的包结构
+    - 数据模型变更
+    - 中间件使用方式（含代码示例）
+    - 接口设计规范
+
+  建议命令: "*start-development docs/architecture-increment.md"
+```
+
+### 6.2 交接给QA
+
+```yaml
+QA交接:
+  必读文件:
+    - docs/architecture-increment.md    # 架构增量设计（测试策略章节）
+    - docs/prd.md                       # PRD文档（验收标准）
+
+  关注点:
+    - 功能测试范围
+    - 集成测试要求
+    - 回归测试范围
+    - 性能测试要求
+
+  建议命令: "*create-test-plan docs/architecture-increment.md"
+```
+
+---
+
+## 使用说明
+
+### 激活命令
+
+```
+*create-incremental-architecture [prd_path] [rag_path]
+```
+
+### 执行参数
+
+```yaml
+参数:
+  prd_path: PRD文档路径 (默认: docs/prd.md)
+  rag_path: RAG知识目录路径 (默认: docs/rag/)
+  output_path: 输出路径 (默认: docs/architecture-increment.md)
+  interactive: 交互模式 (默认: true)
+```
+
+### 交互模式流程
+
+1. **验证阶段**: 检查上游交接物完整性
+2. **分析阶段**: 展示架构差异分析结果，确认变动点
+3. **设计阶段**: 逐模块进行增量设计，关键节点请求确认
+4. **评估阶段**: 展示影响评估和风险分析
+5. **输出阶段**: 生成架构增量文档，提示下游交接
+
+### YOLO模式
+
+通过 `*yolo` 命令切换YOLO模式，一次性完成所有步骤，跳过中间确认环节。
+
+---
+
+## 任务完成标志
+
+```yaml
+完成条件:
+  必要输出:
+    - docs/architecture-increment.md
+
+  完成提示: |
+    ✅ 架构增量设计完成！
+
+    📄 输出文件: docs/architecture-increment.md
+    📊 变动等级: {change_level}
+    ⚠️ 风险等级: {risk_level}
+
+    📋 变动摘要:
+    - 模块变动: {module_changes}
+    - 数据模型变动: {data_model_changes}
+    - 接口变动: {api_changes}
+    - 中间件变动: {middleware_changes}
+
+    🔄 下一步建议:
+    - 开发实施: *start-development docs/architecture-increment.md
+    - 测试计划: *create-test-plan docs/architecture-increment.md
+
+    💡 请在开发前确认架构设计，特别关注:
+    - 风险清单中的高风险项
+    - 数据迁移方案
+    - 回滚策略
+```
+==================== END: .xiaoma-core/tasks/create-incremental-architecture.md ====================
 
 ==================== START: .xiaoma-core/templates/architecture-tmpl.yaml ====================
 template:
@@ -10817,6 +12202,610 @@ sections:
     title: 检查清单结果报告
     instruction: 在运行检查清单前，提议输出完整的架构文档。一旦用户确认，执行 architect-checklist 并在此处填充结果。
 ==================== END: .xiaoma-core/templates/fullstack-architecture-tmpl.yaml ====================
+
+==================== START: .xiaoma-core/templates/incremental-architecture-tmpl.yaml ====================
+template:
+  id: incremental-architecture-template-v1
+  name: 架构增量设计文档
+  version: 1.0
+  description: 基于知识库和PRD进行架构增量设计，识别技术变动并生成增量架构文档
+  output:
+    format: markdown
+    filename: docs/architecture-increment.md
+    title: "{{project_name}} 架构增量设计文档"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  upstream:
+    agents:
+      - analyst  # 提供技术知识库
+      - pm       # 提供PRD文档
+    required_files:
+      - docs/prd.md
+      - docs/rag/technical/architecture.md
+    optional_files:
+      - docs/rag/technical/tech-stack.md
+      - docs/rag/technical/data-model.md
+      - docs/rag/technical/module-structure.md
+      - docs/rag/technical/coding-standards/*
+      - docs/rag/technical/middleware/*
+      - docs/rag/constraints/*
+
+sections:
+  - id: input-validation
+    title: 输入验证
+    internal: true
+    instruction: |
+      在开始架构设计之前，执行以下验证：
+
+      1. **检查PRD文档**：
+         - docs/prd.md 或 docs/epic-{name}.md 是否存在
+         - 提取功能需求(FR)、非功能需求(NFR)、数据实体、技术约束
+
+      2. **检查技术知识库**：
+         - docs/rag/technical/architecture.md (现有架构)
+         - docs/rag/technical/data-model.md (现有数据模型)
+         - docs/rag/technical/coding-standards/ (编码规范)
+         - docs/rag/technical/middleware/ (中间件规范)
+
+      3. **加载现有架构信息**：
+         - 架构模式、技术栈、模块结构
+         - 现有数据实体和关系
+         - 编码规范和中间件使用方式
+
+      如果缺少必需文件，提示：
+      "⚠️ 缺少必需的输入文件：
+      - PRD文档：请先执行 PM 智能体 *create-prd-from-rag
+      - 技术知识库：请先执行 Analyst 智能体完善技术知识"
+
+  - id: document-header
+    title: 文档信息
+    sections:
+      - id: meta-info
+        title: 元信息
+        template: |
+          | 属性 | 值 |
+          |------|-----|
+          | 文档版本 | {{version}} |
+          | 生成时间 | {{timestamp}} |
+          | 关联PRD | {{prd_path}} |
+          | 技术知识库版本 | {{rag_version}} |
+          | 架构师 | Architect Agent |
+      - id: changelog
+        title: 变更日志
+        type: table
+        columns: [日期, 版本, 变更内容, 作者]
+
+  - id: existing-architecture-summary
+    title: 现有架构概要
+    instruction: |
+      从技术知识库提取现有架构信息，作为增量设计的基线。
+
+      **来源**：
+      - docs/rag/technical/architecture.md
+      - docs/rag/technical/tech-stack.md
+      - docs/rag/technical/module-structure.md
+    sections:
+      - id: architecture-pattern
+        title: 架构模式
+        instruction: 从 architecture.md 提取架构模式描述
+        template: |
+          **架构类型**: {{architecture_type}}
+          **分层结构**: {{layer_structure}}
+          **关键特征**: {{key_characteristics}}
+      - id: tech-stack-baseline
+        title: 技术栈基线
+        type: table
+        columns: [类别, 技术, 版本, 用途]
+        instruction: 从 tech-stack.md 提取当前技术栈
+      - id: module-structure-baseline
+        title: 模块结构基线
+        instruction: 从 module-structure.md 提取现有模块结构
+        type: code
+        language: plaintext
+      - id: data-model-baseline
+        title: 数据模型基线
+        instruction: |
+          从 data-model.md 提取现有数据实体清单。
+          使用Mermaid ER图展示核心实体关系。
+
+  - id: requirement-extraction
+    title: 需求提取
+    instruction: |
+      从PRD文档提取与架构相关的需求。
+
+      **来源**：
+      - docs/prd.md 或 docs/epic-{name}.md
+    sections:
+      - id: functional-requirements
+        title: 功能性需求摘要
+        type: table
+        columns: [需求ID, 需求描述, 架构影响, 优先级]
+        instruction: |
+          提取PRD中的功能性需求(FR)，评估每个需求的架构影响：
+          - 无影响：完全在现有架构内实现
+          - 小影响：需要新增类/方法
+          - 中影响：需要新增模块/表
+          - 大影响：需要架构调整
+      - id: non-functional-requirements
+        title: 非功能性需求摘要
+        type: table
+        columns: [需求ID, 需求描述, 约束类型, 架构影响]
+        instruction: 提取PRD中的非功能性需求(NFR)，特别关注性能、安全、可用性约束
+      - id: data-requirements
+        title: 数据需求摘要
+        type: table
+        columns: [实体名称, 操作类型, 核心属性, 关联实体]
+        instruction: |
+          从PRD中提取数据实体需求，标注：
+          - 新增：PRD中定义的新实体
+          - 修改：需要变更的现有实体
+          - 复用：直接使用的现有实体
+
+  - id: change-analysis
+    title: 架构变动分析
+    instruction: |
+      对比现有架构与新需求，识别所有技术变动点。
+
+      **分析维度**：
+      1. 架构层面变动
+      2. 技术栈变动
+      3. 数据模型变动
+      4. 接口变动
+      5. 中间件变动
+
+      展示分析结果，请用户确认变动识别是否准确。
+    elicit: true
+    sections:
+      - id: change-overview
+        title: 变动总览
+        template: |
+          | 维度 | 变动等级 | 变动数量 | 主要变动 |
+          |------|----------|----------|----------|
+          | 架构层面 | {{arch_level}} | {{arch_count}} | {{arch_main}} |
+          | 技术栈 | {{tech_level}} | {{tech_count}} | {{tech_main}} |
+          | 数据模型 | {{data_level}} | {{data_count}} | {{data_main}} |
+          | 接口 | {{api_level}} | {{api_count}} | {{api_main}} |
+          | 中间件 | {{mw_level}} | {{mw_count}} | {{mw_main}} |
+
+          **总体变动等级**: {{overall_level}}
+          **风险等级**: {{risk_level}}
+      - id: architecture-changes
+        title: 架构层面变动
+        condition: 存在架构层面变动
+        sections:
+          - id: new-modules
+            title: 新增模块
+            type: table
+            columns: [模块名称, 职责, 所属层, 关联需求]
+          - id: modified-modules
+            title: 修改模块
+            type: table
+            columns: [模块名称, 变更内容, 变更原因, 关联需求]
+      - id: tech-stack-changes
+        title: 技术栈变动
+        condition: 存在技术栈变动
+        sections:
+          - id: new-technologies
+            title: 新增技术
+            type: table
+            columns: [技术名称, 版本, 用途, 引入理由, 替代方案]
+          - id: version-upgrades
+            title: 版本升级
+            type: table
+            columns: [技术名称, 当前版本, 目标版本, 升级原因, 兼容性风险]
+      - id: data-model-changes
+        title: 数据模型变动
+        sections:
+          - id: new-entities
+            title: 新增实体
+            type: table
+            columns: [实体名称, 表名, 核心字段, 关联实体, 关联需求]
+          - id: modified-entities
+            title: 修改实体
+            type: table
+            columns: [实体名称, 变更字段, 变更类型, 兼容性, 关联需求]
+          - id: new-relationships
+            title: 新增关系
+            type: table
+            columns: [源实体, 目标实体, 关系类型, 关联字段, 关联需求]
+      - id: api-changes
+        title: 接口变动
+        condition: 存在接口变动
+        sections:
+          - id: new-apis
+            title: 新增API
+            type: table
+            columns: [接口路径, 方法, 功能描述, 关联需求]
+          - id: modified-apis
+            title: 修改API
+            type: table
+            columns: [接口路径, 变更内容, 兼容性策略, 关联需求]
+      - id: middleware-changes
+        title: 中间件变动
+        condition: 存在中间件变动
+        sections:
+          - id: redis-changes
+            title: Redis变动
+            type: table
+            columns: [Key名称, 数据结构, 用途, 过期策略, 关联需求]
+          - id: mq-changes
+            title: 消息队列变动
+            type: table
+            columns: [Topic/Queue, 消息类型, 生产者, 消费者, 关联需求]
+          - id: scheduler-changes
+            title: 定时任务变动
+            type: table
+            columns: [任务名称, 执行周期, 功能描述, 关联需求]
+
+  - id: incremental-design
+    title: 增量设计详情
+    instruction: |
+      为每个变动点提供详细的增量设计方案。
+      设计必须遵循知识库中的编码规范和中间件使用规范。
+    elicit: true
+    sections:
+      - id: module-design
+        title: 模块增量设计
+        repeatable: true
+        instruction: |
+          为每个新增/修改的模块提供详细设计。
+          包结构必须遵循 docs/rag/technical/module-structure.md 中的规范。
+        sections:
+          - id: module-detail
+            title: "{{module_name}}"
+            template: |
+              **模块类型**: 新增 / 修改
+              **职责描述**: {{responsibility}}
+              **所属层**: {{layer}}
+              **关联需求**: {{related_requirements}}
+            sections:
+              - id: package-structure
+                title: 包结构设计
+                instruction: 遵循现有模块结构规范设计包结构
+                type: code
+                language: plaintext
+              - id: class-design
+                title: 核心类设计
+                instruction: |
+                  列出核心类及其职责，命名遵循编码规范：
+                  - Controller: {Module}Controller
+                  - Service: {Module}Service / {Module}ServiceImpl
+                  - DAO: {Module}Mapper / {Module}Repository
+                type: table
+                columns: [类名, 类型, 职责, 依赖]
+              - id: integration-points
+                title: 集成点
+                instruction: 描述与现有模块的集成方式
+                type: bullet-list
+
+      - id: data-model-design
+        title: 数据模型增量设计
+        repeatable: true
+        instruction: |
+          为每个新增/修改的数据实体提供详细设计。
+          设计必须遵循 docs/rag/technical/sql-standards/ 中的规范。
+        sections:
+          - id: entity-detail
+            title: "{{entity_name}}"
+            template: |
+              **操作类型**: 新增 / 修改
+              **表名**: {{table_name}}
+              **关联需求**: {{related_requirements}}
+            sections:
+              - id: field-design
+                title: 字段设计
+                type: table
+                columns: [字段名, 类型, 长度, 约束, 默认值, 说明]
+                instruction: 字段命名遵循数据库命名规范
+              - id: index-design
+                title: 索引设计
+                type: table
+                columns: [索引名, 类型, 字段, 用途]
+                instruction: 索引命名遵循 idx_{表名}_{字段} 规范
+              - id: ddl-script
+                title: DDL脚本
+                type: code
+                language: sql
+                instruction: |
+                  生成DDL脚本，遵循SQL规范：
+                  - 包含完整的字段定义
+                  - 包含索引创建
+                  - 包含注释
+              - id: migration-script
+                title: 迁移脚本
+                condition: 修改现有表
+                type: code
+                language: sql
+                instruction: 生成安全的迁移脚本，考虑向后兼容性
+
+      - id: api-design
+        title: 接口增量设计
+        repeatable: true
+        condition: 存在接口变动
+        instruction: |
+          为每个新增/修改的API提供详细设计。
+          设计必须遵循现有API规范。
+        sections:
+          - id: api-detail
+            title: "{{api_name}}"
+            template: |
+              **操作类型**: 新增 / 修改
+              **接口路径**: {{api_path}}
+              **请求方法**: {{http_method}}
+              **功能描述**: {{description}}
+              **关联需求**: {{related_requirements}}
+            sections:
+              - id: request-design
+                title: 请求设计
+                sections:
+                  - id: request-params
+                    title: 请求参数
+                    type: table
+                    columns: [参数名, 类型, 必填, 说明, 示例]
+                  - id: request-body
+                    title: 请求体
+                    type: code
+                    language: json
+              - id: response-design
+                title: 响应设计
+                sections:
+                  - id: success-response
+                    title: 成功响应
+                    type: code
+                    language: json
+                  - id: error-codes
+                    title: 错误码
+                    type: table
+                    columns: [错误码, 错误信息, 触发场景]
+              - id: controller-skeleton
+                title: Controller骨架代码
+                type: code
+                language: java
+                instruction: |
+                  生成Controller骨架代码，遵循编码规范：
+                  - 使用正确的注解
+                  - 参数校验
+                  - 统一响应格式
+
+      - id: middleware-design
+        title: 中间件增量设计
+        condition: 存在中间件变动
+        instruction: |
+          为中间件使用提供详细设计。
+          必须参考 docs/rag/technical/middleware/ 中的规范和代码示例。
+        sections:
+          - id: redis-design
+            title: Redis设计
+            condition: 存在Redis变动
+            repeatable: true
+            sections:
+              - id: redis-detail
+                title: "{{redis_key_name}}"
+                template: |
+                  **Key模式**: {{key_pattern}}
+                  **数据结构**: {{data_structure}}
+                  **用途**: {{purpose}}
+                  **过期策略**: {{expiration}}
+                  **关联需求**: {{related_requirements}}
+                sections:
+                  - id: redis-code-example
+                    title: 代码示例
+                    type: code
+                    language: java
+                    instruction: 参考 docs/rag/technical/middleware/redis.md 中的代码示例
+          - id: mq-design
+            title: 消息队列设计
+            condition: 存在MQ变动
+            repeatable: true
+            sections:
+              - id: mq-detail
+                title: "{{topic_name}}"
+                template: |
+                  **Topic/Queue**: {{topic_queue}}
+                  **消息类型**: {{message_type}}
+                  **生产者**: {{producer}}
+                  **消费者**: {{consumer}}
+                  **关联需求**: {{related_requirements}}
+                sections:
+                  - id: message-schema
+                    title: 消息格式
+                    type: code
+                    language: json
+                  - id: producer-code
+                    title: 生产者代码示例
+                    type: code
+                    language: java
+                    instruction: 参考 docs/rag/technical/middleware/mq.md 中的代码示例
+                  - id: consumer-code
+                    title: 消费者代码示例
+                    type: code
+                    language: java
+          - id: scheduler-design
+            title: 定时任务设计
+            condition: 存在定时任务变动
+            repeatable: true
+            sections:
+              - id: scheduler-detail
+                title: "{{task_name}}"
+                template: |
+                  **任务名称**: {{task_name}}
+                  **执行周期**: {{cron_expression}}
+                  **功能描述**: {{description}}
+                  **关联需求**: {{related_requirements}}
+                sections:
+                  - id: scheduler-code
+                    title: 任务代码示例
+                    type: code
+                    language: java
+                    instruction: 参考 docs/rag/technical/middleware/scheduler.md 中的代码示例
+
+  - id: impact-assessment
+    title: 影响评估
+    instruction: 评估架构变动的影响范围和风险
+    elicit: true
+    sections:
+      - id: code-impact
+        title: 代码影响
+        template: |
+          **新增代码量估算**: {{new_code_estimate}}
+          **修改代码范围**: {{modified_code_scope}}
+          **测试代码需求**: {{test_code_requirement}}
+      - id: data-impact
+        title: 数据影响
+        template: |
+          **数据迁移需求**: {{migration_requirement}}
+          **数据一致性风险**: {{consistency_risk}}
+          **备份恢复策略**: {{backup_strategy}}
+      - id: performance-impact
+        title: 性能影响
+        template: |
+          **新增负载评估**: {{load_estimate}}
+          **资源需求变化**: {{resource_change}}
+          **性能测试要求**: {{performance_test_requirement}}
+      - id: deployment-impact
+        title: 部署影响
+        template: |
+          **部署步骤变更**: {{deployment_change}}
+          **配置变更**: {{config_change}}
+          **回滚方案**: {{rollback_plan}}
+
+  - id: risk-analysis
+    title: 风险分析
+    sections:
+      - id: risk-list
+        title: 风险清单
+        type: table
+        columns: [风险ID, 风险类型, 风险描述, 可能性, 影响, 缓解措施]
+        instruction: |
+          识别所有风险，类型包括：
+          - 技术风险：新技术引入、兼容性、性能
+          - 业务风险：功能影响、数据安全、服务可用性
+          - 实施风险：复杂度、技能匹配、时间约束
+      - id: critical-risks
+        title: 关键风险详述
+        instruction: 对高风险项提供详细分析和缓解方案
+        repeatable: true
+        template: |
+          ### {{risk_name}}
+
+          **风险描述**: {{description}}
+          **可能性**: {{probability}}
+          **影响程度**: {{impact}}
+
+          **根因分析**: {{root_cause}}
+
+          **缓解措施**:
+          {{mitigation_measures}}
+
+          **应急预案**:
+          {{contingency_plan}}
+
+          **监控指标**:
+          {{monitoring_metrics}}
+
+  - id: implementation-guide
+    title: 实施指南
+    sections:
+      - id: implementation-sequence
+        title: 实施顺序
+        instruction: |
+          基于依赖关系，规划实施顺序。
+          每个阶段对应PRD中的Epic/Story。
+        type: numbered-list
+        template: |
+          1. **阶段1: {{phase1_name}}**
+             - Story: {{story_refs}}
+             - 前置条件: {{prerequisites}}
+             - 产出物: {{deliverables}}
+             - 检查点: {{checkpoints}}
+      - id: dependency-diagram
+        title: 依赖关系图
+        type: mermaid
+        mermaid_type: graph
+        instruction: 使用Mermaid图展示实施依赖关系
+      - id: checkpoints
+        title: 关键检查点
+        type: table
+        columns: [检查点, 阶段, 验证内容, 负责人]
+
+  - id: knowledge-references
+    title: 知识引用索引
+    instruction: 列出设计中引用的所有知识库文档
+    sections:
+      - id: architecture-refs
+        title: 架构知识引用
+        type: table
+        columns: [文件路径, 引用章节, 引用内容]
+      - id: coding-standard-refs
+        title: 编码规范引用
+        type: table
+        columns: [文件路径, 引用规范, 应用位置]
+      - id: middleware-refs
+        title: 中间件规范引用
+        type: table
+        columns: [文件路径, 引用示例, 应用位置]
+
+  - id: next-steps
+    title: 后续步骤
+    sections:
+      - id: developer-handoff
+        title: 开发者交接
+        instruction: |
+          生成给开发者的交接提示，包含：
+          - 需要阅读的文档清单
+          - 编码规范要点
+          - 实施注意事项
+        template: |
+          **交接给开发者**
+
+          请基于本架构增量设计文档进行开发：
+
+          **必读文档**：
+          - 架构增量设计: docs/architecture-increment.md
+          - PRD文档: {{prd_path}}
+          - 编码规范: docs/rag/technical/coding-standards/
+
+          **开发重点**：
+          - 变动模块: {{changed_modules}}
+          - 数据模型变更: {{data_changes}}
+          - 接口变更: {{api_changes}}
+
+          **注意事项**：
+          - 严格遵循编码规范
+          - 参考中间件代码示例
+          - 每个Story完成后进行集成验证
+
+          **执行命令**: *start-development docs/architecture-increment.md
+      - id: qa-handoff
+        title: QA交接
+        instruction: |
+          生成给QA的交接提示，包含：
+          - 测试范围
+          - 重点测试项
+          - 回归测试要求
+        template: |
+          **交接给QA**
+
+          请基于本架构增量设计制定测试计划：
+
+          **必读文档**：
+          - 架构增量设计: docs/architecture-increment.md (影响评估章节)
+          - PRD文档: {{prd_path}} (验收标准)
+
+          **测试范围**：
+          - 新增功能: {{new_features}}
+          - 修改功能: {{modified_features}}
+          - 回归范围: {{regression_scope}}
+
+          **重点关注**：
+          - 数据迁移验证
+          - 接口兼容性测试
+          - 性能影响验证
+
+          **执行命令**: *create-test-plan docs/architecture-increment.md
+==================== END: .xiaoma-core/templates/incremental-architecture-tmpl.yaml ====================
 
 ==================== START: .xiaoma-core/checklists/architect-checklist.md ====================
 <!-- Powered by XiaoMa™ Core -->

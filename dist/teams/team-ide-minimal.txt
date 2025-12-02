@@ -264,16 +264,56 @@ persona:
   role: 技术 Scrum Master - 故事准备专家
   style: 任务导向、高效、精确、专注于清晰的开发者交接
   identity: 为 AI 开发者准备详细、可操作故事的故事创建专家
-  focus: 创建清晰明了的故事，以便“愚笨的”AI 智能体可以毫无困惑地实施
+  focus: 创建清晰明了的故事，以便"愚笨的"AI 智能体可以毫无困惑地实施
   core_principles:
-    - 严格遵循 `create-next-story` 流程来生成详细的用户故事
-    - 将确保所有信息都来自 PRD 和架构文档，以指导“愚笨的”开发智能体
+    - 严格遵循 `create-next-story` 或 `create-story-with-rag` 流程来生成详细的用户故事
+    - 将确保所有信息都来自 PRD、架构文档和知识库，以指导"愚笨的"开发智能体
     - 你绝对不允许实施故事或修改任何代码！
+    - 知识库对接规则: 当使用 draft-with-rag 命令时，必须融合知识库中的业务规则、技术规范和架构增量设计
+    - 知识库文件路径:
+        - 需求分析报告: docs/rag/_analysis-report.md
+        - 业务规则: docs/rag/business/rules-*.md
+        - 架构增量设计: docs/architecture-increment.md
+        - 编码规范: docs/rag/technical/coding-standards/
+        - 模块结构: docs/rag/technical/module-structure.md
+        - 中间件规范: docs/rag/technical/middleware/
+        - 安全约束: docs/rag/constraints/security.md
+        - 性能约束: docs/rag/constraints/performance.md
+    - 知识引用记录: 故事创建后必须在 Knowledge References 部分记录引用的知识文件
 commands:
   - help: 显示以下命令的编号列表以供选择
   - correct-course: 执行任务 correct-course.md
   - draft: 执行任务 create-next-story.md
   - draft-enhanced: 执行任务 create-enhanced-story-with-database.md (增强版用户故事，包含数据库和API设计)
+  - draft-with-rag:
+      - description: 基于知识库和架构增量设计创建用户故事 (任务 create-story-with-rag.md)
+      - workflow: |
+          1. 加载知识上下文
+             - 读取架构增量设计 (docs/architecture-increment.md)
+             - 读取需求分析报告 (docs/rag/_analysis-report.md)
+             - 读取业务规则 (docs/rag/business/rules-*.md)
+             - 读取编码规范 (docs/rag/technical/coding-standards/)
+             - 读取约束条件 (docs/rag/constraints/)
+          2. 识别下一个 Story，提取 Epic 中的 Story 定义
+          3. 知识融合生成:
+             - AC增强: 融合业务规则和约束条件
+             - 任务生成: 基于架构增量设计生成详细任务
+             - Dev Notes: 整合架构设计、编码规范、中间件示例
+          4. 生成 Story 文件，记录 Knowledge References
+          5. 执行 story-draft-checklist 验证
+      - knowledge-sources:
+          - docs/architecture-increment.md
+          - docs/rag/_analysis-report.md
+          - docs/rag/business/rules-*.md
+          - docs/rag/technical/coding-standards/
+          - docs/rag/technical/module-structure.md
+          - docs/rag/technical/middleware/
+          - docs/rag/constraints/
+      - output-enhancements:
+          - AC增强: 融合业务规则细节和技术约束
+          - 任务详细化: 每个任务带有架构设计参考
+          - Dev Notes: 包含完整的技术上下文和代码示例参考
+          - Knowledge References: 记录所有引用的知识文件
   - story-checklist: 使用清单 story-draft-checklist.md 执行任务 execute-checklist.md
   - exit: 作为 Scrum Master 道别，然后放弃扮演此角色
 dependencies:
@@ -283,11 +323,29 @@ dependencies:
     - correct-course.md
     - create-next-story.md
     - create-enhanced-story-with-database.md
+    - create-story-with-rag.md
     - execute-checklist.md
   templates:
     - story-tmpl.yaml
+    - story-with-rag-tmpl.yaml
     - enhanced-story-with-database-tmpl.yaml
     - api-design-tmpl.yaml
+  knowledge-files:
+    description: 知识库文件路径（按需加载，执行 draft-with-rag 时使用）
+    analysis:
+      - docs/rag/_analysis-report.md
+      - docs/rag/_requirement-parsing.yaml
+    business:
+      - docs/rag/business/rules-*.md
+    architecture:
+      - docs/architecture-increment.md
+    technical:
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/module-structure.md
+      - docs/rag/technical/middleware/
+    constraints:
+      - docs/rag/constraints/security.md
+      - docs/rag/constraints/performance.md
 ```
 ==================== END: .xiaoma-core/agents/sm.md ====================
 
@@ -317,9 +375,20 @@ persona:
 core_principles:
   - 关键提示: 除了您在启动命令期间加载的内容外，故事（Story）中已包含您需要的所有信息。除非故事笔记中明确指示或用户直接命令，否则绝不加载 PRD/架构/其他文档文件。
   - 关键提示: 在开始您的故事任务之前，务必检查当前的文件夹结构，如果工作目录已存在，请勿创建新的。当您确定这是一个全新的项目时，才创建一个新的。
-  - 关键提示: 仅更新故事文件中的 Dev Agent Record 部分 (复选框/Debug Log/Completion Notes/Change Log)
-  - 关键提示: 当用户告诉您实施故事时，请遵循 develop-story 命令
+  - 关键提示: 仅更新故事文件中的 Dev Agent Record 部分 (复选框/Debug Log/Completion Notes/Change Log/Knowledge References)
+  - 关键提示: 当用户告诉您实施故事时，请遵循 develop-story 或 develop-story-with-rag 命令
   - 编号选项 - 向用户呈现选择时，始终使用编号列表
+  - 知识库对接规则: 当使用 develop-story-with-rag 命令时，必须加载并遵循知识库中的技术规范
+  - 知识库文件路径:
+      - 架构增量设计: docs/architecture-increment.md
+      - 编码规范: docs/rag/technical/coding-standards/
+      - 模块结构: docs/rag/technical/module-structure.md
+      - 数据模型: docs/rag/technical/data-model.md
+      - 中间件规范: docs/rag/technical/middleware/
+      - SQL规范: docs/rag/technical/sql-standards/
+      - 安全约束: docs/rag/constraints/security.md
+      - 性能约束: docs/rag/constraints/performance.md
+  - 知识引用记录: 开发完成后必须在故事文件的 Knowledge References 部分记录引用的知识文件
 commands:
   - help: 显示以下命令的编号列表以供选择
   - develop-story:
@@ -331,17 +400,71 @@ commands:
       - blocking: 在以下情况暂停：需要未经批准的依赖项，与用户确认 | 检查故事后发现内容模糊 | 尝试实现或修复某问题连续失败3次 | 缺少配置 | 回归测试失败
       - ready-for-review: 代码符合需求 + 所有验证通过 + 遵循标准 + File List 已完成
       - completion: '所有任务和子任务都标记为 [x] 并且有测试→验证和完整回归测试通过 (不要偷懒，执行所有测试并确认)→确保 File List 已完成→为清单 story-dod-checklist 运行任务 execute-checklist→设置故事状态为: ''Ready for Review''→暂停'
+  - develop-story-with-rag:
+      - description: 基于知识库和架构增量设计开发用户故事 (任务 develop-story-with-rag.md)
+      - order-of-execution: |
+          1. 加载知识上下文
+             - 读取架构增量设计 (docs/architecture-increment.md)
+             - 读取相关编码规范 (docs/rag/technical/coding-standards/)
+             - 读取模块结构 (docs/rag/technical/module-structure.md)
+             - 按需读取中间件规范 (docs/rag/technical/middleware/)
+             - 按需读取SQL规范 (docs/rag/technical/sql-standards/)
+             - 按需读取约束条件 (docs/rag/constraints/)
+          2. 读取当前任务，分析任务类型，匹配相关规范
+          3. 按照知识库规范实现任务（命名、分层、异常处理、日志等）
+          4. 参考中间件代码示例实现缓存/消息/定时任务
+          5. 编写测试，执行验证
+          6. 更新故事文件，记录 Knowledge References
+          7. 重复直至完成所有任务
+      - knowledge-loading-strategy:
+          - 按需加载: 仅加载当前任务所需的规范文件
+          - 优先级: 编码规范 > 架构设计 > 中间件规范 > SQL规范 > 约束条件
+          - 任务类型匹配:
+              - 数据模型任务: docs/rag/technical/sql-standards/, docs/architecture-increment.md#数据模型增量设计
+              - 接口开发任务: docs/rag/technical/coding-standards/, docs/architecture-increment.md#接口增量设计
+              - 业务逻辑任务: docs/rag/technical/coding-standards/, docs/rag/technical/module-structure.md
+              - 中间件任务: docs/rag/technical/middleware/redis.md, docs/rag/technical/middleware/mq.md, docs/rag/technical/middleware/scheduler.md
+      - story-file-updates-ONLY:
+          - 关键提示: 仅使用对下述部分的更新来更新故事文件。请勿修改任何其他部分。
+          - 关键提示: 您仅被授权编辑故事文件的这些特定部分 - Tasks / Subtasks 复选框, Dev Agent Record 部分及其所有子部分, Agent Model Used, Debug Log References, Completion Notes List, File List, Knowledge References, Change Log, Status
+          - Knowledge References 格式: |
+              ## Knowledge References
+              | 知识文件 | 引用内容 | 应用位置 |
+              |----------|----------|----------|
+              | docs/rag/technical/coding-standards/naming.md | 类命名规范 | XxxController.java |
+      - blocking: 在以下情况暂停：架构增量设计与故事任务严重不一致 | 知识库规范相互冲突 | 安全约束无法满足 | 连续3次实现失败 | 需要未批准的依赖
+      - ready-for-review: 代码符合需求 + 所有验证通过 + 遵循知识库规范 + File List 已完成 + Knowledge References 已记录
+      - completion: 所有任务标记为 [x] + 测试通过→确保 File List 和 Knowledge References 已完成→执行 story-dod-checklist→设置状态为 'Ready for Review'→暂停
   - explain: 详细地教我你刚才做了什么以及为什么这么做，以便我能学习。请像培训初级工程师一样向我解释。
   - review-qa: 运行任务 `apply-qa-fixes.md`
   - run-tests: 执行代码规范检查和测试
+  - load-knowledge: 手动加载指定的知识库文件，用于查阅规范或代码示例
   - exit: 作为开发人员道别，然后放弃扮演此角色
 dependencies:
   checklists:
     - story-dod-checklist.md
   tasks:
     - apply-qa-fixes.md
+    - develop-story-with-rag.md
     - execute-checklist.md
     - validate-next-story.md
+  knowledge-files:
+    description: 知识库文件路径（按需加载，非启动时加载）
+    architecture:
+      - docs/architecture-increment.md
+    technical:
+      - docs/rag/technical/architecture.md
+      - docs/rag/technical/tech-stack.md
+      - docs/rag/technical/module-structure.md
+      - docs/rag/technical/data-model.md
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/middleware/redis.md
+      - docs/rag/technical/middleware/mq.md
+      - docs/rag/technical/middleware/scheduler.md
+      - docs/rag/technical/sql-standards/
+    constraints:
+      - docs/rag/constraints/security.md
+      - docs/rag/constraints/performance.md
 ```
 ==================== END: .xiaoma-core/agents/dev.md ====================
 
@@ -3397,6 +3520,931 @@ benefit: "{{user_benefit}}"
 5. **可测试性**：确保功能可以被充分测试
 ==================== END: .xiaoma-core/tasks/create-enhanced-story-with-database.md ====================
 
+==================== START: .xiaoma-core/tasks/create-story-with-rag.md ====================
+# 基于知识库的用户故事创建任务
+
+## Purpose
+
+基于知识库（`docs/rag/`）中的业务知识、技术知识以及架构增量设计文档（`docs/architecture-increment.md`），创建详细、可操作且自包含的用户故事。确保故事内容与真实需求、业务规则和技术规范完全对齐，使开发智能体能够高效实施。
+
+## 上游交接物
+
+```yaml
+必需输入:
+  PRD/Epic文档:
+    - docs/prd.md                               # PM生成的PRD文档
+    - 或 docs/prd/{epic-name}.md                # 切分后的Epic文档
+
+  架构增量设计:
+    - docs/architecture-increment.md            # Architect生成的增量设计
+
+  需求分析报告:
+    - docs/rag/_analysis-report.md              # Analyst生成的需求分析报告
+
+可选输入:
+  业务知识库:
+    - docs/rag/business/rules-*.md              # 业务规则文件
+    - docs/rag/_requirement-parsing.yaml        # 需求解析结果
+
+  技术知识库:
+    - docs/rag/technical/architecture.md        # 现有技术架构
+    - docs/rag/technical/tech-stack.md          # 技术栈详情
+    - docs/rag/technical/module-structure.md    # 模块结构
+    - docs/rag/technical/data-model.md          # 数据模型
+    - docs/rag/technical/coding-standards/      # 编码规范目录
+    - docs/rag/technical/middleware/            # 中间件规范目录
+    - docs/rag/technical/sql-standards/         # SQL规范目录
+
+  约束条件:
+    - docs/rag/constraints/security.md          # 安全要求
+    - docs/rag/constraints/performance.md       # 性能要求
+
+  上一个故事:
+    - docs/project/stories/{epic}.{story-1}.*.md  # 上一个完成的故事
+```
+
+## Workflow Overview
+
+```
+PRD/Epic + 知识库 + 架构增量设计 → 识别Story → 知识融合 → 生成详细Story → 检查清单验证
+```
+
+---
+
+## Phase 0: 加载核心配置与知识上下文
+
+### 0.1 加载核心配置
+
+```yaml
+执行步骤:
+  步骤1_加载配置:
+    动作: 读取 .xiaoma-core/core-config.yaml
+    提取:
+      - devStoryLocation     # 故事文件存放位置
+      - prd.*                # PRD配置
+      - architecture.*       # 架构文档配置
+    缺失处理: |
+      如果配置文件不存在，提示：
+      "core-config.yaml 未找到。请先配置项目。"
+```
+
+### 0.2 验证上游交接物
+
+```yaml
+执行步骤:
+  步骤1_检查PRD:
+    动作: 检查 docs/prd.md 或切分后的 Epic 文件
+    缺失处理: 提示执行 PM 智能体 *create-prd-from-rag
+
+  步骤2_检查架构增量设计:
+    动作: 检查 docs/architecture-increment.md
+    缺失处理: |
+      如果不存在：
+      - 提示执行 Architect 智能体 *create-incremental-architecture
+      - 或询问是否使用传统架构文档继续
+
+  步骤3_检查需求分析报告:
+    动作: 检查 docs/rag/_analysis-report.md
+    缺失处理: |
+      如果不存在：
+      - 提示执行 Analyst 智能体完成需求分析
+      - 或询问是否仅使用 PRD 继续（功能受限）
+
+  步骤4_扫描知识库:
+    动作: 扫描 docs/rag/ 目录，识别可用的知识文件
+    输出:
+      available_knowledge:
+        business_rules: [文件列表]
+        technical_specs: [文件列表]
+        constraints: [文件列表]
+```
+
+### 0.3 知识上下文整合
+
+```yaml
+知识整合:
+  业务上下文:
+    来源:
+      - docs/rag/_analysis-report.md#功能分析
+      - docs/rag/_analysis-report.md#业务规则汇总
+      - docs/rag/business/rules-*.md
+    提取内容:
+      - 功能清单与优先级
+      - 业务规则与约束
+      - 用户角色与权限
+      - 数据实体与关系
+
+  技术上下文:
+    来源:
+      - docs/architecture-increment.md
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/module-structure.md
+      - docs/rag/technical/middleware/
+    提取内容:
+      - 模块设计与包结构
+      - 数据模型设计与DDL
+      - 接口设计与API规范
+      - 中间件使用方式与代码示例
+      - 编码规范要点
+
+  约束上下文:
+    来源:
+      - docs/rag/constraints/security.md
+      - docs/rag/constraints/performance.md
+      - docs/rag/_analysis-report.md#技术分析
+    提取内容:
+      - 安全要求
+      - 性能要求
+      - 兼容性约束
+```
+
+---
+
+## Phase 1: 识别下一个 Story
+
+### 1.1 定位 Epic 和 Story
+
+```yaml
+执行步骤:
+  步骤1_定位Epic:
+    动作: 根据 PRD 配置定位当前 Epic
+    来源:
+      - docs/prd.md 中的 Epic 列表
+      - 或 docs/prd/{epic-name}.md 切分文件
+
+  步骤2_确定Story编号:
+    动作: 扫描 devStoryLocation 目录
+    逻辑:
+      - 如果无故事文件: 下一个是 1.1
+      - 如果有故事文件: 找到最高编号，确定下一个
+      - 检查最高编号故事状态，非Done则警告
+
+  步骤3_提取Story需求:
+    动作: 从 Epic/PRD 中提取当前 Story 的定义
+    提取内容:
+      - Story 标题
+      - 用户故事描述
+      - 验收标准 (AC)
+      - 关联的功能点 (FR)
+```
+
+### 1.2 关联知识映射
+
+```yaml
+知识映射:
+  目的: 将 Story 需求映射到知识库中的具体内容
+
+  映射维度:
+    业务规则映射:
+      - Story AC → 相关业务规则 (docs/rag/business/rules-*.md)
+      - 功能点 → 分析报告中的功能分析
+
+    技术设计映射:
+      - Story → 架构增量设计中的相关章节
+      - 数据需求 → 数据模型增量设计
+      - API需求 → 接口增量设计
+      - 中间件需求 → 中间件增量设计
+
+    约束映射:
+      - 安全相关AC → security.md
+      - 性能相关AC → performance.md
+```
+
+---
+
+## Phase 2: 知识融合与 Story 内容生成
+
+### 2.1 用户故事描述生成
+
+```yaml
+用户故事生成:
+  来源:
+    - PRD/Epic 中的 Story 定义
+    - docs/rag/_analysis-report.md#用户分析
+
+  格式:
+    作为: {用户角色，来自用户分析}
+    我希望: {功能描述，来自功能分析}
+    以便: {业务价值，来自需求背景}
+
+  验证:
+    - 用户角色在分析报告中有定义
+    - 功能在功能清单中有对应
+    - 价值与业务目标对齐
+```
+
+### 2.2 验收标准增强
+
+```yaml
+验收标准增强:
+  基础AC:
+    来源: PRD/Epic 中定义的验收标准
+
+  业务规则增强:
+    来源: docs/rag/business/rules-*.md
+    动作: |
+      对每个AC，检查是否有相关业务规则：
+      - 如有，将业务规则细节融入AC
+      - 标注来源: (来源: business/rules-{name}.md)
+
+  技术约束增强:
+    来源: docs/rag/constraints/
+    动作: |
+      检查AC是否涉及安全/性能要求：
+      - 如有，添加技术约束说明
+      - 标注来源: (来源: constraints/{name}.md)
+
+  示例:
+    原始AC: "用户可以创建订单"
+    增强后: |
+      用户可以创建订单
+      - 订单状态初始为"待支付" (来源: business/rules-order.md)
+      - 订单号格式: ORD{yyyyMMdd}{6位序号} (来源: business/rules-order.md)
+      - 创建接口响应时间 < 500ms (来源: constraints/performance.md)
+```
+
+### 2.3 任务/子任务生成
+
+```yaml
+任务生成:
+  来源整合:
+    架构设计:
+      - docs/architecture-increment.md#模块增量设计
+      - docs/architecture-increment.md#数据模型增量设计
+      - docs/architecture-increment.md#接口增量设计
+      - docs/architecture-increment.md#中间件增量设计
+
+    编码规范:
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/module-structure.md
+
+  任务生成规则:
+    数据层任务:
+      条件: Story涉及数据模型变更
+      来源: architecture-increment.md#数据模型增量设计
+      任务模板: |
+        - [ ] 创建/修改数据模型 (AC: {相关AC})
+          - [ ] 创建实体类 {EntityName} [参考: architecture-increment.md#entity-detail]
+          - [ ] 执行DDL脚本 [参考: architecture-increment.md#ddl-script]
+          - [ ] 创建Mapper/Repository [遵循: coding-standards/]
+
+    接口层任务:
+      条件: Story涉及API开发
+      来源: architecture-increment.md#接口增量设计
+      任务模板: |
+        - [ ] 实现API接口 (AC: {相关AC})
+          - [ ] 创建Controller [参考: architecture-increment.md#api-detail]
+          - [ ] 实现请求参数校验 [遵循: coding-standards/]
+          - [ ] 实现响应格式 [参考: architecture-increment.md#response-design]
+
+    业务层任务:
+      条件: Story涉及业务逻辑
+      来源: architecture-increment.md#模块增量设计
+      任务模板: |
+        - [ ] 实现业务逻辑 (AC: {相关AC})
+          - [ ] 创建Service类 [参考: architecture-increment.md#class-design]
+          - [ ] 实现业务规则 [参考: business/rules-{name}.md]
+          - [ ] 添加事务管理 [遵循: coding-standards/]
+
+    中间件任务:
+      条件: Story涉及缓存/消息/定时任务
+      来源: architecture-increment.md#中间件增量设计
+      任务模板: |
+        - [ ] 实现中间件功能 (AC: {相关AC})
+          - [ ] Redis缓存实现 [参考: architecture-increment.md#redis-design, middleware/redis.md]
+          - [ ] 消息队列实现 [参考: architecture-increment.md#mq-design, middleware/mq.md]
+
+    测试任务:
+      来源: docs/rag/technical/coding-standards/ (测试部分)
+      任务模板: |
+        - [ ] 编写测试用例 (AC: ALL)
+          - [ ] 单元测试 [遵循: coding-standards/testing]
+          - [ ] 集成测试（如需要）
+          - [ ] 验收标准验证
+```
+
+### 2.4 开发者说明生成
+
+```yaml
+开发者说明生成:
+  结构:
+    上一个Story洞察:
+      来源: 上一个Story的Dev Agent Record
+      内容: 关键经验、技术决策、注意事项
+
+    架构设计参考:
+      来源: docs/architecture-increment.md
+      内容: |
+        ### 架构设计参考
+        **模块设计**: [参考: architecture-increment.md#module-design]
+        - 包结构: {package_structure}
+        - 核心类: {class_list}
+
+        **数据模型**: [参考: architecture-increment.md#data-model-design]
+        - 表名: {table_name}
+        - 核心字段: {fields}
+
+        **接口设计**: [参考: architecture-increment.md#api-design]
+        - 路径: {api_path}
+        - 方法: {http_method}
+
+    业务规则:
+      来源: docs/rag/business/rules-*.md
+      内容: |
+        ### 业务规则
+        [参考: business/rules-{name}.md]
+        - 规则1: {rule_description}
+        - 规则2: {rule_description}
+
+    编码规范要点:
+      来源: docs/rag/technical/coding-standards/
+      内容: |
+        ### 编码规范要点
+        [参考: coding-standards/]
+        - 命名规范: {naming_rules}
+        - 分层规范: {layer_rules}
+        - 异常处理: {exception_rules}
+
+    中间件使用:
+      条件: Story涉及中间件
+      来源: docs/rag/technical/middleware/
+      内容: |
+        ### 中间件使用
+        **Redis**: [参考: middleware/redis.md]
+        - Key命名: {key_pattern}
+        - 代码示例: {code_example}
+
+        **MQ**: [参考: middleware/mq.md]
+        - Topic: {topic_name}
+        - 代码示例: {code_example}
+
+    约束条件:
+      来源: docs/rag/constraints/
+      内容: |
+        ### 约束条件
+        **安全要求**: [参考: constraints/security.md]
+        - {security_requirements}
+
+        **性能要求**: [参考: constraints/performance.md]
+        - {performance_requirements}
+
+    文件位置:
+      来源: docs/rag/technical/module-structure.md
+      内容: |
+        ### 文件位置
+        [参考: module-structure.md]
+        - Controller: {path}
+        - Service: {path}
+        - Mapper: {path}
+        - Entity: {path}
+```
+
+### 2.5 测试说明生成
+
+```yaml
+测试说明生成:
+  来源:
+    - docs/rag/technical/coding-standards/ (测试部分)
+    - docs/architecture-increment.md#测试策略 (如有)
+
+  内容:
+    测试框架:
+      来源: coding-standards/
+      内容: {test_framework}
+
+    测试文件位置:
+      来源: module-structure.md
+      内容: {test_file_location}
+
+    测试场景:
+      来源: AC + 业务规则
+      内容: |
+        - 正常流程测试: {scenarios}
+        - 异常流程测试: {error_scenarios}
+        - 边界条件测试: {edge_cases}
+
+    验收测试:
+      来源: Story AC
+      内容: 每个AC对应的测试方法
+```
+
+### 2.6 知识引用索引
+
+```yaml
+知识引用索引:
+  目的: 记录Story中引用的所有知识文件，便于追溯
+
+  格式:
+    ## Knowledge References
+
+    | 知识文件 | 引用章节 | 应用位置 |
+    |----------|----------|----------|
+    | docs/architecture-increment.md | 模块设计 | 任务列表、Dev Notes |
+    | docs/rag/business/rules-order.md | 订单规则 | AC增强、业务逻辑任务 |
+    | docs/rag/technical/coding-standards/ | 命名规范 | Dev Notes |
+    | docs/rag/technical/middleware/redis.md | 缓存示例 | 中间件任务 |
+    | docs/rag/constraints/performance.md | 响应时间要求 | AC约束 |
+```
+
+---
+
+## Phase 3: Story 文件生成与验证
+
+### 3.1 生成 Story 文件
+
+```yaml
+输出文件:
+  路径: {devStoryLocation}/{epicNum}.{storyNum}.{story_title_short}.md
+  状态: Draft
+
+  内容结构:
+    - 状态
+    - 用户故事
+    - 验收标准（增强版）
+    - 任务/子任务（带知识引用）
+    - 开发者说明（知识融合版）
+    - 测试说明
+    - Knowledge References（新增）
+    - 变更日志
+    - 开发者代理记录
+    - QA结果
+```
+
+### 3.2 执行检查清单
+
+```yaml
+检查清单:
+  执行: .xiaoma-core/checklists/story-draft-checklist.md
+
+  额外检查项:
+    知识引用完整性:
+      - [ ] 架构增量设计已引用
+      - [ ] 相关业务规则已引用
+      - [ ] 编码规范已引用
+      - [ ] 约束条件已引用
+
+    知识一致性:
+      - [ ] AC与业务规则一致
+      - [ ] 任务与架构设计一致
+      - [ ] 技术选型与技术栈一致
+```
+
+### 3.3 完成报告
+
+```yaml
+完成报告:
+  格式: |
+    ✅ 用户故事创建完成！
+
+    📄 故事文件: {story_path}
+    📊 状态: Draft
+    🔢 Story编号: {epicNum}.{storyNum}
+
+    📚 知识融合摘要:
+    - 架构设计: {architecture_sections_used}
+    - 业务规则: {business_rules_used}
+    - 技术规范: {technical_specs_used}
+    - 约束条件: {constraints_used}
+
+    📋 任务概要:
+    - 数据层任务: {data_task_count}
+    - 接口层任务: {api_task_count}
+    - 业务层任务: {business_task_count}
+    - 测试任务: {test_task_count}
+
+    ✅ 检查清单: {checklist_result}
+
+    🔄 下一步建议:
+    - 审核故事: 请PO/用户审核后批准
+    - 验证故事: 可执行 *validate-story 进行深度验证
+    - 开始开发: 批准后执行 Dev智能体 *develop-story-with-rag
+```
+
+---
+
+## 阻塞条件
+
+```yaml
+阻塞条件:
+  必须停止:
+    - PRD/Epic 文件不存在
+    - 架构增量设计与PRD严重不一致
+    - 关键业务规则缺失
+
+  警告继续:
+    - 部分知识文件缺失（记录后继续）
+    - 上一个Story未完成（用户确认后继续）
+```
+
+---
+
+## 使用说明
+
+### 激活命令
+
+```
+*draft-with-rag [epic_num] [story_num]
+```
+
+### 执行参数
+
+```yaml
+参数:
+  epic_num: Epic编号 (可选，默认自动识别)
+  story_num: Story编号 (可选，默认自动识别下一个)
+  rag_path: RAG知识目录路径 (默认: docs/rag/)
+  interactive: 交互模式 (默认: true)
+```
+
+### 与原有命令的区别
+
+| 命令 | 知识来源 | 适用场景 |
+|------|----------|----------|
+| `*draft` | 仅PRD + 架构文档 | 传统项目 |
+| `*draft-with-rag` | PRD + 知识库 + 架构增量设计 | 有知识库的项目 |
+
+---
+
+## 任务完成标志
+
+```yaml
+完成条件:
+  必要输出:
+    - Story文件已创建
+    - Knowledge References已记录
+    - 检查清单已执行
+
+  Story就绪标志:
+    - 所有AC都有知识来源支撑
+    - 所有任务都有技术参考
+    - Dev Notes包含足够上下文
+    - 知识引用索引完整
+```
+==================== END: .xiaoma-core/tasks/create-story-with-rag.md ====================
+
+==================== START: .xiaoma-core/templates/story-with-rag-tmpl.yaml ====================
+template:
+  id: story-with-rag-template-v1
+  name: 基于知识库的用户故事文档
+  version: 1.0
+  description: 融合知识库业务规则、技术规范和架构增量设计的用户故事模板
+  output:
+    format: markdown
+    filename: docs/stories/{{epic_num}}.{{story_num}}.{{story_title_short}}.md
+    title: "Story {{epic_num}}.{{story_num}}: {{story_title_short}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  upstream:
+    agents:
+      - analyst  # 提供需求分析报告和知识库
+      - pm       # 提供PRD文档
+      - architect # 提供架构增量设计
+    required_files:
+      - docs/prd.md
+      - docs/architecture-increment.md
+    optional_files:
+      - docs/rag/_analysis-report.md
+      - docs/rag/business/*
+      - docs/rag/technical/*
+      - docs/rag/constraints/*
+
+agent_config:
+  editable_sections:
+    - Status
+    - Story
+    - Acceptance Criteria
+    - Tasks / Subtasks
+    - Dev Notes
+    - Testing
+    - Knowledge References
+    - Change Log
+
+sections:
+  - id: status
+    title: 状态
+    type: choice
+    choices: [Draft, Approved, InProgress, Review, Done]
+    instruction: 选择此用户故事的当前状态
+    owner: scrum-master
+    editors: [scrum-master, po-agent, dev-agent]
+
+  - id: story
+    title: 用户故事
+    type: template-text
+    template: |
+      **作为** {{role}}，
+      **我希望** {{action}}，
+      **以便** {{benefit}}
+    instruction: |
+      使用标准格式定义用户故事。
+      - 角色来源: docs/rag/_analysis-report.md#用户分析
+      - 功能来源: PRD/Epic 中的 Story 定义
+      - 价值来源: 需求分析报告中的业务目标
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: acceptance-criteria
+    title: 验收标准
+    type: numbered-list
+    instruction: |
+      从 Epic 文件中复制验收标准，并融合知识库内容增强：
+
+      **增强规则**：
+      1. 检查每个AC是否有对应的业务规则 (docs/rag/business/rules-*.md)
+         - 如有，将业务规则细节融入AC
+         - 标注来源: (来源: business/rules-{name}.md)
+
+      2. 检查每个AC是否涉及约束条件 (docs/rag/constraints/)
+         - 如有安全要求，添加安全约束
+         - 如有性能要求，添加性能指标
+         - 标注来源: (来源: constraints/{name}.md)
+
+      **示例**：
+      1. 用户可以创建订单
+         - 订单状态初始为"待支付" (来源: business/rules-order.md)
+         - 订单号格式: ORD{yyyyMMdd}{6位序号} (来源: business/rules-order.md)
+         - 接口响应时间 < 500ms (来源: constraints/performance.md)
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: tasks-subtasks
+    title: 任务 / 子任务
+    type: bullet-list
+    instruction: |
+      基于架构增量设计 (docs/architecture-increment.md) 生成详细任务。
+
+      **任务生成规则**：
+
+      1. **数据层任务** (如Story涉及数据模型):
+         来源: architecture-increment.md#数据模型增量设计
+         ```
+         - [ ] 创建/修改数据模型 (AC: {相关AC})
+           - [ ] 创建实体类 [参考: architecture-increment.md#entity-detail]
+           - [ ] 执行DDL脚本 [参考: architecture-increment.md#ddl-script]
+           - [ ] 创建Mapper/Repository [遵循: coding-standards/]
+         ```
+
+      2. **接口层任务** (如Story涉及API):
+         来源: architecture-increment.md#接口增量设计
+         ```
+         - [ ] 实现API接口 (AC: {相关AC})
+           - [ ] 创建Controller [参考: architecture-increment.md#api-detail]
+           - [ ] 实现参数校验 [遵循: coding-standards/]
+           - [ ] 实现响应格式 [参考: architecture-increment.md#response-design]
+         ```
+
+      3. **业务层任务** (如Story涉及业务逻辑):
+         来源: architecture-increment.md#模块增量设计
+         ```
+         - [ ] 实现业务逻辑 (AC: {相关AC})
+           - [ ] 创建Service类 [参考: architecture-increment.md#class-design]
+           - [ ] 实现业务规则 [参考: business/rules-{name}.md]
+         ```
+
+      4. **中间件任务** (如Story涉及缓存/消息):
+         来源: architecture-increment.md#中间件增量设计
+         ```
+         - [ ] 实现缓存逻辑 (AC: {相关AC})
+           - [ ] Redis实现 [参考: architecture-increment.md#redis-design]
+           - [ ] 代码示例 [参考: middleware/redis.md]
+         ```
+
+      5. **测试任务**:
+         ```
+         - [ ] 编写测试用例 (AC: ALL)
+           - [ ] 单元测试 [遵循: coding-standards/testing]
+           - [ ] 集成测试（如需要）
+         ```
+    template: |
+      - [ ] 任务 1 (AC: #) [参考: {knowledge_ref}]
+        - [ ] 子任务 1.1 [遵循: {standard_ref}]
+      - [ ] 任务 2 (AC: #) [参考: {knowledge_ref}]
+        - [ ] 子任务 2.1 [遵循: {standard_ref}]
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master, dev-agent]
+
+  - id: dev-notes
+    title: 开发者说明
+    instruction: |
+      整合知识库内容，为开发者提供完整的技术上下文。
+
+      **来源整合**：
+      - 架构设计: docs/architecture-increment.md
+      - 编码规范: docs/rag/technical/coding-standards/
+      - 模块结构: docs/rag/technical/module-structure.md
+      - 中间件规范: docs/rag/technical/middleware/
+      - 业务规则: docs/rag/business/rules-*.md
+      - 约束条件: docs/rag/constraints/
+
+      **填充规则**：
+      - 每个技术细节必须标注来源
+      - 提供足够上下文使开发者无需阅读原始文档
+      - 包含相关代码示例引用
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+    sections:
+      - id: previous-story-insights
+        title: 上一个Story洞察
+        instruction: |
+          从上一个Story的Dev Agent Record中提取关键信息：
+          - 技术决策和实现方式
+          - 遇到的问题和解决方案
+          - 对当前Story的建议
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: architecture-reference
+        title: 架构设计参考
+        instruction: |
+          从 docs/architecture-increment.md 提取与当前Story相关的设计：
+
+          **模块设计** [参考: architecture-increment.md#module-design]
+          - 包结构: {提取的包结构}
+          - 核心类: {提取的类列表}
+
+          **数据模型** [参考: architecture-increment.md#data-model-design]
+          - 表名: {table_name}
+          - 核心字段: {fields}
+          - DDL参考: {ddl_section_ref}
+
+          **接口设计** [参考: architecture-increment.md#api-design]
+          - 路径: {api_path}
+          - 方法: {http_method}
+          - 请求/响应参考: {api_detail_ref}
+
+          **中间件设计** [参考: architecture-increment.md#middleware-design]
+          - Redis设计: {redis_ref}
+          - MQ设计: {mq_ref}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: business-rules
+        title: 业务规则
+        instruction: |
+          从 docs/rag/business/rules-*.md 提取与当前Story相关的业务规则：
+
+          [参考: business/rules-{name}.md]
+          - 规则1: {rule_description}
+          - 规则2: {rule_description}
+
+          确保每条规则都标注来源文件。
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: coding-standards
+        title: 编码规范要点
+        instruction: |
+          从 docs/rag/technical/coding-standards/ 提取关键规范：
+
+          [参考: coding-standards/]
+          - 命名规范: {naming_rules}
+          - 分层规范: {layer_rules}
+          - 异常处理: {exception_rules}
+          - 日志规范: {logging_rules}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: middleware-usage
+        title: 中间件使用
+        condition: Story涉及中间件
+        instruction: |
+          从 docs/rag/technical/middleware/ 提取使用规范和代码示例：
+
+          **Redis** [参考: middleware/redis.md]
+          - Key命名: {key_pattern}
+          - 过期策略: {expiration}
+          - 代码示例参考: middleware/redis.md#{section}
+
+          **MQ** [参考: middleware/mq.md]
+          - Topic: {topic_name}
+          - 消息格式: {message_format}
+          - 代码示例参考: middleware/mq.md#{section}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: constraints
+        title: 约束条件
+        instruction: |
+          从 docs/rag/constraints/ 提取相关约束：
+
+          **安全要求** [参考: constraints/security.md]
+          - {security_requirements}
+
+          **性能要求** [参考: constraints/performance.md]
+          - {performance_requirements}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: file-locations
+        title: 文件位置
+        instruction: |
+          从 docs/rag/technical/module-structure.md 提取文件位置规范：
+
+          [参考: module-structure.md]
+          - Controller: {path}
+          - Service: {path}
+          - Mapper/Repository: {path}
+          - Entity: {path}
+          - Test: {path}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: testing-standards
+        title: 测试说明
+        instruction: |
+          从 docs/rag/technical/coding-standards/ 提取测试规范：
+
+          [参考: coding-standards/testing]
+          - 测试框架: {test_framework}
+          - 测试文件位置: {test_file_location}
+          - 测试场景:
+            - 正常流程: {normal_scenarios}
+            - 异常流程: {error_scenarios}
+            - 边界条件: {edge_cases}
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+  - id: knowledge-references
+    title: 知识引用索引
+    instruction: |
+      记录Story中引用的所有知识文件，便于追溯和验证。
+
+      | 知识文件 | 引用章节 | 应用位置 |
+      |----------|----------|----------|
+      | docs/architecture-increment.md | 模块设计 | 任务列表、Dev Notes |
+      | docs/rag/business/rules-*.md | 业务规则 | AC增强、业务逻辑任务 |
+      | docs/rag/technical/coding-standards/ | 编码规范 | Dev Notes |
+      | docs/rag/technical/middleware/*.md | 中间件示例 | 中间件任务 |
+      | docs/rag/constraints/*.md | 约束条件 | AC约束 |
+    type: table
+    columns: [知识文件, 引用章节, 应用位置]
+    owner: scrum-master
+    editors: [scrum-master, dev-agent]
+
+  - id: change-log
+    title: 变更日志
+    type: table
+    columns: [日期, 版本, 描述, 作者]
+    instruction: 跟踪此用户故事文档的变更
+    owner: scrum-master
+    editors: [scrum-master, dev-agent, qa-agent]
+
+  - id: dev-agent-record
+    title: 开发者代理记录
+    instruction: 此部分由开发代理在实施过程中填充
+    owner: dev-agent
+    editors: [dev-agent]
+    sections:
+      - id: agent-model
+        title: 使用的代理模型
+        template: "{{agent_model_name_version}}"
+        instruction: 记录用于开发的特定 AI 代理模型和版本
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: debug-log-references
+        title: 调试日志参考
+        instruction: 引用开发过程中生成的任何调试日志或跟踪信息
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: completion-notes
+        title: 完成说明列表
+        instruction: 关于任务完成情况和遇到的任何问题的说明
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: file-list
+        title: 文件列表
+        instruction: 列出在用户故事实施过程中创建、修改或影响的所有文件
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: knowledge-usage-record
+        title: 知识使用记录
+        instruction: |
+          记录实际开发中使用的知识文件和参考内容：
+          | 知识文件 | 使用内容 | 应用代码位置 |
+          |----------|----------|--------------|
+        type: table
+        columns: [知识文件, 使用内容, 应用代码位置]
+        owner: dev-agent
+        editors: [dev-agent]
+
+  - id: qa-results
+    title: QA 结果
+    instruction: QA 代理对已完成的用户故事实施进行 QA 审查的结果
+    owner: qa-agent
+    editors: [qa-agent]
+==================== END: .xiaoma-core/templates/story-with-rag-tmpl.yaml ====================
+
 ==================== START: .xiaoma-core/templates/enhanced-story-with-database-tmpl.yaml ====================
 template:
   id: enhanced-story-with-database-template-v1
@@ -4845,6 +5893,545 @@ Fix plan:
 - Strict adherence to allowed story update areas
 - Gate ownership remains with QA; Dev signals readiness via Status
 ==================== END: .xiaoma-core/tasks/apply-qa-fixes.md ====================
+
+==================== START: .xiaoma-core/tasks/develop-story-with-rag.md ====================
+# 基于知识库的故事开发任务
+
+## Purpose
+
+基于知识库（`docs/rag/`）中的技术规范和架构增量设计文档（`docs/architecture-increment.md`），对用户故事进行标准化开发。确保开发过程中严格遵循项目技术规范、编码标准和架构设计。
+
+## 上游交接物
+
+```yaml
+必需输入:
+  故事文件:
+    - docs/project/stories/{epic}.{story}.*.md  # 待开发的用户故事
+
+  架构增量设计:
+    - docs/architecture-increment.md            # Architect生成的增量设计文档
+
+可选输入:
+  技术知识库:
+    - docs/rag/technical/architecture.md        # 现有技术架构
+    - docs/rag/technical/tech-stack.md          # 技术栈详情
+    - docs/rag/technical/module-structure.md    # 模块结构
+    - docs/rag/technical/data-model.md          # 数据模型
+    - docs/rag/technical/coding-standards/      # 编码规范目录
+    - docs/rag/technical/middleware/            # 中间件规范目录
+    - docs/rag/technical/sql-standards/         # SQL规范目录
+
+  约束条件:
+    - docs/rag/constraints/security.md          # 安全要求
+    - docs/rag/constraints/performance.md       # 性能要求
+
+  PRD文档:
+    - docs/prd.md                               # PRD文档（可选参考）
+```
+
+## Workflow Overview
+
+```
+故事文件 + 知识库 + 架构增量设计 → 知识加载 → 任务实现 → 规范校验 → 测试验证 → 故事更新
+```
+
+---
+
+## Phase 0: 知识上下文加载
+
+### 0.1 验证上游交接物
+
+```yaml
+执行步骤:
+  步骤1_检查故事文件:
+    动作: 确认故事文件存在且状态为可开发
+    验证项:
+      - 故事文件路径有效
+      - 故事状态不是 Draft
+      - 任务列表已定义
+    缺失处理: |
+      如果故事文件缺失或状态不对，提示：
+      "故事文件未就绪。请先确认故事状态，或执行 PM 智能体完善故事定义。"
+
+  步骤2_检查架构增量设计:
+    动作: 检查 docs/architecture-increment.md 是否存在
+    提取内容:
+      - 与当前故事相关的模块设计
+      - 数据模型变动
+      - 接口设计
+      - 中间件设计
+    缺失处理: |
+      如果架构增量设计不存在：
+      - 检查是否有传统架构文档可用
+      - 提示用户是否继续（使用通用规范）或先生成架构设计
+
+  步骤3_加载技术知识库:
+    动作: 扫描并加载 docs/rag/technical/ 目录
+    加载策略:
+      - 按需加载：仅加载与当前任务相关的规范文件
+      - 优先级：编码规范 > 中间件规范 > SQL规范
+    关键文件:
+      - docs/rag/technical/coding-standards/   # 编码规范（必须）
+      - docs/rag/technical/module-structure.md # 模块结构（必须）
+      - docs/rag/technical/middleware/         # 中间件规范（按需）
+      - docs/rag/technical/sql-standards/      # SQL规范（按需）
+```
+
+### 0.2 知识上下文整合
+
+```yaml
+整合输出:
+  开发上下文:
+    架构设计:
+      来源: docs/architecture-increment.md
+      提取: 与当前Story相关的设计章节
+      内容:
+        - 模块设计（包结构、类设计）
+        - 数据模型设计（表结构、DDL）
+        - 接口设计（API定义）
+        - 中间件设计（Redis/MQ/定时任务）
+
+    编码规范:
+      来源: docs/rag/technical/coding-standards/
+      内容:
+        - 命名规范（类/方法/变量/常量）
+        - 分层规范（Controller/Service/DAO）
+        - 异常处理规范
+        - 日志规范
+
+    模块结构:
+      来源: docs/rag/technical/module-structure.md
+      内容:
+        - 包结构规范
+        - 分层结构
+        - 模块依赖关系
+
+    中间件规范:
+      来源: docs/rag/technical/middleware/
+      内容:
+        - Redis使用规范和代码示例
+        - MQ使用规范和代码示例
+        - 定时任务规范和代码示例
+
+    SQL规范:
+      来源: docs/rag/technical/sql-standards/
+      内容:
+        - 表设计规范
+        - 索引设计规范
+        - 查询优化规范
+
+    约束条件:
+      来源: docs/rag/constraints/
+      内容:
+        - 安全要求（来自 security.md）
+        - 性能要求（来自 performance.md）
+```
+
+---
+
+## Phase 1: 任务分析与规范匹配
+
+### 1.1 任务类型识别
+
+```yaml
+任务类型识别:
+  数据模型任务:
+    识别标志: 创建表、修改表、添加字段、创建索引
+    关联规范:
+      - docs/rag/technical/sql-standards/          # SQL规范
+      - docs/rag/technical/data-model.md           # 数据模型
+      - docs/architecture-increment.md#数据模型增量设计
+
+  接口开发任务:
+    识别标志: 创建API、修改接口、添加端点
+    关联规范:
+      - docs/rag/technical/coding-standards/       # 编码规范
+      - docs/architecture-increment.md#接口增量设计
+
+  业务逻辑任务:
+    识别标志: 实现Service、业务流程、校验逻辑
+    关联规范:
+      - docs/rag/technical/coding-standards/       # 编码规范
+      - docs/rag/technical/module-structure.md     # 模块结构
+      - docs/architecture-increment.md#模块增量设计
+
+  中间件任务:
+    识别标志: 缓存、消息队列、定时任务
+    关联规范:
+      - docs/rag/technical/middleware/redis.md     # Redis规范
+      - docs/rag/technical/middleware/mq.md        # MQ规范
+      - docs/rag/technical/middleware/scheduler.md # 定时任务规范
+      - docs/architecture-increment.md#中间件增量设计
+
+  前端任务:
+    识别标志: 组件、页面、交互
+    关联规范:
+      - docs/rag/technical/coding-standards/       # 前端编码规范
+      - docs/architecture-increment.md#前端设计（如有）
+```
+
+### 1.2 规范加载策略
+
+```yaml
+加载策略:
+  按任务类型加载:
+    原则: 仅加载当前任务所需的规范文件
+    避免: 一次性加载所有规范导致上下文过载
+
+  加载顺序:
+    1. 架构增量设计中的相关章节
+    2. 编码规范（通用）
+    3. 任务特定规范（SQL/中间件等）
+    4. 约束条件（安全/性能）
+
+  缓存策略:
+    - 会话内缓存已加载的规范
+    - 跨任务复用通用规范
+```
+
+---
+
+## Phase 2: 任务实现
+
+### 2.1 实现前检查
+
+```yaml
+实现前检查:
+  检查项:
+    架构对齐:
+      - 当前任务在架构增量设计中是否有对应设计
+      - 包结构是否与 module-structure.md 一致
+      - 类命名是否遵循编码规范
+
+    数据模型对齐:
+      - 表结构是否与架构设计一致
+      - 字段定义是否符合SQL规范
+      - 索引设计是否合理
+
+    接口对齐:
+      - API路径是否与架构设计一致
+      - 请求/响应格式是否符合规范
+      - 错误码是否按规范定义
+
+  不一致处理:
+    - 记录偏差到 Debug Log
+    - 如有重大偏差，暂停并询问用户
+```
+
+### 2.2 代码实现规范
+
+```yaml
+代码实现规范:
+  命名规范:
+    来源: docs/rag/technical/coding-standards/
+    要求:
+      - Controller: {Module}Controller
+      - Service: {Module}Service / {Module}ServiceImpl
+      - DAO: {Module}Mapper / {Module}Repository
+      - Entity: {Entity}
+      - DTO: {Entity}DTO / {Entity}VO / {Entity}Request / {Entity}Response
+
+  分层规范:
+    来源: docs/rag/technical/coding-standards/
+    要求:
+      - Controller: 仅处理请求/响应，不含业务逻辑
+      - Service: 业务逻辑层，事务管理
+      - DAO: 数据访问层，仅数据操作
+      - 禁止: 跨层调用、循环依赖
+
+  异常处理:
+    来源: docs/rag/technical/coding-standards/
+    要求:
+      - 使用统一异常类
+      - 业务异常与系统异常分离
+      - 异常信息包含上下文
+
+  日志规范:
+    来源: docs/rag/technical/coding-standards/
+    要求:
+      - 关键操作必须有日志
+      - 日志级别正确使用
+      - 敏感信息脱敏
+```
+
+### 2.3 中间件使用规范
+
+```yaml
+中间件使用规范:
+  Redis使用:
+    来源: docs/rag/technical/middleware/redis.md
+    规范:
+      - Key命名: {业务}:{模块}:{标识}
+      - 必须设置过期时间
+      - 使用正确的数据结构
+      - 参考知识库中的代码示例
+
+  MQ使用:
+    来源: docs/rag/technical/middleware/mq.md
+    规范:
+      - Topic命名规范
+      - 消息格式标准化
+      - 消费者幂等处理
+      - 参考知识库中的代码示例
+
+  定时任务:
+    来源: docs/rag/technical/middleware/scheduler.md
+    规范:
+      - 任务命名规范
+      - 分布式锁使用
+      - 异常处理
+      - 参考知识库中的代码示例
+```
+
+### 2.4 SQL实现规范
+
+```yaml
+SQL实现规范:
+  表设计:
+    来源: docs/rag/technical/sql-standards/
+    规范:
+      - 表名小写下划线
+      - 主键统一命名
+      - 必须有创建/更新时间字段
+      - 必须有表和字段注释
+
+  索引设计:
+    来源: docs/rag/technical/sql-standards/
+    规范:
+      - 索引命名: idx_{表名}_{字段}
+      - 唯一索引: uk_{表名}_{字段}
+      - 避免冗余索引
+
+  查询规范:
+    来源: docs/rag/technical/sql-standards/
+    规范:
+      - 禁止 SELECT *
+      - 分页必须有限制
+      - 避免大事务
+```
+
+---
+
+## Phase 3: 实现过程中的规范校验
+
+### 3.1 实时校验点
+
+```yaml
+校验点:
+  代码创建时:
+    - 文件路径是否符合 module-structure.md
+    - 类名是否符合命名规范
+    - 包声明是否正确
+
+  代码编写时:
+    - 方法命名是否规范
+    - 异常处理是否符合规范
+    - 日志打印是否规范
+
+  代码完成时:
+    - 是否遵循分层规范
+    - 是否有必要的注释
+    - 是否处理了边界情况
+```
+
+### 3.2 规范偏差处理
+
+```yaml
+偏差处理:
+  轻微偏差:
+    定义: 命名风格略有差异、注释不够详细
+    处理: 记录到 Debug Log，继续执行
+
+  中等偏差:
+    定义: 分层不清晰、缺少必要校验
+    处理: 立即修正，记录到 Completion Notes
+
+  严重偏差:
+    定义: 架构不一致、安全风险
+    处理: 暂停开发，询问用户确认
+```
+
+---
+
+## Phase 4: 测试与验证
+
+### 4.1 测试要求
+
+```yaml
+测试要求:
+  单元测试:
+    - Service层必须有单元测试
+    - 覆盖正常流程和异常流程
+    - Mock外部依赖
+
+  集成测试:
+    - API接口必须有集成测试
+    - 数据库操作必须验证
+
+  验收标准验证:
+    - 逐条验证故事中的AC
+    - 记录验证结果
+```
+
+### 4.2 规范合规检查
+
+```yaml
+合规检查:
+  代码规范检查:
+    执行: lint工具检查
+    标准: docs/rag/technical/coding-standards/
+
+  安全检查:
+    执行: 安全扫描（如配置）
+    标准: docs/rag/constraints/security.md
+
+  性能检查:
+    执行: 性能测试（如需要）
+    标准: docs/rag/constraints/performance.md
+```
+
+---
+
+## Phase 5: 故事文件更新
+
+### 5.1 允许更新的部分
+
+```yaml
+允许更新部分:
+  任务状态:
+    - Tasks / Subtasks 复选框标记为 [x]
+
+  Dev Agent Record:
+    - Agent Model Used: 使用的模型
+    - Debug Log References: 调试日志
+    - Completion Notes List: 完成说明
+    - File List: 新增/修改/删除的文件
+    - Knowledge References: 【新增】引用的知识文件
+
+  Change Log:
+    - 新增变更日志条目
+
+  Status:
+    - 更新为 Ready for Review
+```
+
+### 5.2 知识引用记录
+
+```yaml
+知识引用记录:
+  格式:
+    ## Knowledge References
+
+    | 知识文件 | 引用内容 | 应用位置 |
+    |----------|----------|----------|
+    | docs/rag/technical/coding-standards/naming.md | 类命名规范 | UserController.java |
+    | docs/rag/technical/middleware/redis.md | 缓存实现示例 | UserCacheService.java |
+    | docs/architecture-increment.md#用户模块设计 | 模块设计 | user/ 目录结构 |
+
+  目的:
+    - 便于代码审查时验证规范遵循
+    - 便于后续维护时理解实现依据
+    - 建立代码与知识库的可追溯关系
+```
+
+---
+
+## 执行顺序总结
+
+```yaml
+执行顺序:
+  order-of-execution: |
+    1. 加载知识上下文
+       - 读取架构增量设计 (docs/architecture-increment.md)
+       - 读取相关编码规范 (docs/rag/technical/coding-standards/)
+       - 读取任务相关规范 (按需)
+
+    2. 读取当前任务
+       - 分析任务类型
+       - 匹配相关规范
+       - 提取架构设计中的对应章节
+
+    3. 实现任务
+       - 按照规范创建代码文件
+       - 遵循命名和分层规范
+       - 参考中间件代码示例
+
+    4. 编写测试
+       - 按照测试规范编写
+       - 覆盖正常和异常流程
+
+    5. 执行验证
+       - 运行lint检查
+       - 运行测试
+       - 验证AC
+
+    6. 更新故事文件
+       - 标记任务完成 [x]
+       - 更新 File List
+       - 记录 Knowledge References
+       - 更新 Completion Notes
+
+    7. 重复直至完成所有任务
+
+    8. 最终检查
+       - 执行 story-dod-checklist
+       - 验证所有规范遵循
+       - 设置状态为 Ready for Review
+```
+
+---
+
+## 阻塞条件
+
+```yaml
+阻塞条件:
+  暂停情况:
+    - 架构增量设计与故事任务严重不一致
+    - 知识库规范相互冲突
+    - 安全约束无法满足
+    - 连续3次实现失败
+    - 需要未批准的依赖
+
+  处理方式:
+    - 记录问题到 Debug Log
+    - 暂停并询问用户
+    - 等待用户确认后继续
+```
+
+---
+
+## 完成标志
+
+```yaml
+完成条件:
+  必要条件:
+    - 所有任务和子任务标记为 [x]
+    - 所有测试通过
+    - lint检查通过
+    - 验收标准全部满足
+    - Knowledge References 已记录
+
+  完成提示: |
+    ✅ 故事开发完成！
+
+    📄 故事文件: {story_path}
+    📊 任务完成: {completed_tasks}/{total_tasks}
+    🧪 测试状态: 全部通过
+
+    📚 知识引用:
+    - 编码规范: docs/rag/technical/coding-standards/
+    - 架构设计: docs/architecture-increment.md
+    - 中间件规范: {middleware_refs}
+
+    📁 文件变更:
+    - 新增: {new_files}
+    - 修改: {modified_files}
+    - 删除: {deleted_files}
+
+    🔄 下一步:
+    - QA审查: 请QA执行 *review-story
+    - 代码审查: 请进行代码评审
+==================== END: .xiaoma-core/tasks/develop-story-with-rag.md ====================
 
 ==================== START: .xiaoma-core/checklists/story-dod-checklist.md ====================
 <!-- Powered by XiaoMa™ Core -->
