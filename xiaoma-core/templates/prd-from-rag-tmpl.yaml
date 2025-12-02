@@ -1,0 +1,410 @@
+template:
+  id: prd-from-rag-template-v1
+  name: 基于需求分析的PRD文档
+  version: 1.0
+  description: 基于Analyst智能体的需求分析产出物生成PRD
+  output:
+    format: markdown
+    filename: docs/prd.md
+    title: "{{project_name}} 产品需求文档 (PRD)"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  upstream:
+    agent: analyst
+    required_files:
+      - docs/rag/_analysis-report.md
+      - docs/rag/_requirement-parsing.yaml
+    optional_files:
+      - docs/rag/_questions.md
+      - docs/rag/_index.md
+      - docs/rag/business/*
+      - docs/rag/technical/*
+      - docs/rag/constraints/*
+
+sections:
+  - id: input-validation
+    title: 输入验证
+    internal: true
+    instruction: |
+      在开始生成PRD之前，执行以下验证：
+
+      1. **检查必需文件**：
+         - docs/rag/_analysis-report.md 是否存在
+         - docs/rag/_requirement-parsing.yaml 是否存在
+         - req.txt 原始需求文档是否存在
+
+      2. **加载分析报告**：
+         - 读取并解析 _analysis-report.md 的所有章节
+         - 提取关键信息：功能清单、用户角色、数据实体、风险、待澄清事项
+
+      3. **加载知识上下文**：
+         - 扫描 docs/rag/technical/ 获取技术约束
+         - 扫描 docs/rag/business/ 获取业务规则
+         - 扫描 docs/rag/constraints/ 获取约束条件
+
+      如果缺少必需文件，提示：
+      "⚠️ 未找到需求分析报告。请先执行 Analyst 智能体完成需求分析：*analyze-requirement req.txt"
+
+  - id: complexity-assessment
+    title: 复杂度评估
+    instruction: |
+      基于分析报告内容，评估项目复杂度并推荐文档类型。
+
+      **评估维度**：
+      1. 功能复杂度：基于功能清单数量和依赖关系
+      2. 技术复杂度：基于技术可行性评估
+      3. 集成复杂度：基于数据关系和外部依赖
+      4. 风险等级：基于风险清单
+
+      **推荐文档类型**：
+      - 完整PRD：复杂度 >= 中等，或涉及多个Epic
+      - 单Epic：复杂度低，可在1-3个Story内完成
+
+      展示评估结果并请用户确认文档类型。
+    elicit: true
+    sections:
+      - id: assessment-result
+        title: 评估结果
+        type: table
+        columns: [评估维度, 等级, 依据]
+      - id: recommendation
+        title: 推荐方案
+        instruction: 基于评估结果给出文档类型推荐和理由
+
+  - id: goals-context
+    title: 目标与背景
+    instruction: |
+      从分析报告的"需求概述"章节提取内容，映射到PRD结构。
+
+      **映射规则**：
+      - 分析报告.需求背景 → 背景上下文
+      - 分析报告.核心目标 → 目标
+      - 分析报告.范围边界 → 范围定义
+
+      如果分析报告中信息不足，参考 req.txt 原始需求补充。
+    sections:
+      - id: goals
+        title: 目标
+        type: bullet-list
+        instruction: |
+          从分析报告提取核心目标，转换为PRD目标格式。
+          每个目标应该是：
+          - 可衡量的成果
+          - 用户或业务价值
+          - 与原始需求对应
+      - id: background
+        title: 背景上下文
+        type: paragraphs
+        instruction: |
+          综合以下来源生成背景描述：
+          - 分析报告.需求背景
+          - 分析报告.业务分析
+          - 原始需求文档中的背景信息
+      - id: scope
+        title: 范围定义
+        instruction: 从分析报告.范围边界提取，明确包含和不包含的内容
+        sections:
+          - id: in-scope
+            title: 范围内
+            type: bullet-list
+          - id: out-of-scope
+            title: 范围外
+            type: bullet-list
+      - id: changelog
+        title: 变更日志
+        type: table
+        columns: [日期, 版本, 描述, 作者]
+
+  - id: requirements
+    title: 需求
+    instruction: |
+      从分析报告的"功能分析"和"业务规则汇总"章节提取需求。
+
+      **功能性需求来源**：
+      - 分析报告.功能清单 → FR列表
+      - 分析报告.业务规则 → FR补充说明
+      - docs/rag/business/rules-*.md → 详细规则
+
+      **非功能性需求来源**：
+      - 分析报告.技术分析.性能要求
+      - docs/rag/constraints/security.md
+      - docs/rag/constraints/performance.md
+
+      确保每个需求都可追溯到分析报告或知识库文档。
+    elicit: true
+    sections:
+      - id: functional
+        title: 功能性需求
+        type: numbered-list
+        prefix: FR
+        instruction: |
+          按优先级排列功能性需求：
+          - P0功能优先列出
+          - 每个FR包含：需求描述 + 来源标注
+          - 复杂业务规则单独标注参考文档
+
+          格式示例：
+          FR1: [P0] 用户可以创建订单 (来源: 分析报告.功能清单.F001)
+        examples:
+          - "FR1: [P0] 系统支持用户通过手机号注册账户 (来源: _analysis-report.md#功能清单)"
+          - "FR2: [P0] 订单状态流转遵循：待支付→已支付→已发货→已完成 (来源: business/rules-order.md)"
+      - id: non-functional
+        title: 非功能性需求
+        type: numbered-list
+        prefix: NFR
+        instruction: |
+          从约束条件和技术分析中提取非功能性需求。
+          包括：性能、安全、可用性、兼容性等。
+        examples:
+          - "NFR1: 接口响应时间P99 < 500ms (来源: constraints/performance.md)"
+          - "NFR2: 敏感数据传输必须使用HTTPS加密 (来源: constraints/security.md)"
+
+  - id: data-model
+    title: 数据模型
+    instruction: |
+      从分析报告的"数据分析"章节和技术知识中提取数据模型。
+
+      **来源**：
+      - 分析报告.数据实体清单
+      - 分析报告.数据关系图
+      - docs/rag/technical/data-model.md
+    sections:
+      - id: entities
+        title: 数据实体
+        type: table
+        columns: [实体名称, 描述, 核心属性, 来源]
+        instruction: 列出所有数据实体及其核心属性
+      - id: relationships
+        title: 数据关系
+        instruction: |
+          描述实体间的关系，使用Mermaid ER图表示。
+          从分析报告.数据关系图提取，补充详细说明。
+        examples:
+          - |
+            ```mermaid
+            erDiagram
+                User ||--o{ Order : creates
+                Order ||--|{ OrderItem : contains
+            ```
+
+  - id: technical-constraints
+    title: 技术约束
+    instruction: |
+      整合技术知识库中的约束条件，指导后续架构设计。
+
+      **来源**：
+      - docs/rag/technical/architecture.md
+      - docs/rag/technical/tech-stack.md
+      - docs/rag/technical/coding-standards/
+      - docs/rag/technical/middleware/
+      - 分析报告.技术分析.与现有系统兼容性
+    elicit: true
+    sections:
+      - id: tech-stack
+        title: 技术栈约束
+        instruction: |
+          从技术知识库提取技术栈要求：
+          - 后端框架和版本
+          - 数据库类型和版本
+          - 中间件要求
+        template: |
+          **后端**: {{backend_framework}}
+          **数据库**: {{database}}
+          **缓存**: {{cache}}
+          **消息队列**: {{mq}}
+      - id: architecture-constraints
+        title: 架构约束
+        instruction: 从 architecture.md 提取架构模式和约束
+      - id: coding-standards
+        title: 编码规范约束
+        instruction: |
+          从 coding-standards/ 目录提取关键规范：
+          - 命名规范
+          - 分层规范
+          - 异常处理规范
+      - id: integration-constraints
+        title: 集成约束
+        instruction: 从分析报告.技术分析提取集成相关约束
+
+  - id: epic-list
+    title: 模块列表
+    instruction: |
+      基于分析报告的功能分析，规划Epic结构。
+
+      **规划原则**：
+      - 按功能优先级分组：P0功能 → Epic 1
+      - 遵循功能依赖关系
+      - 每个Epic交付独立可测试的功能增量
+
+      **Epic分组策略**：
+      1. 从分析报告.功能清单提取所有功能
+      2. 按优先级排序：P0 > P1 > P2
+      3. 分析依赖关系，确定Epic边界
+      4. 每个Epic包含相关联的功能集
+
+      展示Epic列表，请用户确认分组是否合理。
+    elicit: true
+    sections:
+      - id: epic-overview
+        title: Epic概览
+        type: table
+        columns: [Epic, 标题, 包含功能, 优先级, Story数量(预估)]
+        instruction: 展示所有Epic的概览表格
+
+  - id: epic-details
+    title: "Epic {{epic_number}}: {{epic_title}}"
+    repeatable: true
+    instruction: |
+      为每个Epic生成详细内容，包含所有Story和验收标准。
+
+      **Epic内容来源**：
+      - 分析报告.功能清单 (对应功能)
+      - 分析报告.业务规则 (相关规则)
+      - docs/rag/business/ (详细业务知识)
+      - docs/rag/technical/ (技术实现参考)
+
+      **Story生成规则**：
+      - 每个Story是垂直切片
+      - 单个AI Agent会话可完成（2-4小时）
+      - 验收标准来源于分析报告中的业务规则
+      - 包含技术实现提示（来自技术知识）
+
+      **Story排序**：
+      - 遵循分析报告.功能依赖关系
+      - 基础设施和数据模型优先
+      - 核心流程优先于边缘场景
+    elicit: true
+    template: |
+      **Epic目标**: {{epic_goal}}
+
+      **包含功能**:
+      {{功能列表，来源于分析报告}}
+
+      **技术要点**:
+      {{技术实现要点，来源于技术知识库}}
+    sections:
+      - id: story
+        title: "Story {{epic_number}}.{{story_number}}: {{story_title}}"
+        repeatable: true
+        template: |
+          作为一名 {{user_type}}，
+          我想要 {{action}}，
+          以便 {{benefit}}。
+        sections:
+          - id: acceptance-criteria
+            title: 验收标准
+            type: numbered-list
+            instruction: |
+              从以下来源生成验收标准：
+              - 分析报告.业务规则 (对应规则)
+              - docs/rag/business/rules-*.md (详细规则)
+              - 分析报告.数据分析 (数据约束)
+
+              每个标准必须：
+              - 可测试、可验证
+              - 明确无歧义
+              - 包含边界条件
+            item_template: "AC{{criterion_number}}: {{criteria}} (来源: {{source}})"
+          - id: technical-hints
+            title: 技术实现提示
+            instruction: |
+              从技术知识库提取实现提示：
+              - 相关编码规范
+              - 中间件使用示例
+              - 数据模型参考
+            type: bullet-list
+          - id: knowledge-refs
+            title: 知识引用
+            instruction: 列出Story实现时需要参考的知识文档
+            type: bullet-list
+
+  - id: risks-and-open-items
+    title: 风险与待澄清事项
+    instruction: |
+      从分析报告直接提取风险和待澄清事项。
+
+      **来源**：
+      - 分析报告.风险分析
+      - 分析报告.待澄清事项
+    sections:
+      - id: risks
+        title: 风险清单
+        type: table
+        columns: [风险ID, 风险描述, 等级, 缓解措施]
+        instruction: 从分析报告.风险清单直接映射
+      - id: open-questions
+        title: 待澄清事项
+        type: table
+        columns: [序号, 问题, 上下文, 建议选项, 状态]
+        instruction: |
+          从分析报告.待澄清事项提取。
+          标注状态：待确认/已确认/已关闭
+          在PRD评审时需要逐一确认这些问题。
+
+  - id: knowledge-index
+    title: 知识引用索引
+    instruction: |
+      列出本PRD引用的所有知识文档，便于追溯和维护。
+    sections:
+      - id: analysis-refs
+        title: 分析报告引用
+        type: table
+        columns: [章节, 引用位置, 用途]
+      - id: knowledge-refs
+        title: 知识库引用
+        type: table
+        columns: [文件路径, 引用位置, 用途]
+
+  - id: next-steps
+    title: 后续步骤
+    sections:
+      - id: ux-expert-prompt
+        title: UX专家交接
+        instruction: |
+          生成给UX专家的交接提示，包含：
+          - 需要关注的用户角色
+          - 核心屏幕和交互
+          - 品牌和无障碍要求
+          - 相关知识文档路径
+        template: |
+          **交接给UX专家**
+
+          请基于本PRD的用户分析部分设计UI/UX方案：
+
+          **关键输入**：
+          - PRD文档: docs/prd.md
+          - 用户分析: docs/rag/_analysis-report.md#用户分析
+          - 用户角色: {{user_roles}}
+          - 核心屏幕: {{core_screens}}
+
+          **设计重点**：
+          {{design_focus}}
+
+          **执行命令**: *create-ux-design docs/prd.md
+      - id: architect-prompt
+        title: 架构师交接
+        instruction: |
+          生成给架构师的交接提示，包含：
+          - 技术栈约束
+          - 数据模型要点
+          - 集成需求
+          - 相关知识文档路径
+        template: |
+          **交接给架构师**
+
+          请基于本PRD和技术知识库设计系统架构：
+
+          **关键输入**：
+          - PRD文档: docs/prd.md
+          - 技术分析: docs/rag/_analysis-report.md#技术分析
+          - 技术知识: docs/rag/technical/
+          - 数据模型: docs/rag/technical/data-model.md
+
+          **架构重点**：
+          - 技术栈: {{tech_stack}}
+          - 关键集成点: {{integration_points}}
+          - 性能要求: {{performance_requirements}}
+
+          **执行命令**: *create-architecture docs/prd.md

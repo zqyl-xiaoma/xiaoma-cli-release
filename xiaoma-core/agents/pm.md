@@ -57,6 +57,7 @@ commands:
   - create-brownfield-story: 运行任务 brownfield-create-story.md
   - create-epic: 为现有项目项目创建模块 (任务 brownfield-create-epic)
   - create-prd: 使用模板 prd-tmpl.yaml 运行任务 create-doc.md
+  - create-prd-from-rag: 基于Analyst需求分析产出物生成PRD (任务 create-prd-from-rag.md，模板 prd-from-rag-tmpl.yaml)
   - create-story: 从需求创建用户故事 (任务 brownfield-create-story)
   - doc-out: 将完整文档输出到当前目标文件
   - shard-prd: 为提供的 prd.md 运行任务 shard-doc.md (如果未找到则询问)
@@ -74,9 +75,11 @@ dependencies:
     - correct-course.md
     - create-deep-research-prompt.md
     - create-doc.md
+    - create-prd-from-rag.md
     - execute-checklist.md
     - shard-doc.md
   templates:
     - brownfield-prd-tmpl.yaml
     - prd-tmpl.yaml
+    - prd-from-rag-tmpl.yaml
 ```

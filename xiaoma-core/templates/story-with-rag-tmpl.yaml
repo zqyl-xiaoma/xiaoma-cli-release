@@ -1,0 +1,360 @@
+template:
+  id: story-with-rag-template-v1
+  name: 基于知识库的用户故事文档
+  version: 1.0
+  description: 融合知识库业务规则、技术规范和架构增量设计的用户故事模板
+  output:
+    format: markdown
+    filename: docs/stories/{{epic_num}}.{{story_num}}.{{story_title_short}}.md
+    title: "Story {{epic_num}}.{{story_num}}: {{story_title_short}}"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+  upstream:
+    agents:
+      - analyst  # 提供需求分析报告和知识库
+      - pm       # 提供PRD文档
+      - architect # 提供架构增量设计
+    required_files:
+      - docs/prd.md
+      - docs/architecture-increment.md
+    optional_files:
+      - docs/rag/_analysis-report.md
+      - docs/rag/business/*
+      - docs/rag/technical/*
+      - docs/rag/constraints/*
+
+agent_config:
+  editable_sections:
+    - Status
+    - Story
+    - Acceptance Criteria
+    - Tasks / Subtasks
+    - Dev Notes
+    - Testing
+    - Knowledge References
+    - Change Log
+
+sections:
+  - id: status
+    title: 状态
+    type: choice
+    choices: [Draft, Approved, InProgress, Review, Done]
+    instruction: 选择此用户故事的当前状态
+    owner: scrum-master
+    editors: [scrum-master, po-agent, dev-agent]
+
+  - id: story
+    title: 用户故事
+    type: template-text
+    template: |
+      **作为** {{role}}，
+      **我希望** {{action}}，
+      **以便** {{benefit}}
+    instruction: |
+      使用标准格式定义用户故事。
+      - 角色来源: docs/rag/_analysis-report.md#用户分析
+      - 功能来源: PRD/Epic 中的 Story 定义
+      - 价值来源: 需求分析报告中的业务目标
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: acceptance-criteria
+    title: 验收标准
+    type: numbered-list
+    instruction: |
+      从 Epic 文件中复制验收标准，并融合知识库内容增强：
+
+      **增强规则**：
+      1. 检查每个AC是否有对应的业务规则 (docs/rag/business/rules-*.md)
+         - 如有，将业务规则细节融入AC
+         - 标注来源: (来源: business/rules-{name}.md)
+
+      2. 检查每个AC是否涉及约束条件 (docs/rag/constraints/)
+         - 如有安全要求，添加安全约束
+         - 如有性能要求，添加性能指标
+         - 标注来源: (来源: constraints/{name}.md)
+
+      **示例**：
+      1. 用户可以创建订单
+         - 订单状态初始为"待支付" (来源: business/rules-order.md)
+         - 订单号格式: ORD{yyyyMMdd}{6位序号} (来源: business/rules-order.md)
+         - 接口响应时间 < 500ms (来源: constraints/performance.md)
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+
+  - id: tasks-subtasks
+    title: 任务 / 子任务
+    type: bullet-list
+    instruction: |
+      基于架构增量设计 (docs/architecture-increment.md) 生成详细任务。
+
+      **任务生成规则**：
+
+      1. **数据层任务** (如Story涉及数据模型):
+         来源: architecture-increment.md#数据模型增量设计
+         ```
+         - [ ] 创建/修改数据模型 (AC: {相关AC})
+           - [ ] 创建实体类 [参考: architecture-increment.md#entity-detail]
+           - [ ] 执行DDL脚本 [参考: architecture-increment.md#ddl-script]
+           - [ ] 创建Mapper/Repository [遵循: coding-standards/]
+         ```
+
+      2. **接口层任务** (如Story涉及API):
+         来源: architecture-increment.md#接口增量设计
+         ```
+         - [ ] 实现API接口 (AC: {相关AC})
+           - [ ] 创建Controller [参考: architecture-increment.md#api-detail]
+           - [ ] 实现参数校验 [遵循: coding-standards/]
+           - [ ] 实现响应格式 [参考: architecture-increment.md#response-design]
+         ```
+
+      3. **业务层任务** (如Story涉及业务逻辑):
+         来源: architecture-increment.md#模块增量设计
+         ```
+         - [ ] 实现业务逻辑 (AC: {相关AC})
+           - [ ] 创建Service类 [参考: architecture-increment.md#class-design]
+           - [ ] 实现业务规则 [参考: business/rules-{name}.md]
+         ```
+
+      4. **中间件任务** (如Story涉及缓存/消息):
+         来源: architecture-increment.md#中间件增量设计
+         ```
+         - [ ] 实现缓存逻辑 (AC: {相关AC})
+           - [ ] Redis实现 [参考: architecture-increment.md#redis-design]
+           - [ ] 代码示例 [参考: middleware/redis.md]
+         ```
+
+      5. **测试任务**:
+         ```
+         - [ ] 编写测试用例 (AC: ALL)
+           - [ ] 单元测试 [遵循: coding-standards/testing]
+           - [ ] 集成测试（如需要）
+         ```
+    template: |
+      - [ ] 任务 1 (AC: #) [参考: {knowledge_ref}]
+        - [ ] 子任务 1.1 [遵循: {standard_ref}]
+      - [ ] 任务 2 (AC: #) [参考: {knowledge_ref}]
+        - [ ] 子任务 2.1 [遵循: {standard_ref}]
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master, dev-agent]
+
+  - id: dev-notes
+    title: 开发者说明
+    instruction: |
+      整合知识库内容，为开发者提供完整的技术上下文。
+
+      **来源整合**：
+      - 架构设计: docs/architecture-increment.md
+      - 编码规范: docs/rag/technical/coding-standards/
+      - 模块结构: docs/rag/technical/module-structure.md
+      - 中间件规范: docs/rag/technical/middleware/
+      - 业务规则: docs/rag/business/rules-*.md
+      - 约束条件: docs/rag/constraints/
+
+      **填充规则**：
+      - 每个技术细节必须标注来源
+      - 提供足够上下文使开发者无需阅读原始文档
+      - 包含相关代码示例引用
+    elicit: true
+    owner: scrum-master
+    editors: [scrum-master]
+    sections:
+      - id: previous-story-insights
+        title: 上一个Story洞察
+        instruction: |
+          从上一个Story的Dev Agent Record中提取关键信息：
+          - 技术决策和实现方式
+          - 遇到的问题和解决方案
+          - 对当前Story的建议
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: architecture-reference
+        title: 架构设计参考
+        instruction: |
+          从 docs/architecture-increment.md 提取与当前Story相关的设计：
+
+          **模块设计** [参考: architecture-increment.md#module-design]
+          - 包结构: {提取的包结构}
+          - 核心类: {提取的类列表}
+
+          **数据模型** [参考: architecture-increment.md#data-model-design]
+          - 表名: {table_name}
+          - 核心字段: {fields}
+          - DDL参考: {ddl_section_ref}
+
+          **接口设计** [参考: architecture-increment.md#api-design]
+          - 路径: {api_path}
+          - 方法: {http_method}
+          - 请求/响应参考: {api_detail_ref}
+
+          **中间件设计** [参考: architecture-increment.md#middleware-design]
+          - Redis设计: {redis_ref}
+          - MQ设计: {mq_ref}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: business-rules
+        title: 业务规则
+        instruction: |
+          从 docs/rag/business/rules-*.md 提取与当前Story相关的业务规则：
+
+          [参考: business/rules-{name}.md]
+          - 规则1: {rule_description}
+          - 规则2: {rule_description}
+
+          确保每条规则都标注来源文件。
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: coding-standards
+        title: 编码规范要点
+        instruction: |
+          从 docs/rag/technical/coding-standards/ 提取关键规范：
+
+          [参考: coding-standards/]
+          - 命名规范: {naming_rules}
+          - 分层规范: {layer_rules}
+          - 异常处理: {exception_rules}
+          - 日志规范: {logging_rules}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: middleware-usage
+        title: 中间件使用
+        condition: Story涉及中间件
+        instruction: |
+          从 docs/rag/technical/middleware/ 提取使用规范和代码示例：
+
+          **Redis** [参考: middleware/redis.md]
+          - Key命名: {key_pattern}
+          - 过期策略: {expiration}
+          - 代码示例参考: middleware/redis.md#{section}
+
+          **MQ** [参考: middleware/mq.md]
+          - Topic: {topic_name}
+          - 消息格式: {message_format}
+          - 代码示例参考: middleware/mq.md#{section}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: constraints
+        title: 约束条件
+        instruction: |
+          从 docs/rag/constraints/ 提取相关约束：
+
+          **安全要求** [参考: constraints/security.md]
+          - {security_requirements}
+
+          **性能要求** [参考: constraints/performance.md]
+          - {performance_requirements}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: file-locations
+        title: 文件位置
+        instruction: |
+          从 docs/rag/technical/module-structure.md 提取文件位置规范：
+
+          [参考: module-structure.md]
+          - Controller: {path}
+          - Service: {path}
+          - Mapper/Repository: {path}
+          - Entity: {path}
+          - Test: {path}
+        owner: scrum-master
+        editors: [scrum-master]
+
+      - id: testing-standards
+        title: 测试说明
+        instruction: |
+          从 docs/rag/technical/coding-standards/ 提取测试规范：
+
+          [参考: coding-standards/testing]
+          - 测试框架: {test_framework}
+          - 测试文件位置: {test_file_location}
+          - 测试场景:
+            - 正常流程: {normal_scenarios}
+            - 异常流程: {error_scenarios}
+            - 边界条件: {edge_cases}
+        elicit: true
+        owner: scrum-master
+        editors: [scrum-master]
+
+  - id: knowledge-references
+    title: 知识引用索引
+    instruction: |
+      记录Story中引用的所有知识文件，便于追溯和验证。
+
+      | 知识文件 | 引用章节 | 应用位置 |
+      |----------|----------|----------|
+      | docs/architecture-increment.md | 模块设计 | 任务列表、Dev Notes |
+      | docs/rag/business/rules-*.md | 业务规则 | AC增强、业务逻辑任务 |
+      | docs/rag/technical/coding-standards/ | 编码规范 | Dev Notes |
+      | docs/rag/technical/middleware/*.md | 中间件示例 | 中间件任务 |
+      | docs/rag/constraints/*.md | 约束条件 | AC约束 |
+    type: table
+    columns: [知识文件, 引用章节, 应用位置]
+    owner: scrum-master
+    editors: [scrum-master, dev-agent]
+
+  - id: change-log
+    title: 变更日志
+    type: table
+    columns: [日期, 版本, 描述, 作者]
+    instruction: 跟踪此用户故事文档的变更
+    owner: scrum-master
+    editors: [scrum-master, dev-agent, qa-agent]
+
+  - id: dev-agent-record
+    title: 开发者代理记录
+    instruction: 此部分由开发代理在实施过程中填充
+    owner: dev-agent
+    editors: [dev-agent]
+    sections:
+      - id: agent-model
+        title: 使用的代理模型
+        template: "{{agent_model_name_version}}"
+        instruction: 记录用于开发的特定 AI 代理模型和版本
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: debug-log-references
+        title: 调试日志参考
+        instruction: 引用开发过程中生成的任何调试日志或跟踪信息
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: completion-notes
+        title: 完成说明列表
+        instruction: 关于任务完成情况和遇到的任何问题的说明
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: file-list
+        title: 文件列表
+        instruction: 列出在用户故事实施过程中创建、修改或影响的所有文件
+        owner: dev-agent
+        editors: [dev-agent]
+
+      - id: knowledge-usage-record
+        title: 知识使用记录
+        instruction: |
+          记录实际开发中使用的知识文件和参考内容：
+          | 知识文件 | 使用内容 | 应用代码位置 |
+          |----------|----------|--------------|
+        type: table
+        columns: [知识文件, 使用内容, 应用代码位置]
+        owner: dev-agent
+        editors: [dev-agent]
+
+  - id: qa-results
+    title: QA 结果
+    instruction: QA 代理对已完成的用户故事实施进行 QA 审查的结果
+    owner: qa-agent
+    editors: [qa-agent]

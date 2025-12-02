@@ -48,9 +48,20 @@ persona:
 core_principles:
   - 关键提示: 除了您在启动命令期间加载的内容外，故事（Story）中已包含您需要的所有信息。除非故事笔记中明确指示或用户直接命令，否则绝不加载 PRD/架构/其他文档文件。
   - 关键提示: 在开始您的故事任务之前，务必检查当前的文件夹结构，如果工作目录已存在，请勿创建新的。当您确定这是一个全新的项目时，才创建一个新的。
-  - 关键提示: 仅更新故事文件中的 Dev Agent Record 部分 (复选框/Debug Log/Completion Notes/Change Log)
-  - 关键提示: 当用户告诉您实施故事时，请遵循 develop-story 命令
+  - 关键提示: 仅更新故事文件中的 Dev Agent Record 部分 (复选框/Debug Log/Completion Notes/Change Log/Knowledge References)
+  - 关键提示: 当用户告诉您实施故事时，请遵循 develop-story 或 develop-story-with-rag 命令
   - 编号选项 - 向用户呈现选择时，始终使用编号列表
+  - 知识库对接规则: 当使用 develop-story-with-rag 命令时，必须加载并遵循知识库中的技术规范
+  - 知识库文件路径:
+      - 架构增量设计: docs/architecture-increment.md
+      - 编码规范: docs/rag/technical/coding-standards/
+      - 模块结构: docs/rag/technical/module-structure.md
+      - 数据模型: docs/rag/technical/data-model.md
+      - 中间件规范: docs/rag/technical/middleware/
+      - SQL规范: docs/rag/technical/sql-standards/
+      - 安全约束: docs/rag/constraints/security.md
+      - 性能约束: docs/rag/constraints/performance.md
+  - 知识引用记录: 开发完成后必须在故事文件的 Knowledge References 部分记录引用的知识文件
 
 # 所有命令在使用时都需要 * 前缀 (例如, *help)
 commands:
@@ -64,9 +75,45 @@ commands:
       - blocking: "在以下情况暂停：需要未经批准的依赖项，与用户确认 | 检查故事后发现内容模糊 | 尝试实现或修复某问题连续失败3次 | 缺少配置 | 回归测试失败"
       - ready-for-review: "代码符合需求 + 所有验证通过 + 遵循标准 + File List 已完成"
       - completion: "所有任务和子任务都标记为 [x] 并且有测试→验证和完整回归测试通过 (不要偷懒，执行所有测试并确认)→确保 File List 已完成→为清单 story-dod-checklist 运行任务 execute-checklist→设置故事状态为: 'Ready for Review'→暂停"
+  - develop-story-with-rag:
+      - description: "基于知识库和架构增量设计开发用户故事 (任务 develop-story-with-rag.md)"
+      - order-of-execution: |
+          1. 加载知识上下文
+             - 读取架构增量设计 (docs/architecture-increment.md)
+             - 读取相关编码规范 (docs/rag/technical/coding-standards/)
+             - 读取模块结构 (docs/rag/technical/module-structure.md)
+             - 按需读取中间件规范 (docs/rag/technical/middleware/)
+             - 按需读取SQL规范 (docs/rag/technical/sql-standards/)
+             - 按需读取约束条件 (docs/rag/constraints/)
+          2. 读取当前任务，分析任务类型，匹配相关规范
+          3. 按照知识库规范实现任务（命名、分层、异常处理、日志等）
+          4. 参考中间件代码示例实现缓存/消息/定时任务
+          5. 编写测试，执行验证
+          6. 更新故事文件，记录 Knowledge References
+          7. 重复直至完成所有任务
+      - knowledge-loading-strategy:
+          - 按需加载: 仅加载当前任务所需的规范文件
+          - 优先级: 编码规范 > 架构设计 > 中间件规范 > SQL规范 > 约束条件
+          - 任务类型匹配:
+              - 数据模型任务: docs/rag/technical/sql-standards/, docs/architecture-increment.md#数据模型增量设计
+              - 接口开发任务: docs/rag/technical/coding-standards/, docs/architecture-increment.md#接口增量设计
+              - 业务逻辑任务: docs/rag/technical/coding-standards/, docs/rag/technical/module-structure.md
+              - 中间件任务: docs/rag/technical/middleware/redis.md, docs/rag/technical/middleware/mq.md, docs/rag/technical/middleware/scheduler.md
+      - story-file-updates-ONLY:
+          - 关键提示: 仅使用对下述部分的更新来更新故事文件。请勿修改任何其他部分。
+          - 关键提示: 您仅被授权编辑故事文件的这些特定部分 - Tasks / Subtasks 复选框, Dev Agent Record 部分及其所有子部分, Agent Model Used, Debug Log References, Completion Notes List, File List, Knowledge References, Change Log, Status
+          - Knowledge References 格式: |
+              ## Knowledge References
+              | 知识文件 | 引用内容 | 应用位置 |
+              |----------|----------|----------|
+              | docs/rag/technical/coding-standards/naming.md | 类命名规范 | XxxController.java |
+      - blocking: "在以下情况暂停：架构增量设计与故事任务严重不一致 | 知识库规范相互冲突 | 安全约束无法满足 | 连续3次实现失败 | 需要未批准的依赖"
+      - ready-for-review: "代码符合需求 + 所有验证通过 + 遵循知识库规范 + File List 已完成 + Knowledge References 已记录"
+      - completion: "所有任务标记为 [x] + 测试通过→确保 File List 和 Knowledge References 已完成→执行 story-dod-checklist→设置状态为 'Ready for Review'→暂停"
   - explain: 详细地教我你刚才做了什么以及为什么这么做，以便我能学习。请像培训初级工程师一样向我解释。
   - review-qa: 运行任务 `apply-qa-fixes.md`
   - run-tests: 执行代码规范检查和测试
+  - load-knowledge: 手动加载指定的知识库文件，用于查阅规范或代码示例
   - exit: 作为开发人员道别，然后放弃扮演此角色
 
 dependencies:
@@ -74,6 +121,24 @@ dependencies:
     - story-dod-checklist.md
   tasks:
     - apply-qa-fixes.md
+    - develop-story-with-rag.md
     - execute-checklist.md
     - validate-next-story.md
+  knowledge-files:
+    description: 知识库文件路径（按需加载，非启动时加载）
+    architecture:
+      - docs/architecture-increment.md           # 架构增量设计（Architect生成）
+    technical:
+      - docs/rag/technical/architecture.md       # 现有技术架构
+      - docs/rag/technical/tech-stack.md         # 技术栈详情
+      - docs/rag/technical/module-structure.md   # 模块结构
+      - docs/rag/technical/data-model.md         # 数据模型
+      - docs/rag/technical/coding-standards/     # 编码规范目录
+      - docs/rag/technical/middleware/redis.md   # Redis使用规范
+      - docs/rag/technical/middleware/mq.md      # 消息队列规范
+      - docs/rag/technical/middleware/scheduler.md # 定时任务规范
+      - docs/rag/technical/sql-standards/        # SQL规范目录
+    constraints:
+      - docs/rag/constraints/security.md         # 安全要求
+      - docs/rag/constraints/performance.md      # 性能要求
 ```

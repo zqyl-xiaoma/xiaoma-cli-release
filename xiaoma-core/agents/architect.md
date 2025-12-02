@@ -58,6 +58,7 @@ commands:
   - create-brownfield-architecture: 使用 create-doc 和 brownfield-architecture-tmpl.yaml
   - create-front-end-architecture: 使用 create-doc 和 front-end-architecture-tmpl.yaml
   - create-full-stack-architecture: 使用 create-doc 和 fullstack-architecture-tmpl.yaml
+  - create-incremental-architecture: 基于知识库和PRD进行架构增量设计 (任务 create-incremental-architecture.md，模板 incremental-architecture-tmpl.yaml)
   - doc-out: 将完整文档输出到当前目标文件
   - document-project: 执行任务 document-project.md
   - execute-checklist {checklist}: 运行任务 execute-checklist (默认为->architect-checklist)
@@ -74,6 +75,7 @@ dependencies:
   tasks:
     - create-deep-research-prompt.md
     - create-doc.md
+    - create-incremental-architecture.md
     - document-project.md
     - execute-checklist.md
     - shard-doc.md
@@ -82,4 +84,5 @@ dependencies:
     - brownfield-architecture-tmpl.yaml
     - front-end-architecture-tmpl.yaml
     - fullstack-architecture-tmpl.yaml
+    - incremental-architecture-tmpl.yaml
 ```
