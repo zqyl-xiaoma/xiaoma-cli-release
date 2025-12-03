@@ -3,7 +3,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 
 // Load package.json from root for version info
-const packageJson = require('../../../../github/xiaoma-cli/BMAD-METHOD/package.json');
+const packageJson = require('../../package.json');
 
 // Load all command modules
 const commandsPath = path.join(__dirname, 'commands');
