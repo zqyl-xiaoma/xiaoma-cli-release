@@ -1,46 +1,27 @@
 # Dependencies
 node_modules/
-pnpm-lock.yaml
-bun.lock
-deno.lock
-pnpm-workspace.yaml
-package-lock.json
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Build output
+dist/
 
 # Logs
-logs/
 *.log
 npm-debug.log*
 
-# Build output
-build/*.txt
-web-bundles/
-
-# Environment variables
+# Environment
 .env
+.env.local
+.env.*.local
 
-# System files
-.DS_Store
-Thumbs.db
-
-# Development tools and configs
-.prettierignore
-.prettierrc
-
-# IDE and editor configs
-.windsurf/
-.trae/
-.bmad*/.cursor/
-
-# AI assistant files
-CLAUDE.md
-.ai/*
-.claude
-.gemini
-
-# Project-specific
-.xiaoma-core
-.bmad-creator-tools
-test-project-install/*
-sample-project/*
-flattened-codebase.xml
-*.stats.md
+# Test coverage
+coverage/

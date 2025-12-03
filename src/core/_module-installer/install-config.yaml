@@ -1,0 +1,29 @@
+# XIAOMA™ Core Configuration
+header: "XIAOMA™ Core Configuration"
+subheader: "Configure the core settings for your XIAOMA™ installation.\nThese settings will be used across all modules and agents."
+
+xiaoma_folder:
+  default: ".xiaoma"
+  result: "{value}"
+
+user_name:
+  prompt: "What shall the agents call you?"
+  default: "XiaoMa"
+  result: "{value}"
+
+communication_language:
+  default: "Chinese"
+  result: "{value}"
+
+document_output_language:
+  default: "Chinese"
+  result: "{value}"
+
+  # This is the folder where all generated AI Output documents from workflows will default be saved
+output_folder:
+  default: "docs"
+  result: "{project-root}/{value}"
+
+install_user_docs:
+  default: true
+  result: "{value}"

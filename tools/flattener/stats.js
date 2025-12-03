@@ -1,4 +1,4 @@
-const H = require("./stats.helpers.js");
+const H = require('./stats.helpers.js');
 
 async function calculateStatistics(aggregatedContent, xmlFileSize, rootDir) {
   const { textFiles, binaryFiles, errors } = aggregatedContent;
@@ -26,12 +26,7 @@ async function calculateStatistics(aggregatedContent, xmlFileSize, rootDir) {
   const compressibilityRatio = H.estimateCompressibility(textFiles);
   const git = H.computeGitInfo(allFiles, rootDir, quality.largeThreshold);
   const largestFiles = H.computeLargestFiles(allFiles, totalBytes);
-  const markdownReport = H.buildMarkdownReport(
-    largestFiles,
-    byExtensionArr,
-    byDirectoryArr,
-    totalBytes,
-  );
+  const markdownReport = H.buildMarkdownReport(largestFiles, byExtensionArr, byDirectoryArr, totalBytes);
 
   return {
     // Back-compat summary

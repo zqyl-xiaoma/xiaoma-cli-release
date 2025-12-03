@@ -1,44 +1,38 @@
 #!/usr/bin/env node
 
 /**
- * XiaoMa Cli CLI - Direct execution wrapper for npx
- * This file ensures proper execution when run via npx from GitHub
+ * XiaoMa CLI - Direct execution wrapper for npx
+ * This file ensures proper execution when run via npx from GitHub or npm registry
  */
 
-const { execSync } = require("node:child_process");
-const path = require("node:path");
-const fs = require("node:fs");
+const { execSync } = require('node:child_process');
+const path = require('node:path');
+const fs = require('node:fs');
 
 // Check if we're running in an npx temporary directory
-const isNpxExecution = __dirname.includes("_npx") || __dirname.includes(".npm");
+const isNpxExecution = __dirname.includes('_npx') || __dirname.includes('.npm');
 
-// If running via npx, we need to handle things differently
 if (isNpxExecution) {
-  const arguments_ = process.argv.slice(2);
+  // Running via npx - spawn child process to preserve user's working directory
+  const args = process.argv.slice(2);
+  const xiaomaCliPath = path.join(__dirname, 'cli', 'xiaoma-cli.js');
 
-  // Use the installer for all commands
-  const xiaomaScriptPath = path.join(
-    __dirname,
-    "installer",
-    "bin",
-    "xiaoma.js",
-  );
-
-  if (!fs.existsSync(xiaomaScriptPath)) {
-    console.error("Error: Could not find xiaoma.js at", xiaomaScriptPath);
-    console.error("Current directory:", __dirname);
+  if (!fs.existsSync(xiaomaCliPath)) {
+    console.error('Error: Could not find xiaoma-cli.js at', xiaomaCliPath);
+    console.error('Current directory:', __dirname);
     process.exit(1);
   }
 
   try {
-    execSync(`node "${xiaomaScriptPath}" ${arguments_.join(" ")}`, {
-      stdio: "inherit",
-      cwd: path.dirname(__dirname),
+    // Execute CLI from user's working directory (process.cwd()), not npm cache
+    execSync(`node "${xiaomaCliPath}" ${args.join(' ')}`, {
+      stdio: 'inherit',
+      cwd: process.cwd(), // This preserves the user's working directory
     });
   } catch (error) {
     process.exit(error.status || 1);
   }
 } else {
-  // Local execution - use installer for all commands
-  require("./installer/bin/xiaoma.js");
+  // Local execution - use require
+  require('./cli/xiaoma-cli.js');
 }

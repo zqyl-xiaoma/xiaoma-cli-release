@@ -1,0 +1,142 @@
+# 全自动迭代开发状态追踪模板
+# Auto-Iteration Status Template
+
+execution:
+  id: "{iteration_id}"
+  name: "{iteration_name}"
+  started_at: "{start_timestamp}"
+  status: "pending"  # pending | in_progress | completed | blocked | failed
+
+  inputs:
+    requirement_document: "{requirement_doc_path}"
+    knowledge_base:
+      business: "{business_kb_path}"
+      technical: "{technical_kb_path}"
+    project_path: "{project_root}"
+
+current:
+  phase: null
+  phase_name: null
+  task: null
+  story_id: null
+
+phases:
+  phase_1_analyze:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    duration: null
+    outputs: []
+    metrics:
+      features_identified: 0
+      kb_match_rate: 0
+      implicit_requirements: 0
+      conflicts_found: 0
+      risks_identified: 0
+
+  phase_2_plan:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    duration: null
+    outputs: []
+    metrics:
+      total_frs: 0
+      total_nfrs: 0
+      total_epics: 0
+      total_stories: 0
+      total_story_points: 0
+
+  phase_3_design:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    duration: null
+    outputs: []
+    metrics:
+      new_files: 0
+      modified_files: 0
+      adrs_created: 0
+      api_endpoints: 0
+
+  phase_4_develop:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    duration: null
+    outputs: []
+    metrics:
+      stories_completed: 0
+      total_points_completed: 0
+      files_created: 0
+      files_modified: 0
+      tests_written: 0
+      test_coverage: 0
+      code_review_pass_rate: 0
+
+  phase_5_test:
+    status: "pending"
+    started_at: null
+    completed_at: null
+    duration: null
+    outputs: []
+    metrics:
+      total_tests: 0
+      passed_tests: 0
+      failed_tests: 0
+      pass_rate: 0
+      code_coverage: 0
+      quality_gates_passed: false
+      nfr_validated: false
+
+blocking_issues: []
+# 示例:
+# - id: "BLOCK-001"
+#   phase: "phase_4_develop"
+#   story: "STORY-003"
+#   description: "测试持续失败"
+#   created_at: "{timestamp}"
+#   resolution_attempts: 0
+#   status: "open"  # open | resolved | escalated
+
+knowledge_base:
+  queries_total: 0
+  queries_hit: 0
+  hit_rate: 0
+  queries_log: []
+  # 示例:
+  # - query: "用户认证规则"
+  #   result: "found"
+  #   source: "business-rules/auth.md"
+  #   timestamp: "{timestamp}"
+
+outputs:
+  generated: []
+  pending:
+    - "requirement-analysis.md"
+    - "prd.md"
+    - "architecture.md"
+    - "test-report.md"
+    - "quality-report.md"
+
+resume_history: []
+# 示例:
+# - timestamp: "{timestamp}"
+#   from_phase: "phase_4_develop"
+#   from_task: "TASK-002"
+#   reason: "manual_resume"
+
+decision_log: []
+# 示例:
+# - id: "DEC-001"
+#   phase: "phase_3_design"
+#   decision: "使用 Repository Pattern"
+#   basis: "tech-kb/architecture-patterns.md"
+#   timestamp: "{timestamp}"
+
+warnings: []
+# 示例:
+# - phase: "phase_1_analyze"
+#   type: "low_kb_match"
+#   message: "业务规则匹配率低于阈值"
+#   timestamp: "{timestamp}"
