@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 const { getSourcePath, getModulePath } = require('../../../lib/project-root');
 
 // Load package.json for version info
-const packageJson = require('../../../../../../../github/xiaoma-cli/BMAD-METHOD/package.json');
+const packageJson = require('../../../../../package.json');
 
 /**
  * Generates manifest files for installed workflows, agents, and tasks
