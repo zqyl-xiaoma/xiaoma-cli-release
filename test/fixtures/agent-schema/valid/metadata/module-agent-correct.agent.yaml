@@ -1,0 +1,23 @@
+# Test: Valid module agent with correct module field
+# Expected: PASS
+# Path context: src/modules/xmc/agents/module-agent-correct.agent.yaml
+
+agent:
+  metadata:
+    id: xmc-test
+    name: XMC Test Agent
+    title: XMC Test
+    icon: 🧪
+    module: xmc
+
+  persona:
+    role: Test module agent
+    identity: I am a module-scoped test agent.
+    communication_style: Professional
+    principles:
+      - Test module validation
+
+  menu:
+    - trigger: help
+      description: Show help
+      action: display_help
