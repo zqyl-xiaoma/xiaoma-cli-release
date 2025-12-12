@@ -54,6 +54,44 @@ knowledge_base:
 
 本工作流实现从需求文档到代码实现的全自动化执行，融合7大智能体能力，通过知识库驱动所有决策，实现零人工干预的端到端开发。
 
+### 智能体工作流集成汇总
+
+> **重要**: 本工作流严格遵循项目现有智能体的标准工作流，确保完全兼容。
+
+| 阶段 | 集成智能体 | 调用的工作流 | 用途 |
+|------|-----------|-------------|------|
+| Phase 1 | Mary (Analyst) | 内置分析能力 | 需求分析、业务规则匹配 |
+| Phase 2 | John (PM) | 内置 PRD 能力 | PRD 创建、史诗故事定义 |
+| Phase 3 | Winston (Architect) | 内置架构能力 | 架构设计、技术决策 |
+| Phase 4 | Bob (SM) | `*sprint-planning` | 生成 sprint-status.yaml |
+| Phase 4 | Bob (SM) | `*create-story` | 创建故事文件 (backlog→drafted→ready-for-dev) |
+| Phase 4 | Amelia (DEV) | `*develop-story` | TDD 开发 (ready-for-dev→in-progress→review) |
+| Phase 4 | Amelia (DEV) | `*code-review` | 代码审查 (review→done) |
+| Phase 5 | Murat (TEA) | `*trace` | 需求到测试追踪 |
+| Phase 5 | Murat (TEA) | `*test-review` | 测试质量评审 |
+| Phase 5 | Murat (TEA) | `*nfr-assess` | NFR 验证 |
+
+### 故事状态系统 (6状态流转)
+
+```
+backlog → drafted → ready-for-dev → in-progress → review → done
+   │         │            │              │           │       │
+   │         │            │              │           │       └─ 故事完成
+   │         │            │              │           └─ 等待代码审查
+   │         │            │              └─ 开发进行中
+   │         │            └─ 可以开始开发
+   │         └─ 故事文件已创建
+   └─ 仅存在于 Epic 文件中
+```
+
+**状态转换触发点**:
+- `backlog → drafted`: SM `*create-story` 创建故事文件
+- `drafted → ready-for-dev`: SM `*create-story` 或 `*validate-create-story` 验证通过
+- `ready-for-dev → in-progress`: DEV `*develop-story` Step 4
+- `in-progress → review`: DEV `*develop-story` Step 9
+- `review → done`: DEV `*code-review` APPROVED
+- `review → in-progress`: DEV `*code-review` CHANGES_REQUESTED (返回修复)
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        全自动迭代开发流程                                  │
@@ -449,121 +487,650 @@ tasks:
 
 ### Step 4: 开发实现阶段 (Phase 4)
 
-**角色激活**: SM (Scrum Master) + DEV (开发者)
+**角色激活**: SM (Scrum Master - Bob) + DEV (Developer - Amelia)
+
+> **重要**: 本阶段严格遵循项目智能体的标准工作流，确保与 SM 和 DEV 智能体的完全兼容。
+
+**故事状态定义** (与 SM 智能体一致):
+
+```yaml
+# 故事状态流转 (6状态系统)
+story_status:
+  backlog: "故事仅存在于 epic 文件中"
+  drafted: "故事文件已创建于 stories 文件夹"
+  ready-for-dev: "故事草稿已审核，可以开始开发"
+  in-progress: "开发者正在积极实现中"
+  review: "实现完成，等待代码审查"
+  done: "故事已完成"
+
+# Epic 状态
+epic_status:
+  backlog: "Epic 尚未开始"
+  in-progress: "Epic 正在进行中"
+  done: "Epic 中所有故事已完成"
+```
 
 **自动执行内容**:
 
 ```yaml
 phase: 4
 name: 开发实现
-role: SM + DEV
 inputs:
   - architecture.md
-  - stories/
+  - epics/*.md  # 包含故事定义的 Epic 文件
   - 技术知识库
 outputs:
+  - sprint-status.yaml  # 使用 SM 智能体的标准格式
+  - stories/*.md  # 独立故事文件
   - 实现的代码
   - 测试代码
-  - sprint-status.yaml
+  - code-review-reports/
 
-tasks:
-  - name: Sprint 规划
-    role: SM
-    action: |
-      1. 基于故事优先级和依赖关系排序
-      2. 创建 sprint-status.yaml
-      3. 确定故事执行顺序
-
-  - name: 故事开发循环
-    role: DEV
-    repeat: for_each_story
-    action: |
-      1. 读取故事上下文
-      2. 分解为任务和子任务
-      3. TDD 驱动实现:
-         a. 编写失败的测试
-         b. 实现代码使测试通过
-         c. 重构优化
-      4. 代码审查
-      5. 更新故事状态
+# 调用的智能体工作流
+workflows_invoked:
+  - agent: SM (Bob)
+    workflow: sprint-planning
+    purpose: "生成 sprint-status.yaml"
+  - agent: SM (Bob)
+    workflow: create-story
+    purpose: "为每个故事创建详细故事文件"
+  - agent: DEV (Amelia)
+    workflow: dev-story
+    purpose: "TDD 驱动的故事实现"
+  - agent: DEV (Amelia)
+    workflow: code-review
+    purpose: "代码审查验证"
 ```
 
-**TDD 执行流程**:
+---
+
+#### Step 4.1: Sprint 规划 (SM 角色)
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/4-implementation/sprint-planning/workflow.yaml`
+
+```yaml
+task: sprint_planning
+role: SM (Bob)
+invoke_workflow: "*sprint-planning"
+actions:
+  - name: 分析 Epic 文件
+    scan:
+      - "{output_folder}/*epic*.md"
+    extract:
+      - Epic ID 和名称
+      - 所有故事标识符
+      - 依赖关系
+
+  - name: 生成 sprint-status.yaml
+    output_format: |
+      # Sprint Status File (SM 智能体标准格式)
+      generated: {date}
+      project: {project_name}
+      project_key: {project_key}
+      tracking_system: file-system
+      story_location: "{sprint_artifacts}"
+
+      development_status:
+        epic-1: backlog
+        1-1-story-name: backlog
+        1-2-story-name: backlog
+        epic-1-retrospective: optional
+        epic-2: backlog
+        2-1-story-name: backlog
+
+  - name: 确定开发顺序
+    criteria:
+      - 技术依赖（基础组件优先）
+      - 业务依赖（前置功能优先）
+      - 优先级排序
+```
+
+---
+
+#### Step 4.2: 故事开发循环
+
+**对于每个故事，执行完整的状态转换和开发循环**:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         故事生命周期管理                                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  Step 4.2.1: 故事准备 (SM - Bob)                                            │
+│  ├─ 调用: *create-story                                                    │
+│  ├─ 输入: Epic 中的故事定义                                                  │
+│  ├─ 输出: stories/{story-key}.md                                           │
+│  └─ 状态: backlog → drafted → ready-for-dev                                │
+│                                                                             │
+│  Step 4.2.2: 故事开发 (DEV - Amelia)                                        │
+│  ├─ 调用: *develop-story                                                   │
+│  ├─ 输入: ready-for-dev 状态的故事                                          │
+│  ├─ 执行: TDD 驱动开发 (红-绿-重构)                                          │
+│  └─ 状态: ready-for-dev → in-progress → review                             │
+│                                                                             │
+│  Step 4.2.3: 代码审查 (DEV - Amelia)                                        │
+│  ├─ 调用: *code-review                                                     │
+│  ├─ 输入: review 状态的故事                                                 │
+│  ├─ 审查: 功能正确性 + 代码质量 + 安全性                                      │
+│  └─ 状态: review → done (通过) 或 返回修复                                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+#### Step 4.2.1: 故事准备 (create-story)
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/4-implementation/create-story/workflow.yaml`
+
+```yaml
+task: prepare_story
+role: SM (Bob)
+invoke_workflow: "*create-story"
+
+for_each: story in sprint_status.development_status
+  where: status == "backlog" AND is_story (not epic/retrospective)
+
+actions:
+  - name: 创建故事文件
+    inputs:
+      - sprint_status: "{sprint_artifacts}/sprint-status.yaml"
+      - epics_file: "{output_folder}/epics.md"
+      - prd_file: "{output_folder}/PRD.md"
+      - architecture_file: "{output_folder}/architecture.md"
+
+  - name: 生成故事上下文
+    include:
+      - 用户故事描述
+      - 接受标准 (Given-When-Then)
+      - 技术说明 (Dev Notes)
+      - 任务/子任务分解
+      - 相关文件列表
+
+  - name: 更新状态
+    update_sprint_status:
+      story_key: "backlog → drafted"
+
+  - name: 自动验证并标记 ready-for-dev
+    # SM 智能体的 create-story 支持直接标记 ready-for-dev
+    validate:
+      - 接受标准完整性
+      - 任务分解合理性
+      - 技术说明充分性
+    on_pass:
+      update_sprint_status:
+        story_key: "drafted → ready-for-dev"
+```
+
+**故事文件格式** (符合 DEV 智能体要求):
+
+```markdown
+# Story: {story-key}
+
+## Story
+As a [用户角色],
+I want [功能],
+So that [价值].
+
+## Acceptance Criteria
+- [ ] **AC-001**: Given [条件], When [操作], Then [结果]
+- [ ] **AC-002**: ...
+
+## Tasks/Subtasks
+- [ ] TASK-001: [任务描述]
+  - [ ] SUBTASK-001-1: [子任务]
+  - [ ] SUBTASK-001-2: [子任务]
+- [ ] TASK-002: [任务描述]
+
+## Dev Notes
+### Architecture Requirements
+[架构设计中的相关部分]
+
+### Technical Specifications
+[技术实现说明]
+
+### Coding Standards
+[从知识库获取的编码规范]
+
+## Dev Agent Record
+### Implementation Plan
+[开发过程中填写]
+
+### Debug Log
+[调试日志]
+
+### Completion Notes
+[完成说明]
+
+## File List
+[变更的文件列表]
+
+## Change Log
+[变更日志]
+
+## Status
+drafted  <!-- 将更新为: ready-for-dev → in-progress → review → done -->
+```
+
+---
+
+#### Step 4.2.2: 故事开发 (develop-story)
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/4-implementation/dev-story/workflow.yaml`
+
+```yaml
+task: develop_story
+role: DEV (Amelia)
+invoke_workflow: "*develop-story"
+
+precondition:
+  - sprint_status[story_key] == "ready-for-dev"
+
+execution_flow:
+  # DEV 智能体 dev-story 工作流的 10 个步骤
+  step_1: "查找 ready-for-dev 故事并加载"
+  step_2: "加载项目上下文和故事信息"
+  step_3: "检测是否是代码审查后的继续"
+  step_4: "标记故事为 in-progress"
+  step_5: "TDD 实现 (红-绿-重构)"
+  step_6: "编写全面测试"
+  step_7: "运行验证和测试"
+  step_8: "验证并标记任务完成"
+  step_9: "故事完成，标记为 review"
+  step_10: "完成沟通和用户支持"
+
+tdd_cycle:
+  red_phase:
+    - 根据接受标准编写失败测试
+    - 确认测试失败原因是功能未实现
+
+  green_phase:
+    - 实现最小代码使测试通过
+    - 运行测试确认通过
+
+  refactor_phase:
+    - 优化代码结构
+    - 确保测试仍然通过
+
+critical_rules:
+  - "故事文件是唯一的事实来源"
+  - "严格按照 Tasks/Subtasks 顺序执行"
+  - "绝不实现故事文件中未定义的内容"
+  - "每个任务完成前必须有测试覆盖"
+  - "所有测试必须 100% 通过才能继续"
+
+status_transitions:
+  on_start: "ready-for-dev → in-progress"
+  on_complete: "in-progress → review"
+```
+
+---
+
+#### Step 4.2.3: 代码审查 (code-review)
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/4-implementation/code-review/workflow.yaml`
+
+```yaml
+task: code_review
+role: DEV (Amelia)
+invoke_workflow: "*code-review"
+
+precondition:
+  - sprint_status[story_key] == "review"
+
+review_dimensions:
+  functionality:
+    - 是否满足所有接受标准
+    - 边界情况是否处理
+    - 异常处理是否完善
+
+  code_quality:
+    - 代码是否清晰可读
+    - 命名是否规范
+    - 是否遵循项目规范
+
+  security:
+    - 是否存在注入风险
+    - 敏感数据处理
+    - 认证授权正确性
+
+  performance:
+    - 是否有性能问题
+    - 数据库查询优化
+    - 内存泄漏风险
+
+  test_coverage:
+    - 测试是否充分
+    - 边界情况覆盖
+    - 测试可维护性
+
+review_outcome:
+  APPROVED:
+    action: "更新状态为 done"
+    update_sprint_status:
+      story_key: "review → done"
+
+  CHANGES_REQUESTED:
+    action: "生成修复任务，返回开发"
+    insert_review_followups: true
+    # DEV 智能体会在下次执行时处理审查反馈
+
+best_practice: |
+  建议使用不同的 LLM 执行代码审查以获得更客观的评估
+```
+
+---
+
+#### Step 4.2.4: 更新 Sprint 状态
+
+```yaml
+task: update_sprint_status
+after_each_story:
+  - name: 更新故事状态
+    file: "{sprint_artifacts}/sprint-status.yaml"
+    update:
+      development_status[story_key]: "{new_status}"
+
+  - name: 更新 Epic 状态
+    logic: |
+      if all_stories_in_epic == "done":
+        epic_status = "done"
+      elif any_story_in_epic == "in-progress" or "review":
+        epic_status = "in-progress"
+      else:
+        epic_status = "backlog"
+
+  - name: 计算进度
+    metrics:
+      total_stories: count(stories)
+      completed_stories: count(stories where status == "done")
+      completion_rate: completed_stories / total_stories * 100%
+```
+
+---
+
+**TDD 执行流程详解**:
 
 ```
 For Each Task in Story:
-  ┌──────────────────────────────────┐
-  │ 1. 编写测试 (Red)                 │
-  │    - 根据接受标准编写测试用例       │
-  │    - 运行测试，确认失败            │
-  ├──────────────────────────────────┤
-  │ 2. 实现代码 (Green)               │
-  │    - 编写最小代码使测试通过         │
-  │    - 运行测试，确认通过            │
-  ├──────────────────────────────────┤
-  │ 3. 重构 (Refactor)               │
-  │    - 优化代码结构                 │
-  │    - 确保测试仍然通过             │
-  ├──────────────────────────────────┤
-  │ 4. 代码审查                       │
-  │    - 检查代码质量                 │
-  │    - 检查规范合规性               │
-  │    - 检查安全性                   │
-  └──────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────────┐
+  │ 1. 🔴 编写测试 (Red Phase)                                    │
+  │    ├─ 查询知识库获取测试规范                                   │
+  │    ├─ 根据接受标准编写测试用例                                  │
+  │    ├─ 运行测试，确认失败                                       │
+  │    └─ 验证失败原因是功能未实现                                  │
+  ├──────────────────────────────────────────────────────────────┤
+  │ 2. 🟢 实现代码 (Green Phase)                                  │
+  │    ├─ 查询知识库获取编码规范                                   │
+  │    ├─ 编写最小代码使测试通过                                    │
+  │    ├─ 运行测试，确认通过                                       │
+  │    └─ 处理边界情况和异常                                       │
+  ├──────────────────────────────────────────────────────────────┤
+  │ 3. 🔵 重构 (Refactor Phase)                                  │
+  │    ├─ 检查代码质量（重复、复杂度）                              │
+  │    ├─ 应用优化（提取方法、简化逻辑）                            │
+  │    ├─ 运行测试确保仍然通过                                     │
+  │    └─ 更新 Dev Agent Record                                  │
+  ├──────────────────────────────────────────────────────────────┤
+  │ 4. ✅ 标记任务完成                                            │
+  │    ├─ 验证所有测试存在且通过                                   │
+  │    ├─ 标记任务 checkbox [x]                                  │
+  │    ├─ 更新 File List                                        │
+  │    └─ 继续下一个任务或进入完成流程                              │
+  └──────────────────────────────────────────────────────────────┘
 ```
 
 **质量门禁**:
-- [ ] 所有测试通过
-- [ ] 代码审查通过
-- [ ] 无安全漏洞
-- [ ] 符合代码规范
+- [ ] 所有测试通过 (100%)
+- [ ] 代码审查通过 (APPROVED)
+- [ ] 无安全漏洞 (0 critical/high)
+- [ ] 符合代码规范 (lint 通过)
+- [ ] 测试覆盖率 >= 80%
 
 ---
 
 ### Step 5: 测试验证阶段 (Phase 5)
 
-**角色激活**: TEA (测试架构师)
+**角色激活**: TEA (测试架构师 - Murat)
+
+> **重要**: 本阶段集成 TEA 智能体的专用测试工作流，提供全面的测试验证能力。
 
 **自动执行内容**:
 
 ```yaml
 phase: 5
 name: 测试验证
-role: TEA
+role: TEA (Murat)
 inputs:
   - 实现的代码
   - 测试代码
   - prd.md
+  - stories/
+  - architecture.md
 outputs:
   - test-report.md
   - quality-report.md
+  - traceability-matrix.md
+  - coverage-report/
 
-tasks:
-  - name: 执行测试套件
-    action: |
-      1. 运行单元测试
-      2. 运行集成测试
-      3. 收集测试覆盖率
-
-  - name: 质量门禁检查
-    action: |
-      1. 检查测试覆盖率 >= 80%
-      2. 检查无失败测试
-      3. 检查代码质量指标
-      4. 检查安全扫描结果
-
-  - name: 生成报告
-    action: |
-      1. 生成测试报告
-      2. 生成质量报告
-      3. 生成追溯矩阵
+# 调用的 TEA 智能体工作流
+workflows_invoked:
+  - agent: TEA (Murat)
+    workflow: trace
+    purpose: "需求到测试的追踪映射"
+  - agent: TEA (Murat)
+    workflow: test-review
+    purpose: "测试质量评审"
+  - agent: TEA (Murat)
+    workflow: nfr-assess
+    purpose: "非功能性需求验证"
 ```
+
+---
+
+#### Step 5.1: 需求追溯验证
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/testarch/trace/workflow.yaml`
+
+```yaml
+task: requirement_traceability
+role: TEA (Murat)
+invoke_workflow: "*trace"
+
+actions:
+  - name: 构建追溯矩阵
+    map:
+      - FR → Stories → Tests
+      - AC → Test Cases
+      - NFR → Validation Tests
+
+  - name: 验证覆盖完整性
+    check:
+      - 每个 FR 都有对应测试
+      - 每个 AC 都有对应测试用例
+      - 无遗漏的需求
+
+  - name: 生成追溯报告
+    output: "traceability-matrix.md"
+```
+
+---
+
+#### Step 5.2: 执行测试套件
+
+```yaml
+task: execute_test_suites
+actions:
+  - name: 运行单元测试
+    command: "npm run test:unit"
+    collect:
+      - 通过/失败数量
+      - 覆盖率报告
+      - 失败详情
+
+  - name: 运行集成测试
+    command: "npm run test:integration"
+    collect:
+      - 通过/失败数量
+      - API 测试结果
+      - 数据库测试结果
+
+  - name: 运行端到端测试
+    command: "npm run test:e2e"
+    if: e2e_tests_exist
+    collect:
+      - 通过/失败数量
+      - 用户流程测试结果
+```
+
+---
+
+#### Step 5.3: 测试质量评审
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/testarch/test-review/workflow.yaml`
+
+```yaml
+task: test_quality_review
+role: TEA (Murat)
+invoke_workflow: "*test-review"
+
+review_criteria:
+  - name: 测试充分性
+    check:
+      - 关键路径是否覆盖
+      - 边界条件是否测试
+      - 异常场景是否覆盖
+
+  - name: 测试质量
+    check:
+      - 测试是否独立
+      - 断言是否明确
+      - 测试是否可维护
+
+  - name: 测试模式
+    check:
+      - AAA 模式 (Arrange-Act-Assert)
+      - 单一职责
+      - 无硬编码依赖
+
+output:
+  test_review_report:
+    score: "[A-F]"
+    issues: []
+    recommendations: []
+```
+
+---
+
+#### Step 5.4: NFR 验证
+
+**调用工作流**: `{xiaoma_folder}/xmc/workflows/testarch/nfr-assess/workflow.yaml`
+
+```yaml
+task: nfr_validation
+role: TEA (Murat)
+invoke_workflow: "*nfr-assess"
+
+validations:
+  performance:
+    - nfr_id: "NFR-PERF-001"
+      requirement: "页面响应时间 < 2s"
+      test_method: "性能测试"
+
+    - nfr_id: "NFR-PERF-002"
+      requirement: "API 响应时间 < 500ms"
+      test_method: "负载测试"
+
+  security:
+    - nfr_id: "NFR-SEC-001"
+      requirement: "所有 API 需要认证"
+      test_method: "安全扫描"
+
+    - nfr_id: "NFR-SEC-002"
+      requirement: "敏感数据加密传输"
+      test_method: "HTTPS 验证"
+
+  usability:
+    - nfr_id: "NFR-USA-001"
+      requirement: "支持响应式布局"
+      test_method: "多设备测试"
+```
+
+---
+
+#### Step 5.5: 质量门禁检查
+
+```yaml
+task: quality_gate_check
+actions:
+  - name: 代码覆盖率检查
+    threshold:
+      statements: ">= 80%"
+      branches: ">= 75%"
+      functions: ">= 85%"
+      lines: ">= 80%"
+
+  - name: 代码质量检查
+    run: "npm run lint"
+    threshold:
+      errors: 0
+      warnings: "<= 10"
+
+  - name: 安全扫描
+    run: "npm audit"
+    threshold:
+      critical: 0
+      high: 0
+
+  - name: 类型检查
+    run: "npm run type-check"
+    threshold:
+      errors: 0
+
+  - name: 构建验证
+    run: "npm run build"
+    threshold:
+      success: true
+```
+
+---
+
+#### Step 5.6: 生成测试报告
+
+```yaml
+task: generate_reports
+outputs:
+  - name: test-report.md
+    content:
+      - 执行摘要
+      - 测试执行详情
+      - 代码覆盖率
+      - 需求追溯
+      - 问题和建议
+
+  - name: quality-report.md
+    content:
+      - 质量门禁结果
+      - 代码质量分析
+      - 安全扫描结果
+      - NFR 验证结果
+
+  - name: traceability-matrix.md
+    content:
+      - FR → Story → Test 映射
+      - AC → Test Case 映射
+      - 覆盖率统计
+```
+
+---
 
 **质量门禁**:
 - [ ] 测试覆盖率 >= 80%
-- [ ] 所有测试通过
-- [ ] 无严重安全漏洞
+- [ ] 所有测试通过 (100%)
+- [ ] 无严重安全漏洞 (0 critical/high)
 - [ ] 代码质量评分 >= B
+- [ ] NFR 验证通过
+- [ ] 需求追溯完整 (100%)
 
 ---
 
@@ -606,7 +1173,9 @@ blocking_resolution:
 
 ## 状态追踪
 
-执行过程中自动更新 `auto-iteration-status.yaml`:
+### 1. 迭代执行状态 (`auto-iteration-status.yaml`)
+
+执行过程中自动更新迭代级别的状态：
 
 ```yaml
 # auto-iteration-status.yaml
@@ -628,14 +1197,16 @@ phases:
     outputs:
       - prd.md
       - epics/epic-001.md
-      - stories/story-001.md
 
   phase_3_design:
-    status: "in_progress"
-    current_task: "数据模型设计"
+    status: "completed"
+    outputs:
+      - architecture.md
+      - adr/
 
   phase_4_develop:
-    status: "pending"
+    status: "in_progress"
+    current_story: "1-2-user-authentication"
 
   phase_5_test:
     status: "pending"
@@ -646,6 +1217,96 @@ knowledge_base_queries:
   - query: "用户认证最佳实践"
     result: "found"
     source: "tech-kb/auth-patterns.md"
+```
+
+### 2. Sprint 开发状态 (`sprint-status.yaml`)
+
+**与 SM 智能体完全兼容的格式**：
+
+```yaml
+# sprint-status.yaml
+# 由 SM 智能体的 sprint-planning 工作流生成
+# 格式与现有项目智能体系统完全一致
+
+# 文件元数据
+generated: "2024-01-15 10:30"
+project: "My Project"
+project_key: "PROJ-001"
+tracking_system: file-system
+story_location: "{sprint_artifacts}"
+
+# STATUS DEFINITIONS (与 SM 智能体一致):
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - drafted: Story file created in stories folder
+#   - ready-for-dev: Draft approved, ready for development
+#   - in-progress: Developer actively working on implementation
+#   - review: Implementation complete, ready for review
+#   - done: Story completed
+
+# 开发状态追踪
+development_status:
+  # Epic 1
+  epic-1: in-progress
+  1-1-user-authentication: done
+  1-2-account-management: in-progress
+  1-3-user-profile: ready-for-dev
+  1-4-password-reset: drafted
+  1-5-session-management: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2
+  epic-2: backlog
+  2-1-product-catalog: backlog
+  2-2-search-functionality: backlog
+  2-3-product-details: backlog
+  epic-2-retrospective: optional
+```
+
+### 3. 状态同步机制
+
+```yaml
+status_sync:
+  # Phase 4 开发过程中的状态同步
+  on_story_status_change:
+    - update: "sprint-status.yaml"
+      field: "development_status[story_key]"
+
+    - update: "auto-iteration-status.yaml"
+      field: "phases.phase_4_develop.current_story"
+
+  # 故事状态转换触发点
+  transitions:
+    backlog_to_drafted:
+      trigger: "*create-story 完成创建故事文件"
+      update_sprint_status: true
+
+    drafted_to_ready_for_dev:
+      trigger: "*create-story 或 *validate-create-story 验证通过"
+      update_sprint_status: true
+
+    ready_for_dev_to_in_progress:
+      trigger: "*develop-story Step 4 开始开发"
+      update_sprint_status: true
+
+    in_progress_to_review:
+      trigger: "*develop-story Step 9 故事完成"
+      update_sprint_status: true
+
+    review_to_done:
+      trigger: "*code-review APPROVED"
+      update_sprint_status: true
+
+    review_to_in_progress:
+      trigger: "*code-review CHANGES_REQUESTED"
+      update_sprint_status: true
+      note: "DEV 智能体会处理审查反馈"
 ```
 
 ---
