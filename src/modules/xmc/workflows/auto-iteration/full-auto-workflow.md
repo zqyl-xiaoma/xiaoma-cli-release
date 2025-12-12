@@ -325,8 +325,8 @@ inputs:
   - 业务知识库
 outputs:
   - prd.md
-  - epics/
-  - stories/
+  - epics/epic-XXX.md  # 包含故事定义的 Epic 文件
+  # 注意: 独立故事文件将在 Phase 4 由 *create-story 创建
 
 tasks:
   - name: 创建 PRD
@@ -337,20 +337,21 @@ tasks:
       4. 定义非功能需求 (NFR)
     output: prd.md
 
-  - name: 创建史诗
+  - name: 创建史诗文件（包含故事定义）
     action: |
       1. 将功能需求按模块分组为史诗
       2. 定义每个史诗的业务价值
       3. 确定史诗间的依赖关系
-    output: epics/
-
-  - name: 分解用户故事
-    action: |
-      1. 将每个史诗分解为用户故事
-      2. 使用 INVEST 原则验证故事质量
-      3. 定义接受标准 (Given/When/Then)
-      4. 估算故事点
-    output: stories/
+      4. ⚠️ 重要: 故事定义写在 Epic 文件中，不单独创建故事文件
+      5. 故事文件将在 Phase 4 由 SM *create-story 工作流创建
+    output: epics/epic-XXX.md
+    note: |
+      ⚠️ Phase 2 不创建独立的故事文件！
+      故事的详细定义（用户故事、接受标准、任务分解）应写在 Epic 文件中。
+      Phase 4 的 *create-story 工作流会：
+      1. 从 Epic 文件提取故事定义
+      2. 创建符合 DEV 智能体格式的故事文件
+      3. 自动设置正确的 Status: drafted
 
   - name: PO 验收标准审核
     action: |
@@ -664,8 +665,12 @@ actions:
 
 **故事文件格式** (符合 DEV 智能体要求):
 
+> ⚠️ **关键**: 必须包含 `Status:` 行，且位于标题之后！
+
 ```markdown
 # Story: {story-key}
+
+Status: drafted
 
 ## Story
 As a [用户角色],
@@ -707,10 +712,10 @@ So that [价值].
 
 ## Change Log
 [变更日志]
-
-## Status
-drafted  <!-- 将更新为: ready-for-dev → in-progress → review → done -->
 ```
+
+> **注意**: `Status:` 行位于文件顶部（标题之后），不是在底部！
+> 状态值将随开发进度更新: `drafted → ready-for-dev → in-progress → review → done`
 
 ---
 
@@ -762,6 +767,15 @@ critical_rules:
 status_transitions:
   on_start: "ready-for-dev → in-progress"
   on_complete: "in-progress → review"
+
+# ⚠️ 强制状态更新操作 - 必须执行！
+mandatory_updates:
+  on_start:
+    - action: "编辑故事文件: Status: ready-for-dev → Status: in-progress"
+    - action: "编辑 sprint-status.yaml: story_key: ready-for-dev → story_key: in-progress"
+  on_complete:
+    - action: "编辑故事文件: Status: in-progress → Status: review"
+    - action: "编辑 sprint-status.yaml: story_key: in-progress → story_key: review"
 ```
 
 ---
@@ -809,11 +823,19 @@ review_outcome:
     action: "更新状态为 done"
     update_sprint_status:
       story_key: "review → done"
+    # ⚠️ 强制执行以下操作！
+    mandatory_updates:
+      - "编辑故事文件: Status: review → Status: done"
+      - "编辑 sprint-status.yaml: story_key: review → story_key: done"
 
   CHANGES_REQUESTED:
     action: "生成修复任务，返回开发"
     insert_review_followups: true
     # DEV 智能体会在下次执行时处理审查反馈
+    # ⚠️ 强制执行以下操作！
+    mandatory_updates:
+      - "编辑故事文件: Status: review → Status: in-progress"
+      - "编辑 sprint-status.yaml: story_key: review → story_key: in-progress"
 
 best_practice: |
   建议使用不同的 LLM 执行代码审查以获得更客观的评估
@@ -1308,6 +1330,100 @@ status_sync:
       update_sprint_status: true
       note: "DEV 智能体会处理审查反馈"
 ```
+
+### 4. 强制状态更新操作 (MANDATORY)
+
+> ⚠️ **关键**: 以下操作是**必须执行**的，不是可选的描述！
+
+#### 4.1 Phase 4 开始前 - 创建 sprint-status.yaml
+
+**必须首先执行** `*sprint-planning` 或手动创建：
+
+```bash
+# 在 {sprint_artifacts} 目录创建 sprint-status.yaml
+# 示例路径: docs/sprint-artifacts/sprint-status.yaml
+```
+
+```yaml
+# sprint-status.yaml - 必须创建此文件
+generated: "{date}"
+project: "{project_name}"
+tracking_system: file-system
+story_location: "{sprint_artifacts}"
+
+development_status:
+  epic-1: backlog
+  1-1-story-name: backlog
+  1-2-story-name: backlog
+  # ... 列出所有故事
+```
+
+#### 4.2 状态更新文件编辑操作
+
+**每次状态变化时，必须执行以下两个更新**：
+
+##### 更新 1: sprint-status.yaml
+
+```yaml
+# 编辑 sprint-status.yaml 中的 development_status
+# 将故事状态从旧值改为新值
+
+# 示例: 1-1-user-auth 从 backlog 变为 drafted
+development_status:
+  1-1-user-auth: drafted  # 原来是 backlog
+```
+
+##### 更新 2: 故事文件
+
+故事文件必须使用以下格式（符合 SM/DEV 智能体要求）：
+
+```markdown
+# Story 1.1: User Authentication
+
+Status: drafted
+
+## Story
+As a user,
+I want to authenticate,
+so that I can access the system.
+
+## Acceptance Criteria
+...
+```
+
+**状态行位置**: 在标题之后，第一个 `## ` 节之前
+
+**允许的状态值**:
+- `drafted` - 故事文件已创建
+- `ready-for-dev` - 准备开发
+- `in-progress` - 开发中
+- `review` - 等待审查
+- `done` - 已完成
+
+#### 4.3 状态更新检查点
+
+在以下时间点**必须**更新状态：
+
+| 时间点 | 触发动作 | 更新内容 |
+|--------|---------|---------|
+| `*create-story` 完成 | 故事文件创建 | `backlog → drafted` (或 `ready-for-dev`) |
+| `*develop-story` Step 4 | 开始开发 | `ready-for-dev → in-progress` |
+| `*develop-story` Step 9 | 开发完成 | `in-progress → review` |
+| `*code-review` APPROVED | 审查通过 | `review → done` |
+
+#### 4.4 验证状态更新
+
+每个阶段完成后，验证状态一致性：
+
+```bash
+# 检查 sprint-status.yaml 中的状态
+grep "story-key" sprint-status.yaml
+
+# 检查故事文件中的状态
+head -5 stories/story-key.md | grep "Status:"
+```
+
+**状态必须同步**: `sprint-status.yaml` 和故事文件中的状态必须一致！
 
 ---
 
