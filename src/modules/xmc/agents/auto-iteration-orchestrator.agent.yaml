@@ -86,6 +86,10 @@ agent:
       exec: "{project-root}/{xiaoma_folder}/xmc/workflows/auto-iteration/story-implementation-workflow.md"
       description: 💻 用户故事自动化实现（Phase 4：创建→校验→开发→审查→测试 5 步循环）
 
+    - trigger: acceptance-test-knowledge
+      exec: "{project-root}/{xiaoma_folder}/xmc/workflows/auto-iteration/acceptance-test-knowledge-workflow.md"
+      description: 📋 生成验收测试知识库（从需求和用户故事生成 page_knowledge + bill_path）
+
     - trigger: phase-analyze
       exec: "{project-root}/{xiaoma_folder}/xmc/workflows/auto-iteration/phases/phase-1-analyze.md"
       description: 📊 Phase 1 - 自动需求分析（需求理解、业务规则匹配）
